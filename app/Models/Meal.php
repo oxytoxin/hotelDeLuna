@@ -13,4 +13,8 @@ class Meal extends Model
     public function foodCategory(){
         return $this->belongsTo(FoodCategory::class);
     }
+
+    public function orders(){
+        return $this->hasMany(Order::class);
+    }
 }
