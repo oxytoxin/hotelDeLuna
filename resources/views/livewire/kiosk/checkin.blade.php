@@ -76,9 +76,9 @@
                         <div class="bg-white relative xl:h-72 lg:h-60 rounded-3xl ">
                             <div
                                 class="absolute w-14 h-20 shadow-xl rounded-r-3xl grid place-content-center top-0 bg-green-500 left-0">
-                                {{-- <span
+                                <span
                                     class="font-bold text-lg uppercase
-                                 font-rubik text-white">{{ ordinal($room->floor->number) }}</span> --}}
+                                 font-rubik text-white">{{ ordinal($room->floor->number) }}</span>
                             </div>
                             <div class="relative grid place-content-center h-full">
                                 <h1 class="font-black text-5xl text-center text-gray-600">ROOM #{{ $room->number }}
@@ -119,7 +119,7 @@
                                         $type = \App\Models\Type::where('id', $get_room['type_id'])->first();
                                     @endphp
                                     <div class="texttts mt-5">
-                                        {{-- <h1 class="text-3xl text-gray-600 underline font-rubik font-black">ROOM #{{$room->number ?? 'none'}} | {{ordinal($room->floor->number ?? 1)}} FLOOR</h1> --}}
+                                        <h1 class="text-3xl text-gray-600 underline font-rubik font-black">ROOM #{{$room->number ?? 'none'}} | {{ordinal($room->floor->number ?? 1)}} FLOOR</h1>
                                     </div>
                                     <div class="texttts ">
                                         <h1 class="text-lg text-green-700 font-semibold flex-auto font-rubik">{{$type['name'] ?? 'None'}}</h1>
@@ -129,14 +129,14 @@
                                 </div>
                                 
                                 <div class="mt-20 w-full font-rubik">
-                                    <h1 class="text-lg text-gray-600 font-rubik font-black">SELECT YOUR ROOM RATE</h1>
+                                    <h1 class="text-lg text-gray-600 font-rubik font-black">SELECT HOUR </h1>
                                     <div class="flex  w-full">
                                         <div class="mt-3 relative flex space-x-4 ">
                                             @foreach ($rates as $item)
                                                     <button wire:click="selectRate({{$item->id}})"
-                                                        class="{{$get_room['rate_id'] == $item->id ? 'bg-green-500 text-white' : 'bg-white text-gray-600'}} border h-14 w-14 p-1 rounded-xl grid place-content-center">
+                                                        class="{{$get_room['rate_id'] == $item->id ? 'bg-green-500 text-white' : 'bg-white text-gray-600'}} border h-14 w-20 p-1 rounded-xl grid place-content-center">
                                                         <span
-                                                            class="uppercase text-sm font-semibold text-center ">{{ $item->staying_hour->number }}</span>
+                                                            class="uppercase  font-semibold text-center ">{{ $item->staying_hour->number }}</span>
                                                     </button>
                                                 @endforeach
                                         </div>
@@ -195,8 +195,8 @@
                                 <dt class="flex flex-col">
                                     <h1 class="underline text-green-600 text-lg font-bold uppercase">
                                         {{ $type->name ?? '' }}</h1>
-                                    {{-- <h1 class="leading-3">RM #{{ $room->number ?? 'null' }}  |
-                                        {{ ordinal($room->floor->number ?? 1) }} FLOOR</h1> --}}
+                                    <h1 class="leading-3">RM #{{ $room->number ?? 'null' }}  |
+                                        {{ ordinal($room->floor->number ?? 1) }} FLOOR</h1>
                                 </dt>
                                 <dd class="text-gray-600 font-semibold text-lg">
                                     &#8369;{{ number_format($rate->amount ?? 0, 2) }}</dd>
