@@ -14,4 +14,9 @@ class Order extends Model
     {
         return $this->belongsTo(Transaction::class);
     }
+
+    public function meal()
+    {
+        return $this->belongsTo(Meal::class);
+    }
 }
