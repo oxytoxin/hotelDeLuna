@@ -20,6 +20,8 @@ module.exports = {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
                 inter: ['Inter', ...defaultTheme.fontFamily.sans],
+                rubik: ['Rubik', ...defaultTheme.fontFamily.sans],
+                
             },
         },
     },

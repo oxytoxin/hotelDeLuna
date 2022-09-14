@@ -41,7 +41,7 @@ Route::middleware([
             echo "House Keeping";
             break;
           case "3":
-            echo "Kiosk";
+            return redirect()->route('kiosk.transaction');
             break;
          case "7":
             echo "Super Admin";
@@ -51,4 +51,27 @@ Route::middleware([
             break;
         }
     })->name('dashboard');
+
+    //KIOSK
+    Route::prefix('/kiosk')->middleware([
+      'auth:sanctum',
+      config('jetstream.auth_session'),
+      'verified'
+  ])->group(function () {
+      Route::get('/',function(){
+          return view('kiosk.index');
+      })->name('kiosk.transaction');
+      Route::get('/check-in',function(){
+          return view('kiosk.checkin');
+      })->name('kiosk.checkin');
+      Route::get('/check-out',function(){
+          return view('kiosk.checkout');
+      })->name('kiosk.checkout');
+  
+      Route::get('/reports',function(){
+          return view('kiosk.reports');
+      })->name('kiosk.reports');
+  });
+
+
 });
