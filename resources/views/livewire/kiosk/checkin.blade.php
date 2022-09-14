@@ -71,7 +71,7 @@
 
             <div class="grid mt-5 xl:grid-cols-4 lg:grid-cols-4 xl:gap-10 lg:gap-5" x-data="{ manage: @entangle('manageRoomPanel') }">
                 @foreach ($rooms as $key => $room)
-                    <button wire:key="{{ $key }}" class="relative" wire:click="selectRoom({{$room->id}})">
+                    <button wire:key="{{ $key }}" class="relative"  wire:click="selectRoom({{$room->id}})">
                         <div class="absolute inset-0 bg-gray-400 opacity-80 rounded-r-3xl rounded-bl-3xl blur"></div>
                         <div class="bg-white relative xl:h-72 lg:h-60 rounded-3xl ">
                             <div
@@ -89,7 +89,7 @@
 
                     </button>
                 @endforeach
-                <div x-show="manage" x-cloak class="relative z-10" role="dialog" aria-modal="true">
+                <div x-show="manage"  x-cloak class="relative z-10" role="dialog" aria-modal="true">
 
                     <div x-show="manage" x-cloak x-transition:enter="ease-out duration-300"
                         x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
@@ -103,6 +103,7 @@
                             x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 scale-95"
                             x-transition:enter-end="opacity-100 scale-100" x-transition:leave="ease-in duration-200"
                             x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                            x-on:click.away="manage = false"
                             class="mx-auto h-[30rem]  font-rubik max-w-3xl transform divide-y divide-gray-500 divide-opacity-10 overflow-hidden rounded-xl bg-white bg-opacity-80 shadow-2xl ring-1 ring-black ring-opacity-5 backdrop-blur backdrop-filter transition-all">
                             <div class="relative p-6 h-full">
                                 <div class="transaction flex flex-col ">
