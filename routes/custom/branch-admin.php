@@ -14,6 +14,10 @@ Route::prefix('branch')->middleware([
         return view('branch-admin.manage-rates');
     })->name('branch.manage-rates');
 
+    Route::get('/guests',function(){
+        return view('branch-admin.guests');
+    })->name('branch.guests');
+
     Route::get('/manage-rooms',function(){
         return view('branch-admin.manage-rooms');
     })->name('branch.manage-rooms');
@@ -21,5 +25,9 @@ Route::prefix('branch')->middleware([
     Route::get('/monitor-rooms',function(){
         return view('branch-admin.monitor-rooms');
     })->name('branch.monitor-rooms');
+    
+    Route::get('/manage-users',function(){
+        return view('branch-admin.manage-users');
+    })->name('branch.manage-users');
 
 });
