@@ -23,6 +23,32 @@ Route::middleware([
     'verified'
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+       $role_id = auth()->user()->role_id;
+    switch ($role_id) {
+          case  "1":
+            echo "Branch Admin";
+            break;
+          case "2":
+            echo "Front Desk";
+            break;
+          case "4":
+            echo "Kitchen";
+            break;
+          case "5":
+            echo "Bell Boy";
+            break;
+          case "6":
+            echo "House Keeping";
+            break;
+          case "3":
+            echo "Kiosk";
+            break;
+         case "7":
+            echo "Super Admin";
+            break;
+          default:
+            # code...
+            break;
+        }
     })->name('dashboard');
 });
