@@ -1,3 +1,4 @@
+const colors = require('tailwindcss/colors.js');
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
@@ -23,6 +24,9 @@ module.exports = {
                 rubik: ['Rubik', ...defaultTheme.fontFamily.sans],
                 
             },
+            colors: {
+                primary: colors.slate,
+            }
         },
     },
 
