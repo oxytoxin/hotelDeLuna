@@ -35,7 +35,7 @@
           From: "translate-x-0"
           To: "-translate-x-full"
       -->
-            <div class="relative flex w-full max-w-xs flex-1 flex-col bg-white">
+            <div class="relative flex flex-col flex-1 w-full max-w-xs bg-white">
                 <!--
           Close button, show/hide based on off-canvas menu state.
 
@@ -46,12 +46,12 @@
             From: "opacity-100"
             To: "opacity-0"
         -->
-                <div class="absolute top-0 right-0 -mr-12 pt-2">
+                <div class="absolute top-0 right-0 pt-2 -mr-12">
                     <button type="button"
-                        class="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                        class="flex items-center justify-center w-10 h-10 ml-1 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                         <span class="sr-only">Close sidebar</span>
                         <!-- Heroicon name: outline/x-mark -->
-                        <svg class="h-6 w-6 text-white"
+                        <svg class="w-6 h-6 text-white"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -65,22 +65,22 @@
                     </button>
                 </div>
 
-                <div class="h-0 flex-1 overflow-y-auto pt-5 pb-4">
-                    <div class="flex flex-shrink-0 items-center px-4">
-                        <img class="h-8 w-auto"
+                <div class="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
+                    <div class="flex items-center flex-shrink-0 px-4">
+                        <img class="w-auto h-8"
                             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                             alt="Your Company">
                     </div>
-                    <nav class="mt-5 space-y-1 px-2">
+                    <nav class="px-2 mt-5 space-y-1">
                         <!-- Current: "bg-gray-100 text-gray-900", Default: "text-gray-600 hover:bg-gray-50 hover:text-gray-900" -->
                         <a href="#"
-                            class="bg-gray-100 text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
+                            class="flex items-center px-2 py-2 text-base font-medium text-gray-900 bg-gray-100 rounded-md group">
                             <!--
                 Heroicon name: outline/home
 
                 Current: "text-gray-500", Default: "text-gray-400 group-hover:text-gray-500"
               -->
-                            <svg class="text-gray-500 mr-4 flex-shrink-0 h-6 w-6"
+                            <svg class="flex-shrink-0 w-6 h-6 mr-4 text-gray-500"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
@@ -95,9 +95,9 @@
                         </a>
 
                         <a href="#"
-                            class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
+                            class="flex items-center px-2 py-2 text-base font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-gray-900 group">
                             <!-- Heroicon name: outline/users -->
-                            <svg class="text-gray-400 group-hover:text-gray-500 mr-4 flex-shrink-0 h-6 w-6"
+                            <svg class="flex-shrink-0 w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
@@ -112,9 +112,9 @@
                         </a>
 
                         <a href="#"
-                            class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
+                            class="flex items-center px-2 py-2 text-base font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-gray-900 group">
                             <!-- Heroicon name: outline/folder -->
-                            <svg class="text-gray-400 group-hover:text-gray-500 mr-4 flex-shrink-0 h-6 w-6"
+                            <svg class="flex-shrink-0 w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
@@ -129,9 +129,9 @@
                         </a>
 
                         <a href="#"
-                            class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
+                            class="flex items-center px-2 py-2 text-base font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-gray-900 group">
                             <!-- Heroicon name: outline/calendar -->
-                            <svg class="text-gray-400 group-hover:text-gray-500 mr-4 flex-shrink-0 h-6 w-6"
+                            <svg class="flex-shrink-0 w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
@@ -146,9 +146,9 @@
                         </a>
 
                         <a href="#"
-                            class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
+                            class="flex items-center px-2 py-2 text-base font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-gray-900 group">
                             <!-- Heroicon name: outline/inbox -->
-                            <svg class="text-gray-400 group-hover:text-gray-500 mr-4 flex-shrink-0 h-6 w-6"
+                            <svg class="flex-shrink-0 w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
@@ -163,9 +163,9 @@
                         </a>
 
                         <a href="#"
-                            class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-base font-medium rounded-md">
+                            class="flex items-center px-2 py-2 text-base font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-gray-900 group">
                             <!-- Heroicon name: outline/chart-bar -->
-                            <svg class="text-gray-400 group-hover:text-gray-500 mr-4 flex-shrink-0 h-6 w-6"
+                            <svg class="flex-shrink-0 w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
@@ -180,12 +180,12 @@
                         </a>
                     </nav>
                 </div>
-                <div class="flex flex-shrink-0 border-t border-gray-200 p-4">
+                <div class="flex flex-shrink-0 p-4 border-t border-gray-200">
                     <a href="#"
-                        class="group block flex-shrink-0">
+                        class="flex-shrink-0 block group">
                         <div class="flex items-center">
                             <div>
-                                <img class="inline-block h-10 w-10 rounded-full"
+                                <img class="inline-block w-10 h-10 rounded-full"
                                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                                     alt="">
                             </div>
@@ -198,7 +198,7 @@
                 </div>
             </div>
 
-            <div class="w-14 flex-shrink-0">
+            <div class="flex-shrink-0 w-14">
                 <!-- Force sidebar to shrink to fit close icon -->
             </div>
         </div>
@@ -207,22 +207,30 @@
     <!-- Static sidebar for desktop -->
     <div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
         <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white">
-            <div class="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
-                <div class="flex flex-shrink-0 items-center px-4">
+        <div class="flex flex-col flex-1 min-h-0 bg-white border-r border-gray-200">
+            <div class="flex flex-col flex-1 pt-5 pb-4 overflow-y-auto">
+                <div class="flex items-center flex-shrink-0 px-4">
                     <h1>
                         {{ auth()->user()->branch->name }}
                     </h1>
                 </div>
-                <nav class="mt-5 pt-5 flex-1  border-t space-y-1 bg-white px-2">
+                <nav class="flex-1 px-2 pt-5 mt-5 space-y-1 bg-white border-t">
                     <a href="{{ route('branch.dashboard') }}"
-                        class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-xl">
+                        @class([
+                            'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
+                            'text-white bg-primary-500 hover:text-gray-50' => request()->is(
+                                'branch/dashboard*'
+                            ),
+                            'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
+                                'branch/dashboard*'
+                            ),
+                        ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class=" mr-3 flex-shrink-0 h-6 w-6">
+                            class="flex-shrink-0 w-6 h-6 mr-3 ">
                             <path stroke-linecap="round"
                                 stroke-linejoin="round"
                                 d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
@@ -230,13 +238,21 @@
                         Dashboard
                     </a>
                     <a href="{{ route('branch.manage-rates') }}"
-                        class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-xl">
+                        @class([
+                            'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
+                            'text-white bg-primary-500 hover:text-gray-50' => request()->is(
+                                'branch/manage-rates*'
+                            ),
+                            'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
+                                'branch/manage-rates*'
+                            ),
+                        ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class=" mr-3 flex-shrink-0 h-6 w-6">
+                            class="flex-shrink-0 w-6 h-6 mr-3 ">
                             <path stroke-linecap="round"
                                 stroke-linejoin="round"
                                 d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
@@ -244,13 +260,21 @@
                         Manage Rates
                     </a>
                     <a href="{{ route('branch.manage-rooms') }}"
-                        class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-xl">
+                        @class([
+                            'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
+                            'text-white bg-primary-500 hover:text-gray-50' => request()->is(
+                                'branch/manage-rooms*'
+                            ),
+                            'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
+                                'branch/manage-rooms*'
+                            ),
+                        ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class=" mr-3 flex-shrink-0 h-6 w-6">
+                            class="flex-shrink-0 w-6 h-6 mr-3 ">
                             <path stroke-linecap="round"
                                 stroke-linejoin="round"
                                 d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
@@ -259,13 +283,21 @@
                         Manage Rooms
                     </a>
                     <a href="{{ route('branch.guests') }}"
-                        class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-xl">
+                        @class([
+                            'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
+                            'text-white bg-primary-500 hover:text-gray-50' => request()->is(
+                                'branch/guests*'
+                            ),
+                            'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
+                                'branch/guests*'
+                            ),
+                        ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class=" mr-3 flex-shrink-0 h-6 w-6">
+                            class="flex-shrink-0 w-6 h-6 mr-3 ">
                             <path stroke-linecap="round"
                                 stroke-linejoin="round"
                                 d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
@@ -273,13 +305,21 @@
                         Guests
                     </a>
                     <a href="{{ route('branch.manage-users') }}"
-                        class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-xl">
+                        @class([
+                            'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
+                            'text-white bg-primary-500 hover:text-gray-50' => request()->is(
+                                'branch/manage-users*'
+                            ),
+                            'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
+                                'branch/manage-users*'
+                            ),
+                        ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke-width="1.5"
                             stroke="currentColor"
-                            class=" mr-3 flex-shrink-0 h-6 w-6">
+                            class="flex-shrink-0 w-6 h-6 mr-3 ">
                             <path stroke-linecap="round"
                                 stroke-linejoin="round"
                                 d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
@@ -290,13 +330,13 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-1 flex-col md:pl-64">
-        <div class="sticky top-0 z-10 bg-gray-100 pl-1 pt-1 sm:pl-3 sm:pt-3 md:hidden">
+    <div class="flex flex-col flex-1 md:pl-64">
+        <div class="sticky top-0 z-10 pt-1 pl-1 bg-gray-100 sm:pl-3 sm:pt-3 md:hidden">
             <button type="button"
                 class="-ml-0.5 -mt-0.5 inline-flex h-12 w-12 items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                 <span class="sr-only">Open sidebar</span>
                 <!-- Heroicon name: outline/bars-3 -->
-                <svg class="h-6 w-6"
+                <svg class="w-6 h-6"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -315,7 +355,7 @@
                 x-bind:class="scrollTop > 0 ? 'backdrop-blur-sm shadow-md' : ''"
                 x-init="scrollTop = window.scrollY"
                 class="sticky top-0 z-50">
-                <div class="mx-auto max-w-7xl py-4 sticky top-0 px-4 sm:px-6 md:px-8 flex justify-between">
+                <div class="sticky top-0 flex justify-between px-4 py-4 mx-auto max-w-7xl sm:px-6 md:px-8">
                     <div>
                     </div>
                     <div>
