@@ -8,6 +8,7 @@
             </div>
             <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
                 @livewire('branch-admin.rate-list')
+                @livewire('branch-admin.rate-create')
             </div>
         </div>
     </x-layout.branch>
