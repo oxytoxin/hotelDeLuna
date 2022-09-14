@@ -62,7 +62,7 @@
     </div>
     <div class="fixed right-0 top-0 bottom-0 bg-gray-200 py-8 px-5 w-72">
         <div class="flex bg-white justify-between p-4 rounded-2xl">
-            <div class="bg-blue-300 h-12 w-12 rounded-lg">sd</div>
+            <div class="shadow h-12 w-12 rounded-lg">sd</div>
             <div class="flex-1 px-2">
                 <h1>JANE DOE</h1>
             </div>
