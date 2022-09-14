@@ -29,6 +29,8 @@
 
 <body class="font-inter antialiased h-full">
     @yield('content')
+    <x-notifications z-index="z-50" />
+    <x-dialog />
     @livewireScripts
 </body>
 
