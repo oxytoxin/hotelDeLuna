@@ -1,6 +1,6 @@
 <x-kiosk-layout>
     <x-cancel-transaction/>
-    <livewire:kiosk.check-out/>
+    <livewire:kiosk.checkout/>
    
   
 </x-kiosk-layout>

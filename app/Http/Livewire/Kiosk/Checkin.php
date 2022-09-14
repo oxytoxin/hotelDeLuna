@@ -103,6 +103,7 @@ class Checkin extends Component
        
 
         $guest = Guest::create([
+            'branch_id' => auth()->user()->branch_id,
            'qr_code' => $transaction_code,
            'name' => $this->customer_name,
            'contact_number' => $this->customer_number, 
@@ -112,11 +113,13 @@ class Checkin extends Component
             $rate = Rate::where('id', $this->get_room['rate_id'])->first();
 
           $checkinroom = Transaction::create([
+            'branch_id' => auth()->user()->branch_id,
             'guest_id' => $guest->id,
             'transaction_type_id' => 1,
             'payable_amount' => $rate->amount,
           ]);
           $checkindeposit = Transaction::create([
+            'branch_id' => auth()->user()->branch_id,
             'guest_id' => $guest->id,
             'transaction_type_id' => 2,
             'payable_amount' => 200,
