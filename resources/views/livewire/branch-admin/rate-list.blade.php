@@ -13,7 +13,7 @@
                                 </div>
                                 <div>
                                     <x-button primary
-                                        wire:click="$set('showModal', true)"
+                                        wire:click="add"
                                         label="Add Rate" />
                                 </div>
                             </div>
@@ -68,13 +68,12 @@
             </div>
         </div>
     </div>
-
     <div wire:key="modal-panel">
         <x-modal.card title="{{ $this->getModeTitle() }}"
             wire:model.defer="showModal">
             <form>
                 @csrf
-                <div class="sm:grid sm:grid-cols-2 gap-3">
+                <div class="gap-3 sm:grid sm:grid-cols-2">
                     <x-native-select label="Select Hours"
                         wire:model.defer="staying_hour_id">
                         <option value=""

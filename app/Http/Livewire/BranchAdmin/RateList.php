@@ -20,10 +20,11 @@ class RateList extends Component
     {
         return $this->mode=='create' ? 'Create Rate' : 'Update Rate';
     }
-    public function mount()
+    public function add()
     {
-        $this->hours = StayingHour::all();
-        $this->types = Type::where('branch_id', auth()->user()->branch->id)->get();
+        $this->reset('staying_hour_id', 'room_type_id', 'amount');
+        $this->mode='create';
+        $this->showModal=true;
     }
     public function edit($edit_id)
     {
@@ -77,6 +78,11 @@ class RateList extends Component
             $title = 'Success',
             $description = 'Rate updated successfully'
         );
+    }
+     public function mount()
+    {
+        $this->hours = StayingHour::all();
+        $this->types = Type::where('branch_id', auth()->user()->branch->id)->get();
     }
     public function render()
     {
