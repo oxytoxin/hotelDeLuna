@@ -29,7 +29,7 @@ Route::middleware([
         return redirect()->route('branch.dashboard');
         break;
       case "2":
-        echo "Front Desk";
+        return redirect()->route('front-desk.dashboard');
         break;
       case "4":
         return redirect()->route('kitchen.dashboard');

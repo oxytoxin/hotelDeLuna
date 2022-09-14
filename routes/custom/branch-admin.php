@@ -3,7 +3,8 @@
 Route::prefix('branch')->middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
-    'verified'
+    'verified',
+    'branch_admin'
 ])->group(function () {
 
     Route::get('/dashboard',function(){
