@@ -10,15 +10,15 @@
         $categories = App\Models\FoodCategory::count();
         $foods = App\Models\Meal::count();
     @endphp
-    <div class="mt-10 bg-gray-50 p-2 flex rounded-3xl shadow-lg">
+    <div class="mt-10 bg-gray-600 p-2 flex rounded-xl shadow-lg">
         <div class="grid grid-cols-4  py-10 w-full gap-4">
             <div class="side-text text-center grid place-content-center">
-                <span>
+                <span class="text-white">
                     General Statitics of users engagement process.
                 </span>
             </div>
             <div class="bg-white relative border rounded-2xl p-4">
-                <div class="absolute -top-7 h-10 w-10 rounded-xl grid place-content-center bg-green-500">
+                <div class="absolute -top-7 h-10 w-10 rounded-xl grid place-content-center bg-green-500 border-4 border-white">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-white" width="24"
                         height="24">
                         <path fill="none" d="M0 0h24v24H0z" />
@@ -30,7 +30,7 @@
                 <h1 class="font-semibold mt-3 text-3xl text-green-700">{{ $orders }}</h1>
             </div>
             <div class="bg-white relative border rounded-2xl p-4">
-                <div class="absolute -top-7 h-10 w-10 rounded-xl grid place-content-center bg-green-500">
+                <div class="absolute -top-7 h-10 w-10 rounded-xl grid place-content-center bg-green-500 border-4 border-white">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-white" width="24"
                         height="24">
                         <path fill="none" d="M0 0h24v24H0z" />
@@ -42,7 +42,7 @@
                 <h1 class="font-semibold mt-3 text-3xl text-green-700">{{ $categories }}</h1>
             </div>
             <div class="bg-white relative border rounded-2xl p-4">
-                <div class="absolute -top-7 h-10 w-10 rounded-xl grid place-content-center bg-green-500">
+                <div class="absolute -top-7 h-10 w-10 rounded-xl grid place-content-center bg-green-500 border-4 border-white">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-white" width="24"
                         height="24">
                         <path fill="none" d="M0 0h24v24H0z" />
@@ -55,13 +55,13 @@
             </div>
         </div>
     </div>
-    <div class="mt-5">
+    <div class="mt-5 mb-10">
         <h1 class="text-lg">Orders List</h1>
         <div class="mt-2 ">
             <div class="flow-root">
-                <ul role="list" class="-mb-8">
+                <div class="-mb-8 grid grid-cols-3 gap-3">
                    @forelse ($transactions as $order)
-                   <li class="border p-2 rounded-lg shadow-lg mb-2">
+                   <div class="border p-2 rounded-lg shadow-lg mb-2">
                     <div class="relative  pb-3">
                         <span class="absolute top-5 left-5 -ml-px h-full w-0.5 bg-gray-200"
                             aria-hidden="true"></span>
@@ -88,7 +88,7 @@
                         </div>
                     </div>
                   @foreach ($order->orders as $item )
-                  <div class="relative pb-2">
+                  <div class="relative pb-1">
                     {{-- <span class="absolute top-5 left-5 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span> --}}
                     <div class="relative flex items-start space-x-3">
                         <div>
@@ -114,11 +114,11 @@
                 </div>
                   @endforeach
 
-                </li>
+                </div>
                    @empty
                        
                    @endforelse
-                </ul>
+                </div>
             </div>
         </div>
     </div>
