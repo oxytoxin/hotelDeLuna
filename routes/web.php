@@ -35,10 +35,10 @@ Route::middleware([
         return redirect()->route('kitchen.dashboard');
         break;
       case "5":
-        echo "Bell Boy";
+        return redirect()->route('roomboy.home');
         break;
       case "6":
-        echo "House Keeping";
+        return redirect()->route('house-keeping.dashboard');
         break;
       case "3":
         return redirect()->route('kiosk.transaction');
