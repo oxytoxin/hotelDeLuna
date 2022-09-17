@@ -11,8 +11,10 @@ use Livewire\Component;
 
 class Order extends Component
 {
-    public $searchMenu = "";
+    public $searchMenu = '';
+
     public $category_id;
+
     public $meals_get = [
         'name' => '',
         'price' => '',
@@ -21,20 +23,27 @@ class Order extends Component
     ];
 
     public $meals;
+
     public $transaction = [];
+
     public $meal_key;
+
     public $customer = [];
+
     public $customerpanel = false;
-    public $guestSearch = "";
+
+    public $guestSearch = '';
+
     public $confirmModal = false;
 
     public function render()
     {
-        $this->meals = Meal::where('food_category_id', 'like', '%' . $this->category_id . '%')->where('name', 'like', '%' . $this->searchMenu . '%')->get();
+        $this->meals = Meal::where('food_category_id', 'like', '%'.$this->category_id.'%')->where('name', 'like', '%'.$this->searchMenu.'%')->get();
+
         return view('livewire.kitchen.order', [
             'categories' => FoodCategory::get(),
             'meals' => $this->meals,
-            'guests' => Guest::where('qr_code', 'like', '%' . $this->guestSearch . '%')->get(),
+            'guests' => Guest::where('qr_code', 'like', '%'.$this->guestSearch.'%')->get(),
         ]);
     }
 
@@ -91,7 +100,6 @@ class Order extends Component
 
     public function checkoutOrder()
     {
-
         $transaction = Transaction::create([
             'branch_id' => auth()->user()->branch_id,
             'guest_id' => $this->customer['id'],

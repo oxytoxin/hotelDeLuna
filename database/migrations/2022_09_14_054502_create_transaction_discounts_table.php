@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('transaction_discounts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('transaction_id')->constrained()->onDelete('cascade');
+            $table->foreignId('discount_id')->constrained()->onDelete('cascade');
+            $table->string('discounted_amount');
             $table->timestamps();
         });
     }

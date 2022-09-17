@@ -2,20 +2,29 @@
 
 namespace App\Http\Livewire\FrontDesk;
 
-use Carbon\Carbon;
-use App\Models\Room;
-use App\Models\Guest;
-use App\Models\Damage;
-use Livewire\Component;
-use App\Models\Transaction;
 use App\Models\CheckInDetail;
+use App\Models\Damage;
+use App\Models\Guest;
+use App\Models\Room;
+use App\Models\Transaction;
+use Carbon\Carbon;
+use Livewire\Component;
 use WireUi\Traits\Actions;
+
 class CheckOut extends Component
 {
     use Actions;
+
     public $guest = null;
-    public $realSearch = '', $searchBy = '', $search = '';
+
+    public $realSearch = '';
+
+    public $searchBy = '';
+
+    public $search = '';
+
     public $transaction_id;
+
     public function setGuest()
     {
         if ($this->realSearch != '') {
@@ -34,6 +43,7 @@ class CheckOut extends Component
             return false;
         }
     }
+
     public function search($searchBy)
     {
         $this->realSearch = $this->search;
@@ -41,6 +51,7 @@ class CheckOut extends Component
         $this->setGuest();
         $this->reset('search');
     }
+
     public function searchByQrCode()
     {
         return Guest::query()
@@ -53,16 +64,17 @@ class CheckOut extends Component
             ->with([
                 'transactions' => [
                     'check_in_detail' => [
-                        'room'
-                    ]
-                ]
+                        'room',
+                    ],
+                ],
             ])
             ->first();
     }
+
     public function searchByRoom()
     {
-        $room = Room::where('number', $this->realSearch)->whereHas('floor',function($query){
-            return $query->where('branch_id',auth()->user()->branch_id);
+        $room = Room::where('number', $this->realSearch)->whereHas('floor', function ($query) {
+            return $query->where('branch_id', auth()->user()->branch_id);
         })->first();
         $check_in_detail = CheckInDetail::query()
             ->where('room_id', $room->id)
@@ -76,6 +88,7 @@ class CheckOut extends Component
             return false;
         }
     }
+
     public function searchByContactNumber()
     {
         return Guest::query()
@@ -88,9 +101,9 @@ class CheckOut extends Component
             ->with([
                 'transactions' => [
                     'check_in_detail' => [
-                        'room'
-                    ]
-                ]
+                        'room',
+                    ],
+                ],
             ])
             ->first();
     }
@@ -102,22 +115,24 @@ class CheckOut extends Component
             'paid_at' => now(),
         ]);
     }
+
     public function checkOut($transaction_id)
     {
         $this->dialog()->confirm([
-            'title'       => 'Are you Sure?',
+            'title' => 'Are you Sure?',
             'description' => 'You are about to check out this room.',
-            'icon'        => 'question',
-            'accept'      => [
-                'label'  => 'Yes, Check Out',
+            'icon' => 'question',
+            'accept' => [
+                'label' => 'Yes, Check Out',
                 'method' => 'checkOutConfirm',
                 'params' => $transaction_id,
             ],
             'reject' => [
-                'label'  => 'No, cancel',
+                'label' => 'No, cancel',
             ],
         ]);
     }
+
     public function checkOutConfirm($transaction_id)
     {
         $transaction = Transaction::find($transaction_id);
@@ -126,74 +141,79 @@ class CheckOut extends Component
         ]);
         $transaction->check_in_detail->room->update([
             'room_status_id' => 7,
-            'time_to_clean' => Carbon::now()->addHours(3)  // with in 3 hours after check out, the room must be cleaned by the bell boy
+            'time_to_clean' => Carbon::now()->addHours(3),  // with in 3 hours after check out, the room must be cleaned by the bell boy
         ]);
         $this->notification()->success(
-            $title = "Success",
-            $description = "Room has been checked out!"
+            $title = 'Success',
+            $description = 'Room has been checked out!'
         );
     }
+
     public function totalyCheckOutGuest()
     {
         foreach ($this->guest->transactions->where('transaction_type_id', 1) as $transaction) {
             if ($transaction->check_in_detail->check_out_at == null) {
                 $this->notification()->error(
-                    $title = "Error",
+                    $title = 'Error',
                     $description = "You can't totaly check out this guest because he/she has not checked out from all rooms!"
                 );
+
                 return;
             }
         }
         $this->dialog()->confirm([
-            'title'       => 'Are you Sure?',
+            'title' => 'Are you Sure?',
             'description' => 'You are about to check out this room.',
-            'icon'        => 'question',
-            'accept'      => [
-                'label'  => 'Yes, Check Out',
+            'icon' => 'question',
+            'accept' => [
+                'label' => 'Yes, Check Out',
                 'method' => 'totalyCheckOutConfirm',
             ],
             'reject' => [
-                'label'  => 'No, cancel',
+                'label' => 'No, cancel',
             ],
         ]);
     }
 
     public function totalyCheckOutConfirm()
     {
-        $balance =  $this->guest->transactions->where('paid_at', null)->sum('payable_amount') + $this->guest->damages->where('paid_at', null)->sum('payable_amount');
-        if ($balance===0) {
+        $balance = $this->guest->transactions->where('paid_at', null)->sum('payable_amount') + $this->guest->damages->where('paid_at', null)->sum('payable_amount');
+        if ($balance === 0) {
             $this->guest->update([
                 'totaly_checked_out' => 1,
             ]);
             $this->notification()->success(
-                $title = "Success",
-                $description = "Guest has been totaly checked out!"
+                $title = 'Success',
+                $description = 'Guest has been totaly checked out!'
             );
             $this->realSearch = '';
         } else {
             $this->notification()->error(
-                $title = "Error",
+                $title = 'Error',
                 $description = "You can't totaly check out this guest because he/she has not paid for all transactions!"
             );
+
             return;
         }
     }
+
     public function payDamage($damage_id)
     {
         $this->dialog()->confirm([
-            'title'       => 'Are you Sure?',
+            'title' => 'Are you Sure?',
             'description' => 'Do you want to continue?',
-            'icon'        => 'question',
-            'accept'      => [
-                'label'  => 'Yes, Pay',
+            'icon' => 'question',
+            'accept' => [
+                'label' => 'Yes, Pay',
                 'method' => 'confirmPayDamage',
-                'params' =>  $damage_id,
+                'params' => $damage_id,
             ],
             'reject' => [
-                'label'  => 'No, cancel',
+                'label' => 'No, cancel',
             ],
         ]);
     }
+
     public function confirmPayDamage($damage_id)
     {
         $damage = Damage::find($damage_id);
@@ -201,10 +221,11 @@ class CheckOut extends Component
             'paid_at' => now(),
         ]);
         $this->notification()->success(
-            $title = "Success",
-            $description = "Damage has been paid!"
+            $title = 'Success',
+            $description = 'Damage has been paid!'
         );
     }
+
     public function render()
     {
         return view('livewire.front-desk.check-out', [

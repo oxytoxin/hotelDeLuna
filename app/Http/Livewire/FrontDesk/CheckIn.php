@@ -2,21 +2,29 @@
 
 namespace App\Http\Livewire\FrontDesk;
 
-use Carbon\Carbon;
-use App\Models\Room;
-use App\Models\Guest;
-use Livewire\Component;
-use WireUi\Traits\Actions;
-use App\Models\Transaction;
-use Livewire\WithPagination;
 use App\Models\CheckInDetail;
+use App\Models\Guest;
+use App\Models\Room;
+use App\Models\Transaction;
+use Carbon\Carbon;
+use Livewire\Component;
+use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
 class CheckIn extends Component
 {
     use WithPagination, Actions;
-    public $search, $searchBy = '1', $realSearch;
+
+    public $search;
+
+    public $searchBy = '1';
+
+    public $realSearch;
+
     protected $listeners = ['refreshRecentCheckInList' => 'clearSearches'];
+
     public $showModal = false;
+
     public $guest = null;
 
     public function searchReal()
@@ -24,17 +32,20 @@ class CheckIn extends Component
         $this->realSearch = $this->search;
         $this->reset('search');
     }
+
     public function clearSearches()
     {
         $this->realSearch = '';
         $this->search = '';
         $this->searchBy = '1';
     }
+
     public function setGuest($guest_id)
     {
         $this->guest = Guest::find($guest_id);
         $this->showModal = true;
     }
+
     // public function pay($transaction_id)
     // {
     //     $transaction = Transaction::find($transaction_id);
@@ -50,18 +61,19 @@ class CheckIn extends Component
     public function confirmCheckIn()
     {
         $this->dialog()->confirm([
-            'title'       => 'Are you Sure?',
+            'title' => 'Are you Sure?',
             'description' => 'Are you sure you want to check in this guest?',
-            'icon'        => 'question',
-            'accept'      => [
-                'label'  => 'Yes, Check In',
+            'icon' => 'question',
+            'accept' => [
+                'label' => 'Yes, Check In',
                 'method' => 'checkIn',
             ],
             'reject' => [
-                'label'  => 'No, cancel',
+                'label' => 'No, cancel',
             ],
         ]);
     }
+
     public function checkIn()
     {
         $this->guest->transactions()->update(['paid_at' => Carbon::now()]);
@@ -96,7 +108,7 @@ class CheckIn extends Component
                             return $query->where('qr_code', $this->realSearch);
                             break;
                         case '2':
-                            return $query->where('name', 'like', '%' . $this->realSearch . '%');
+                            return $query->where('name', 'like', '%'.$this->realSearch.'%');
                             break;
                         case '3':
                             return $query->where('contact_number', $this->realSearch);
@@ -105,11 +117,11 @@ class CheckIn extends Component
                 })
                 ->where('is_checked_in', false)
                 ->paginate(10),
-            'transactions'=>$this->showModal !=false ?
+            'transactions' => $this->showModal != false ?
                 $this->guest->transactions()
                 ->with(['transaction_type', 'check_in_detail.room'])
                 ->orderBy('created_at', 'desc')->get() : [],
-            'recent_check_in_list'=>Guest::query()
+            'recent_check_in_list' => Guest::query()
                 ->where('is_checked_in', true)
                 ->orderBy('check_in_at', 'desc')
                 ->paginate(10),

@@ -19,6 +19,7 @@ class Frontdesk
         if (auth()->user()->role_id != 2) {
             return redirect()->back();
         }
+
         return $next($request);
     }
 }

@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use App\Models\RoomBoy;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class dummyRoomBoySeeder extends Seeder
 {
@@ -16,16 +15,16 @@ class dummyRoomBoySeeder extends Seeder
      */
     public function run()
     {
-        for ($i=0; $i < 99 ; $i++) { 
+        for ($i = 0; $i < 99; $i++) {
             $user = User::create([
-                'branch_id'=>1,
-                'role_id'=>5,
-                'name'=>fake()->name,
-                'email'=>fake()->email,
-                'password'=>bcrypt('password'),
+                'branch_id' => 1,
+                'role_id' => 5,
+                'name' => fake()->name,
+                'email' => fake()->email,
+                'password' => bcrypt('password'),
             ]);
             RoomBoy::create([
-                'user_id'=>$user->id,
+                'user_id' => $user->id,
             ]);
         }
     }

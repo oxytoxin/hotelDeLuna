@@ -2,26 +2,36 @@
 
 namespace App\Http\Livewire\FrontDesk;
 
-use Carbon\Carbon;
-use App\Models\Room;
+use App\Models\CheckInDetail;
 use App\Models\Guest;
-use Livewire\Component;
+use App\Models\Room;
 use App\Models\RoomChange;
 use App\Models\Transaction;
-use App\Models\CheckInDetail;
-use WireUi\Traits\Actions;
+use Carbon\Carbon;
+use Livewire\Component;
 use Livewire\WithPagination;
+use WireUi\Traits\Actions;
+
 class GuestTransaction extends Component
 {
     use  WithPagination, Actions;
+
     public $guest = null;
+
     public $loadTransactions = false;
+
     public $search = '';
+
     public $selected_guest = null;
+
     public $addDamageModal = false;
+
     public $extendModal = false;
+
     public $changeRoomModal = false;
+
     public $rooms = [];
+
     public $damages = [
         'Remote Control',
         'Door Lock',
@@ -37,9 +47,31 @@ class GuestTransaction extends Component
         'Toothbrush',
         'Toothpaste',
     ];
-    public $damaged_item, $amount, $room_id, $occured_at, $paid = false;
-    public $checked_in_room, $hours, $extension_amount, $extention_paid = false;
-    public $from_room, $to_room, $reason;
+
+    public $damaged_item;
+
+    public $amount;
+
+    public $room_id;
+
+    public $occured_at;
+
+    public $paid = false;
+
+    public $checked_in_room;
+
+    public $hours;
+
+    public $extension_amount;
+
+    public $extention_paid = false;
+
+    public $from_room;
+
+    public $to_room;
+
+    public $reason;
+
     protected $validationAttributes = [
         'damaged_item' => 'Damaged Item',
         'amount' => 'Amount',
@@ -47,6 +79,7 @@ class GuestTransaction extends Component
         'occured_at' => 'Occured At',
         'extension_amount' => 'Amount',
     ];
+
     public function search()
     {
         $this->guest = Guest::where('qr_code', $this->search)
@@ -55,10 +88,10 @@ class GuestTransaction extends Component
             ->with([
                 'transactions' => [
                     'check_in_detail' => [
-                        'room'
-                    ]
+                        'room',
+                    ],
                 ],
-                'damages.room'
+                'damages.room',
             ])
             ->first();
         if ($this->guest) {
@@ -70,11 +103,13 @@ class GuestTransaction extends Component
             );
         }
     }
+
     public function clear()
     {
         $this->search = '';
         $this->loadTransactions = false;
     }
+
     public function saveDamageRecord()
     {
         $this->validate([
@@ -97,6 +132,7 @@ class GuestTransaction extends Component
             $description = 'Record has been saved successfully'
         );
     }
+
     public function saveExtend()
     {
         $this->validate([
@@ -123,28 +159,31 @@ class GuestTransaction extends Component
             $description = 'Room has been extended successfully'
         );
     }
+
     public function payTransaction($transaction_id)
     {
         $transaction = Transaction::where('id', $transaction_id)->first();
         $transaction->update([
-            'paid_at' => now()
+            'paid_at' => now(),
         ]);
         $this->notification()->success(
             $title = 'Success',
             $description = 'Transaction has been paid successfully'
         );
     }
+
     public function payDamage($damage_id)
     {
         $damage = $this->guest->damages()->where('id', $damage_id)->first();
         $damage->update([
-            'paid_at' => now()
+            'paid_at' => now(),
         ]);
         $this->notification()->success(
             $title = 'Success',
             $description = 'Damage has been paid successfully'
         );
     }
+
     public function saveChangeRoom()
     {
         $this->validate([
@@ -160,6 +199,7 @@ class GuestTransaction extends Component
                 $title = 'Error',
                 $description = 'From and To Room cannot be same'
             );
+
             return;
         }
         $check_in_detail->update([
@@ -184,6 +224,7 @@ class GuestTransaction extends Component
             $description = 'Room has been changed successfully'
         );
     }
+
     public function render()
     {
         return view('livewire.front-desk.guest-transaction', [

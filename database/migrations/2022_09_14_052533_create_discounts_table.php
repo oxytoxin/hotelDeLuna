@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('branch_id')->constrained()->onDelete('cascade');
             $table->string('name');
-            $table->string('percentage');
             $table->string('description');
+            $table->string('amount');
+            $table->string('is_percentage')->default(true);
             $table->boolean('is_available')->default(true);
             $table->timestamps();
         });

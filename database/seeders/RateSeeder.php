@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Rate;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class RateSeeder extends Seeder
 {
@@ -16,76 +15,76 @@ class RateSeeder extends Seeder
     public function run()
     {
         Rate::create([
-            'branch_id'=>1,
+            'branch_id' => 1,
             'type_id' => 1,
             'staying_hour_id' => 1,
             'amount' => 200,
         ]);
         Rate::create([
-            'branch_id'=>1,
+            'branch_id' => 1,
             'type_id' => 2,
             'staying_hour_id' => 1,
             'amount' => 250,
         ]);
         Rate::create([
-            'branch_id'=>1,
+            'branch_id' => 1,
             'type_id' => 4,
             'staying_hour_id' => 1,
             'amount' => 300,
         ]);
-        // 
+        //
         Rate::create([
-            'branch_id'=>1,
+            'branch_id' => 1,
             'type_id' => 1,
             'staying_hour_id' => 2,
             'amount' => 300,
         ]);
         Rate::create([
-            'branch_id'=>1,
+            'branch_id' => 1,
             'type_id' => 2,
             'staying_hour_id' => 2,
             'amount' => 350,
         ]);
         Rate::create([
-            'branch_id'=>1,
+            'branch_id' => 1,
             'type_id' => 4,
             'staying_hour_id' => 2,
             'amount' => 400,
         ]);
-        // 
+        //
         Rate::create([
-            'branch_id'=>1,
+            'branch_id' => 1,
             'type_id' => 1,
             'staying_hour_id' => 3,
             'amount' => 400,
         ]);
         Rate::create([
-            'branch_id'=>1,
+            'branch_id' => 1,
             'type_id' => 2,
             'staying_hour_id' => 3,
             'amount' => 450,
         ]);
         Rate::create([
-            'branch_id'=>1,
+            'branch_id' => 1,
             'type_id' => 4,
             'staying_hour_id' => 3,
             'amount' => 500,
         ]);
-        // 
+        //
         Rate::create([
-            'branch_id'=>1,
+            'branch_id' => 1,
             'type_id' => 1,
             'staying_hour_id' => 4,
             'amount' => 500,
         ]);
         Rate::create([
-            'branch_id'=>1,
+            'branch_id' => 1,
             'type_id' => 2,
             'staying_hour_id' => 4,
             'amount' => 550,
         ]);
         Rate::create([
-            'branch_id'=>1,
+            'branch_id' => 1,
             'type_id' => 4,
             'staying_hour_id' => 4,
             'amount' => 600,

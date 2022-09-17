@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\RoomStatus;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class RoomStatusSeeder extends Seeder
 {
@@ -15,7 +14,7 @@ class RoomStatusSeeder extends Seeder
      */
     public function run()
     {
-         RoomStatus::create([
+        RoomStatus::create([
             'name' => 'Available', //1
         ]);
         RoomStatus::create([

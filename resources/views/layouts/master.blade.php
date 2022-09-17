@@ -21,10 +21,17 @@
         crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap"
         rel="stylesheet">
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+    @stack('headScripts')
     <!-- Scripts -->
     @wireUiScripts
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+
 </head>
 
 <body class="h-full antialiased font-inter">

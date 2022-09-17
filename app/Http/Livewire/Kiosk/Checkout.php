@@ -9,12 +9,14 @@ use Livewire\Component;
 class Checkout extends Component
 {
     public $scanner;
+
     public $guest;
-    public $scannerpanel=true;
+
+    public $scannerpanel = true;
 
     public function render()
     {
-        return view('livewire.kiosk.checkout',[
+        return view('livewire.kiosk.checkout', [
             'transactions' => Transaction::where('guest_id', 'like', '%'.$this->guest.'%')->where('branch_id', auth()->user()->branch_id)->get(),
             'guests' => Guest::where('qr_code', 'like', '%'.$this->scanner.'%')->where('branch_id', auth()->user()->branch_id)->first(),
         ]);

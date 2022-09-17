@@ -3,12 +3,11 @@
 @section('content')
     <x-layout.branch>
         <div>
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+            <div class="px-4 mx-auto max-w-7xl sm:px-6 md:px-8">
                 <h1 class="text-2xl font-semibold text-gray-900">Manage Rates</h1>
             </div>
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+            <div class="px-4 mx-auto max-w-7xl sm:px-6 md:px-8">
                 @livewire('branch-admin.rate-list')
-                @livewire('branch-admin.rate-create')
             </div>
         </div>
     </x-layout.branch>

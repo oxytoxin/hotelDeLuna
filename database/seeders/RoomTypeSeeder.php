@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Type;
 use App\Models\StayingHour;
+use App\Models\Type;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class RoomTypeSeeder extends Seeder
 {
@@ -17,32 +16,32 @@ class RoomTypeSeeder extends Seeder
     public function run()
     {
         Type::create([
-            'branch_id'=>1,
+            'branch_id' => 1,
             'name' => 'Single Size Bed',
         ]);
         Type::create([
-            'branch_id'=>1,
+            'branch_id' => 1,
             'name' => 'Double Size Bed',
         ]);
         Type::create([
-            'branch_id'=>1,
+            'branch_id' => 1,
             'name' => 'Queen Size Bed',
         ]);
         Type::create([
-            'branch_id'=>1,
+            'branch_id' => 1,
             'name' => 'Twin Single Size Bed',
         ]);
         StayingHour::create([
-            'number' => "6",
+            'number' => '6',
         ]);
         StayingHour::create([
-            'number' => "12",
+            'number' => '12',
         ]);
         StayingHour::create([
-            'number' => "18",
+            'number' => '18',
         ]);
         StayingHour::create([
-            'number' => "24",
+            'number' => '24',
         ]);
     }
 }
