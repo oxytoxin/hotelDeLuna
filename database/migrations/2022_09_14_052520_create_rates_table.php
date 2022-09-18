@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('rates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('branch_id')->constrained();
+            $table->foreignId('branch_id')->constrained()->cascadeOnDelete();
             $table->unsignedBigInteger('type_id')->constrained();
             $table->unsignedBigInteger('staying_hour_id')->constrained();
             $table->string('amount');

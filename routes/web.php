@@ -44,7 +44,7 @@ Route::middleware([
                 return redirect()->route('kiosk.transaction');
                 break;
             case '7':
-                echo 'Super Admin';
+               return redirect()->route('superadmin.dashboard');
                 break;
             default:
                 // code...
@@ -96,4 +96,26 @@ Route::middleware([
             return view('kitchen.settings');
         })->name('kitchen.settings');
     });
+
+    //SUPERADMIN
+    Route::prefix('/superadmin')->middleware([
+        'auth:sanctum',
+        config('jetstream.auth_session'),
+        'verified',
+    ])->group(function () {
+        Route::get('/', function () {
+            return view('superadmin.dashboard');
+        })->name('superadmin.dashboard');
+        Route::get('/branch', function () {
+            return view('superadmin.branch');
+        })->name('superadmin.branch');
+        Route::get('/branch/{id}', function () {
+            return view('superadmin.manage-branch');
+        })->name('superadmin.manage-branch');
+        Route::get('/settings', function () {
+            return view('superadmin.settings');
+        })->name('superadmin.settings');
+        
+    });
+
 });

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('floors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('branch_id')->constrained();
+            $table->foreignId('branch_id')->constrained()->cascadeOnDelete();
             $table->string('number');
             $table->timestamps();
         });
