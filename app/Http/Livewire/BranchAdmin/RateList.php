@@ -8,10 +8,12 @@ use App\Models\Type;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
-
+use App\Traits\Modal;
 class RateList extends Component
 {
-    use WithPagination, Actions;
+    use WithPagination, Actions, Modal;
+
+    protected $listeners = ['edit'];
 
     public $staying_hour_id = '';
 
@@ -19,37 +21,24 @@ class RateList extends Component
 
     public $amount;
 
-    public $mode = 'create';
-
-    public $showModal = false;
-
     public $hours = [];
 
     public $types = [];
 
     public $edit_id = null;
-
-    public function getModeTitle()
-    {
-        return $this->mode == 'create' ? 'Create Rate' : 'Update Rate';
-    }
-
-    public function add()
+   
+    public function onClickAdd()
     {
         $this->reset('staying_hour_id', 'room_type_id', 'amount');
-        $this->mode = 'create';
-        $this->showModal = true;
     }
 
-    public function edit($edit_id)
+    public function onClickEdit($edit_id)
     {
-        $this->mode = 'update';
         $this->edit_id = $edit_id;
         $rate = Rate::find($edit_id);
         $this->staying_hour_id = $rate->staying_hour_id;
         $this->room_type_id = $rate->type_id;
         $this->amount = $rate->amount;
-        $this->showModal = true;
     }
 
     public function save()
