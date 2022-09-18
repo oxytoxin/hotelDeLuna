@@ -8,20 +8,16 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
-
+use App\Traits\Modal;
 class UserList extends Component
 {
-    use WithPagination, Actions;
+    use WithPagination, Actions, Modal;
 
     public $search = '';
 
     public $filter = 'all';
 
     public $roles = [];
-
-    public $showModal = false;
-
-    public $mode = 'create';
 
     public $name;
 
@@ -33,27 +29,18 @@ class UserList extends Component
 
     public $edit_id = null;
 
-    public function getModeTitle()
-    {
-        return $this->mode == 'create' ? 'Create User' : 'Update User';
-    }
-
-    public function add()
+    public function onClickAdd()
     {
         $this->reset('name', 'email', 'password', 'role_id');
-        $this->mode = 'create';
-        $this->showModal = true;
     }
 
-    public function edit($edit_id)
+    public function onClickEdit($edit_id)
     {
-        $this->mode = 'update';
         $this->edit_id = $edit_id;
         $user = User::find($edit_id);
         $this->name = $user->name;
         $this->email = $user->email;
         $this->role_id = $user->role_id;
-        $this->showModal = true;
     }
 
     public function save()
@@ -79,6 +66,7 @@ class UserList extends Component
             'password' => bcrypt($this->password),
             'role_id' => $this->role_id,
             'branch_id' => auth()->user()->branch_id,
+            'branch_name' => auth()->user()->branch->name,
         ]);
         if ($this->role_id == 5) {
             RoomBoy::create([
