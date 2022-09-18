@@ -22,50 +22,14 @@
     </style>
     <!-- Styles -->
     @livewireStyles
-  
+
 </head>
 
 <body class="font-rubik antialiased">
-    <x-notifications z-index="z-50"/>
+    <x-notifications z-index="z-50" />
     <x-dialog z-index="z-50" blur="md" align="center" />
-    <!--
-  This example requires Tailwind CSS v2.0+
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  const colors = require('tailwindcss/colors')
-  
-  module.exports = {
-    // ...
-    theme: {
-      extend: {
-        colors: {
-          sky: colors.sky,
-          teal: colors.teal,
-          cyan: colors.cyan,
-          rose: colors.rose,
-        },
-      },
-    },
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-      require('@tailwindcss/line-clamp'),
-    ],
-  }
-  ```
--->
-    <!--
-  This example requires updating your template:
 
-  ```
-  <html class="h-full bg-gray-100">
-  <body class="h-full">
-  ```
--->
-    <div class="min-h-full">
+    <div class="min-h-full" x-data="{ logout: false }">
         <header class="bg-gradient-to-r from-gray-800 to-gray-600 pb-24">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                 class="h-40 fill-white opacity-25 -left-10 top-10 absolute">
@@ -145,8 +109,15 @@
                                 role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
                                 tabindex="-1">
 
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
-                                    tabindex="-1" id="user-menu-item-2">Sign out</a>
+                                <button x-on:click="logout = true" class=" px-4 py-2 text-sm flex items-center space-x-1 text-gray-700"
+                                    role="menuitem" tabindex="-1" id="user-menu-item-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 fill-gray-700 ">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path
+                                            d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2a9.985 9.985 0 0 1 8 4h-2.71a8 8 0 1 0 .001 12h2.71A9.985 9.985 0 0 1 12 22zm7-6v-3h-8v-2h8V8l5 4-5 4z" />
+                                    </svg>
+                                    <span>Logout</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -156,17 +127,17 @@
                             <!-- Left nav -->
                             <div class="hidden lg:col-span-2 lg:block">
                                 <nav class="flex space-x-4">
-                                    <a href="{{route('superadmin.dashboard')}}"
-                                        class="{{Request::routeIs('superadmin.dashboard') ? 'bg-white bg-opacity-10 text-green-400' : ' bg-white hover:text-white bg-opacity-0 hover:bg-opacity-10 text-gray-300 '}} text-sm font-semibold rounded-md  px-3 py-2 "
+                                    <a href="{{ route('superadmin.dashboard') }}"
+                                        class="{{ Request::routeIs('superadmin.dashboard') ? 'bg-white bg-opacity-10 text-green-400' : ' bg-white hover:text-white bg-opacity-0 hover:bg-opacity-10 text-gray-300 ' }} text-sm font-semibold rounded-md  px-3 py-2 "
                                         aria-current="page">Home</a>
-                                    <a href="{{route('superadmin.branch')}}"
-                                        class="{{Request::routeIs('superadmin.branch') || Request::routeIs('superadmin.manage-branch') ? 'bg-white bg-opacity-10 text-green-400' : ' bg-white hover:text-white bg-opacity-0 hover:bg-opacity-10 text-gray-300 '}} text-sm font-semibold rounded-md  px-3 py-2 "
+                                    <a href="{{ route('superadmin.branch') }}"
+                                        class="{{ Request::routeIs('superadmin.branch') || Request::routeIs('superadmin.manage-branch') ? 'bg-white bg-opacity-10 text-green-400' : ' bg-white hover:text-white bg-opacity-0 hover:bg-opacity-10 text-gray-300 ' }} text-sm font-semibold rounded-md  px-3 py-2 "
                                         aria-current="page">Branches</a>
-                                    <a href="{{route('superadmin.settings')}}"
-                                        class="{{Request::routeIs('superadmin.settings') ? 'bg-white bg-opacity-10 text-green-400' : ' bg-white hover:text-white bg-opacity-0 hover:bg-opacity-10 text-gray-300 '}} text-sm font-semibold rounded-md  px-3 py-2 "
+                                    <a href="{{ route('superadmin.settings') }}"
+                                        class="{{ Request::routeIs('superadmin.settings') ? 'bg-white bg-opacity-10 text-green-400' : ' bg-white hover:text-white bg-opacity-0 hover:bg-opacity-10 text-gray-300 ' }} text-sm font-semibold rounded-md  px-3 py-2 "
                                         aria-current="page">Settings</a>
 
-                                   
+
 
                                 </nav>
                             </div>
@@ -204,117 +175,9 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Mobile menu, show/hide based on mobile menu state. -->
-            {{-- <div class="lg:hidden">
-                <!--
-          Mobile menu overlay, show/hide based on mobile menu state.
-  
-          Entering: "duration-150 ease-out"
-            From: "opacity-0"
-            To: "opacity-100"
-          Leaving: "duration-150 ease-in"
-            From: "opacity-100"
-            To: "opacity-0"
-        -->
-                <div class="fixed inset-0 z-20 bg-black bg-opacity-25" aria-hidden="true"></div>
-
-                <!--
-          Mobile menu, show/hide based on mobile menu state.
-  
-          Entering: "duration-150 ease-out"
-            From: "opacity-0 scale-95"
-            To: "opacity-100 scale-100"
-          Leaving: "duration-150 ease-in"
-            From: "opacity-100 scale-100"
-            To: "opacity-0 scale-95"
-        -->
-                <div
-                    class="absolute inset-x-0 top-0 z-30 mx-auto w-full max-w-3xl origin-top transform p-2 transition">
-                    <div
-                        class="divide-y divide-gray-200 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-                        <div class="pt-3 pb-2">
-                            <div class="flex items-center justify-between px-4">
-                                <div>
-                                    <img class="h-8 w-auto"
-                                        src="https://tailwindui.com/img/logos/mark.svg?color=cyan&shade=600"
-                                        alt="Your Company">
-                                </div>
-                                <div class="-mr-2">
-                                    <button type="button"
-                                        class="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500">
-                                        <span class="sr-only">Close menu</span>
-                                        <!-- Heroicon name: outline/x-mark -->
-                                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                            aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="mt-3 space-y-1 px-2">
-                                <a href="#"
-                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800">Home</a>
-
-                                <a href="#"
-                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800">Profile</a>
-
-                                <a href="#"
-                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800">Resources</a>
-
-                                <a href="#"
-                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800">Company
-                                    Directory</a>
-
-                                <a href="#"
-                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800">Openings</a>
-                            </div>
-                        </div>
-                        <div class="pt-4 pb-2">
-                            <div class="flex items-center px-5">
-                                <div class="flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full"
-                                        src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                        alt="">
-                                </div>
-                                <div class="ml-3 min-w-0 flex-1">
-                                    <div class="truncate text-base font-medium text-gray-800">Chelsea Hagon</div>
-                                    <div class="truncate text-sm font-medium text-gray-500">chelsea.hagon@example.com
-                                    </div>
-                                </div>
-                                <button type="button"
-                                    class="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2">
-                                    <span class="sr-only">View notifications</span>
-                                    <!-- Heroicon name: outline/bell -->
-                                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                        aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="mt-3 space-y-1 px-2">
-                                <a href="#"
-                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800">Your
-                                    Profile</a>
-
-                                <a href="#"
-                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800">Settings</a>
-
-                                <a href="#"
-                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800">Sign
-                                    out</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
         </header>
         <main class="-mt-24 pb-8">
-            {{$slot}}
+            {{ $slot }}
         </main>
         <footer>
             <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -323,6 +186,81 @@
                         class="block sm:inline">All rights reserved.</span></div>
             </div>
         </footer>
+        <div x-show="logout" x-cloak class="relative z-10" aria-labelledby="modal-title" role="dialog"
+            aria-modal="true">
+            <!--
+              Background backdrop, show/hide based on modal state.
+          
+              Entering: "ease-out duration-300"
+                From: "opacity-0"
+                To: "opacity-100"
+              Leaving: "ease-in duration-200"
+                From: "opacity-100"
+                To: "opacity-0"
+            -->
+            <div x-show="logout" x-cloak x-transition:enter="ease-out duration-300"
+                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity">
+            </div>
+
+            <div class="fixed inset-0 z-10 overflow-y-auto">
+                <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                    <!--
+                  Modal panel, show/hide based on modal state.
+          
+                  Entering: "ease-out duration-300"
+                    From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                    To: "opacity-100 translate-y-0 sm:scale-100"
+                  Leaving: "ease-in duration-200"
+                    From: "opacity-100 translate-y-0 sm:scale-100"
+                    To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                -->
+                    <div x-show="logout" x-cloak x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                        x-transition:leave="ease-in duration-200"
+                        x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                        x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md">
+                        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                            <div class="sm:flex sm:items-start">
+                                <div
+                                    class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                    <!-- Heroicon name: outline/exclamation-triangle -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                        class="h-6 w-6 fill-red-600">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path
+                                            d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-7v2h2v-2h-2zm2-1.645A3.502 3.502 0 0 0 12 6.5a3.501 3.501 0 0 0-3.433 2.813l1.962.393A1.5 1.5 0 1 1 12 11.5a1 1 0 0 0-1 1V14h2v-.645z" />
+                                    </svg>
+                                </div>
+                                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                    <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title">Logout
+                                        account</h3>
+                                    <div class="mt-2">
+                                        <p class="text-sm text-gray-500">Are you sure you want to logout your account?
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <form method="POST" action="{{ route('logout') }}" role="none">
+                                @csrf
+                                <a href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                        this.closest('form').submit();"
+                                    class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">Logout</a>
+                            </form>
+                            <button x-on:click="logout = false"
+                                class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
     @livewireScripts
