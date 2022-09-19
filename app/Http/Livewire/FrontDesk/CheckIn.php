@@ -3,12 +3,15 @@
 namespace App\Http\Livewire\FrontDesk;
 
 use App\Models\CheckInDetail;
+use App\Models\Discount;
 use App\Models\Guest;
 use App\Models\Room;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Psy\Readline\Transient;
+use Termwind\Components\Dd;
 use WireUi\Traits\Actions;
 
 class CheckIn extends Component
@@ -26,6 +29,12 @@ class CheckIn extends Component
     public $showModal = false;
 
     public $guest = null;
+
+    public $showDiscountsList = false;
+
+    public $selectedDiscounts = [];
+
+    public $discounted_amount = 0;
 
     public function searchReal()
     {
@@ -98,6 +107,37 @@ class CheckIn extends Component
         );
     }
 
+    public function selectDiscount($id,$amount,$is_percentage)
+    {
+        $array = [
+            'id' => $id,
+            'amount' => $amount,
+            'is_percentage' => $is_percentage,
+        ];
+        
+        if (in_array($array, $this->selectedDiscounts)) {
+            $this->selectedDiscounts = array_filter($this->selectedDiscounts, function ($item) use ($id) {
+                return $item['id'] != $id;
+            });
+            if ($is_percentage) {
+                $amount_payable = Transaction::where('guest_id', $this->guest->id)->where('transaction_type_id', 1)->first()->payable_amount;
+                $amount = ($amount_payable * $amount) / 100;
+                $this->discounted_amount -= $amount;
+            } else {
+                $this->discounted_amount -= $amount;
+            }
+        } else {
+            array_push($this->selectedDiscounts, $array);
+            if ($is_percentage) {
+                $amount_payable = Transaction::where('guest_id', $this->guest->id)->where('transaction_type_id', 1)->first()->payable_amount;
+                $amount = ($amount_payable * $amount) / 100;
+                $this->discounted_amount += $amount;
+            } else {
+                $this->discounted_amount += $amount;
+            }
+        }
+    }
+
     public function render()
     {
         return view('livewire.front-desk.check-in', [
@@ -108,7 +148,7 @@ class CheckIn extends Component
                             return $query->where('qr_code', $this->realSearch);
                             break;
                         case '2':
-                            return $query->where('name', 'like', '%'.$this->realSearch.'%');
+                            return $query->where('name', 'like', '%' . $this->realSearch . '%');
                             break;
                         case '3':
                             return $query->where('contact_number', $this->realSearch);
@@ -125,6 +165,10 @@ class CheckIn extends Component
                 ->where('is_checked_in', true)
                 ->orderBy('check_in_at', 'desc')
                 ->paginate(10),
+            'discounts' => $this->showModal==true ?
+                Discount::where('branch_id', auth()->user()->branch_id)
+                ->where('is_available', true)
+                ->get() : [],
         ]);
     }
 }

@@ -13,6 +13,15 @@
                                     <x-input placeholder="Search"
                                         wire:model.debounce.500ms="search"
                                         icon="search" />
+                                    <x-native-select wire:model='status_filter'
+                                        placeholder="Room Status">
+                                        <option value="">All</option>
+                                        @foreach ($statuses as $status)
+                                            <option value="{{ $status->id }}">
+                                                {{ $status->name }}
+                                            </option>
+                                        @endforeach
+                                    </x-native-select>
                                 </div>
                                 <div>
 

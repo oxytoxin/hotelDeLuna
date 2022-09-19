@@ -20,6 +20,7 @@ class AccountSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('password'),
+            'branch_name'=>'ALMA RESIDENCES GENSAN',
         ]);
         User::create([
             'branch_id' => 1,
@@ -27,6 +28,7 @@ class AccountSeeder extends Seeder
             'name' => 'Front Desk',
             'email' => 'frontdesk@gmail.com',
             'password' => bcrypt('password'),
+            'branch_name'=>'ALMA RESIDENCES GENSAN',
         ]);
         User::create([
             'branch_id' => 1,
@@ -34,6 +36,7 @@ class AccountSeeder extends Seeder
             'name' => 'Kiosk',
             'email' => 'kiosk@gmail.com',
             'password' => bcrypt('password'),
+            'branch_name'=>'ALMA RESIDENCES GENSAN',
         ]);
         User::create([
             'branch_id' => 1,
@@ -41,6 +44,7 @@ class AccountSeeder extends Seeder
             'name' => 'Kitchen',
             'email' => 'kitchen@gmail.com',
             'password' => bcrypt('password'),
+            'branch_name'=>'ALMA RESIDENCES GENSAN',
         ]);
         User::create([
             'branch_id' => 1,
@@ -48,6 +52,7 @@ class AccountSeeder extends Seeder
             'name' => 'House Keeping',
             'email' => 'housekeeping@gmail.com',
             'password' => bcrypt('password'),
+            'branch_name'=>'ALMA RESIDENCES GENSAN',
         ]);
         User::create([
             'role_id' => 7,

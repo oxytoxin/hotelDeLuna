@@ -7,10 +7,10 @@ use App\Models\RoomStatus;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
-
+use App\Traits\Modal;
 class RoomList extends Component
 {
-    use WithPagination, Actions;
+    use WithPagination, Actions, Modal;
 
     public $floors = [];
 
@@ -22,10 +22,6 @@ class RoomList extends Component
     ];
 
     public $search = '';
-
-    public $showModal = false;
-
-    public $mode = 'create';
 
     public $number;
 
@@ -41,21 +37,13 @@ class RoomList extends Component
 
     public $roomTypes = [];
 
-    public function getModeTitle()
-    {
-        return $this->mode == 'create' ? 'Create Room' : 'Update Room';
-    }
-
-    public function add()
+    public function onClickAdd()
     {
         $this->reset('number', 'description', 'floor_id', 'room_status_id', 'type_id');
-        $this->mode = 'create';
-        $this->showModal = true;
     }
 
-    public function edit($edit_id)
+    public function onClickEdit($edit_id)
     {
-        $this->mode = 'update';
         $this->edit_id = $edit_id;
         $room = Room::find($edit_id);
         $this->number = $room->number;
@@ -63,7 +51,6 @@ class RoomList extends Component
         $this->floor_id = $room->floor_id;
         $this->room_status_id = $room->room_status_id;
         $this->type_id = $room->type_id;
-        $this->showModal = true;
     }
 
     public function save()
