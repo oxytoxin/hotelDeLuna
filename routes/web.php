@@ -57,6 +57,7 @@ Route::middleware([
         'auth:sanctum',
         config('jetstream.auth_session'),
         'verified',
+        'kiosk'
     ])->group(function () {
         Route::get('/', function () {
             return view('kiosk.index');
@@ -78,6 +79,7 @@ Route::middleware([
         'auth:sanctum',
         config('jetstream.auth_session'),
         'verified',
+        'kitchen'
     ])->group(function () {
         Route::get('/', function () {
             return view('kitchen.dashboard');

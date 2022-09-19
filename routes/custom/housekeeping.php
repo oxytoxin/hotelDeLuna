@@ -4,6 +4,7 @@ Route::prefix('house-keeping')->middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
+    'house_keeping'
 ])->group(function () {
     Route::get('/dashboard', function () {
         return view('house-keeping.dashboard');

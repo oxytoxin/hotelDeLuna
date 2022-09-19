@@ -16,6 +16,9 @@ class Kiosk
      */
     public function handle(Request $request, Closure $next)
     {
+        if (auth()->user()->role_id != 3) {
+            return redirect()->back();
+        }
         return $next($request);
     }
 }

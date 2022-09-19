@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class Kitchen
+class SuperAdmin
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class Kitchen
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->role_id != 4) {
+        if (auth()->user()->role_id != 7) {
             return redirect()->back();
         }
         return $next($request);
