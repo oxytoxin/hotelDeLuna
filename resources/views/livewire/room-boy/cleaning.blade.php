@@ -60,6 +60,17 @@
                     </div>
                 </li>
             @empty
+                <li class="flex justify-center w-full">
+                    <div class="flex items-center justify-center w-full p-3 space-x-6">
+                        <div class="flex-1 truncate">
+                            <div class="flex items-center space-x-3">
+                                <h3 class="font-medium text-gray-900 truncate ">
+                                    No rooms to clean
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </li>
             @endforelse
         </ul>
     @endif

@@ -9,6 +9,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 use App\Traits\Modal;
+
 class RateList extends Component
 {
     use WithPagination, Actions, Modal;
@@ -26,7 +27,7 @@ class RateList extends Component
     public $types = [];
 
     public $edit_id = null;
-   
+
     public function onClickAdd()
     {
         $this->reset('staying_hour_id', 'room_type_id', 'amount');
@@ -48,9 +49,38 @@ class RateList extends Component
             'room_type_id' => 'required',
             'amount' => 'required|numeric|min:1',
         ]);
+
+
         if ($this->mode == 'create') {
+            $rate = Rate::where('staying_hour_id', $this->staying_hour_id)
+                ->where('type_id', $this->room_type_id)
+                ->where('amount', $this->amount)
+                ->where('branch_id', auth()->user()->branch_id)
+                ->first();
+
+            if ($rate) {
+                $this->notification()->error(
+                    $title = 'Rate already exists',
+                    $description = 'The rate you are trying to add already exists.'
+                );
+                return;
+            }
             $this->create();
         } else {
+            $rate = Rate::where('staying_hour_id', $this->staying_hour_id)
+                ->where('type_id', $this->room_type_id)
+                ->where('amount', $this->amount)
+                ->where('branch_id', auth()->user()->branch_id)
+                ->where('id', '!=', $this->edit_id)
+                ->first();
+
+            if ($rate) {
+                $this->notification()->error(
+                    $title = 'Rate already exists',
+                    $description = 'The rate you are trying to add already exists.'
+                );
+                return;
+            }
             $this->update();
         }
     }
@@ -86,19 +116,19 @@ class RateList extends Component
         );
     }
 
-     public function mount()
-     {
-         $this->hours = StayingHour::all();
-         $this->types = Type::where('branch_id', auth()->user()->branch->id)->get();
-     }
+    public function mount()
+    {
+        $this->hours = StayingHour::all();
+        $this->types = Type::where('branch_id', auth()->user()->branch->id)->get();
+    }
 
     public function render()
     {
         return view('livewire.branch-admin.rate-list', [
             'rates' => Rate::query()
-                    ->where('branch_id', auth()->user()->branch_id)
-                    ->with('staying_hour', 'type')
-                    ->paginate(10),
+                ->where('branch_id', auth()->user()->branch_id)
+                ->with('staying_hour', 'type')
+                ->paginate(10),
         ]);
     }
 }

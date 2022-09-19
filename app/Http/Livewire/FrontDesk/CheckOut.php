@@ -81,10 +81,14 @@ class CheckOut extends Component
             ->where('check_in_at', '!=', null)
             ->where('check_out_at', null)
             ->first();
-        $guest = $check_in_detail->transaction->guest;
-        if ($guest->is_checked_in == 1 && $guest->totaly_checked_out == 0) {
-            return $guest;
-        } else {
+        if ($check_in_detail) {
+            $guest = $check_in_detail->transaction->guest;
+            if ($guest->is_checked_in == 1 && $guest->totaly_checked_out == 0) {
+                return $guest;
+            } else {
+                return false;
+            }
+        }else{
             return false;
         }
     }
