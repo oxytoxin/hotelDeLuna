@@ -29,11 +29,11 @@ class RoomMonitoring extends Component
                 ->when($this->status_filter != '', function ($query) {
                     $query->where('room_status_id', $this->status_filter);
                 })
-                ->whereHas('floor', function ($query) {
-                    return $query->where('branch_id', auth()->user()->branch_id);
-                })
                 ->when($this->search != '', function ($query) {
                     return $query->where('number', 'like', '%' . $this->search . '%');
+                })
+                ->whereHas('floor', function ($query) {
+                    return $query->where('branch_id', auth()->user()->branch_id);
                 })
                 ->with([
                     'floor',
