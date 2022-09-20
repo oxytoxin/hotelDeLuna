@@ -14,6 +14,7 @@ use Livewire\Component;
 class Checkin extends Component
 {
     public $step = 1;
+    public $increments = '';
 
     public $get_room = [
         'room_id' => '',
@@ -39,12 +40,22 @@ class Checkin extends Component
 
     public $manageRoomPanel = false;
 
+    // public function increment()
+    // {
+    //     $transaction = \App\Models\Guest::whereYear('created_at', \Carbon\Carbon::today()->year)->count();
+    //     $transaction += 1;
+    //     dd(auth()->user()->branch_id.today()->format('y').str_pad($transaction, 4, '0', STR_PAD_LEFT));
+        
+    // }
+
     public function render()
     {
         return view('livewire.kiosk.checkin', [
-            'rooms' => Room::where('room_status_id', 1)->where('type_id', $this->type_key)->whereHas('floor', function ($query) {
+            'floor_groups' => Room::where('room_status_id', 1)->where('type_id', $this->type_key)->whereHas('floor', function ($query) {
                 $query->where('branch_id', auth()->user()->branch_id);
-            })->with('floor')->get(),
+            })->with('floor')->get()->groupBy('floor.id'),
+            
+            'floors' => \App\Models\Floor::where('branch_id', auth()->user()->branch_id)->get(),
             'roomtypes' => Type::get(),
             'rates' => Rate::where('type_id', 'like', '%'.$this->type_key.'%')->get(),
         ]);
@@ -103,13 +114,13 @@ class Checkin extends Component
     {
         $this->validate([
             'customer_name' => 'required',
-            'customer_number' => 'required|numeric|digits:11',
+            'customer_number' => 'nullable|starts_with:09|digits:11',
         ]);
-        $transaction = Guest::whereDate('created_at', Carbon::today())->count();
+        $transaction = \App\Models\Guest::whereYear('created_at', \Carbon\Carbon::today()->year)->count();
         $transaction += 1;
-        $transaction_code = Carbon::today()->format('Ymd').''.$transaction;
-        $transaction_code *= 1000;
-        $transaction_code += $transaction;
+        $transaction_code = auth()->user()->branch_id.today()->format('y').str_pad($transaction, 4, '0', STR_PAD_LEFT);
+
+
 
         $guest = Guest::create([
             'branch_id' => auth()->user()->branch_id,

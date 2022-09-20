@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('branch_id')->constrained();
             $table->string('qr_code');
             $table->string('name');
-            $table->string('contact_number');
+            $table->string('contact_number')->nullable();
             $table->boolean('is_out_of_the_building')->default(false);
             $table->boolean('is_checked_in')->default(false);
             $table->string('check_in_at')->nullable();
