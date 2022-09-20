@@ -1,7 +1,7 @@
 <div>
     <div>
         @php
-            $headers = ['Room Number', 'Floor', 'Status', 'Time Remaining', 'Time To Clean', ''];
+            $headers = ['Room Number', 'Floor', 'Status', 'Time Remaining', 'Alert For Checkout', 'Time To Clean', ''];
         @endphp
         <div class="mt-5">
             <div class="flex flex-col">
@@ -24,7 +24,6 @@
                                     </x-native-select>
                                 </div>
                                 <div>
-
                                 </div>
                             </div>
                             <table class="min-w-full divide-y divide-gray-300">
@@ -61,6 +60,22 @@
                                                         </span>
                                                     @else
                                                         <x-countdown :expires="$expires" />
+                                                    @endif
+                                                @else
+                                                    --
+                                                @endif
+                                            </td>
+                                            <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                                @if ($room->room_status_id == 2)
+                                                    @php
+                                                        $expires = new Carbon\Carbon($room->check_in_details->first()->expected_check_out_at);
+                                                    @endphp
+                                                    @if ($expires->isPast())
+                                                        <span class="text-red-500">
+                                                            Time Out :{{ $expires->diffForHumans()->subHours(1) }}
+                                                        </span>
+                                                    @else
+                                                        <x-countdown :expires="$expires->subHours(1)" />
                                                     @endif
                                                 @else
                                                     --

@@ -4,8 +4,12 @@
             class="sm:col-span-8">
             @include('front-desk.sub.to-check-in')
         </div>
-        <div wire:key="recent-check-in"
-            class=" sm:col-span-4">
+        <div class=" sm:col-span-4">
+            <div wire:key="rooms-termination">
+                <div class="grid space-y-2">
+
+                </div>
+            </div>
             @include('front-desk.sub.recent-check-in')
         </div>
     </div>
