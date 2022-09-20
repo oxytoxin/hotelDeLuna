@@ -21,7 +21,7 @@
 </head>
 
 <body class="font-sans antialiased h-full bg-gray-700">
-    <div class="absolute bg-gradient-to-t from-transparent to-gray-500 w-full h-full overflow-hidden">
+    <div class="fixed inset-0 bg-gradient-to-t from-transparent to-gray-500 w-full h-full overflow-hidden">
         <img src="{{ asset('images/kioskbg.jpg') }}" class="object-cover opacity-20" alt="">
     </div>
     <div
