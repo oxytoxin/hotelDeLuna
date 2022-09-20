@@ -9,7 +9,8 @@
             </div>
             <div class="px-4 mx-auto max-w-7xl sm:px-6 md:px-8">
                 <div class="my-5">
-                    @livewire('front-desk.room-monitoring')
+                    {{-- @livewire('front-desk.room-monitoring') --}}
+                    Not available for the moment
                 </div>
             </div>
         </div>
