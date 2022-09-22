@@ -201,9 +201,14 @@ class GuestTransaction extends Component
             'to_room' => 'required',
             'reason' => 'required',
         ]);
-        // $check_in_detail = CheckInDetail::where('id', $this->from_room)->first();
-        // $fromRoom = $check_in_detail->room;
         $check_in_detail = $this->guest->transactions()->where('transaction_type_id', 1)->first()->check_in_detail;
+        if (Carbon::parse($check_in_detail->check_in_at)->diffInHours(now()) >= 3) {
+            $this->notification()->error(
+                $title = 'Error',
+                $description = 'You can not change room after 3 hours of check in'
+            );
+            return;
+        }
         $fromRoom = $check_in_detail->room;
         $toRoom = Room::where('id', $this->to_room)->first();
         if ($fromRoom->id == $toRoom->id) {

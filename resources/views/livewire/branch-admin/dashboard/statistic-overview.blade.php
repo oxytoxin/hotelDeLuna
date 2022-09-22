@@ -3,16 +3,13 @@
         <x-stat-card title="Total Check In"
             value="{{ $data['total_check_in_overall_count'] }}">
             <x-slot:icon>
-                <svg class="w-6 h-6 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
+                <svg xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true">
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                    class="w-6 h-6 fill-white">
+                    <path fill="none"
+                        d="M0 0h24v24H0z" />
+                    <path
+                        d="M9 1v2h6V1h2v2h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2zm11 9H4v9h16v-9zm-4.964 1.136l1.414 1.414-4.95 4.95-3.536-3.536L9.38 12.55l2.121 2.122 3.536-3.536zM7 5H4v3h16V5h-3v1h-2V5H9v1H7V5z" />
                 </svg>
             </x-slot:icon>
             <x-slot:actions>
@@ -36,16 +33,13 @@
         <x-stat-card title="Check In Today"
             value="{{ $data['total_check_in_today_count'] }}">
             <x-slot:icon>
-                <svg class="w-6 h-6 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
+                <svg xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true">
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                    class="w-6 h-6 fill-white">
+                    <path fill="none"
+                        d="M0 0h24v24H0z" />
+                    <path
+                        d="M9 1v2h6V1h2v2h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2zm11 7H4v11h16V8zm-4.964 2.136l1.414 1.414-4.95 4.95-3.536-3.536L9.38 11.55l2.121 2.122 3.536-3.536z" />
                 </svg>
             </x-slot:icon>
             <x-slot:actions>
@@ -69,17 +63,15 @@
         <x-stat-card title="Checked Out Today"
             value="{{ $data['total_check_out_today_count'] }}">
             <x-slot:icon>
-                <svg class="w-6 h-6 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
+                <svg xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true">
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                    class="w-6 h-6 fill-white">
+                    <path fill="none"
+                        d="M0 0h24v24H0z" />
+                    <path
+                        d="M5 22a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v3h-2V4H6v16h12v-2h2v3a1 1 0 0 1-1 1H5zm13-6v-3h-7v-2h7V8l5 4-5 4z" />
                 </svg>
+
             </x-slot:icon>
             <x-slot:actions>
                 <a href="#"
@@ -101,16 +93,13 @@
         <x-stat-card title="Expected Check Out Today"
             value="{{ $data['total_expected_check_out_today_count'] }}">
             <x-slot:icon>
-                <svg class="w-6 h-6 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
+                <svg xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true">
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                    class="w-6 h-6 fill-white">
+                    <path fill="none"
+                        d="M0 0h24v24H0z" />
+                    <path
+                        d="M5 22a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H5zm10-6l5-4-5-4v3H9v2h6v3z" />
                 </svg>
             </x-slot:icon>
             <x-slot:actions>
