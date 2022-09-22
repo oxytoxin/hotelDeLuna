@@ -22,9 +22,6 @@ Route::prefix('branch')->middleware([
         return view('branch-admin.manage-rooms');
     })->name('branch.manage-rooms');
 
-    Route::get('/monitor-rooms', function () {
-        return view('branch-admin.monitor-rooms');
-    })->name('branch.monitor-rooms');
 
     Route::get('/manage-users', function () {
         return view('branch-admin.manage-users');
