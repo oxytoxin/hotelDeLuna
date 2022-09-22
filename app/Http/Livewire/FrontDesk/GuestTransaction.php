@@ -66,8 +66,6 @@ class GuestTransaction extends Component
 
     public $extention_paid = false;
 
-    public $from_room;
-
     public $to_room;
 
     public $reason;
@@ -184,14 +182,28 @@ class GuestTransaction extends Component
         );
     }
 
+    public function showChangeRoomModal()
+    {
+        $changeRoomCount = RoomChange::where('check_in_detail_id',$this->guest->transactions()->where('transaction_type_id', 1)->first()->check_in_detail->id)->count(); 
+        if ($changeRoomCount == 2) {
+            $this->notification()->error(
+                $title = 'Error',
+                $description = 'You can not change room more than 2 times'
+            );
+            return;
+        } 
+        $this->changeRoomModal = true;
+    }
+
     public function saveChangeRoom()
     {
         $this->validate([
-            'from_room' => 'required',
             'to_room' => 'required',
             'reason' => 'required',
         ]);
-        $check_in_detail = CheckInDetail::where('id', $this->from_room)->first();
+        // $check_in_detail = CheckInDetail::where('id', $this->from_room)->first();
+        // $fromRoom = $check_in_detail->room;
+        $check_in_detail = $this->guest->transactions()->where('transaction_type_id', 1)->first()->check_in_detail;
         $fromRoom = $check_in_detail->room;
         $toRoom = Room::where('id', $this->to_room)->first();
         if ($fromRoom->id == $toRoom->id) {
@@ -207,7 +219,7 @@ class GuestTransaction extends Component
         ]);
         RoomChange::create([
             'check_in_detail_id' => $check_in_detail->id,
-            'from_room_id' => $this->from_room,
+            'from_room_id' => $fromRoom->id,
             'to_room_id' => $this->to_room,
             'reason' => $this->reason,
         ]);
@@ -218,11 +230,26 @@ class GuestTransaction extends Component
             'room_status_id' => 2,
         ]);
         $this->changeRoomModal = false;
-        $this->reset('from_room', 'to_room', 'reason');
+        $this->reset('to_room', 'reason');
         $this->notification()->success(
             $title = 'Success',
             $description = 'Room has been changed successfully'
         );
+    }
+
+    public function updatedHours()
+    {
+        switch($this->hours){
+            case "6":
+                $this->extension_amount = 100;
+                break;
+            case "12":
+                $this->extension_amount = 200;
+                break;
+            case "18":
+                $this->extension_amount = 300;
+                break;
+        }
     }
 
     public function render()

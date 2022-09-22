@@ -33,4 +33,22 @@ Route::prefix('branch')->middleware([
     Route::get('/manage-branch-discounts', function () {
         return view('branch-admin.discounts');
     })->name('branch.discounts');
+
+
+
+    Route::get('/check-in', function () {
+        return view('branch-admin.check-in');
+    })->name('branch.check-in');
+
+    Route::get('/check-out', function () {
+        return view('branch-admin.check-out');
+    })->name('branch.check-out');
+
+    Route::get('/guest-transaction', function () {
+        return view('branch-admin.guest-transaction');
+    })->name('branch.guest-transaction');
+
+    Route::get('/room-monitoring', function () {
+        return view('branch-admin.room-monitoring');
+    })->name('branch.room-monitoring');
 });
