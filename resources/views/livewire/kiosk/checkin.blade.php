@@ -1,12 +1,8 @@
     <div x-data="{ steps: @entangle('step'), manage: @entangle('manageRoomPanel') }" class="font-rubik">
-    
-    {{-- <div class="flex flex-col ">
-        <span class="text-white">Increment 5 digits: {{$increments}}</span>
-        <x-button wire:click="increment" label="increment" white />
-    </div> --}}
+
         <div x-show="steps==1" x-cloak class="step">
             <div class=" mt-5 mx-10 flex justify-between">
-                <h1 class="font-black text-3xl font-rubik text-gray-300">PLEASE SELECT ROOM TYPE: |</h1>
+                <h1 class="font-black text-3xl font-rubik text-white">PLEASE SELECT ROOM TYPE: |</h1>
                 <x-cancel-transaction />
             </div>
             <div class=" mx-10  flex justify-between space-x-10">
@@ -17,7 +13,8 @@
                             <button wire:click="selectRoomType({{ $roomtype->id }})" class="relative">
                                 <div class="absolute inset-0     opacity-80 rounded-r-3xl rounded-bl-3xl blur">
                                 </div>
-                                <div class="bg-white {{ $get_room['type_id'] == $roomtype->id ? 'bg-opacity-100 text-gray-700' : 'bg-opacity-50 text-white ' }} rounded-3xl p-3 relative  py-4 h-48">
+                                <div
+                                    class="bg-white {{ $get_room['type_id'] == $roomtype->id ? 'bg-opacity-100 text-gray-700' : 'bg-opacity-50 text-white ' }} rounded-3xl p-3 relative  py-4 h-48">
                                     <div
                                         class="absolute {{ $get_room['type_id'] == $roomtype->id ? 'bg-red-500 ' : 'bg-green-500 ' }} border border-green-700 right-2 top-2 h-10 w-10 rounded-full shadow-lg grid place-content-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -39,19 +36,19 @@
                     </div>
 
                 </div>
-            
+
                 <div class="fixed bottom-5 -left-10 grid place-content-center right-0">
                     @if ($get_room['type_id'] != '')
-                    <x-button wire:click="$set('step',2)" label="NEXT" xl positive
-                        class="font-bold text-xl mx-auto " right-icon="arrow-circle-right" />
-                @endif
+                        <x-button wire:click="$set('step',2)" label="NEXT" xl positive
+                            class="font-bold text-xl mx-auto " right-icon="arrow-circle-right" />
+                    @endif
                 </div>
             </div>
         </div>
         <div x-show="steps==2" x-cloak class="step relative h-[33rem]">
             <div class="mx-10 mt-5 font-rubik">
                 <div class="flex justify-between items-center ">
-                    <h1 class="font-black text-3xl font-rubik text-gray-300">PLEASE SELECT YOUR ROOM |</h1>
+                    <h1 class="font-black text-3xl font-rubik text-white">PLEASE SELECT YOUR ROOM |</h1>
 
                     <div class="font-rubik flex space-x-1 justify-between">
                         <x-cancel-transaction />
@@ -66,35 +63,49 @@
                         </button>
                     </div>
                 </div>
-                
-               <div class="mt-5 mb-10 flex flex-col ">
-                @foreach ($floor_groups as $floor_id => $floor)
-              <div class="mb-5">
-                <h1 class="text-3xl font-bold text-white uppercase">{{ordinal($floors->find($floor_id)->number)}} FLOOR</h1>
-                <div wire:key="{{$floor_id}}" class="grid  xl:grid-cols-5 lg:grid-cols-4 xl:gap-10 lg:gap-5">
-                  
-                    @foreach ($floor as $key => $room)
-                <button wire:key="{{ $key }}" class="relative"
-                wire:click="selectRoom({{ $room->id }})">
-                <div class="absolute inset-0 bg-gray-400 opacity-80 rounded-r-3xl rounded-bl-3xl blur"></div>
-                <div class="bg-white relative xl:h-64 lg:h-60 rounded-3xl ">
-                    <div
-                        class="absolute w-14 h-20 shadow-xl rounded-r-3xl grid place-content-center top-0 bg-green-500 left-0">
-                        <span
-                            class="font-bold text-lg uppercase
-                        font-rubik text-white">{{ ordinal($room->floor->number) }}</span>
+                <div class="div">
+                    <div class="my-5 space-x-3  flex">
+                        @foreach ($floors as $key => $floor)
+                            <button wire:click="$set('floor_id', {{$floor->id}})" class="{{$floor_id == $floor->id ? 'bg-green-500 text-white border-white' : ''}} bg-white border-4 border-green-500 text-gray-700 hover:bg-green-500 hover:border-white hover:text-white p-2 px-4 shadow-lg rounded-full">
+                                <span class="text-2xl font-bold  uppercase">{{ordinal($floor->number)}} FLOOR</span>
+                            </button>
+                        @endforeach
                     </div>
-                    <div class="relative grid place-content-center h-full">
-                        <h1 class="font-black text-4xl text-center text-gray-600">ROOM #{{ $room->number }}
-                        </h1>
-                    </div>
+                    <div 
+                    class="grid mt-5 xl:grid-cols-5 lg:grid-cols-4 xl:gap-10 lg:gap-5">
+
+                    @foreach ($rooms as $key => $room)
+                        <button wire:key="{{ $key }}" class="relative"
+                            wire:click="selectRoom({{ $room->id }})">
+                            <div
+                                class="absolute inset-0 bg-gray-400 opacity-80 rounded-3xl  blur">
+                            </div>
+                            <div class="bg-white relative xl:h-64 lg:h-60 rounded-3xl ">
+                                <div
+                                    class="absolute w-20 h-14 shadow-xl rounded-xl grid place-content-center top-0 bg-green-500 left-0">
+                                    <span
+                                        class="font-bold text-lg uppercase
+            font-rubik text-white">{{ ordinal($room->floor->number) }}</span>
+                                </div>
+                                <div class="relative grid place-content-center h-full">
+                                    <h1 class="font-black text-4xl text-center text-gray-600">ROOM
+                                        #{{ $room->number }}
+                                    </h1>
+                                </div>
+                            </div>
+                    @endforeach
                 </div>
-                @endforeach
                 </div>
-              </div>
-                @endforeach
-               </div>
-               
+                {{-- <div class="mt-5 mb-10 flex flex-col ">
+                    @foreach ($floor_groups as $floor_id => $floor)
+                        <div class="mb-5">
+                            <h1 class="text-3xl  font-bold text-white uppercase">
+                                {{ ordinal($floors->find($floor_id)->number) }} FLOOR</h1>
+                           
+                        </div>
+                    @endforeach
+                </div> --}}
+
             </div>
         </div>
         <div x-show="steps==3" x-cloak class="relative mx-10">
@@ -147,7 +158,8 @@
                             <div class="flex py-1 items-center justify-between ">
                                 <dt class="flex flex-col">
                                     <div class="flex space-x-1">
-                                        <h1 class="underline text-green-600 text-lg font-bold uppercase">CHECK-IN DEPOSIT
+                                        <h1 class="underline text-green-600 text-lg font-bold uppercase">CHECK-IN
+                                            DEPOSIT
                                         </h1>
 
                                     </div>
@@ -160,7 +172,7 @@
                         </dl>
                         <div class="absolute bottom-7 w-full left-0">
                             <div class="w-full grid place-content-center">
-                                @if ($customer_name != null )
+                                @if ($customer_name != null)
                                     <button wire:click="confirmCheckin"
                                         class="p-2 px-5 border-2 border-green-500 text-lg rounded-full font-semibold bg-gray-600 text-white">
                                         <span>CONFIRM INFORMATION</span>
@@ -249,7 +261,8 @@
                     <div class="isolate bg-white -space-y-px rounded-2xl shadow-lg">
                         <div
                             class="relative border border-gray-300 rounded-2xl rounded-b-none px-3 py-2 focus-within:z-10 focus-within:ring-1 focus-within:ring-gray-600 focus-within:border-gray-600">
-                            <label for="name" class="block text-xs font-medium text-gray-900">Complete Name</label>
+                            <label for="name" class="block text-xs font-medium text-gray-900">Complete
+                                Name</label>
                             <input type="text" wire:model="customer_name"
                                 class="block w-full h-10 text-lg border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0"
                                 placeholder="Enter your name here.">
@@ -269,8 +282,8 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="bg-white p-2 rounded-lg border-2 border-red-600 animate-pulse">
-                    <span>Please fill out the form in order to complete your transaction. ...</span>
+                    <div class="bg-white text-gray-700 p-2 rounded-lg border-2 border-red-600 animate-pulse">
+                        <span>Please fill out the form in order to complete your transaction. ...</span>
                     </div>
 
                     <div class="flex flex-col">
@@ -299,11 +312,11 @@
                 <div class=" bg-white rounded-3xl bg-opacity-50 relative grid place-content-center mt-5 h-[33rem]">
                     <div class="flex flex-col items-center justify-center">
                         <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ $qr_code }}"
-                        class=" h-96" alt="">
-                        <span class="text-xl font-bold text-gray-800">{{$qr_code}}</span>
+                            class=" h-96" alt="">
+                        <span class="text-xl font-bold text-white">{{ $qr_code }}</span>
                     </div>
                     <div class="absolute bottom-5 text-center w-full left-0 ">
-                        <p class="italic  text-red-600 text-sm ">Note: Show your printed QR-CODE to our front-desk to
+                        <p class="italic  text-white text-sm ">Note: Show your printed QR-CODE to our front-desk to
                             validate.</p>
                     </div>
                     <div class="absolute right-0 bottom-0">
@@ -326,8 +339,8 @@
             <div x-show="manage" x-cloak x-transition:enter="ease-out duration-300"
                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                 x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0"
-                class="fixed inset-0 bg-gray-500 bg-opacity-40 transition-opacity"></div>
+                x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-500 bg-opacity-40 transition-opacity">
+            </div>
 
             <div class="fixed inset-0 z-10 overflow-y-auto p-4 sm:p-6 md:p-20">
 
@@ -335,17 +348,25 @@
                     x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 scale-95"
                     x-transition:enter-end="opacity-100 scale-100" x-transition:leave="ease-in duration-200"
                     x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-                    x-on:click.away="manage = false"
                     class="mx-auto h-[30rem]  font-rubik max-w-3xl transform divide-y divide-gray-500 divide-opacity-10 overflow-hidden rounded-xl bg-white bg-opacity-80 shadow-2xl ring-1 ring-black ring-opacity-5 backdrop-blur backdrop-filter transition-all">
                     <div class="relative p-6 h-full">
                         <div class="transaction flex flex-col ">
-                            <div class="bg-white grid place-content-center h-14 w-14 rounded-xl">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                    class="h-6 w-6 fill-green-600">
-                                    <path fill="none" d="M0 0h24v24H0z" />
-                                    <path
-                                        d="M17 19h2v-8h-6v8h2v-6h2v6zM3 19V4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v5h2v10h1v2H2v-2h1zm4-8v2h2v-2H7zm0 4v2h2v-2H7zm0-8v2h2V7H7z" />
-                                </svg>
+                            <div class="flex justify-between items-start">
+                                <div class="bg-white grid place-content-center h-14 w-14 rounded-xl">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                        class="h-6 w-6 fill-green-600">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path
+                                            d="M17 19h2v-8h-6v8h2v-6h2v6zM3 19V4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v5h2v10h1v2H2v-2h1zm4-8v2h2v-2H7zm0 4v2h2v-2H7zm0-8v2h2V7H7z" />
+                                    </svg>
+                                </div>
+                                <button wire:click="closeManageRoomPanel" class="hover:fill-red-600 fill-gray-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-7 w-7">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path
+                                            d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" />
+                                    </svg>
+                                </button>
                             </div>
                             @php
                                 $room = \App\Models\Room::where('id', $get_room['room_id'])
@@ -389,9 +410,9 @@
                         </div>
                         <div class="absolute bottom-6 right-6">
                             <div class="flex space-x-2">
-                            
+
                                 <x-button wire:click="confirmRate" right-icon="arrow-circle-right"
-                                    spinner="confirmRate" xl class="font-bold" primary label="NEXT" />
+                                 xl class="font-bold" primary label="NEXT" />
                             </div>
                         </div>
                     </div>

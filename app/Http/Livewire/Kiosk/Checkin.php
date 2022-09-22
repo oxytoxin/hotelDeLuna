@@ -6,13 +6,17 @@ use App\Models\CheckInDetail;
 use App\Models\Guest;
 use App\Models\Rate;
 use App\Models\Room;
+use App\Models\TemporaryRoom;
 use App\Models\Transaction;
 use App\Models\Type;
 use Carbon\Carbon;
 use Livewire\Component;
+use WireUi\Traits\Actions;
+use App\Models\Floor;
 
 class Checkin extends Component
 {
+    use Actions;
     public $step = 1;
     public $increments = '';
 
@@ -28,6 +32,8 @@ class Checkin extends Component
 
     public $manage_room;
 
+    public $floor_id ;
+
     public $type_key;
 
     public $room_type;
@@ -40,24 +46,16 @@ class Checkin extends Component
 
     public $manageRoomPanel = false;
 
-    // public function increment()
-    // {
-    //     $transaction = \App\Models\Guest::whereYear('created_at', \Carbon\Carbon::today()->year)->count();
-    //     $transaction += 1;
-    //     dd(auth()->user()->branch_id.today()->format('y').str_pad($transaction, 4, '0', STR_PAD_LEFT));
-        
-    // }
-
     public function render()
     {
         return view('livewire.kiosk.checkin', [
-            'floor_groups' => Room::where('room_status_id', 1)->where('type_id', $this->type_key)->whereHas('floor', function ($query) {
+            'rooms' => Room::where('room_status_id', 1)->where('floor_id','like','%'.$this->floor_id.'%')->where('updated_at','<', now()->subMinutes(5))->where('type_id', $this->type_key)->whereHas('floor', function ($query) {
                 $query->where('branch_id', auth()->user()->branch_id);
-            })->with('floor')->get()->groupBy('floor.id'),
-            
-            'floors' => \App\Models\Floor::where('branch_id', auth()->user()->branch_id)->get(),
+            })->with('floor')->get(),
+
+            'floors' => Floor::where('branch_id', auth()->user()->branch_id)->get(),
             'roomtypes' => Type::get(),
-            'rates' => Rate::where('type_id', 'like', '%'.$this->type_key.'%')->get(),
+            'rates' => Rate::where('type_id', 'like', '%' . $this->type_key . '%')->get(),
         ]);
     }
 
@@ -69,21 +67,74 @@ class Checkin extends Component
         ]);
     }
 
-    public function selectRoom($room_id)
+    public function closeManageRoomPanel()
     {
-        $this->get_room['room_id'] = $room_id;
-        // dd($this->get_room);
-        $this->manageRoomPanel = true;
+        $this->dialog()->confirm([
+
+            'title'       => 'Room Selection Management',
+
+            'description' => 'Are you sure you want to cancel this transaction?',
+
+            'icon'        => 'question',
+
+            'accept'      => [
+
+                'label'  => 'Yes',
+
+                'method' => 'cancelRoomSelection',
+
+            ],
+
+            'reject' => [
+
+                'label'  => 'No, cancel',
+
+            ],
+
+        ]);
+
+      
+       
     }
 
-        public function selectRoomType($type_id)
-        {
-            // array_push($this->transaction, $this->get_room);
-            // $this->transaction[$this->room_array]['type_id'] = $type_id;
-            $this->get_room['type_id'] = $type_id;
-            $this->room_array++;
-            $this->type_key = $type_id;
+    public function cancelRoomSelection(){
+        $query =  TemporaryRoom::where('branch_id', auth()->user()->branch_id)->where('room_id', $this->get_room['room_id'])->first();
+        $query->delete();
+        $this->manageRoomPanel = false;
+        $this->notification()->success(
+            $title = 'Kiosk Check-In',
+            $description = 'Cancel Room Successfully.',
+        );
+    }
+
+    public function selectRoom($room_id)
+    {
+       
+        if (TemporaryRoom::where('room_id', $room_id)->where('branch_id', auth()->user()->branch_id)->exists()) {
+            $this->notification()->error(
+                $title = 'Kiosk Check-In',
+                $description = 'The Room is already selected by other user',
+            );
+        } else {
+            TemporaryRoom::create([
+                'room_id' => $room_id,
+                'branch_id' => auth()->user()->branch_id,
+                'time_to_terminate' => Carbon::now()->addMinutes(15),
+            ]);
+
+            $this->get_room['room_id'] = $room_id;
+            $this->manageRoomPanel = true;
         }
+    }
+
+    public function selectRoomType($type_id)
+    {
+        // array_push($this->transaction, $this->get_room);
+        // $this->transaction[$this->room_array]['type_id'] = $type_id;
+        $this->get_room['type_id'] = $type_id;
+        $this->room_array++;
+        $this->type_key = $type_id;
+    }
 
     public function manageRoom($key)
     {
@@ -118,7 +169,7 @@ class Checkin extends Component
         ]);
         $transaction = \App\Models\Guest::whereYear('created_at', \Carbon\Carbon::today()->year)->count();
         $transaction += 1;
-        $transaction_code = auth()->user()->branch_id.today()->format('y').str_pad($transaction, 4, '0', STR_PAD_LEFT);
+        $transaction_code = auth()->user()->branch_id . today()->format('y') . str_pad($transaction, 4, '0', STR_PAD_LEFT);
 
 
 
@@ -157,6 +208,8 @@ class Checkin extends Component
             'room_status_id' => 6,
             'time_to_terminate_in_queue' => Carbon::now()->addMinutes(10),
         ]);
+        $query =  TemporaryRoom::where('branch_id', auth()->user()->branch_id)->where('room_id', $this->get_room['room_id'])->first();
+        $query->delete();
 
         $this->qr_code = $transaction_code;
         $this->step = 4;
