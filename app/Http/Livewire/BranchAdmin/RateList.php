@@ -28,6 +28,7 @@ class RateList extends Component
 
     public $edit_id = null;
 
+    public $type_labels =[];
     public function onClickAdd()
     {
         $this->reset('staying_hour_id', 'room_type_id', 'amount');
@@ -121,14 +122,13 @@ class RateList extends Component
         $this->hours = StayingHour::all();
         $this->types = Type::where('branch_id', auth()->user()->branch->id)->get();
     }
-
     public function render()
     {
-        return view('livewire.branch-admin.rate-list', [
-            'rates' => Rate::query()
-                ->where('branch_id', auth()->user()->branch_id)
-                ->with('staying_hour', 'type')
-                ->paginate(10),
+       
+        return view('livewire.branch-admin.rate-list',[
+            'rates' => Rate::where('branch_id', auth()->user()->branch->id)
+                ->with(['staying_hour','type'])
+                ->get()->groupBy('type_id'),
         ]);
     }
 }

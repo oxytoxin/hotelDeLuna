@@ -5,36 +5,42 @@
                 wire:click="add"
                 primary />
         </x-slot:topRight>
-        @forelse ($rates as $rate)
+        @forelse ($rates as $groups)
             <x-table-row>
-                <x-table-data>
-                    {{ $rate->staying_hour->number }}
-                </x-table-data>
-                <x-table-data>
-                    {{ $rate->amount }}
-                </x-table-data>
-                <x-table-data>
-                    {{ $rate->type->name }}
-                </x-table-data>
-                <x-table-data>
-                    <div class="flex justify-end px-2">
-                        <button wire:key="{{ $rate->id }}"
-                            wire:click="edit({{ $rate->id }})"
-                            wire:loading.class="cursor-progress"
-                            wire:loading.attr="disabled"
-                            wire:target="edit({{ $rate->id }})"
-                            class="uppercase text-primary-600 hover:text-primary-900">Edit</button>
-                    </div>
+                <x-table-data colspan="4"
+                    class="font-bold bg-gray-50">
+                    {{ $groups[0]->type->name }}
                 </x-table-data>
             </x-table-row>
+            @forelse ($groups as $rate)
+                <x-table-row>
+                    <x-table-data>
+                        {{ $rate->staying_hour->number }}
+                    </x-table-data>
+                    <x-table-data>
+                        {{ $rate->amount }}
+                    </x-table-data>
+                    <x-table-data>
+                        {{ $rate->type->name }}
+                    </x-table-data>
+                    <x-table-data>
+                        <div class="flex justify-end px-2">
+                            <button wire:key="{{ $rate->id }}"
+                                wire:click="edit({{ $rate->id }})"
+                                wire:loading.class="cursor-progress"
+                                wire:loading.attr="disabled"
+                                wire:target="edit({{ $rate->id }})"
+                                class="uppercase text-primary-600 hover:text-primary-900">Edit</button>
+                        </div>
+                    </x-table-data>
+                </x-table-row>
+            @empty
+                <x-table-empty rows="5" />
+            @endforelse
         @empty
             <x-table-empty rows="5" />
         @endforelse
-        <x-slot:pagination>
-            {{ $rates->links() }}
-        </x-slot:pagination>
     </x-table>
-
     <div wire:key="modal-panel">
         <x-modal.card title="{{ $this->getModeTitle() }}"
             wire:model.defer="showModal">
