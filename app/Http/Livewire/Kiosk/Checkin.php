@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Kiosk;
 
+use App\Jobs\TerminateRoomJob;
 use App\Models\CheckInDetail;
 use App\Models\Guest;
 use App\Models\Rate;
@@ -230,6 +231,7 @@ class Checkin extends Component
 
         $this->qr_code = $transaction_code;
         $this->step = 4;
+        TerminateRoomJob::dispatch($room->id,$guest->id)->delay(now()->addMinutes(1));
     }
 
     public function confirmRate()
