@@ -32,7 +32,7 @@ class Checkin extends Component
 
     public $manage_room;
 
-    public $floor_id ;
+    public $floor_id = 1;
 
     public $type_key;
 
@@ -49,7 +49,7 @@ class Checkin extends Component
     public function render()
     {
         return view('livewire.kiosk.checkin', [
-            'rooms' => Room::where('room_status_id', 1)->where('floor_id','like','%'.$this->floor_id.'%')->where('updated_at','<', now()->subMinutes(5))->where('type_id', $this->type_key)->whereHas('floor', function ($query) {
+            'rooms' => Room::where('room_status_id', 1)->where('floor_id','like','%'.$this->floor_id.'%')->where('updated_at','<', now()->subMinutes(1))->where('type_id', $this->type_key)->whereHas('floor', function ($query) {
                 $query->where('branch_id', auth()->user()->branch_id);
             })->with('floor')->get(),
 
