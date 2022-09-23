@@ -17,8 +17,8 @@ class TerminateRoomJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $room_id;
-    private $guest_id;
+    public $room_id;
+    public $guest_id;
     /**
      * Create a new job instance.
      *
@@ -37,17 +37,17 @@ class TerminateRoomJob implements ShouldQueue
      */
     public function handle()
     {
-        $room = Room::find($this->room_id);
-        $guest = Guest::find($this->guest_id);
+        $room = Room::where('id',$this->room_id)->first();
         if($room->room_status_id == 6){
             $room->update([
                 'room_status_id' => 1,
             ]);
         }
-        // delete check in detail
-       $check_in_detail_transaction_id = $guest->transactions->where('transaction_type_id', 1)->first()->id;
-        CheckInDetail::where('transaction_id', $check_in_detail_transaction_id)->delete();
+        $transaction = Transaction::where('guest_id', $this->guest_id)
+                                            ->where('transaction_type_id', 1)
+                                            ->first();
+        CheckInDetail::where('transaction_id', $transaction->id)->delete();
         Transaction::where('guest_id', $this->guest_id)->delete();
-        $guest->delete();
+        Guest::where('id', $this->guest_id)->delete();
     }
 }
