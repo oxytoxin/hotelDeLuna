@@ -29,8 +29,8 @@
     },
     "autoload": {
         "files": [
-            "app/helpers/ordinal.php",
-            "app/helpers/app.php"
+            "app/Helpers/ordinal.php",
+            "app/Helpers/app.php"
         ],
         "psr-4": {
             "App\\": "app/",
