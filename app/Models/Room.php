@@ -40,4 +40,9 @@ class Room extends Model
     {
         return $this->hasMany(Damages::class);
     }
+    
+    public function temporaryRooms(){
+        return $this->hasMany(TemporaryRoom::class);
+    }
+
 }
