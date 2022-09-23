@@ -1,4 +1,4 @@
-    <div x-data="{ steps: @entangle('step'), manage: @entangle('manageRoomPanel') }" class="font-rubik">
+    <div id="hh" x-data="{ steps: @entangle('step'), manage: @entangle('manageRoomPanel') }" class="font-rubik">
 
         <div x-show="steps==1" x-cloak class="step">
             <div class=" mt-5 mx-10 flex justify-between">

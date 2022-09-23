@@ -46,10 +46,13 @@ class Checkin extends Component
 
     public $manageRoomPanel = false;
 
+    public $temporary = [];
+
     public function render()
     {
+
         return view('livewire.kiosk.checkin', [
-            'rooms' => Room::where('room_status_id', 1)->where('floor_id','like','%'.$this->floor_id.'%')->where('updated_at','<', now()->subMinutes(1))->where('type_id', $this->type_key)->whereHas('floor', function ($query) {
+            'rooms' => Room::where('room_status_id', 1)->where('floor_id', 'like', '%' . $this->floor_id . '%')->where('type_id', $this->type_key)->whereHas('floor', function ($query) {
                 $query->where('branch_id', auth()->user()->branch_id);
             })->with('floor')->get(),
 
@@ -92,15 +95,15 @@ class Checkin extends Component
             ],
 
         ]);
-
-      
-       
     }
 
-    public function cancelRoomSelection(){
-        $query =  TemporaryRoom::where('branch_id', auth()->user()->branch_id)->where('room_id', $this->get_room['room_id'])->first();
-        $query->delete();
-        $this->manageRoomPanel = false;
+    public function cancelRoomSelection()
+    {
+        $query =  Room::where('id', $this->get_room['room_id'])->first();
+        $query->update([
+            'room_status_id' => 1,
+        ]);
+        $this->manageRoomPanel = false; 
         $this->notification()->success(
             $title = 'Kiosk Check-In',
             $description = 'Cancel Room Successfully.',
@@ -109,19 +112,33 @@ class Checkin extends Component
 
     public function selectRoom($room_id)
     {
-       
-        if (TemporaryRoom::where('room_id', $room_id)->where('branch_id', auth()->user()->branch_id)->exists()) {
+
+        // if (TemporaryRoom::where('room_id', $room_id)->where('branch_id', auth()->user()->branch_id)->exists()) {
+        //     $this->notification()->error(
+        //         $title = 'Kiosk Check-In',
+        //         $description = 'The Room is already selected by other user',
+        //     );
+        // } else {
+        //     TemporaryRoom::create([
+        //         'room_id' => $room_id,
+        //         'branch_id' => auth()->user()->branch_id,
+        //         'time_to_terminate' => Carbon::now()->addMinutes(15),
+        //     ]);
+
+        //     $this->get_room['room_id'] = $room_id;
+        //     $this->manageRoomPanel = true;
+        // }
+
+        $query = Room::where('id', $room_id)->first();
+        if ($query->room_status_id != 1) {
             $this->notification()->error(
                 $title = 'Kiosk Check-In',
                 $description = 'The Room is already selected by other user',
             );
         } else {
-            TemporaryRoom::create([
-                'room_id' => $room_id,
-                'branch_id' => auth()->user()->branch_id,
-                'time_to_terminate' => Carbon::now()->addMinutes(15),
+            $query->update([
+                'room_status_id' => 6,
             ]);
-
             $this->get_room['room_id'] = $room_id;
             $this->manageRoomPanel = true;
         }
