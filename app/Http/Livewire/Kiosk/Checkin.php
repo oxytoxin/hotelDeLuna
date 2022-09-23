@@ -226,12 +226,12 @@ class Checkin extends Component
             'room_status_id' => 6,
             'time_to_terminate_in_queue' => Carbon::now()->addMinutes(10),
         ]);
-        $query =  TemporaryRoom::where('branch_id', auth()->user()->branch_id)->where('room_id', $this->get_room['room_id'])->first();
-        $query->delete();
 
         $this->qr_code = $transaction_code;
         $this->step = 4;
-        TerminateRoomJob::dispatch($room->id,$guest->id)->delay(now()->addMinutes(1));
+        
+        $time_to_terminate = 1;
+        TerminateRoomJob::dispatch($room->id,$guest->id)->delay(now()->addMinutes($time_to_terminate));
     }
 
     public function confirmRate()
