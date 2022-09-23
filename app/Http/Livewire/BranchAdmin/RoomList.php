@@ -37,6 +37,10 @@ class RoomList extends Component
 
     public $roomTypes = [];
 
+    public $floor_number;
+    
+    public $manageFloorModal=false;
+
     public function onClickAdd()
     {
         $this->reset('number', 'description', 'floor_id', 'room_status_id', 'type_id');
@@ -103,13 +107,28 @@ class RoomList extends Component
 
     public function mount()
     {
-        $this->floors = auth()->user()->branch->floors;
         $this->roomStatuses = RoomStatus::all();
         $this->roomTypes = auth()->user()->branch->types;
     }
 
+    public function saveFloor()
+    {
+        $this->validate([
+            'floor_number' => 'required|numeric|min:1|unique:floors,number',
+        ]);
+        auth()->user()->branch->floors()->create([
+            'number' => $this->floor_number,
+        ]);
+        $this->reset('floor_number');
+        $this->notification()->success(
+            $title = 'Success',
+            $description = 'Floor created successfully',
+        );
+    }
+
     public function render()
     {
+        $this->floors = auth()->user()->branch->floors;
         return view('livewire.branch-admin.room-list', [
             'rooms' => Room::query()
                     ->when($this->filter['floor'] != 'all', function ($query) {

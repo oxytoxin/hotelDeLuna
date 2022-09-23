@@ -19,9 +19,13 @@
                 </x-native-select>
             </x-slot:topLeft>
             <x-slot:topRight>
-                <x-button primary
-                    wire:click="add"
-                    label="Add Room" />
+                <div class="flex items-center space-x-3">
+                    <x-button wire:click="$set('manageFloorModal',true)"
+                        label="Manage Floor" />
+                    <x-button primary
+                        wire:click="add"
+                        label="Add Room" />
+                </div>
             </x-slot:topRight>
             @forelse ($rooms as $room)
                 <x-table-row>
@@ -104,6 +108,36 @@
                 <x-button primary
                     wire:click="save"
                     spinner="save"
+                    label="Save" />
+            </x-slot:footer>
+        </x-modal.card>
+        <x-modal.card title="Manage Floor"
+            wire:model.defer="manageFloorModal">
+            <form>
+                @csrf
+                <div>
+                    <x-input label="Number"
+                        wire:model.defer="floor_number"
+                        type="number"
+                        placeholder="Number" />
+                </div>
+            </form>
+            <div class="grid mt-5 space-y-2">
+                @foreach ($floors as $floors)
+                    <div class="flex justify-between p-2 duration-150 ease-in-out border rounded-lg hover:bg-gray-100">
+                        <div>
+                            {{ ordinal($floors->number) }} Floor
+                        </div>
+                        <div>
+
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <x-slot:footer>
+                <x-button primary
+                    wire:click="saveFloor"
+                    spinner="saveFloor"
                     label="Save" />
             </x-slot:footer>
         </x-modal.card>
