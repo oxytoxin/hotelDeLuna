@@ -4,12 +4,11 @@
         <form>
             @csrf
             <div class="gap-3 sm:grid sm:grid-cols-1">
-
                 <x-native-select label="To what room"
                     wire:model.defer="to_room">
                     <option value="">Select Room</option>
                     @if ($changeRoomModal == true)
-                        @foreach (App\Models\Room::where('room_status_id', 1)->get() as $room)
+                        @foreach (App\Models\Room::where('room_status_id', 1)->where('type_id', $guest->transactions->where('transaction_type_id', 1)->first()->check_in_detail->room->type_id)->get() as $room)
                             <option value="{{ $room->id }}">
                                 Room # {{ $room->number }}
                             </option>
