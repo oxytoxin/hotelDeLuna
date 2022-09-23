@@ -101,7 +101,7 @@
                                 <div
                                     class="xl:col-span-5 h-auto mt-20 lg:col-span-4 flex flex-col justify-center items-center">
                                     <x-svg.no-result class="h-40" />
-                                    <h1 class="text-gray-50">No Room available...</h1>
+                                    <h1 class="text-white">No Room available...</h1>
                                 </div>
                         @endforelse
                     </div>
