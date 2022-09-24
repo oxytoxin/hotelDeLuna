@@ -67,7 +67,7 @@ class Checkin extends Component
     {
         $this->validateOnly($propertyName, [
             'customer_name' => 'required',
-            'customer_number' => 'required|numeric|digits:11',
+            'customer_number' => 'required|numeric|digits:9',
         ]);
     }
 
@@ -183,7 +183,7 @@ class Checkin extends Component
     {
         $this->validate([
             'customer_name' => 'required',
-            'customer_number' => 'nullable|starts_with:09|digits:11',
+            'customer_number' => 'nullable|digits:9',
         ]);
         $transaction = \App\Models\Guest::whereYear('created_at', \Carbon\Carbon::today()->year)->count();
         $transaction += 1;

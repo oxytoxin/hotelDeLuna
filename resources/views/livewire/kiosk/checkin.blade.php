@@ -272,7 +272,7 @@
                                 <span class="error text-sm text-red-500">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div
+                        {{-- <div
                             class="relative border border-gray-300 rounded-2xl rounded-t-none px-3 py-2 focus-within:z-10 focus-within:ring-1 focus-within:ring-gray-600 focus-within:border-gray-600">
                             <label for="job-title" class="block text-xs font-medium text-gray-900">Contact Number
                                 (Optional)</label>
@@ -282,12 +282,23 @@
                             @error('customer_number')
                                 <span class="error text-sm text-red-500">{{ $message }}</span>
                             @enderror
+                        </div> --}}
+                        <div class="relative border border-gray-300 rounded-2xl rounded-t-none px-3 py-2 focus-within:z-10 focus-within:ring-1 focus-within:ring-gray-600 focus-within:border-gray-600">
+                            <label for="job-title" class="block text-xs font-medium text-gray-900">Contact Number
+                                (Optional)</label>
+                            <div class="flex">
+                                <div class="flex items-center justify-center w-12 h-10 text-gray-600 border-r border-gray-300">
+                                    <span class="text-lg font-medium">09</span>
+                                </div>
+                                <input type="number" wire:model="customer_number"
+                                    class="block w-full h-10 text-lg pl-2 border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 "
+                                    placeholder="">
+                            </div>
                         </div>
                     </div>
                     <div class="bg-white text-gray-700 p-2 rounded-lg border-2 border-red-600 animate-pulse">
                         <span>Please fill out the form in order to complete your transaction. ...</span>
                     </div>
-
                     <div class="flex flex-col">
                         <div class="bg-white shadow rounded-xl p-3">
                             <dl class="text-sm font-medium text-gray-500  space-y-2">
@@ -305,7 +316,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
         <div x-show="steps==4" x-cloak class="relative">
