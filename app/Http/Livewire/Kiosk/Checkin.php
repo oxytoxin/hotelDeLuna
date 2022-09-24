@@ -230,8 +230,8 @@ class Checkin extends Component
         $this->qr_code = $transaction_code;
         $this->step = 4;
         
-        $time_to_terminate = 1;
-        TerminateRoomJob::dispatch($room->id,$guest->id)->delay(now()->addMinutes($time_to_terminate));
+        $time_to_terminate = 2;
+        TerminateRoomJob::dispatch($room->id,$guest->id)->delay(now()->addHours($time_to_terminate));
     }
 
     public function confirmRate()
