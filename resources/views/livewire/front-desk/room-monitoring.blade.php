@@ -50,8 +50,9 @@
                                                 <div>
                                                     @if ($room->room_status_id == 2)
                                                         @php
-                                                            $expires = new Carbon\Carbon($room->check_in_details->expected_check_out_at);
+                                                            $expires = new Carbon\Carbon($room->check_in_details[0]->expected_check_out_at);
                                                         @endphp
+
                                                         @if ($expires->isPast())
                                                             <span class="text-red-500">
                                                                 Time Out :{{ $expires->diffForHumans() }}
@@ -81,7 +82,7 @@
                                                 <div>
                                                     @if ($room->room_status_id == 2)
                                                         @php
-                                                            $expires = new Carbon\Carbon($room->check_in_details->expected_check_out_at);
+                                                            $expires = new Carbon\Carbon($room->check_in_details[0]->expected_check_out_at);
                                                         @endphp
                                                         @if ($expires->isPast())
                                                             <span class="text-red-500">
