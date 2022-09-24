@@ -50,7 +50,9 @@
                                                 <div>
                                                     @if ($room->room_status_id == 2)
                                                         @php
-                                                            $expires = new Carbon\Carbon($room->check_in_details[0]->expected_check_out_at);
+                                                            if (count($room->check_in_details)) {
+                                                                $expires = new Carbon\Carbon($room->check_in_details[0]->expected_check_out_at);
+                                                            }
                                                         @endphp
 
                                                         @if ($expires->isPast())
@@ -82,7 +84,9 @@
                                                 <div>
                                                     @if ($room->room_status_id == 2)
                                                         @php
-                                                            $expires = new Carbon\Carbon($room->check_in_details[0]->expected_check_out_at);
+                                                            if (count($room->check_in_details)) {
+                                                                $expires = new Carbon\Carbon($room->check_in_details[0]->expected_check_out_at);
+                                                            }
                                                         @endphp
                                                         @if ($expires->isPast())
                                                             <span class="text-red-500">
