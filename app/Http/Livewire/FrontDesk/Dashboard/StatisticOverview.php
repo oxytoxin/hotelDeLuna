@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Http\Livewire\BranchAdmin\Dashboard;
+namespace App\Http\Livewire\FrontDesk\Dashboard;
 
-use App\Models\Room;
 use Carbon\Carbon;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 
 class StatisticOverview extends Component
 {
-
     public function loadData()
     {
         $check_in_count_overall =  DB::table('check_in_details')
@@ -51,16 +49,8 @@ class StatisticOverview extends Component
                 return [$item->label => $item->value];
             })->toArray();
     }
-    
     public function render()
     {
-        return view('livewire.branch-admin.dashboard.statistic-overview',[
-            'data' => $this->loadData(),
-            'available_rooms' => Room::where('room_status_id', 1)
-                                ->whereHas('floor', function($query){
-                                    $query->where('branch_id', auth()->user()->branch_id);
-                                })
-                                ->count(),
-        ]);
+        return view('livewire.front-desk.dashboard.statistic-overview');
     }
 }
