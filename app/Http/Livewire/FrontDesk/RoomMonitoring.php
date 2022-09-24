@@ -39,7 +39,7 @@ class RoomMonitoring extends Component
                     'floor',
                     'room_status',
                     'check_in_details' => function ($query) {
-                        return $query->where('check_out_at', null);
+                        return $query->where('check_out_at', null)->first();
                     },
                 ])
                 ->paginate(10),
