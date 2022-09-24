@@ -176,7 +176,7 @@
                             <div class="w-full grid place-content-center">
                                 @if ($customer_name != null)
                                     <button wire:click="confirmCheckin"
-                                        class="p-2 px-5 border-2 border-green-500 text-lg rounded-full font-semibold bg-gray-600 text-white">
+                                        class="p-2 px-5 border-2 border-gray-700 text-lg rounded-full font-semibold bg-green-600 text-white">
                                         <span>CONFIRM INFORMATION</span>
                                     </button>
                                 @endif
@@ -334,7 +334,7 @@
                     <div class="absolute right-0 bottom-0">
                         <a href="{{ route('kiosk.transaction') }}"
                             class="p-4 px-6 bg-gray-600 text-white fill-white flex items-center space-x-1 rounded-br-3xl border-t-4 border-l-4 border-yellow-300 font-semibold">
-                            <span>PRINT QR</span>
+                            <span>OK</span>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-6 w-6">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path
