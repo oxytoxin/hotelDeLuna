@@ -14,10 +14,12 @@ use Carbon\Carbon;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 use App\Models\Floor;
+use Livewire\WithPagination;
 
 class Checkin extends Component
 {
     use Actions;
+    use WithPagination;
     public $step = 1;
     public $increments = '';
 
@@ -55,7 +57,7 @@ class Checkin extends Component
         return view('livewire.kiosk.checkin', [
             'rooms' => Room::where('room_status_id', 1)->where('floor_id', 'like', '%' . $this->floor_id . '%')->where('type_id', $this->type_key)->whereHas('floor', function ($query) {
                 $query->where('branch_id', auth()->user()->branch_id);
-            })->with('floor')->get(),
+            })->latest()->with('floor')->paginate(10),
 
             'floors' => Floor::where('branch_id', auth()->user()->branch_id)->get(),
             'roomtypes' => Type::get(),
@@ -113,23 +115,6 @@ class Checkin extends Component
 
     public function selectRoom($room_id)
     {
-
-        // if (TemporaryRoom::where('room_id', $room_id)->where('branch_id', auth()->user()->branch_id)->exists()) {
-        //     $this->notification()->error(
-        //         $title = 'Kiosk Check-In',
-        //         $description = 'The Room is already selected by other user',
-        //     );
-        // } else {
-        //     TemporaryRoom::create([
-        //         'room_id' => $room_id,
-        //         'branch_id' => auth()->user()->branch_id,
-        //         'time_to_terminate' => Carbon::now()->addMinutes(15),
-        //     ]);
-
-        //     $this->get_room['room_id'] = $room_id;
-        //     $this->manageRoomPanel = true;
-        // }
-
         $query = Room::where('id', $room_id)->first();
         if ($query->room_status_id != 1) {
             $this->notification()->error(
@@ -146,12 +131,18 @@ class Checkin extends Component
     }
 
     public function selectRoomType($type_id)
-    {
-        // array_push($this->transaction, $this->get_room);
-        // $this->transaction[$this->room_array]['type_id'] = $type_id;
+    {   
+        // $this->floor_id = 1;
+      
+      
+       
         $this->get_room['type_id'] = $type_id;
         $this->room_array++;
         $this->type_key = $type_id;
+        $query = Room::where('type_id', $type_id)->where('room_status_id', 1)->whereHas('floor', function ($query) {
+            $query->where('branch_id', auth()->user()->branch_id);
+        })->with('floor')->first()->floor_id;
+        $this->floor_id = $query;
     }
 
     public function manageRoom($key)

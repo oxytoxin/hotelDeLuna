@@ -66,10 +66,17 @@
                 <div class="div">
                     <div class="my-5 space-x-3  flex">
                         @foreach ($floors as $key => $floor)
+                        
+                            {{-- <button wire:click="$set('floor_id', {{ $floor->id }})"
+                                class="{{ $floor_id == $floor->id ? 'bg-green-500 text-white border-white' : '' }} bg-white border-4 border-green-500 text-gray-700 hover:bg-green-500 hover:border-white hover:text-white p-2 px-4 shadow-lg rounded-full">
+                                <span class="text-2xl font-bold  uppercase">{{ ordinal($floor->number) }} FLOOR</span>
+                            </button> --}}
+                            @if ($floor->rooms->where('room_status_id', 1)->where('type_id', $type_key)->count() > 0)
                             <button wire:click="$set('floor_id', {{ $floor->id }})"
                                 class="{{ $floor_id == $floor->id ? 'bg-green-500 text-white border-white' : '' }} bg-white border-4 border-green-500 text-gray-700 hover:bg-green-500 hover:border-white hover:text-white p-2 px-4 shadow-lg rounded-full">
                                 <span class="text-2xl font-bold  uppercase">{{ ordinal($floor->number) }} FLOOR</span>
                             </button>
+                            @endif
                         @endforeach
                     </div>
                     <div class="grid mt-5 xl:grid-cols-5 lg:grid-cols-4 xl:gap-10 lg:gap-5">
