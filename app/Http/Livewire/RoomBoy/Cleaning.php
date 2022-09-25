@@ -84,6 +84,13 @@ class Cleaning extends Component
     public function confirmFinish($room_id)
     {
         $room = Room::where('id', $room_id)->first();
+        if ($room->room_status_id == 8 && $room->updated_at->diffInMinutes(Carbon::now()) < 20) {
+            $this->notification()->error(
+                $title  = 'Error',
+                $description = 'You can not finish this room before 20 minutes',
+            );
+            return;
+        }
         $delayed = $room->time_to_clean < Carbon::now();
         $room->update([
             'room_status_id' => 1,
