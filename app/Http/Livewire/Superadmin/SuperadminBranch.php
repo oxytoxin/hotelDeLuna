@@ -42,6 +42,7 @@ class SuperadminBranch extends Component
 
     public function editBranch()
     {
+        $this->modal = 'branch';
         $this->name = $this->branches->name;
         $this->address = $this->branches->address;
         $this->addBranchModal = true;

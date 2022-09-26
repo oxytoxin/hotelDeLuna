@@ -72,7 +72,7 @@
                                 <span class="text-2xl font-bold  uppercase">{{ ordinal($floor->number) }} FLOOR</span>
                             </button> --}}
                             @if ($floor->rooms->where('room_status_id', 1)->where('type_id', $type_key)->count() > 0)
-                            <button wire:click="$set('floor_id', {{ $floor->id }})"
+                            <button wire:click="$set('floor_id', {{ $floor->id }})" 
                                 class="{{ $floor_id == $floor->id ? 'bg-green-500 text-white border-white' : '' }} bg-white border-4 border-green-500 text-gray-700 hover:bg-green-500 hover:border-white hover:text-white p-2 px-4 shadow-lg rounded-full">
                                 <span class="text-2xl font-bold  uppercase">{{ ordinal($floor->number) }} FLOOR</span>
                             </button>
@@ -91,7 +91,7 @@
                                 wire:click="selectRoom({{ $room->id }})">
                                 <div class="absolute inset-0 bg-gray-400 opacity-80 rounded-3xl  blur">
                                 </div>
-                                <div class="bg-white relative xl:h-64 lg:h-60 rounded-3xl ">
+                                <div class="bg-white  relative xl:h-64 lg:h-60 rounded-3xl ">
                                     <div
                                         class="absolute w-20 h-14 shadow-xl rounded-xl grid place-content-center top-0 bg-green-500 left-0">
                                         <span
@@ -102,6 +102,7 @@
                                         <h1 class="font-black text-4xl text-center text-gray-600">ROOM
                                             #{{ $room->number }}
                                         </h1>
+                                       
                                     </div>
                                 </div>
                             @empty
