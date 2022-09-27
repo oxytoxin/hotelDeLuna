@@ -188,7 +188,7 @@ class Checkin extends Component
             'branch_id' => auth()->user()->branch_id,
             'qr_code' => $transaction_code,
             'name' => $this->customer_name,
-            'contact_number' => $this->customer_number,
+            'contact_number' => '09'.$this->customer_number,
         ]);
 
         $room = Room::where('id', $this->get_room['room_id'])->first();
