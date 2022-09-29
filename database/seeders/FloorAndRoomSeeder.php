@@ -22,7 +22,6 @@ class FloorAndRoomSeeder extends Seeder
                 'number' => $i,
             ]);
             for ($j = 1; $j <= 10; $j++) {
-                // random room type
                 $types = ['1', '2', '3'];
                 $type = $types[array_rand($types)];
                 $room = Room::create([

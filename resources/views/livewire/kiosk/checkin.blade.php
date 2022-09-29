@@ -66,10 +66,17 @@
                 <div class="div">
                     <div class="my-5 space-x-3  flex">
                         @foreach ($floors as $key => $floor)
-                            <button wire:click="$set('floor_id', {{ $floor->id }})"
+                        
+                            {{-- <button wire:click="$set('floor_id', {{ $floor->id }})"
+                                class="{{ $floor_id == $floor->id ? 'bg-green-500 text-white border-white' : '' }} bg-white border-4 border-green-500 text-gray-700 hover:bg-green-500 hover:border-white hover:text-white p-2 px-4 shadow-lg rounded-full">
+                                <span class="text-2xl font-bold  uppercase">{{ ordinal($floor->number) }} FLOOR</span>
+                            </button> --}}
+                            @if ($floor->rooms->where('room_status_id', 1)->where('type_id', $type_key)->count() > 0)
+                            <button wire:click="$set('floor_id', {{ $floor->id }})" 
                                 class="{{ $floor_id == $floor->id ? 'bg-green-500 text-white border-white' : '' }} bg-white border-4 border-green-500 text-gray-700 hover:bg-green-500 hover:border-white hover:text-white p-2 px-4 shadow-lg rounded-full">
                                 <span class="text-2xl font-bold  uppercase">{{ ordinal($floor->number) }} FLOOR</span>
                             </button>
+                            @endif
                         @endforeach
                     </div>
                     <div class="grid mt-5 xl:grid-cols-5 lg:grid-cols-4 xl:gap-10 lg:gap-5">
@@ -84,7 +91,7 @@
                                 wire:click="selectRoom({{ $room->id }})">
                                 <div class="absolute inset-0 bg-gray-400 opacity-80 rounded-3xl  blur">
                                 </div>
-                                <div class="bg-white relative xl:h-64 lg:h-60 rounded-3xl ">
+                                <div class="bg-white  relative xl:h-64 lg:h-60 rounded-3xl ">
                                     <div
                                         class="absolute w-20 h-14 shadow-xl rounded-xl grid place-content-center top-0 bg-green-500 left-0">
                                         <span
@@ -95,6 +102,7 @@
                                         <h1 class="font-black text-4xl text-center text-gray-600">ROOM
                                             #{{ $room->number }}
                                         </h1>
+                                       
                                     </div>
                                 </div>
                             @empty
@@ -176,7 +184,7 @@
                             <div class="w-full grid place-content-center">
                                 @if ($customer_name != null)
                                     <button wire:click="confirmCheckin"
-                                        class="p-2 px-5 border-2 border-green-500 text-lg rounded-full font-semibold bg-gray-600 text-white">
+                                        class="p-2 px-5 border-2 border-gray-700 text-lg rounded-full font-semibold bg-green-600 text-white">
                                         <span>CONFIRM INFORMATION</span>
                                     </button>
                                 @endif
@@ -334,7 +342,7 @@
                     <div class="absolute right-0 bottom-0">
                         <a href="{{ route('kiosk.transaction') }}"
                             class="p-4 px-6 bg-gray-600 text-white fill-white flex items-center space-x-1 rounded-br-3xl border-t-4 border-l-4 border-yellow-300 font-semibold">
-                            <span>PRINT QR</span>
+                            <span>OK</span>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-6 w-6">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path
