@@ -45,5 +45,9 @@ class Branch extends Model
     {
         return $this->hasMany(Extension::class);
     }
-   
+    
+    public function extension_capping()
+    {
+        return $this->hasOne(ExtensionCapping::class);
+    }
 }

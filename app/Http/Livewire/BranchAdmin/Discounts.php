@@ -6,11 +6,14 @@ use App\Models\Discount;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
-use App\Traits\Modal;
 
 class Discounts extends Component
 {
-    use WithPagination, Actions, Modal;
+    use WithPagination, Actions;
+
+    public $showModal = false;
+
+    public $mode='create';
 
     public $name;
 
@@ -24,7 +27,15 @@ class Discounts extends Component
 
     public $edit_id = null;
 
+    public $discount=null;
+
     public $search = "";
+
+
+    public function getModalTitle()
+    {
+        return $this->mode == 'create' ? 'Create Discount' : 'Update Discount';
+    }
 
     public function amountLabel()
     {
@@ -47,20 +58,24 @@ class Discounts extends Component
         }
     }
 
-    public function onClickAdd()
+    public function add()
     {
         $this->reset('name', 'amount', 'description');
+        $this->mode = 'create';
+        $this->showModal = true;
     }
 
-    public function onClickEdit($edit_id)
+    public function edit($edit_id)
     {
         $this->edit_id = $edit_id;
-        $discount = Discount::find($edit_id);
-        $this->name = $discount->name;
-        $this->amount = $discount->amount;
-        $this->description = $discount->description;
-        $this->is_available = $discount->is_available;
-        $this->type = $discount->is_percentage ? 'percentage' : 'amount';
+        $this->discount = Discount::find($edit_id);
+        $this->name = $this->discount->name;
+        $this->amount = $this->discount->amount;
+        $this->description = $this->discount->description;
+        $this->is_available = $this->discount->is_available;
+        $this->type = $this->discount->is_percentage ? 'percentage' : 'amount';
+        $this->mode = 'update';
+        $this->showModal = true;
     }
 
     public function create()
@@ -86,8 +101,8 @@ class Discounts extends Component
 
     public function update()
     {
-        $discount = Discount::find($this->edit_id);
-        $discount->update([
+       
+        $this->discount->update([
             'name' => $this->name,
             'amount' => $this->amount,
             'description' => $this->description,

@@ -55,7 +55,7 @@
     </div>
     <div wire:key="modal-panel">
         <x-modal.card wire:model.defer="showModal"
-            title="{{ $this->getModeTitle() }}">
+            title="{{ $this->getModalTitle() }}">
             <form>
                 @csrf
                 <div class="gap-3 sm:grid sm:grid-cols-2">

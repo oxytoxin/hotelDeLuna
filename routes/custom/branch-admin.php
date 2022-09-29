@@ -57,4 +57,8 @@ Route::prefix('branch')->middleware([
     Route::get('/room-boy-designations', function () {
         return view('branch-admin.room-boy-designations');
     })->name('branch.room-boy-designations');
+
+    Route::get('/manage-settings', function () {
+        return view('branch-admin.manage-settings');
+    })->name('branch.manage-settings');
 });
