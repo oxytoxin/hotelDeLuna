@@ -10,7 +10,9 @@
 
                 </div>
             </div>
-            @include('front-desk.sub.recent-check-in')
+            <div wire:key="recent-check-in">
+                @include('front-desk.sub.recent-check-in')
+            </div>
         </div>
     </div>
     <div wire:key="modal-panels">

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\FrontDesk;
 
 use App\Models\CheckInDetail;
+use App\Models\Extension;
 use App\Models\Guest;
 use App\Models\Room;
 use App\Models\RoomChange;
@@ -11,6 +12,8 @@ use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
+use Illuminate\Support\Facades\DB;
+use Termwind\Components\Dd;
 
 class GuestTransaction extends Component
 {
@@ -60,11 +63,11 @@ class GuestTransaction extends Component
 
     public $checked_in_room;
 
-    public $hours;
+    public $extenstion_id;
 
     public $extension_amount;
 
-    public $extention_paid = false;
+    public $extension_paid = false;
 
     public $to_room;
 
@@ -75,8 +78,10 @@ class GuestTransaction extends Component
         'amount' => 'Amount',
         'room_id' => 'Room',
         'occured_at' => 'Occured At',
-        'extension_amount' => 'Amount',
+        'extenstion_id' => 'Extension',
     ];
+
+    public $extensions = [];
 
     public function search()
     {
@@ -134,24 +139,24 @@ class GuestTransaction extends Component
     public function saveExtend()
     {
         $this->validate([
-            'checked_in_room' => 'required',
-            'hours' => 'required|numeric',
-            'extension_amount' => 'required|numeric',
+            'extenstion_id' => 'required',
         ]);
+        DB::beginTransaction();
+        $extension = Extension::find($this->extenstion_id);
         $this->guest->transactions()->create([
             'branch_id' => auth()->user()->branch_id,
             'transaction_type_id' => 6,
-            'payable_amount' => $this->extension_amount,
-            'paid_at' => $this->extention_paid ? now() : null,
+            'payable_amount' => $extension->amount,
+            'paid_at' => $this->extension_paid ? now() : null,
         ]);
-
-        $check_in_detail = CheckInDetail::where('id', $this->checked_in_room)->first();
+        $check_in_detail = $this->guest->transactions()->where('transaction_type_id', 1)->first()->check_in_detail;
         $check_in_detail->update([
-            'expected_check_out_at' => Carbon::parse($check_in_detail->expected_check_out_at)->addHours($this->hours),
+            'expected_check_out_at' => Carbon::parse($check_in_detail->expected_check_out_at)->addHours($extension->hours),
         ]);
+        $check_in_detail->extensions()->attach($extension->id);
+        DB::commit();
 
         $this->extendModal = false;
-        $this->reset('checked_in_room', 'hours', 'extension_amount');
         $this->notification()->success(
             $title = 'Success',
             $description = 'Room has been extended successfully'
@@ -184,14 +189,14 @@ class GuestTransaction extends Component
 
     public function showChangeRoomModal()
     {
-        $changeRoomCount = RoomChange::where('check_in_detail_id',$this->guest->transactions()->where('transaction_type_id', 1)->first()->check_in_detail->id)->count(); 
+        $changeRoomCount = RoomChange::where('check_in_detail_id', $this->guest->transactions()->where('transaction_type_id', 1)->first()->check_in_detail->id)->count();
         if ($changeRoomCount == 2) {
             $this->notification()->error(
                 $title = 'Error',
                 $description = 'You can not change room more than 2 times'
             );
             return;
-        } 
+        }
         $this->changeRoomModal = true;
     }
 
@@ -242,21 +247,10 @@ class GuestTransaction extends Component
         );
     }
 
-    public function updatedHours()
+    public function mount()
     {
-        switch($this->hours){
-            case "6":
-                $this->extension_amount = 100;
-                break;
-            case "12":
-                $this->extension_amount = 200;
-                break;
-            case "18":
-                $this->extension_amount = 300;
-                break;
-        }
+        $this->extensions = auth()->user()->branch->extensions;
     }
-
     public function render()
     {
         return view('livewire.front-desk.guest-transaction', [

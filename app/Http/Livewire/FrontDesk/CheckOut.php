@@ -8,6 +8,7 @@ use App\Models\Guest;
 use App\Models\Room;
 use App\Models\Transaction;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 
@@ -76,6 +77,15 @@ class CheckOut extends Component
         $room = Room::where('number', $this->realSearch)->whereHas('floor', function ($query) {
             return $query->where('branch_id', auth()->user()->branch_id);
         })->first();
+
+        if (!$room) {
+            $this->notification()->error(
+                $title = 'Room not found',
+                $description = 'Room number ' . $this->realSearch . ' not found in this branch.'
+            );
+            return false;
+        }
+
         $check_in_detail = CheckInDetail::query()
             ->where('room_id', $room->id)
             ->where('check_in_at', '!=', null)
@@ -88,7 +98,7 @@ class CheckOut extends Component
             } else {
                 return false;
             }
-        }else{
+        } else {
             return false;
         }
     }
@@ -140,6 +150,7 @@ class CheckOut extends Component
     public function checkOutConfirm($transaction_id)
     {
         $transaction = Transaction::find($transaction_id);
+        DB::beginTransaction();
         $transaction->check_in_detail->update([
             'check_out_at' => Carbon::now(),
         ]);
@@ -147,6 +158,7 @@ class CheckOut extends Component
             'room_status_id' => 7,
             'time_to_clean' => Carbon::now()->addHours(3),  // with in 3 hours after check out, the room must be cleaned by the bell boy
         ]);
+        DB::commit();
         $this->notification()->success(
             $title = 'Success',
             $description = 'Room has been checked out!'

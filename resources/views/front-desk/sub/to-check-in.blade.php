@@ -57,7 +57,6 @@
                                 <x-native-select wire:model="searchBy">
                                     <option value="1">Search By Qr Code</option>
                                     <option value="2">Search By Name</option>
-                                    <option value="3">Search By Contact Number</option>
                                 </x-native-select>
                                 <x-input icon="search"
                                     wire:model.defer="search"
@@ -121,12 +120,10 @@
                                         </td>
                                         <td
                                             class="relative py-2 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
-                                            <x-button wire:key="{{ $guest->id }}"
-                                                wire:click="setGuest({{ $guest->id }})"
-                                                spinner="setGuest({{ $guest->id }})"
-                                                sm>
-                                                VIEW
-                                            </x-button>
+                                            <div class="flex justify-end">
+                                                <x-actions.view-check-in wire:key="{{ $guest->id }}"
+                                                    wire:click="setGuest({{ $guest->id }})" />
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty

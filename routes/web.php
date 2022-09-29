@@ -37,9 +37,9 @@ Route::middleware([
             case '5':
                 return redirect()->route('roomboy.home');
                 break;
-            case '6':
-                return redirect()->route('house-keeping.dashboard');
-                break;
+            // case '6':
+            //     return redirect()->route('house-keeping.dashboard');
+            //     break;
             case '3':
                 return redirect()->route('kiosk.transaction');
                 break;

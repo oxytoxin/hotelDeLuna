@@ -25,4 +25,9 @@ class CheckInDetail extends Model
     {
         return $this->belongsTo(Rate::class);
     }
+
+    public function extensions()
+    {
+        return $this->belongsToMany(Extension::class);
+    }
 }

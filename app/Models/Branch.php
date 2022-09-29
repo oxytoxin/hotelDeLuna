@@ -40,4 +40,10 @@ class Branch extends Model
     {
         return $this->hasMany(Discount::class);
     }
+
+    public function extensions()
+    {
+        return $this->hasMany(Extension::class);
+    }
+   
 }

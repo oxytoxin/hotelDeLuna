@@ -4,9 +4,7 @@ namespace App\Traits;
 
 trait Modal
 {
-    public $mode = 'create';
-
-    public $showModal = false;
+  
 
     public function getModeTitle()
     {

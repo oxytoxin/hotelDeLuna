@@ -22,7 +22,6 @@ Route::prefix('branch')->middleware([
         return view('branch-admin.manage-rooms');
     })->name('branch.manage-rooms');
 
-
     Route::get('/manage-users', function () {
         return view('branch-admin.manage-users');
     })->name('branch.manage-users');
@@ -31,7 +30,13 @@ Route::prefix('branch')->middleware([
         return view('branch-admin.discounts');
     })->name('branch.discounts');
 
+    Route::get('/extension-amounts', function () {
+        return view('branch-admin.extension-amounts');
+    })->name('branch.extension-amounts');
 
+    Route::get('/charges-on-stain-and-damages', function () {
+        return view('branch-admin.charges-on-stain-and-damages');
+    })->name('branch.charges-on-stain-and-damages');
 
     Route::get('/check-in', function () {
         return view('branch-admin.check-in');
@@ -48,4 +53,8 @@ Route::prefix('branch')->middleware([
     Route::get('/room-monitoring', function () {
         return view('branch-admin.room-monitoring');
     })->name('branch.room-monitoring');
+
+    Route::get('/room-boy-designations', function () {
+        return view('branch-admin.room-boy-designations');
+    })->name('branch.room-boy-designations');
 });

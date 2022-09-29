@@ -46,14 +46,14 @@ class AccountSeeder extends Seeder
             'password' => bcrypt('password'),
             'branch_name'=>'ALMA RESIDENCES GENSAN',
         ]);
-        User::create([
-            'branch_id' => 1,
-            'role_id' => 6,
-            'name' => 'House Keeping',
-            'email' => 'housekeeping@gmail.com',
-            'password' => bcrypt('password'),
-            'branch_name'=>'ALMA RESIDENCES GENSAN',
-        ]);
+        // User::create([
+        //     'branch_id' => 1,
+        //     'role_id' => 6,
+        //     'name' => 'House Keeping',
+        //     'email' => 'housekeeping@gmail.com',
+        //     'password' => bcrypt('password'),
+        //     'branch_name'=>'ALMA RESIDENCES GENSAN',
+        // ]);
         User::create([
             'role_id' => 7,
             'name' => 'Super - Admin',

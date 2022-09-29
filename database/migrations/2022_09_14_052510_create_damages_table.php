@@ -16,11 +16,9 @@ return new class extends Migration
         Schema::create('damages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('guest_id')->constrained();
-            $table->foreignId('room_id')->constrained();
-            $table->string('item');
+            $table->foreignId('room_id')->nullable();
+            $table->unsignedBigInteger('hotel_item_id')->constrained();
             $table->dateTime('occured_at');
-            $table->string('payable_amount');
-            $table->string('paid_at')->nullable();
             $table->timestamps();
         });
     }

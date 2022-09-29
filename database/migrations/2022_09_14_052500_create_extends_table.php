@@ -15,9 +15,6 @@ return new class extends Migration
     {
         Schema::create('extends', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('check_in_detail_id')->constrained();
-            $table->string('hours');
-            $table->string('amount');
             $table->timestamps();
         });
     }

@@ -8,6 +8,7 @@ use App\Models\Guest;
 use App\Models\Room;
 use App\Models\Transaction;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Psy\Readline\Transient;
@@ -35,6 +36,17 @@ class CheckIn extends Component
     public $selectedDiscounts = [];
 
     public $discounted_amount = 0;
+
+    public $recent_check_in_order = 'DESC';
+
+    public function toggle_recent_check_in_order()
+    {
+        if ($this->recent_check_in_order == 'DESC') {
+            $this->recent_check_in_order = 'ASC';
+        } else {
+            $this->recent_check_in_order = 'DESC';
+        }
+    }
 
     public function searchReal()
     {
@@ -85,6 +97,7 @@ class CheckIn extends Component
 
     public function checkIn()
     {
+        DB::beginTransaction();
         $this->guest->transactions()->update(['paid_at' => Carbon::now()]);
         foreach ($this->guest->transactions->where('transaction_type_id', 1) as  $check_in_transaction) {
             $check_in_detail = CheckInDetail::where('transaction_id', $check_in_transaction->id)->first();
@@ -100,6 +113,7 @@ class CheckIn extends Component
             'is_checked_in' => true,
             'check_in_at' => Carbon::now(),
         ]);
+        DB::commit();
         $this->showModal = false;
         $this->notification()->success(
             $title = 'Success!',
@@ -163,8 +177,9 @@ class CheckIn extends Component
                 ->orderBy('created_at', 'desc')->get() : [],
             'recent_check_in_list' => Guest::query()
                 ->where('is_checked_in', true)
-                ->orderBy('check_in_at', 'desc')
-                ->paginate(10),
+                ->orderBy('check_in_at', $this->recent_check_in_order)
+                ->take(10)
+                ->get(),
             'discounts' => $this->showModal==true ?
                 Discount::where('branch_id', auth()->user()->branch_id)
                 ->where('is_available', true)

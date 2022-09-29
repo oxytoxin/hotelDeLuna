@@ -22,6 +22,10 @@ Route::prefix('frontdesk')->middleware([
         return view('front-desk.guest-transaction');
     })->name('front-desk.guest-transaction');
 
+    Route::get('/guest-transaction/{guest}/change-room', function ($quest) {
+        return view('front-desk.change-room',['guest' => $quest]);
+    })->name('front-desk.change-room');
+
     Route::get('/room-monitoring', function () {
         return view('front-desk.room-monitoring');
     })->name('front-desk.room-monitoring');

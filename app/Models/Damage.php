@@ -20,4 +20,9 @@ class Damage extends Model
     {
         return $this->belongsTo(Room::class);
     }
+
+    public function hotel_item()
+    {
+        return $this->belongsTo(HotelItem::class);
+    }
 }

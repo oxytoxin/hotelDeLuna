@@ -15,22 +15,27 @@ class TransactionTypeSeeder extends Seeder
     public function run()
     {
         TransactionType::create([
-            'name' => 'Check In',
+            'name' => 'Check In', //1
         ]);
         TransactionType::create([
-            'name' => 'Deposit',
+            'name' => 'Deposit',   //2
         ]);
         TransactionType::create([
-            'name' => 'Kitchen Order',
+            'name' => 'Kitchen Order',  //3
         ]);
         TransactionType::create([
-            'name' => 'Hour Extension',
+            'name' => 'Damage Charge', //4
         ]);
         TransactionType::create([
-            'name' => 'Cashout',
+            'name' => 'Cashout', //5
         ]);
         TransactionType::create([
-            'name' => 'Extend',
+            'name' => 'Extend', //6
         ]);
+
+        TransactionType::create([
+            'name' => 'Change Room', //7
+        ]);
+        
     }
 }

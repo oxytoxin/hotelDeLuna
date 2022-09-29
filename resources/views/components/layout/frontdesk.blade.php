@@ -207,7 +207,7 @@
     <!-- Static sidebar for desktop -->
     <div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
         <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="flex flex-col flex-1 min-h-0 bg-white border-r border-gray-200">
+        <div class="flex flex-col flex-1 min-h-0 bg-white shadow-md">
             <div class="flex flex-col flex-1 pt-5 pb-4 overflow-y-auto">
                 <div class="flex items-center justify-center flex-shrink-0 px-4">
                     <h1 class="text-center text-gray-600">
