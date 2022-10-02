@@ -14,8 +14,9 @@ class Cleaning extends Component
     use Actions;
 
     public $current_assigned_floor;
-
+    public $filter = 'ASC';
     public $room;
+    
 
     public function getDesignationProperty()
     {
@@ -29,6 +30,10 @@ class Cleaning extends Component
     public function startRoomCleaning($room_id)
     {
         if (auth()->user()->room_boy->is_cleaning) {
+            $this->notification()->error(
+                $title = 'Cleaning Room',
+                $description = 'You are not able to clean this room. please make sure you dont have pending unclean room.',
+            );
             return;
         }
         $this->dialog()->confirm([
@@ -111,6 +116,10 @@ class Cleaning extends Component
         );
     }
 
+    public function test(){
+        dd('sdsdsd');
+    }
+
     public function render()
     {
         return view('livewire.room-boy.cleaning', [
@@ -118,6 +127,7 @@ class Cleaning extends Component
                 ->where('floor_id', $this->designation->floor_id)
                 ->whereIn('room_status_id', [7, 8])
                 ->get() : [],
+                'history' => CleaningModel::query()->where('room_boy_id', auth()->user()->room_boy->id)->orderBy('id', $this->filter)->get(),
         ]);
     }
 }

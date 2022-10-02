@@ -1,4 +1,4 @@
-@extends('layouts.master')
+{{-- @extends('layouts.master')
 
 @section('content')
     <div>
@@ -131,4 +131,7 @@
             @livewire('room-boy.cleaning')
         </div>
     </div>
-@endsection
+@endsection --}}
+<x-roomboy>
+    @livewire('room-boy.cleaning')
+</x-roomboy>

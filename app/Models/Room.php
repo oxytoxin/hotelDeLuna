@@ -45,4 +45,8 @@ class Room extends Model
         return $this->hasMany(TemporaryRoom::class);
     }
 
+    public function cleanings(){
+        return $this->hasMany(Cleaning::class);
+    }
+
 }
