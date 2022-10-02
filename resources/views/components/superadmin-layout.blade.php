@@ -26,8 +26,7 @@
 </head>
 
 <body class="font-rubik antialiased">
-    <x-notifications z-index="z-50" />
-    <x-dialog z-index="z-50" blur="md" align="center" />
+   
 
     <div class="min-h-full" x-data="{ logout: false }">
         <header class="bg-gradient-to-r from-gray-800 to-gray-600 pb-24">
@@ -262,7 +261,8 @@
         </div>
     </div>
     </div>
-
+    <x-notifications z-index="z-50" />
+    <x-dialog z-index="z-50" blur="md" align="center" />
     @livewireScripts
 </body>
 

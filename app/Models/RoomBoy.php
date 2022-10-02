@@ -25,4 +25,8 @@ class RoomBoy extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function cleanings(){
+        return $this->hasMany(Cleaning::class);
+    }
 }
