@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('check_in_detail_extension', function (Blueprint $table) {
+        Schema::create('check_in_detail_extensions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('check_in_detail_id')->constrained();
             $table->foreignId('extension_id')->constrained();
+            $table->string('hours');
+            $table->string('amount');
             $table->timestamps();
         });
     }

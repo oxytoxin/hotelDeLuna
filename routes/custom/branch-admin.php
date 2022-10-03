@@ -61,4 +61,12 @@ Route::prefix('branch')->middleware([
     Route::get('/manage-settings', function () {
         return view('branch-admin.manage-settings');
     })->name('branch.manage-settings');
+    
+    Route::get('/manage-requestable-items', function () {
+        return view('branch-admin.manage-requestable-items');
+    })->name('branch.manage-requestable-items');
+
+    Route::get('/manage-types', function () {
+        return view('branch-admin.manage-types');
+    })->name('branch.manage-types');
 });

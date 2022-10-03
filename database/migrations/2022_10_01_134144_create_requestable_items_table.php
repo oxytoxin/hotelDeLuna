@@ -13,13 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('room_changes', function (Blueprint $table) {
+        Schema::create('requestable_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('check_in_detail_id')->constrained();
-            $table->unsignedBigInteger('from_room_id')->references('id')->on('rooms');
-            $table->unsignedBigInteger('to_room_id')->references('id')->on('rooms');
-            $table->string('reason');
-            $table->string('amount');
+            $table->foreignId('branch_id');
+            $table->string('name');
+            $table->string('price');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('room_changes');
+        Schema::dropIfExists('requestable_items');
     }
 };

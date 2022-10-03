@@ -50,4 +50,9 @@ class Branch extends Model
     {
         return $this->hasOne(ExtensionCapping::class);
     }
+
+    public function requestable_items()
+    {
+        return $this->hasMany(RequestableItem::class);
+    }
 }

@@ -20,4 +20,9 @@ class RoomChange extends Model
     {
         return $this->belongsTo(Room::class, 'to_room_id');
     }
+
+    public function check_in_detail()
+    {
+        return $this->belongsTo(CheckInDetail::class);
+    }
 }

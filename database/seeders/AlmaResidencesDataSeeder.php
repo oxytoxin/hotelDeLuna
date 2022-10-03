@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\HotelItem;
+use App\Models\RequestableItem;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -211,6 +212,25 @@ class AlmaResidencesDataSeeder extends Seeder
             'name' => 'BASURAHAN',
             'price' => 70,
         ]);
-
+        RequestableItem::create([
+            'branch_id' => 1,
+            'name' => 'EXTRA PERSON WITH FREE PILLOW, BLANKET,TOWEL',
+            'price'=>'100'
+        ]);
+        RequestableItem::create([
+            'branch_id'=>1,
+            'name'=>'EXTRA TOWEL',
+            'price'=>'20'
+        ]);
+        RequestableItem::create([
+            'branch_id'=>1,
+            'name'=>'EXTRA BLANKET',
+            'price'=>'20'
+        ]);
+        RequestableItem::create([
+            'branch_id'=>1,
+            'name'=>'EXTRA FITTED SHEET',
+            'price'=>'20'
+        ]);
     }
 }

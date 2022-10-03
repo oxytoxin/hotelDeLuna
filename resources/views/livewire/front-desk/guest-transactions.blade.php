@@ -12,6 +12,7 @@
         <div wire:key="buttons"
             class="flex space-x-3 items-center">
             <x-button wire:click="search('qr')"
+                primary
                 icon="search"
                 spinner="search('qr')">QR CODE</x-button>
             @if ($guest)
@@ -68,15 +69,22 @@
                 @break
 
                 @case('extend-hours')
-                    @livewire('front-desk.transactions.extend-hours')
+                    @livewire('front-desk.transactions.extend-hours', [
+                        'check_in_detail_id' => $check_in_detail_id,
+                        'guest_id' => $guest->id,
+                    ])
                 @break
 
                 @case('add-damages')
-                    @livewire('front-desk.transactions.add-damages')
+                    @livewire('front-desk.transactions.add-damages', [
+                        'guest_id' => $guest->id,
+                    ])
                 @break
 
                 @case('item-request')
-                    @livewire('front-desk.transactions.item-request')
+                    @livewire('front-desk.transactions.item-request', [
+                        'guest_id' => $guest->id,
+                    ])
                 @break
 
                 @default

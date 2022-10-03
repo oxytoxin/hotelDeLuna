@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('room_changes', function (Blueprint $table) {
+        Schema::create('guest_request_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('check_in_detail_id')->constrained();
-            $table->unsignedBigInteger('from_room_id')->references('id')->on('rooms');
-            $table->unsignedBigInteger('to_room_id')->references('id')->on('rooms');
-            $table->string('reason');
+            $table->foreignId('guest_id')->constrained();
+            $table->foreignId('requestable_item_id')->constrained();
+            $table->string('quantity');
             $table->string('amount');
+            $table->string('additional_amount')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('room_changes');
+        Schema::dropIfExists('guest_request_items');
     }
 };

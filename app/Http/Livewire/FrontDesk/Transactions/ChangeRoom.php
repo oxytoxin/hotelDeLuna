@@ -18,6 +18,8 @@ class ChangeRoom extends Component
 {
     use Actions;
 
+    public $historyOrder = 'DESC';
+
     public $types_within_this_branch = [], $floors_within_this_branch = [];
 
     public $check_in_detail_id;
@@ -46,6 +48,11 @@ class ChangeRoom extends Component
         'id' => null,
         'number' => null,
     ];
+
+    public function historyOrderToggle()
+    {
+        $this->historyOrder = $this->historyOrder == 'DESC' ? 'ASC' : 'DESC';
+    }
 
     public function select_room($room_id, $room_number)
     {
@@ -110,7 +117,6 @@ class ChangeRoom extends Component
         }
 
         // identifying the amount applied in the old room and the new room to get the balance to be applied in the new transaction
-        $old_check_in_amount = $this->check_in_detail->rate->amount;
         $new_room_rate = Rate::where('type_id', $this->form['type_id'])
                         ->where('staying_hour_id', $this->check_in_detail->rate->staying_hour_id)
                         ->where('branch_id', auth()->user()->branch_id)
@@ -121,7 +127,7 @@ class ChangeRoom extends Component
             'branch_id' => auth()->user()->branch_id,
             'guest_id' => $transaction->guest_id,
             'transaction_type_id' => 7,
-            'payable_amount' => $new_selected_room_amount - $old_check_in_amount,
+            'payable_amount' => $new_selected_room_amount,
             'paid_at' => $this->form['paid'] ? now() : null,
         ]);
 
@@ -135,6 +141,7 @@ class ChangeRoom extends Component
             'from_room_id' => $this->current_room->id,
             'to_room_id' => $this->form['room_id'],
             'reason' => $this->form['reason'],
+            'amount'=> $new_selected_room_amount,
         ]);
         $this->current_room->update([
             'room_status_id' => 5,
@@ -147,6 +154,11 @@ class ChangeRoom extends Component
             $title = 'Success',
             $description = 'Room has been changed successfully'
         );
+        $this->reset('form');
+    }
+
+    public function clear_form()
+    {
         $this->reset('form');
     }
 
@@ -167,6 +179,10 @@ class ChangeRoom extends Component
                 ->where('type_id', $this->form['type_id'])
                 ->where('room_status_id', 1)
                 ->get() : [],
+            'changes_history' => RoomChange::where('check_in_detail_id', $this->check_in_detail_id)
+                                    ->with(['fromRoom', 'toRoom'])
+                                    ->orderBy('created_at', $this->historyOrder)
+                                    ->get(),
         ]);
     }
 }

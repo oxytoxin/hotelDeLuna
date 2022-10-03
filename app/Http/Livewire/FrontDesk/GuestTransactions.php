@@ -72,6 +72,35 @@ class GuestTransactions extends Component
         }
     }
 
+    public function payTransaction($transaction_id)
+    {
+        $this->dialog()->confirm([
+            'title'       => 'Are you Sure?',
+            'description' => 'This will mark this transaction as paid',
+            'icon'        => 'question',
+            'accept'      => [
+                'label'  => 'Yes, Pay',
+                'method' => 'confirmPayTransaction',
+                'params' => $transaction_id,
+            ],
+            'reject' => [
+                'label'  => 'No, cancel',
+            ],
+        ]);
+    }
+
+    public function confirmPayTransaction($transaction_id)
+    {
+        $transaction = $this->guest->transactions()->find($transaction_id);
+        $transaction->update([
+            'paid_at' => now(),
+        ]);
+        $this->notification()->success(
+            $title = 'Transaction Paid',
+            $description = 'Transaction has been marked as paid'
+        );
+    }
+
     public function clear()
     {
         $this->search = '';

@@ -1,7 +1,7 @@
 <div>
     <div>
         @php
-            $headers = ['Room Number', 'Status', 'Time Remaining', 'Alert For Checkout', 'Time To Clean', ''];
+            $headers = ['Room Number', 'Status', 'Alert For Checkout', 'Time To Clean', ''];
         @endphp
         <div class="mt-5">
             <div class="flex flex-col">
@@ -58,18 +58,30 @@
                                                             </span>
                                                         @else
                                                             <x-countdown :expires="$expires">
-                                                                <span
-                                                                    x-text="timer.days">{{ $component->days() }}</span>
-                                                                days -
-                                                                <span
-                                                                    x-text="timer.hours">{{ $component->hours() }}</span>
-                                                                hours -
-                                                                <span
-                                                                    x-text="timer.minutes">{{ $component->minutes() }}</span>
-                                                                minutes -
-                                                                <span
-                                                                    x-text="timer.seconds">{{ $component->seconds() }}</span>
-                                                                seconds
+                                                                <div class="flex space-x-2"
+                                                                    x-bind:class="timer.hours == '00' ? 'text-red-600' :
+                                                                        'text-green-600'">
+                                                                    <div class="flex space-x-1">
+                                                                        <span
+                                                                            x-text="timer.days">{{ $component->days() }}</span>
+                                                                        <span> days -</span>
+                                                                    </div>
+                                                                    <div class="flex space-x-1">
+                                                                        <span
+                                                                            x-text="timer.hours">{{ $component->hours() }}</span>
+                                                                        <span> hours -</span>
+                                                                    </div>
+                                                                    <div class="flex space-x-1">
+                                                                        <span
+                                                                            x-text="timer.minutes">{{ $component->minutes() }}</span>
+                                                                        <span> minutes -</span>
+                                                                    </div>
+                                                                    <div class="flex space-x-1">
+                                                                        <span
+                                                                            x-text="timer.seconds">{{ $component->seconds() }}</span>
+                                                                        <span>seconds</span>
+                                                                    </div>
+                                                                </div>
                                                             </x-countdown>
                                                         @endif
                                                     @else
@@ -77,39 +89,7 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
-                                                <div>
-                                                    @if ($room->room_status_id == 2 && count($room->check_in_details))
-                                                        @php
-                                                            if (count($room->check_in_details)) {
-                                                                $expires = new Carbon\Carbon($room->check_in_details[0]->expected_check_out_at);
-                                                            }
-                                                        @endphp
-                                                        @if ($expires->isPast())
-                                                            <span class="text-red-500">
-                                                                Time Out :{{ $expires->diffForHumans()->subHours(1) }}
-                                                            </span>
-                                                        @else
-                                                            <x-countdown :expires="$expires->subHours(1)">
-                                                                <span
-                                                                    x-text="timer.days">{{ $component->days() }}</span>
-                                                                days -
-                                                                <span
-                                                                    x-text="timer.hours">{{ $component->hours() }}</span>
-                                                                hours -
-                                                                <span
-                                                                    x-text="timer.minutes">{{ $component->minutes() }}</span>
-                                                                minutes -
-                                                                <span
-                                                                    x-text="timer.seconds">{{ $component->seconds() }}</span>
-                                                                seconds
-                                                            </x-countdown>
-                                                        @endif
-                                                    @else
-                                                        --
-                                                    @endif
-                                                </div>
-                                            </td>
+
                                             <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
                                                 @if ($room->time_to_clean)
                                                     @php

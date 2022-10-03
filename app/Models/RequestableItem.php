@@ -5,18 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Extension extends Model
+class RequestableItem extends Model
 {
     use HasFactory;
     protected $guarded = [];
-
     public function branch()
     {
         return $this->belongsTo(Branch::class);
     }
 
-    public function check_in_detail_extensions()
+    public function guest_request_items()
     {
-        return $this->hasMany(CheckInDetailExtension::class);
+        return $this->hasMany(GuestRequestItem::class);
     }
 }

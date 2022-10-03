@@ -213,10 +213,7 @@
                         APP_NAME
                     </h1>
                 </div>
-                <nav class="flex-1 px-2 pt-5 mt-5 space-y-1 bg-white border-t">
-                    <h1 class="text-gray-600">
-                        Menu
-                    </h1>
+                <nav class="flex-1 px-2 pt-5 mt-5  bg-white border-t">
                     <a href="{{ route('branch.dashboard') }}"
                         @class([
                             'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
@@ -238,51 +235,6 @@
                                 d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                         </svg>
                         Dashboard
-                    </a>
-                    <a href="{{ route('branch.manage-rates') }}"
-                        @class([
-                            'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
-                            'text-white bg-primary-500 hover:text-gray-50' => request()->is(
-                                'branch/manage-rates*'
-                            ),
-                            'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
-                                'branch/manage-rates*'
-                            ),
-                        ])>
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="flex-shrink-0 w-6 h-6 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-                        </svg>
-                        Manage Rates
-                    </a>
-                    <a href="{{ route('branch.manage-rooms') }}"
-                        @class([
-                            'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
-                            'text-white bg-primary-500 hover:text-gray-50' => request()->is(
-                                'branch/manage-rooms*'
-                            ),
-                            'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
-                                'branch/manage-rooms*'
-                            ),
-                        ])>
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="flex-shrink-0 w-6 h-6 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
-                        </svg>
-
-                        Manage Rooms
                     </a>
                     <a href="{{ route('branch.guests') }}"
                         @class([
@@ -306,99 +258,193 @@
                         </svg>
                         Guests
                     </a>
-                    <a href="{{ route('branch.manage-users') }}"
-                        @class([
-                            'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
-                            'text-white bg-primary-500 hover:text-gray-50' => request()->is(
-                                'branch/manage-users*'
-                            ),
-                            'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
-                                'branch/manage-users*'
-                            ),
-                        ])>
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="flex-shrink-0 w-6 h-6 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-                        </svg>
-                        Manage Users
-                    </a>
-                    <a href="{{ route('branch.discounts') }}"
-                        @class([
-                            'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
-                            'text-white bg-primary-500 hover:text-gray-50' => request()->is(
-                                'branch/manage-branch-discounts*'
-                            ),
-                            'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
-                                'branch/manage-branch-discounts*'
-                            ),
-                        ])>
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="flex-shrink-0 w-6 h-6 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
-                        </svg>
-                        Manage Discounts
-                    </a>
-                    <a href="{{ route('branch.extension-amounts') }}"
-                        @class([
-                            'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
-                            'text-white bg-primary-500 hover:text-gray-50' => request()->is(
-                                'branch/extension-amounts*'
-                            ),
-                            'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
-                                'branch/extension-amounts*'
-                            ),
-                        ])>
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="flex-shrink-0 w-6 h-6 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        Extenstion Amounts
-                    </a>
-                    <a href="{{ route('branch.charges-on-stain-and-damages') }}"
-                        @class([
-                            'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
-                            'text-white bg-primary-500 hover:text-gray-50' => request()->is(
-                                'branch/charges-on-stain-and-damages*'
-                            ),
-                            'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
-                                'branch/charges-on-stain-and-damages*'
-                            ),
-                        ])>
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="flex-shrink-0 w-6 h-6 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
-                        </svg>
-                        Additional Charges
-                    </a>
+                    <div>
+                        <div class="text-gray-800  font-semibold p-2 w-full flex justify-between items-center">
+                            <h1> Manage</h1>
+                        </div>
+                        <a href="{{ route('branch.manage-types') }}"
+                            @class([
+                                'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
+                                'text-white bg-primary-500 hover:text-gray-50' => request()->is(
+                                    'branch/manage-types*'
+                                ),
+                                'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
+                                    'branch/manage-types*'
+                                ),
+                            ])>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="flex-shrink-0 w-6 h-6 mr-3 ">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
+                            </svg>
+                            Types
+                        </a>
+                        <a href="{{ route('branch.manage-rates') }}"
+                            @class([
+                                'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
+                                'text-white bg-primary-500 hover:text-gray-50' => request()->is(
+                                    'branch/manage-rates*'
+                                ),
+                                'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
+                                    'branch/manage-rates*'
+                                ),
+                            ])>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="flex-shrink-0 w-6 h-6 mr-3 ">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+                            </svg>
+                            Rates
+                        </a>
+                        <a href="{{ route('branch.manage-rooms') }}"
+                            @class([
+                                'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
+                                'text-white bg-primary-500 hover:text-gray-50' => request()->is(
+                                    'branch/manage-rooms*'
+                                ),
+                                'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
+                                    'branch/manage-rooms*'
+                                ),
+                            ])>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="flex-shrink-0 w-6 h-6 mr-3 ">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
+                            </svg>
+
+                            Rooms
+                        </a>
+                        <a href="{{ route('branch.manage-users') }}"
+                            @class([
+                                'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
+                                'text-white bg-primary-500 hover:text-gray-50' => request()->is(
+                                    'branch/manage-users*'
+                                ),
+                                'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
+                                    'branch/manage-users*'
+                                ),
+                            ])>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="flex-shrink-0 w-6 h-6 mr-3 ">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                            </svg>
+                            Users
+                        </a>
+                        <a href="{{ route('branch.discounts') }}"
+                            @class([
+                                'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
+                                'text-white bg-primary-500 hover:text-gray-50' => request()->is(
+                                    'branch/manage-branch-discounts*'
+                                ),
+                                'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
+                                    'branch/manage-branch-discounts*'
+                                ),
+                            ])>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="flex-shrink-0 w-6 h-6 mr-3 ">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
+                            </svg>
+                            Discounts
+                        </a>
+                        <a href="{{ route('branch.extension-amounts') }}"
+                            @class([
+                                'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
+                                'text-white bg-primary-500 hover:text-gray-50' => request()->is(
+                                    'branch/extension-amounts*'
+                                ),
+                                'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
+                                    'branch/extension-amounts*'
+                                ),
+                            ])>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="flex-shrink-0 w-6 h-6 mr-3 ">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Extenstion Amounts
+                        </a>
+                        <a href="{{ route('branch.charges-on-stain-and-damages') }}"
+                            @class([
+                                'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
+                                'text-white bg-primary-500 hover:text-gray-50' => request()->is(
+                                    'branch/charges-on-stain-and-damages*'
+                                ),
+                                'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
+                                    'branch/charges-on-stain-and-damages*'
+                                ),
+                            ])>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="flex-shrink-0 w-6 h-6 mr-3 ">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                            </svg>
+                            Additional Charges
+                        </a>
+                        <a href="{{ route('branch.manage-requestable-items') }}"
+                            @class([
+                                'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
+                                'text-white bg-primary-500 hover:text-gray-50' => request()->is(
+                                    'branch/manage-requestable-items*'
+                                ),
+                                'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->is(
+                                    'branch/manage-requestable-items*'
+                                ),
+                            ])>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="flex-shrink-0 w-6 h-6 mr-3 ">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                            </svg>
+                            Requestable Items
+                        </a>
+                    </div>
                 </nav>
-                <nav class="flex-1 px-2 pt-2 mt-2 space-y-1 bg-white border-t">
-                    <h1 class="text-gray-600">
-                        Front Desk Actions
-                    </h1>
+                <nav class="flex-1 px-2 pt-2 mt-2  bg-white border-t">
+                    <div class="text-gray-800  font-semibold p-2 w-full flex justify-between items-center">
+                        <h1>Front Desk Actions</h1>
+                    </div>
                     <a href="{{ route('branch.check-in') }}"
                         @class([
                             'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
@@ -493,10 +539,10 @@
 
 
                 </nav>
-                <nav class="flex-1 px-2 pt-2 mt-2 space-y-1 bg-white border-t">
-                    <h1 class="text-gray-600">
-                        House Keeping
-                    </h1>
+                <nav class="flex-1 px-2 pt-2 mt-2  bg-white border-t">
+                    <div class="text-gray-800  font-semibold p-2 w-full flex justify-between items-center">
+                        <h1>House Keeping</h1>
+                    </div>
                     <a href="{{ route('branch.room-boy-designations') }}"
                         @class([
                             'group flex items-center px-2 py-2 text-sm font-medium rounded-lg',
