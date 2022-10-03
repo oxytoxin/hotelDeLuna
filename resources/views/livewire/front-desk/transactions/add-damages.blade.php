@@ -74,7 +74,8 @@
                                 </h1>
                                 <span>|</span>
                                 <h1>
-                                    ₱ {{ $damage->amount }} + ₱ {{ $damage->additional_amount }}
+                                    ₱ {{ $damage->amount }}
+                                    {{ $damage->additional_amount ? ' + ₱ ' . $damage->additional_amount : '' }}
                                 </h1>
                             </div>
                         </div>

@@ -2,13 +2,14 @@
 
 namespace App\Http\Livewire\FrontDesk;
 
-use App\Models\CheckInDetail;
-use App\Models\Guest;
 use App\Models\Room;
-use App\Models\Transaction;
+use App\Models\Guest;
 use Livewire\Component;
 use WireUi\Traits\Actions;
-
+use App\Models\Transaction;
+use App\Models\CheckInDetail;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 class CheckOutGuest extends Component
 {
     use Actions;
@@ -198,6 +199,59 @@ class CheckOutGuest extends Component
                    break;
            }
         }
+    }
+
+    public function checkOutFalse()
+    {
+        $this->notification()->error(
+            $title = 'Error!',
+            $description = 'Please pay all transactions first.'
+        );
+    }
+
+    public function checkOut()
+    {
+        $has_unpaid_transaction = $this->guest->transactions()->where('paid_at', null)->exists();
+        if ($has_unpaid_transaction) {
+            $this->checkOutFalse();
+            return;
+        }
+        $this->dialog()->confirm([
+            'title'       => 'Are you Sure?',
+            'description' => 'This will check out this guest',
+            'icon'        => 'question',
+            'accept'      => [
+                'label'  => 'Yes, Check Out',
+                'method' => 'confirmCheckOut',
+            ],
+            'reject' => [
+                'label'  => 'No, cancel',
+            ],
+        ]);
+    }
+
+    public function confirmCheckOut()
+    {
+        DB::beginTransaction();
+        $this->guest->update([
+            'totaly_checked_out' => true,
+        ]);
+        $check_in_detail = $this->guest->transactions()->where('transaction_type_id', 1)->first()->check_in_detail;
+        $check_in_detail->update([
+            'check_out_at'=> now(),
+        ]);
+        $check_in_detail->room->update([
+            'room_status_id' => 7,
+            'time_to_clean'=> Carbon::now()->addHours(3),
+        ]);
+        DB::commit();
+        $this->notification()->success(
+            $title = 'Guest Checked Out',
+            $description = 'Guest has been checked out'
+        );
+        $this->guest=null;
+        $this->search = '';
+        $this->searchBy = null;
     }
     public function render()
     {

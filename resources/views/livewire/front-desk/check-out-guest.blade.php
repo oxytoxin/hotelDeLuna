@@ -67,6 +67,26 @@
                             </div>
                         </div>
                     </div>
+                    <div id="buttons"
+                        class="mt-2 w-full">
+                        @if ($guest->transactions->where('paid_at', null)->count() == 0)
+                            <x-button wire:key="disable"
+                                label="Check Out"
+                                lg
+                                wire:click="checkOut"
+                                class="w-full"
+                                ner="checkOut"
+                                primary />
+                        @else
+                            <x-button wire:key="enable"
+                                label="Check Out"
+                                lg
+                                wire:click="checkOut"
+                                class="w-full"
+                                spin
+                                negative />
+                        @endif
+                    </div>
                 </div>
                 <div wire:key="bill">
                     <div class=" bg-white rounded-lg ring-1 ring-black ring-opacity-10">

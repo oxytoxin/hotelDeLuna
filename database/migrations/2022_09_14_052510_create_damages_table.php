@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('hotel_item_id')->constrained();
             $table->dateTime('occured_at');
             $table->string('amount');
-            $table->string('additional_amount');
+            $table->string('additional_amount')->nullable();
             $table->timestamps();
         });
     }
