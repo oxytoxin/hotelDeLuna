@@ -11,10 +11,16 @@
         </div>
         <div wire:key="buttons"
             class="flex space-x-3 items-center">
-            <x-button wire:click="search('qr')"
-                primary
-                icon="search"
-                spinner="search('qr')">QR CODE</x-button>
+            <x-button label="Qr Code"
+                wire:click="searchByQrCode"
+                spinner="searchByQrCode"
+                primary />
+            <x-button label="Room Number"
+                wire:click="searchByRoomNumber"
+                primary />
+            <x-button label="Name"
+                wire:click="searchByName"
+                primary />
             @if ($guest)
                 <x-button wire:click="clear"
                     negative

@@ -11,17 +11,18 @@
             spinner="searchByQrCode"
             primary />
         <x-button label="Room Number"
+            wire:click="searchByRoomNumber"
             primary />
         <x-button label="Name"
+            wire:click="searchByName"
             primary />
-    </div>
-    {{-- <div wire:key="information"
-        class="mt-5"
-        x-animate>
         @if ($guest)
-           
+            <x-button negative
+                label="Clear"
+                wire:click="clear"
+                spinner="clear" />
         @endif
-    </div> --}}
+    </div>
     <div wire:key="main"
         class="mt-5"
         x-animate>
@@ -66,10 +67,11 @@
                             </div>
                         </div>
                     </div>
-                    <div id="transactions"
-                        class="mt-5">
+                </div>
+                <div wire:key="bill">
+                    <div class=" bg-white rounded-lg ring-1 ring-black ring-opacity-10">
                         <div wire:key="{{ $guest->id }}-transactions">
-                            <div class="flex space-x-3 mb-1">
+                            <div class="flex space-x-3 mb-1 p-2">
                                 <h1 class="text-gray-600">
                                     Transactions
                                 </h1>
@@ -94,8 +96,7 @@
                             <div class="flex flex-col">
                                 <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                                     <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                                        <div
-                                            class="overflow-hidden shadow-md ring-1 ring-black ring-opacity-10 md:rounded-lg">
+                                        <div class="overflow-hidden shadow-md md:rounded-b-lg">
                                             <table class="min-w-full divide-y divide-gray-300">
                                                 <thead class="bg-gray-50">
                                                     <tr>
@@ -148,6 +149,7 @@
                                                                 <div class="flex justify-end">
                                                                     @if ($transaction->paid_at == null)
                                                                         <button
+                                                                            wire:click="showOverrideModal({{ $transaction->id }})"
                                                                             class="flex items-center space-x-1 text-red-600 hover:text-red-900">
                                                                             <span>
                                                                                 Override
@@ -167,37 +169,25 @@
                         </div>
                     </div>
                 </div>
-                <div wire:key="bill">
-                    <div class=" bg-white rounded-lg border-gray-300 border">
-                        <div class="border-b px-5 py-3">
-                            <h3 class="text-lg font-medium leading-6 text-gray-900">
-                                Bill
-                            </h3>
-                        </div>
-                        <dl class="hidden space-y-6 p-4  text-sm font-medium text-gray-900 lg:block">
-                            <div class="flex items-center justify-between">
-                                <dt class="text-gray-600">Subtotal</dt>
-                                <dd>$320.00</dd>
-                            </div>
-
-                            <div class="flex items-center justify-between">
-                                <dt class="text-gray-600">Shipping</dt>
-                                <dd>$15.00</dd>
-                            </div>
-
-                            <div class="flex items-center justify-between">
-                                <dt class="text-gray-600">Taxes</dt>
-                                <dd>$26.80</dd>
-                            </div>
-
-                            <div class="flex items-center justify-between border-t border-gray-200 pt-6">
-                                <dt class="text-base">Total</dt>
-                                <dd class="text-base">$361.80</dd>
-                            </div>
-                        </dl>
-                    </div>
-                </div>
             </div>
         @endif
+    </div>
+    <div wire:key="modal">
+        <x-modal.card title="Override Action"
+            max-width="sm"
+            wire:model.defer="override.modal">
+            <form>
+                @csrf
+                <x-input label="Amount"
+                    wire:model.defer="override.new_amount"
+                    type="number" />
+            </form>
+            <x-slot:footer>
+                <x-button primary
+                    wire:click="overrideTransaction">
+                    Override
+                </x-button>
+            </x-slot:footer>
+        </x-modal.card>
     </div>
 </div>

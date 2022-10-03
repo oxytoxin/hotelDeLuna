@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('paid_amount')->nullable();
             $table->string('change_amount')->nullable();
             $table->string('paid_at')->nullable();
+            $table->string('override_at')->nullable();
             $table->timestamps();
         });
     }
