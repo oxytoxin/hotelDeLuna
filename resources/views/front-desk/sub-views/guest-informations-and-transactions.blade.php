@@ -86,12 +86,14 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach ($guest->transactions()->orderBy('created_at', $transaction_order)->with(['check_in_detail.room', 'transaction_type'])->get() as $transaction)
+                                    @foreach ($guest->transactions()->orderBy('created_at', $transaction_order)->with(['check_in_detail.room', 'check_in_detail.room_changes.toRoom', 'transaction_type'])->get() as $transaction)
                                         <tr>
                                             <td
                                                 class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
                                                 {{ $transaction->transaction_type->name }}
-                                                {{ $transaction->transaction_type_id == 1 ? '| Room #' . $transaction->check_in_detail->room->number : '' }}
+                                                @if ($transaction->transaction_type_id === 1)
+                                                    | Room # {{ $transaction->check_in_detail->room->number }}
+                                                @endif
                                             </td>
                                             <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
                                                 {{ $transaction->payable_amount }}
@@ -101,6 +103,7 @@
                                                     {{ $transaction->paid_at }}
                                                 @else
                                                     <button type="button"
+                                                        wire:click="payTransaction({{ $transaction->id }})"
                                                         class="text-green-600 hover:text-green-900">
                                                         <span> Pay </span>
                                                     </button>

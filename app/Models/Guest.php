@@ -25,4 +25,9 @@ class Guest extends Model
     {
         return $this->hasMany(Damage::class);
     }
+
+    public function guest_request_items()
+    {
+        return $this->hasMany(GuestRequestItem::class);
+    }
 }

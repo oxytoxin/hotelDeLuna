@@ -36,6 +36,10 @@ class TransactionTypeSeeder extends Seeder
         TransactionType::create([
             'name' => 'Change Room', //7
         ]);
+
+        TransactionType::create([
+            'name' => 'Item Request', //8
+        ]);
         
     }
 }
