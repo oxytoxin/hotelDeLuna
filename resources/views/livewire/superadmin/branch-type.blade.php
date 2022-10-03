@@ -47,10 +47,7 @@
                         <x-button wire:click="editType({{$type->id}})" class="font-semibold" icon="pencil-alt" positive sm label="Edit" />
                       </td>
                 </tr>
-    
-                 
                   @endforeach
-      
                     <!-- More people... -->
                   </tbody>
                 </table>
