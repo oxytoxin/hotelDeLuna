@@ -304,9 +304,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white text-gray-700 p-2 rounded-lg border-2 border-red-600 animate-pulse">
-                        <span>Please fill out the form in order to complete your transaction. ...</span>
-                    </div>
+                        @php
+                        $prompt;
+                            if($customer_name != null || $customer_number != null){
+                               $prompt = true;
+                            }else{
+                                $prompt = false;
+                            }
+                        @endphp
+                        @if (!$prompt)
+                        <div class="bg-white text-gray-700 p-2 rounded-lg border-2 border-red-600 animate-pulse">
+                            <span>Please fill out the form in order to complete your transaction. ...</span>
+                        </div>  
+                        @endif
                     <div class="flex flex-col">
                         <div class="bg-white shadow rounded-xl p-3">
                             <dl class="text-sm font-medium text-gray-500  space-y-2">
