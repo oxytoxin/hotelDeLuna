@@ -57,11 +57,11 @@ class Checkin extends Component
         return view('livewire.kiosk.checkin', [
             'rooms' => Room::where('room_status_id', 1)->where('floor_id', 'like', '%' . $this->floor_id . '%')->where('type_id', $this->type_key)->whereHas('floor', function ($query) {
                 $query->where('branch_id', auth()->user()->branch_id);
-            })->orderBy('updated_at','DESC')->with('floor')->take(10)->get(),
+            })->orderBy('updated_at','DESC')->with(['floor'])->take(10)->get(),
 
             'floors' => Floor::where('branch_id', auth()->user()->branch_id)->get(),
             'roomtypes' => Type::get(),
-            'rates' => Rate::where('type_id', 'like', '%' . $this->type_key . '%')->get(),
+            'rates' => Rate::where('type_id', 'like', '%' . $this->type_key . '%')->with(['staying_hour','type'])->get(),
         ]);
     }
 
