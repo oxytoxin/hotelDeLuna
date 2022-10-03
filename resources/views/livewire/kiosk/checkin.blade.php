@@ -314,7 +314,7 @@
                         @endphp
                         @if (!$prompt)
                         <div class="bg-white text-gray-700 p-2 rounded-lg border-2 border-red-600 animate-pulse">
-                            <span>Please fill out the form in order to complete your transaction. ...</span>
+                            <span>Please fill out the form in order to complete your transactions. ...</span>
                         </div>  
                         @endif
                     <div class="flex flex-col">
