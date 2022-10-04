@@ -1,6 +1,6 @@
 <div x-data
     x-init="$refs.search.focus()">
-    <div class="flex space-x-3 p-2 bg-white rounded-lg border-gray-300 border">
+    <div class="flex p-2 space-x-3 bg-white border border-gray-300 rounded-lg">
         <div class="w-1/2">
             <x-input placeholder="Search Guest"
                 wire:model.defer="search"
@@ -27,7 +27,7 @@
         class="mt-5"
         x-animate>
         @if ($guest)
-            <div class=" grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-2 gap-3 ">
                 <div wire:key="information-and-transactions">
                     <div id="guest-info">
                         <div wire:key="{{ $guest->id }}-guest-information"
@@ -68,36 +68,26 @@
                         </div>
                     </div>
                     <div id="buttons"
-                        class="mt-2 w-full">
-                        @if ($guest->transactions->where('paid_at', null)->count() == 0)
-                            <x-button wire:key="disable"
-                                label="Check Out"
-                                lg
-                                wire:click="checkOut"
-                                class="w-full"
-                                ner="checkOut"
-                                primary />
-                        @else
-                            <x-button wire:key="enable"
-                                label="Check Out"
-                                lg
-                                wire:click="checkOut"
-                                class="w-full"
-                                spin
-                                negative />
-                        @endif
+                        class="w-full mt-2">
+                        <x-button wire:key="disable"
+                            label="Check Out"
+                            lg
+                            wire:click="checkOut"
+                            class="w-full"
+                            ner="checkOut"
+                            positive />
                     </div>
                 </div>
                 <div wire:key="bill">
-                    <div class=" bg-white rounded-lg ring-1 ring-black ring-opacity-10">
+                    <div class="bg-white rounded-lg ring-1 ring-black ring-opacity-10">
                         <div wire:key="{{ $guest->id }}-transactions">
-                            <div class="flex space-x-3 mb-1 p-2">
+                            <div class="flex p-2 mb-1 space-x-3">
                                 <h1 class="text-gray-600">
                                     Transactions
                                 </h1>
                                 <span class="text-gray-400">|</span>
                                 <button wire:click="toogleTransactionOrder"
-                                    class="focus:outline-none hover:text-gray-800 text-gray-700 flex items-center space-x-3">
+                                    class="flex items-center space-x-3 text-gray-700 focus:outline-none hover:text-gray-800">
                                     <h1 class="text-gray-500">
                                         {{ $transactionOrder == 'ASC' ? 'Oldest' : 'Newest' }}
                                     </h1>
