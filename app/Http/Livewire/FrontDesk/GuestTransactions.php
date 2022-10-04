@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\FrontDesk;
 
+use App\Models\CheckInDetail;
 use App\Models\Guest;
+use App\Models\Room;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 class GuestTransactions extends Component

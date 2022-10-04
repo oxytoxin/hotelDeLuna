@@ -16,6 +16,7 @@ class Cleaning extends Component
     public $current_assigned_floor;
     public $filter = 'ASC';
     public $room;
+    public $show_designation_only = true;
     
 
     public function getDesignationProperty()
@@ -124,8 +125,9 @@ class Cleaning extends Component
     {
         return view('livewire.room-boy.cleaning', [
             'rooms' => $this->designation ? Room::query()
-                ->where('floor_id', $this->designation->floor_id)
-                ->whereIn('room_status_id', [7, 8])
+                ->when($this->show_designation_only == true, function($query){
+                    $query->where('floor_id', $this->designation->floor_id);
+                })->whereIn('room_status_id', [7, 8])
                 ->get() : [],
                 'history' => CleaningModel::query()->where('room_boy_id', auth()->user()->room_boy->id)->orderBy('id', $this->filter)->get(),
         ]);
