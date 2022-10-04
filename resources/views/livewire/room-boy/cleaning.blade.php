@@ -141,7 +141,20 @@
 
                 <!-- Actions panel -->
                 <section aria-labelledby="quick-links-title" class="bg-white">
-                    <div class="grid lg:grid-cols-2 grid-cols-1 gap-4">
+                    <div class="relative my-5">
+                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                          <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex items-center justify-between">
+                          @if ($show_designation_only == true)
+                          <span class="bg-white pr-3 text-lg font-semibold uppercase text-green-700">Designated Floor</span>
+                          @else
+                          <span class="bg-white pr-3 text-lg font-semibold uppercase text-gray-700">All Floor</span>
+                          @endif
+                          <x-button rounded positive class="font-semibold" wire:click="$toggle('show_designation_only')" icon="switch-horizontal" label="SWITCH" />
+                        </div>
+                    </div>
+                    <div class="grid lg:grid-cols-2 grid-cols-1 gap-4" x-animate>
                         {{-- @if (auth()->user()->room_boy->is_cleaning)
                         @php
                         $timeToClean = new Carbon\Carbon(
