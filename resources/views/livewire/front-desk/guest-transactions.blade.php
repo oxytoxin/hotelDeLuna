@@ -1,24 +1,27 @@
 <div x-data="{ tab: 1 }"
     x-init="$refs.searchBar.focus()"
     class="grid space-y-3">
-    <div class="flex space-x-3 p-2 bg-white rounded-lg border-gray-300 border">
+    <div class="flex p-2 space-x-3 bg-white border border-gray-300 rounded-lg">
         <div class="w-1/2">
             <x-input placeholder="Search ...."
                 x-ref="searchBar"
                 wire:model.defer="search"
-                wire:keydown.enter.prevent="search"
+                wire:keydown.enter.prevent="searchByQrCode"
                 type="search" />
         </div>
         <div wire:key="buttons"
-            class="flex space-x-3 items-center">
+            class="flex items-center space-x-3">
             <x-button label="Qr Code"
+                icon="search"
                 wire:click="searchByQrCode"
                 spinner="searchByQrCode"
                 primary />
             <x-button label="Room Number"
+                icon="search"
                 wire:click="searchByRoomNumber"
                 primary />
             <x-button label="Name"
+                icon="search"
                 wire:click="searchByName"
                 primary />
             @if ($guest)

@@ -64,6 +64,13 @@ class CheckIn extends Component
     public function setGuest($guest_id)
     {
         $this->guest = Guest::find($guest_id);
+        if ($this->guest->terminated_at != null) {
+            $this->notification()->error(
+                $title = 'Error',
+                $description = 'Guest failed to check in within 2 hours. As per policy, guest is terminated.',
+            );
+            return;
+        }
         $this->showModal = true;
     }
 
@@ -156,6 +163,7 @@ class CheckIn extends Component
     {
         return view('livewire.front-desk.check-in', [
             'guests' => Guest::query()
+                ->where('terminated_at', null)
                 ->when($this->realSearch, function ($query) {
                     switch ($this->searchBy) {
                         case '1':

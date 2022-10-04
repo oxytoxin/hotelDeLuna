@@ -18,7 +18,7 @@ class GuestTransactions extends Component
 
     public $guest = null;
 
-    protected $queryString = ['search','searchBy'];
+    protected $queryString = ['search', 'searchBy'];
 
     public $action = null;
 
@@ -29,10 +29,11 @@ class GuestTransactions extends Component
         $this->searchBy = 'qr_code';
         if ($this->search) {
             $guest = Guest::where('qr_code', $this->search)
-                    ->where('check_in_at', '!=', null)
-                    ->where('totaly_checked_out', false)
-                    ->where('branch_id', auth()->user()->branch->id)
-                    ->first();
+                ->where('terminated_at', null)
+                ->where('check_in_at', '!=', null)
+                ->where('totaly_checked_out', false)
+                ->where('branch_id', auth()->user()->branch->id)
+                ->first();
             if (!$guest) {
                 $this->notification()->error(
                     $title = 'Error!',
@@ -51,13 +52,13 @@ class GuestTransactions extends Component
     public function searchByRoomNumber()
     {
         $this->searchBy = 'room_number';
-        if($this->search){
+        if ($this->search) {
             $room = Room::where('number', $this->search)
-                    ->whereHas('floor', function($query){
-                        $query->where('branch_id', auth()->user()->branch_id);
-                    })
-                    ->where('room_status_id', 2)
-                    ->first();
+                ->whereHas('floor', function ($query) {
+                    $query->where('branch_id', auth()->user()->branch_id);
+                })
+                ->where('room_status_id', 2)
+                ->first();
             if (!$room) {
                 $this->notification()->error(
                     $title = 'Error!',
@@ -69,10 +70,20 @@ class GuestTransactions extends Component
                 return;
             }
             $check_in_detail = CheckInDetail::where('room_id', $room->id)
-                    ->where('check_in_at', '!=', null)
-                    ->where('check_out_at', null)
-                    ->first();
+                ->where('check_in_at', '!=', null)
+                ->where('check_out_at', null)
+                ->first();
             if (!$check_in_detail) {
+                $this->notification()->error(
+                    $title = 'Error!',
+                    $message = 'Guest not found or already checked out.'
+                );
+                $this->guest = null;
+                $this->search = '';
+                $this->searchBy = null;
+                return;
+            }
+            if ($check_in_detail->transaction->guest->terminated_at != null) {
                 $this->notification()->error(
                     $title = 'Error!',
                     $message = 'Guest not found or already checked out.'
@@ -89,12 +100,13 @@ class GuestTransactions extends Component
     public function searchByName()
     {
         $this->searchBy = 'name';
-        if($this->search){
-            $guest = Guest::where('name',$this->search)
-                    ->where('check_in_at', '!=', null)
-                    ->where('totaly_checked_out', false)
-                    ->where('branch_id', auth()->user()->branch->id)
-                    ->first();
+        if ($this->search) {
+            $guest = Guest::where('name', $this->search)
+                ->where('terminated_at', null)
+                ->where('check_in_at', '!=', null)
+                ->where('totaly_checked_out', false)
+                ->where('branch_id', auth()->user()->branch->id)
+                ->first();
             if (!$guest) {
                 $this->notification()->error(
                     $title = 'Error!',
@@ -118,7 +130,7 @@ class GuestTransactions extends Component
     //         $this->guest = null;
     //         return;
     //     }
-        
+
     //     switch ($type) {
     //         case 'qr':
     //             $this->guest = Guest::query()
@@ -155,7 +167,7 @@ class GuestTransactions extends Component
     {
         if ($this->transaction_order == 'ASC') {
             $this->transaction_order = 'DESC';
-        }else{
+        } else {
             $this->transaction_order = 'ASC';
         }
     }
@@ -200,20 +212,20 @@ class GuestTransactions extends Component
     public function mount()
     {
         if ($this->search) {
-           switch ($this->searchBy) {
-               case 'qr_code':
-                   $this->searchByQrCode();
-                   break;
-               case 'room_number':
-                   $this->searchByRoomNumber();
-                   break;
-               case 'name':
-                   $this->searchByName();
-                   break;
-               default:
-                   $this->searchByQrCode();
-                   break;
-           }
+            switch ($this->searchBy) {
+                case 'qr_code':
+                    $this->searchByQrCode();
+                    break;
+                case 'room_number':
+                    $this->searchByRoomNumber();
+                    break;
+                case 'name':
+                    $this->searchByName();
+                    break;
+                default:
+                    $this->searchByQrCode();
+                    break;
+            }
         }
     }
 

@@ -7,13 +7,16 @@
                 x-ref="search" />
         </div>
         <x-button label="Qr Code"
+            icon="search"
             wire:click="searchByQrCode"
             spinner="searchByQrCode"
             primary />
         <x-button label="Room Number"
+            icon="search"
             wire:click="searchByRoomNumber"
             primary />
         <x-button label="Name"
+            icon="search"
             wire:click="searchByName"
             primary />
         @if ($guest)

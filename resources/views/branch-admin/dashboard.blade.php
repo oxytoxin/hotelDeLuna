@@ -8,8 +8,10 @@
             <div>
                 @livewire('branch-admin.dashboard.statistic-overview')
             </div>
-            <div>
-
+            <div class="gap-2 mt-5 sm:grid sm:grid-cols-2">
+                <div class="sm:col-span-1">
+                    @livewire('branch-admin.terminated-guest-list')
+                </div>
             </div>
         </x-page-layout>
     </x-layout.branch>

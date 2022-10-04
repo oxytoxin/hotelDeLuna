@@ -10,12 +10,13 @@ use App\Models\Transaction;
 use App\Models\CheckInDetail;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+
 class CheckOutGuest extends Component
 {
     use Actions;
 
     public $override = [
-        'modal'=>false,
+        'modal' => false,
         'new_amount'
     ];
 
@@ -29,7 +30,7 @@ class CheckOutGuest extends Component
 
     public $searchBy = null;
 
-    protected $queryString = ['search','searchBy'];
+    protected $queryString = ['search', 'searchBy'];
 
     public function showOverrideModal($transaction_id)
     {
@@ -65,10 +66,11 @@ class CheckOutGuest extends Component
         $this->searchBy = 'qr_code';
         if ($this->search) {
             $guest = Guest::where('qr_code', $this->search)
-                    ->where('check_in_at', '!=', null)
-                    ->where('totaly_checked_out', false)
-                    ->where('branch_id', auth()->user()->branch->id)
-                    ->first();
+                ->where('terminated_at', null)
+                ->where('check_in_at', '!=', null)
+                ->where('totaly_checked_out', false)
+                ->where('branch_id', auth()->user()->branch->id)
+                ->first();
             if (!$guest) {
                 $this->notification()->error(
                     $title = 'Error!',
@@ -87,13 +89,13 @@ class CheckOutGuest extends Component
     public function searchByRoomNumber()
     {
         $this->searchBy = 'room_number';
-        if($this->search){
+        if ($this->search) {
             $room = Room::where('number', $this->search)
-                    ->whereHas('floor', function($query){
-                        $query->where('branch_id', auth()->user()->branch_id);
-                    })
-                    ->where('room_status_id', 2)
-                    ->first();
+                ->whereHas('floor', function ($query) {
+                    $query->where('branch_id', auth()->user()->branch_id);
+                })
+                ->where('room_status_id', 2)
+                ->first();
             if (!$room) {
                 $this->notification()->error(
                     $title = 'Error!',
@@ -105,14 +107,20 @@ class CheckOutGuest extends Component
                 return;
             }
             $check_in_detail = CheckInDetail::where('room_id', $room->id)
-                    ->where('check_in_at', '!=', null)
-                    ->where('check_out_at', null)
-                    ->first();
+                ->where('check_in_at', '!=', null)
+                ->where('check_out_at', null)
+                ->first();
             if (!$check_in_detail) {
                 $this->notification()->error(
                     $title = 'Error!',
                     $message = 'Guest not found or already checked out.'
                 );
+                $this->guest = null;
+                $this->search = '';
+                $this->searchBy = null;
+                return;
+            }
+            if ($check_in_detail->transaction->guest->terminated_at != null) {
                 $this->guest = null;
                 $this->search = '';
                 $this->searchBy = null;
@@ -125,12 +133,13 @@ class CheckOutGuest extends Component
     public function searchByName()
     {
         $this->searchBy = 'name';
-        if($this->search){
-            $guest = Guest::where('name',$this->search)
-                    ->where('check_in_at', '!=', null)
-                    ->where('totaly_checked_out', false)
-                    ->where('branch_id', auth()->user()->branch->id)
-                    ->first();
+        if ($this->search) {
+            $guest = Guest::where('name', $this->search)
+                ->where('terminated_at', null)
+                ->where('check_in_at', '!=', null)
+                ->where('totaly_checked_out', false)
+                ->where('branch_id', auth()->user()->branch->id)
+                ->first();
             if (!$guest) {
                 $this->notification()->error(
                     $title = 'Error!',
@@ -184,20 +193,20 @@ class CheckOutGuest extends Component
     public function mount()
     {
         if ($this->search) {
-           switch ($this->searchBy) {
-               case 'qr_code':
-                   $this->searchByQrCode();
-                   break;
-               case 'room_number':
-                   $this->searchByRoomNumber();
-                   break;
-               case 'name':
-                   $this->searchByName();
-                   break;
-               default:
-                   $this->searchByQrCode();
-                   break;
-           }
+            switch ($this->searchBy) {
+                case 'qr_code':
+                    $this->searchByQrCode();
+                    break;
+                case 'room_number':
+                    $this->searchByRoomNumber();
+                    break;
+                case 'name':
+                    $this->searchByName();
+                    break;
+                default:
+                    $this->searchByQrCode();
+                    break;
+            }
         }
     }
 
@@ -238,28 +247,28 @@ class CheckOutGuest extends Component
         ]);
         $check_in_detail = $this->guest->transactions()->where('transaction_type_id', 1)->first()->check_in_detail;
         $check_in_detail->update([
-            'check_out_at'=> now(),
+            'check_out_at' => now(),
         ]);
         $check_in_detail->room->update([
             'room_status_id' => 7,
-            'time_to_clean'=> Carbon::now()->addHours(3),
+            'time_to_clean' => Carbon::now()->addHours(3),
         ]);
         DB::commit();
         $this->notification()->success(
             $title = 'Guest Checked Out',
             $description = 'Guest has been checked out'
         );
-        $this->guest=null;
+        $this->guest = null;
         $this->search = '';
         $this->searchBy = null;
     }
     public function render()
     {
-        return view('livewire.front-desk.check-out-guest',[
-            'transactions' => $this->guest ? 
-                        $this->guest->transactions()
-                        ->with(['transaction_type', 'check_in_detail.room.type'])
-                        ->orderBy('created_at',$this->transactionOrder)->get() : null,
+        return view('livewire.front-desk.check-out-guest', [
+            'transactions' => $this->guest ?
+                $this->guest->transactions()
+                ->with(['transaction_type', 'check_in_detail.room.type'])
+                ->orderBy('created_at', $this->transactionOrder)->get() : null,
         ]);
     }
 }
