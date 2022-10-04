@@ -2,23 +2,23 @@
     <dt class="text-sm font-medium text-gray-500">
         Extension Time Reset
     </dt>
-    <dd class="mt-1 flex text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+    <dd class="flex mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
         <span class="flex-grow">
             {{ $extension_capping->hours ?? 'N/A' }}
             {{ $extension_capping ? Str::plural('hour', $extension_capping->hours ?? 0) : '' }}
         </span>
-        <span class="ml-4 flex-shrink-0">
+        <span class="flex-shrink-0 ml-4">
             @if ($extension_capping)
                 <button wire:click="$set('showModal',true)"
                     type="button"
-                    class="rounded-md bg-white font-medium text-blue-600 hover:text-blue-500 focus:outline-none ">
-                    Update
+                    class="font-medium text-blue-600 bg-white rounded-md hover:text-blue-500 focus:outline-none ">
+                    UPDATE
                 </button>
             @else
                 <button wire:click="$set('showModal',true)"
                     type="button"
-                    class="rounded-md bg-white font-medium text-blue-600 hover:text-blue-500 focus:outline-none ">
-                    Create
+                    class="font-medium text-green-600 bg-white rounded-md hover:text-green-500 focus:outline-none ">
+                    SET
                 </button>
             @endif
         </span>
