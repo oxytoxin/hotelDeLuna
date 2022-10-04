@@ -36,7 +36,7 @@ class GuestTransactions extends Component
             if (!$guest) {
                 $this->notification()->error(
                     $title = 'Error!',
-                    $message = 'QR Code not found or already checked out.'
+                    $message = 'Guest not found or already checked out.'
                 );
                 $this->guest = null;
                 $this->search = '';
