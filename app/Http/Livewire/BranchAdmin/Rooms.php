@@ -63,7 +63,7 @@ class Rooms extends Component
     {
         $this->edit_id = $edit_id;
         $this->room = Room::find($edit_id);
-        if ($this->room->room_status_id !== 1) {
+        if ($this->room->room_status_id !== 1 && $this->room->room_status_id !== 5) {
             $this->notification()->error(
                 $title = 'Error',
                 $description = 'Room is not available for editing',

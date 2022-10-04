@@ -39,13 +39,13 @@
     </div>
     <div>
         <div wire:key="{{ $guest->id }}-transactions">
-            <div class="flex space-x-3 mb-1">
+            <div class="flex mb-1 space-x-3">
                 <h1 class="text-gray-600">
                     Transactions
                 </h1>
                 <span class="text-gray-400">|</span>
                 <button wire:click="toogleTransactionOrder"
-                    class="focus:outline-none hover:text-gray-800 text-gray-700 flex items-center space-x-3">
+                    class="flex items-center space-x-3 text-gray-700 focus:outline-none hover:text-gray-800">
                     <h1 class="text-gray-500">
                         {{ $transaction_order == 'ASC' ? 'Oldest' : 'Newest' }}
                     </h1>

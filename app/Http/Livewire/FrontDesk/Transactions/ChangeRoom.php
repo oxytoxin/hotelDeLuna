@@ -20,7 +20,7 @@ class ChangeRoom extends Component
 
     public $historyOrder = 'DESC';
 
-    public $types_within_this_branch = [], $floors_within_this_branch = [];
+    public $types_within_this_branch = [], $floors_within_this_branch = [],$rooms_within_this_branch = [];
 
     public $check_in_detail_id;
 
@@ -35,6 +35,8 @@ class ChangeRoom extends Component
     public $current_room = null;
 
     public $check_in_detail = null;
+
+    public $authorization_code = null;
 
     protected $validationAttributes = [
         'form.type_id' => 'type',
@@ -89,6 +91,7 @@ class ChangeRoom extends Component
             'form.room_id' => 'required',
             'form.reason' => 'required',
             'form.floor_id' => 'required',
+            'authorization_code' => 'required|in:'.auth()->user()->branch->authorization_code,
         ]);
         if ($this->has_already_change_room_twice()) {
             $this->notification()->error(
@@ -155,6 +158,9 @@ class ChangeRoom extends Component
             $description = 'Room has been changed successfully'
         );
         $this->reset('form');
+        $this->authorization_code = null;
+        $this->rooms_within_this_branch = [];
+
     }
 
     public function clear_form()
@@ -170,15 +176,49 @@ class ChangeRoom extends Component
             ->where('branch_id', auth()->user()->branch_id)
             ->get();
         $this->floors_within_this_branch = Floor::where('branch_id', auth()->user()->branch_id)->get();
+        $this->form['type_id'] = $this->current_room->type_id;
+    }
+
+    public function updatedFormTypeId()
+    {
+        $this->rooms_within_this_branch = Room::where('floor_id', $this->form['floor_id'])
+        ->where('type_id', $this->form['type_id'])
+        ->where('room_status_id', 1)
+        ->get();
+        if ($this->rooms_within_this_branch->count() == 0) {
+            if ($this->form['type_id'] != null && $this->form['floor_id'] != null) {
+                $this->notification()->error(
+                    $title = 'Error',
+                    $description = 'No room available for this type and floor'
+                );
+            }
+        }else{
+            $this->dispatchBrowserEvent('room-is-available');
+        }
+    }
+
+    public function updatedFormFloorId()
+    {
+        $this->rooms_within_this_branch = Room::where('floor_id', $this->form['floor_id'])
+        ->where('type_id', $this->form['type_id'])
+        ->where('room_status_id', 1)
+        ->get();
+
+        if ($this->rooms_within_this_branch->count() == 0) {
+            if ($this->form['type_id'] != null && $this->form['floor_id'] != null) {
+                $this->notification()->error(
+                    $title = 'Error',
+                    $description = 'No room available for this type and floor'
+                );
+            }
+        }else{
+            $this->dispatchBrowserEvent('room-is-available');
+        }
     }
 
     public function render()
     {
         return view('livewire.front-desk.transactions.change-room', [
-            'rooms_within_this_branch' => $this->form['floor_id'] && $this->form['type_id'] ? Room::where('floor_id', $this->form['floor_id'])
-                ->where('type_id', $this->form['type_id'])
-                ->where('room_status_id', 1)
-                ->get() : [],
             'changes_history' => RoomChange::where('check_in_detail_id', $this->check_in_detail_id)
                                     ->with(['fromRoom', 'toRoom'])
                                     ->orderBy('created_at', $this->historyOrder)
