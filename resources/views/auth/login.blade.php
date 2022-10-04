@@ -33,7 +33,7 @@
     </div>
 
     <div class="relative h-full flex items-center shadow-2xl justify-center">
-        <div class="bg-white shadow-xl rounded-l-3xl p-5 border-r-2 border-gray-100 h-4/5 w-96">
+        <div class="bg-white hidden lg:block shadow-xl rounded-l-3xl p-5 border-r-2 border-gray-100 h-4/5 w-96">
             <img src="{{ asset('images/HR.jpg') }}" class="h-20 rounded-md" alt="">
             <div class="flex justify-center mt-14">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" class="h-48" viewBox="0 0 1006.8115 762"
@@ -364,7 +364,7 @@
             <h1 class="text-center    text-gray-700 font-rubik border-main ">LOGIN</h1>
 
         </div>
-        <div class="bg-white rounded-r-3xl h-4/5  w-2/6 p-16 pt-28">
+        <div class="bg-white rounded-none lg:rounded-r-3xl h-4/5  lg:w-2/6 w-full lg:p-16 px-6 pt-28">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-10 fill-gray-500">
                 <path fill="none" d="M0 0h24v24H0z" />
                 <path

@@ -91,67 +91,67 @@
                     From: "opacity-100 scale-100"
                     To: "opacity-0 scale-95"
                 -->
-                <div class="absolute z-10 top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden">
-                    <div class="rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
-                        <div class="px-5 pt-4 flex items-center justify-between">
-                            <div>
-                                <img class="h-8 w-auto"
-                                    src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="">
+                    {{-- <div class="absolute z-10 top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden">
+                        <div class="rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
+                            <div class="px-5 pt-4 flex items-center justify-between">
+                                <div>
+                                    <img class="h-8 w-auto"
+                                        src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="">
+                                </div>
+                                <div class="-mr-2">
+                                    <button type="button"
+                                        class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                                        <span class="sr-only">Close main menu</span>
+                                        <!-- Heroicon name: outline/x -->
+                                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="-mr-2">
-                                <button type="button"
-                                    class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                                    <span class="sr-only">Close main menu</span>
-                                    <!-- Heroicon name: outline/x -->
-                                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
+                            <div class="px-2 pt-2 pb-3 space-y-1">
+                                <a href="#"
+                                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Product</a>
+
+                                <a href="#"
+                                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Features</a>
+
+                                <a href="#"
+                                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Marketplace</a>
+
+                                <a href="#"
+                                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Company</a>
                             </div>
+
                         </div>
-                        <div class="px-2 pt-2 pb-3 space-y-1">
-                            <a href="#"
-                                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Product</a>
-
-                            <a href="#"
-                                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Features</a>
-
-                            <a href="#"
-                                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Marketplace</a>
-
-                            <a href="#"
-                                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Company</a>
-                        </div>
-
-                    </div>
-                </div>
+                    </div> --}}
             </div>
 
-            <main class="mt-16 mx-auto max-w-7xl px-4 sm:mt-24 sm:px-6 lg:mt-16 ">
+            <main class="mt-5 mx-auto max-w-7xl px-4 sm:mt-24 sm:px-6 lg:mt-16 ">
                 <div class="lg:grid lg:grid-cols-12 lg:gap-2">
                     <div class="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
                         <h1>
                             <span
                                 class="block text-sm font-semibold font-rubik uppercase tracking-wide text-gray-500 sm:text-base lg:text-sm xl:text-base">Welcome</span>
-                            <span class="mt-1 block text-4xl tracking-tight  ">
+                            <span class="lg:mt-1 mt-5 block text-4xl tracking-tight  ">
                                 <div class="flex ">
                                     
-                                    <span class="block relative text-5xl font-black font-rubik text-gray-700">HOTEL
+                                    <span class="block relative lg:text-5xl text-2xl font-black font-rubik text-gray-700">HOTEL
                                         [your Hotel name]
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-10 absolute -left-10 fill-yellow-500 -top-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="lg:h-10 h-5 absolute lg:-left-10 -left-3 fill-yellow-500 -top-3">
                                             <path fill="none" d="M0 0h24v24H0z" />
                                             <path
                                                 d="M9.822 2.238a9 9 0 0 0 11.94 11.94C20.768 18.654 16.775 22 12 22 6.477 22 2 17.523 2 12c0-4.775 3.346-8.768 7.822-9.762zm8.342.053L19 2.5v1l-.836.209a2 2 0 0 0-1.455 1.455L16.5 6h-1l-.209-.836a2 2 0 0 0-1.455-1.455L13 3.5v-1l.836-.209A2 2 0 0 0 15.29.836L15.5 0h1l.209.836a2 2 0 0 0 1.455 1.455zm5 5L24 7.5v1l-.836.209a2 2 0 0 0-1.455 1.455L21.5 11h-1l-.209-.836a2 2 0 0 0-1.455-1.455L18 8.5v-1l.836-.209a2 2 0 0 0 1.455-1.455L20.5 5h1l.209.836a2 2 0 0 0 1.455 1.455z" />
                                         </svg>
                                     </span>
                                 </div>
-                                <span class="block font-rubik text-lg font-bold text-green-600">Your Cheaper and
+                                <span class="block font-rubik lg:text-lg text-sm font-bold text-green-600">Your Cheaper and
                                     Satisfying Stay in Town</span>
                             </span>
                         </h1>
                         <p class="mt-3 text-sm text-gray-700 font-inter ">Our Branches:</p>
-                        <div class=" max-w-lg mx-auto font-rubik grid gap-3 lg:grid-cols-4 lg:max-w-none">
+                        <div class=" max-w-lg mx-auto font-rubik grid gap-3 lg:grid-cols-4 grid-cols-3 lg:max-w-none">
                             <div class="flex flex-col rounded-md shadow-lg border border-gray-100 overflow-hidden">
 
                                 <div class="flex-1 bg-white bg-opacity-50 p-1 flex flex-col justify-between">
@@ -312,7 +312,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
+                        <div class="lg:mt-8 mt-2  lg:block sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
                             <p class="text-base mb-2 font-medium font-rubik text-gray-700">Please sign in to get
                                 started.</p>
                             <button onclick="document.location='login'"
@@ -327,7 +327,7 @@
                         </div>
                     </div>
                     <div
-                        class="mt-12 relative  sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
+                        class="mt-12 hidden lg:block relative  sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
                         <svg class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-8 scale-75 origin-top sm:scale-100 lg:hidden"
                             width="640" height="784" fill="none" viewBox="0 0 640 784" aria-hidden="true">
                             <defs>
