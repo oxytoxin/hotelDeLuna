@@ -31,11 +31,11 @@
       blur="sm"
       align="center" />
     <div class="min-h-full">
-        <header class="bg-gradient-to-r from-gray-800 to-gray-600 pb-24">
+        <header class="bg-gradient-to-r from-gray-800 to-gray-600 pb-32">
             <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-                <div class="relative flex flex-wrap items-center justify-center lg:justify-between">
+                <div class="relative flex flex-wrap  items-center justify-center lg:justify-between">
                     <!-- Logo -->
-                    <div class="absolute left-0 flex-shrink-0 py-5 lg:static">
+                    <div class="absolute flex justify-between w-full items-center left-0 flex-shrink-0 mt-20 lg:mt-0 py-5 lg:static">
                         <a href="#">
                             <span class="sr-only">Your Company</span>
                             <div class="flex relative items-end space-x-1">
@@ -48,6 +48,9 @@
 
                             </div>
                         </a>
+                       <button x-on:click="confirm = true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="rotate-90 fill-white" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M5 11h8v2H5v3l-5-4 5-4v3zm-1 7h2.708a8 8 0 1 0 0-12H4A9.985 9.985 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10a9.985 9.985 0 0 1-8-4z"/></svg>
+                       </button>
                     </div>
 
                     <!-- Right section on desktop -->
@@ -117,7 +120,7 @@
                 </div>
             </div>
         </header>
-        <main class="-mt-24 pb-8">
+        <main class=" -mt-12 lg:-mt-24 pb-8">
             {{$slot}}
         </main>
         <footer>
