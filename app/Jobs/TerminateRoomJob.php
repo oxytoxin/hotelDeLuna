@@ -6,6 +6,7 @@ use App\Models\CheckInDetail;
 use App\Models\Guest;
 use App\Models\Room;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -43,11 +44,9 @@ class TerminateRoomJob implements ShouldQueue
                 'room_status_id' => 1,
             ]);
         }
-        $transaction = Transaction::where('guest_id', $this->guest_id)
-                                            ->where('transaction_type_id', 1)
-                                            ->first();
-        CheckInDetail::where('transaction_id', $transaction->id)->delete();
-        Transaction::where('guest_id', $this->guest_id)->delete();
-        Guest::where('id', $this->guest_id)->delete();
+        $guest = Guest::where('id',$this->guest_id)->first();
+        $guest->update([
+            'terminated_at' =>  Carbon::now(),
+        ]);
     }
 }

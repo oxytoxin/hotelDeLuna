@@ -56,6 +56,7 @@ class CheckOut extends Component
     public function searchByQrCode()
     {
         return Guest::query()
+            ->where('terminated_at', null)
             ->where('qr_code', $this->realSearch)
             ->where('is_checked_in', 1)
             ->where('totaly_checked_out', 0)
