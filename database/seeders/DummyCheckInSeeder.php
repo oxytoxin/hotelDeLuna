@@ -37,7 +37,7 @@ class DummyCheckInSeeder extends Seeder
                 'room_id' => $i,
                 'rate_id' => 1,
                 'static_amount' => '200',
-                'static_hours_stayed' => '12',
+                'static_hours_stayed' => '6',
             ]);
             $selected_room = Room::find($check_in_detail->room_id);
             $selected_room->update([

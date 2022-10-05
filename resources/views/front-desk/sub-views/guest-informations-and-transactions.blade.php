@@ -33,6 +33,14 @@
                             {{ $guest?->check_in_at }}
                         </dd>
                     </div>
+                    <div class="sm:col-span-1">
+                        <dt class="text-sm font-medium text-gray-500">
+                            Expected Check Out
+                        </dt>
+                        <dd class="mt-1 text-sm text-gray-900">
+                            {{ $guest?->transactions->where('transaction_type_id', 1)->first()->check_in_detail->expected_check_out_at }}
+                        </dd>
+                    </div>
                 </dl>
             </div>
         </div>

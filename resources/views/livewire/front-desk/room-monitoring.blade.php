@@ -38,15 +38,17 @@
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @forelse ($rooms as $room)
-                                        <tr>
-                                            <td
-                                                class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
+                                        <tr @class([
+                                            'text-green-600' => $room->room_status_id == 1,
+                                            'text-red-600' => $room->room_status_id == 7,
+                                        ])>
+                                            <td class="py-4 pl-4 pr-3 text-sm font-medium whitespace-nowrap sm:pl-6">
                                                 ROOM # {{ $room->number }} | {{ ordinal($room->floor->number) }} Floor
                                             </td>
-                                            <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                            <td class="px-3 py-4 text-sm whitespace-nowrap">
                                                 {{ $room->room_status->name }}
                                             </td>
-                                            <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                            <td class="px-3 py-4 text-sm whitespace-nowrap">
                                                 <div>
                                                     @if ($room->room_status_id == 2 && count($room->check_in_details))
                                                         @php
@@ -90,7 +92,7 @@
                                                 </div>
                                             </td>
 
-                                            <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                            <td class="px-3 py-4 text-sm whitespace-nowrap">
                                                 @if ($room->time_to_clean)
                                                     @php
                                                         $time_to_clean = new Carbon\Carbon($room->time_to_clean);
@@ -100,8 +102,31 @@
                                                             {{ $time_to_clean->diffForHumans() }}
                                                         </span>
                                                     @else
-                                                        <div class="flex space-x-2">
-                                                            <x-countdown :expires="$time_to_clean" />
+                                                        <div class="relative flex space-x-2">
+                                                            <x-countdown :expires="$time_to_clean">
+                                                                <span x-cloak
+                                                                    x-show="timer.hours == '00'"
+                                                                    class="absolute p-2 text-white bg-gray-400 rounded-r-lg rounded-tl-lg -top-5 -right-10 animate-bounce">
+                                                                    About to due
+                                                                </span>
+                                                                <div class="flex space-x-2 ">
+                                                                    <div class="flex space-x-1">
+                                                                        <span
+                                                                            x-text="timer.hours">{{ $component->hours() }}</span>
+                                                                        <span> hours -</span>
+                                                                    </div>
+                                                                    <div class="flex space-x-1">
+                                                                        <span
+                                                                            x-text="timer.minutes">{{ $component->minutes() }}</span>
+                                                                        <span> minutes -</span>
+                                                                    </div>
+                                                                    <div class="flex space-x-1">
+                                                                        <span
+                                                                            x-text="timer.seconds">{{ $component->seconds() }}</span>
+                                                                        <span>seconds</span>
+                                                                    </div>
+                                                                </div>
+                                                            </x-countdown>
                                                             @if ($room->room_status_id == 8)
                                                                 <span title="Room is currently being cleaned">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +142,6 @@
                                                                             stroke-linejoin="round"
                                                                             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                                                     </svg>
-
                                                                 </span>
                                                             @endif
                                                         </div>
@@ -152,5 +176,4 @@
             </div>
         </div>
     </div>
-
 </div>

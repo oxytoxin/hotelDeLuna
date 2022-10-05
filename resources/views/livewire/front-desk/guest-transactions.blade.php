@@ -11,23 +11,25 @@
         </div>
         <div wire:key="buttons"
             class="flex items-center space-x-3">
-            <x-button label="Qr Code"
-                icon="search"
-                wire:click="searchByQrCode"
-                spinner="searchByQrCode"
-                primary />
-            <x-button label="Room Number"
-                icon="search"
-                wire:click="searchByRoomNumber"
-                primary />
-            <x-button label="Name"
-                icon="search"
-                wire:click="searchByName"
-                primary />
+
             @if ($guest)
                 <x-button wire:click="clear"
                     negative
                     spinner="clear">Clear</x-button>
+            @else
+                <x-button label="Qr Code"
+                    icon="search"
+                    wire:click="searchByQrCode"
+                    spinner="searchByQrCode"
+                    primary />
+                <x-button label="Room Number"
+                    icon="search"
+                    wire:click="searchByRoomNumber"
+                    primary />
+                <x-button label="Name"
+                    icon="search"
+                    wire:click="searchByName"
+                    primary />
             @endif
         </div>
     </div>
