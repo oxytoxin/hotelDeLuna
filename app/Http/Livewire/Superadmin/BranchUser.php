@@ -18,7 +18,7 @@ class BranchUser extends Component
     public $user_email;
     public $roles;
     public $user_password;
-    public $user_role;
+    public $user_role = 1;
     public $branch_modal = false;
     public $modal_edit = false; 
 
