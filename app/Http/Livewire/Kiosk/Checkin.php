@@ -133,7 +133,7 @@ class Checkin extends Component
     public function selectRoomType($type_id)
     {   
         $is_empty = Room::where('type_id',$type_id)->count() > 0; 
-        if ($is_empty = true) {
+        if ($is_empty == true) {
             $this->get_room['type_id'] = $type_id;
         $this->room_array++;
         $this->type_key = $type_id;
