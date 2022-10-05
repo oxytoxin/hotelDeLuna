@@ -10,6 +10,7 @@ use App\Models\Transaction;
 use App\Models\CheckInDetail;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Termwind\Components\Dd;
 
 class CheckOutGuest extends Component
 {
@@ -27,6 +28,8 @@ class CheckOutGuest extends Component
     public $search = '';
 
     public $transactionOrder = 'DESC';
+
+    public $final_reminder = false;
 
     public $searchBy = null;
 
@@ -68,13 +71,12 @@ class CheckOutGuest extends Component
             $guest = Guest::where('qr_code', $this->search)
                 ->where('terminated_at', null)
                 ->where('check_in_at', '!=', null)
-                ->where('totaly_checked_out', false)
                 ->where('branch_id', auth()->user()->branch->id)
                 ->first();
             if (!$guest) {
                 $this->notification()->error(
                     $title = 'Error!',
-                    $message = 'QR Code not found or already checked out.'
+                    $message = 'QR Code not found'
                 );
                 $this->guest = null;
                 $this->search = '';
@@ -99,7 +101,7 @@ class CheckOutGuest extends Component
             if (!$room) {
                 $this->notification()->error(
                     $title = 'Error!',
-                    $message = 'Guest not found or already checked out.'
+                    $message = 'Room is currently not occupied.'
                 );
                 $this->guest = null;
                 $this->search = '';
@@ -132,6 +134,10 @@ class CheckOutGuest extends Component
 
     public function searchByName()
     {
+        $this->dialog()->info(
+            $title = 'Reminder',
+            $description = 'Guest may have the same name. Results may not be accurate. Please counter check the guest\'s qr coder / room number / contact number.'
+        );
         $this->searchBy = 'name';
         if ($this->search) {
             $guest = Guest::where('name', $this->search)
@@ -225,6 +231,7 @@ class CheckOutGuest extends Component
             $this->checkOutFalse();
             return;
         }
+        $this->final_reminder = true;
         $this->dialog()->confirm([
             'title'       => 'Are you Sure?',
             'description' => 'This will check out this guest',
@@ -241,6 +248,7 @@ class CheckOutGuest extends Component
 
     public function confirmCheckOut()
     {
+        
         DB::beginTransaction();
         $this->guest->update([
             'totaly_checked_out' => true,
