@@ -51,65 +51,77 @@ class Checkin extends Component
 
     public $temporary = [];
 
+    public $confirmModal = false;
+
     public function render()
     {
-
         return view('livewire.kiosk.checkin', [
-            'rooms' => Room::where('room_status_id', 1)->where('floor_id', 'like', '%' . $this->floor_id . '%')->where('type_id', $this->type_key)->whereHas('floor', function ($query) {
-                $query->where('branch_id', auth()->user()->branch_id);
-            })->orderBy('updated_at','DESC')->with(['floor'])->take(10)->get(),
+            'rooms' => Room::where('room_status_id', 1)
+                ->where('floor_id', 'like', '%' . $this->floor_id . '%')
+                ->where('type_id', $this->type_key)
+                ->whereHas('floor', function ($query) {
+                    $query->where('branch_id', auth()->user()->branch_id);
+                })
+                ->orderBy('updated_at', 'DESC')
+                ->with(['floor'])
+                ->take(10)
+                ->get(),
 
-            'floors' => Floor::where('branch_id', auth()->user()->branch_id)->get(),
+            'floors' => Floor::where(
+                'branch_id',
+                auth()->user()->branch_id
+            )->get(),
             'roomtypes' => Type::get(),
-            'rates' => Rate::where('type_id', 'like', '%' . $this->type_key . '%')->with(['staying_hour','type'])->get(),
+            'rates' => Rate::where(
+                'type_id',
+                'like',
+                '%' . $this->type_key . '%'
+            )
+                ->with(['staying_hour', 'type'])
+                ->get(),
         ]);
     }
 
-    public function updated($propertyName)
-    {
-        $this->validateOnly($propertyName, [
-            'customer_name' => 'required|min:3',
-            'customer_number' => 'required|numeric|digits:9',
-        ]);
-    }
+    // public function updated($propertyName)
+    // {
+    //     $this->validateOnly($propertyName, [
+    //         'customer_name' => 'required|min:3',
+    //         'customer_number' => 'required|numeric|digits:9',
+    //     ]);
+    // }
 
     public function closeManageRoomPanel()
     {
         $this->dialog()->confirm([
+            'title' => 'Room Selection Management',
 
-            'title'       => 'Room Selection Management',
+            'description' =>
+                'Are you sure you want to cancel this transaction?',
 
-            'description' => 'Are you sure you want to cancel this transaction?',
+            'icon' => 'question',
 
-            'icon'        => 'question',
-
-            'accept'      => [
-
-                'label'  => 'Yes',
+            'accept' => [
+                'label' => 'Yes',
 
                 'method' => 'cancelRoomSelection',
-
             ],
 
             'reject' => [
-
-                'label'  => 'No, cancel',
-
+                'label' => 'No, cancel',
             ],
-
         ]);
     }
 
     public function cancelRoomSelection()
     {
-        $query =  Room::where('id', $this->get_room['room_id'])->first();
+        $query = Room::where('id', $this->get_room['room_id'])->first();
         $query->update([
             'room_status_id' => 1,
         ]);
-        $this->manageRoomPanel = false; 
+        $this->manageRoomPanel = false;
         $this->notification()->success(
             $title = 'Kiosk Check-In',
-            $description = 'Cancel Room Successfully.',
+            $description = 'Cancel Room Successfully.'
         );
     }
 
@@ -119,7 +131,7 @@ class Checkin extends Component
         if ($query->room_status_id != 1) {
             $this->notification()->error(
                 $title = 'Kiosk Check-In',
-                $description = 'The Room is already selected by other user',
+                $description = 'The Room is already selected by other user'
             );
         } else {
             $query->update([
@@ -131,33 +143,45 @@ class Checkin extends Component
     }
 
     public function selectRoomType($type_id)
-    {   
-        $is_empty = Room::where('type_id',$type_id)->count() > 0; 
-        $query = Room::where('type_id', $type_id)->where('room_status_id', 1)->whereHas('floor', function ($query) {
-            $query->where('branch_id', auth()->user()->branch_id);
-        })->with(['floor','type'])->first()->floor_id;
-       
-        if ($is_empty == true) {
-            if ($query != null) {
-                $this->get_room['type_id'] = $type_id;
-                $this->room_array++;
-                $this->type_key = $type_id;
-                 $this->floor_id = $query;
-            }else{
-                $this->notification()->error(
-                    $title = 'Room Type Selection',
-                    $description = 'There is no available room in this type.',
-                );
-            }
-        }else{
+    {
+        $query = Room::where('type_id', $type_id)
+            ->where('room_status_id', 1)
+            ->whereHas('floor', function ($query) {
+                $query->where('branch_id', auth()->user()->branch_id);
+            })
+            ->with(['floor', 'type'])
+            ->get();
+
+        if ($query->count() > 0) {
+            $this->get_room['type_id'] = $type_id;
+            $this->room_array++;
+            $this->type_key = $type_id;
+            $this->floor_id = $query->first()->floor_id;
+        } else {
             $this->notification()->error(
                 $title = 'Room Type Selection',
-                $description = 'There is no available room in this type.',
+                $description = 'There is no available room in this type.'
             );
         }
-        
-       
-        
+
+        // if ($is_empty == true) {
+        //     if ($query->floor_id != null) {
+        //         $this->get_room['type_id'] = $type_id;
+        //         $this->room_array++;
+        //         $this->type_key = $type_id;
+        //          $this->floor_id = $query;
+        //     }else{
+        //         $this->notification()->error(
+        //             $title = 'Room Type Selection',
+        //             $description = 'There is no available room in this type.',
+        //         );
+        //     }
+        // }else{
+        //     $this->notification()->error(
+        //         $title = 'Room Type Selection',
+        //         $description = 'There is no available room in this type.',
+        //     );
+        // }
     }
 
     public function manageRoom($key)
@@ -186,60 +210,130 @@ class Checkin extends Component
     }
 
     public function confirmCheckin()
-   
     {
-        // dd('sdsdsdsdsd');   
-        $this->validate([
-            'customer_name' => 'required|min:3',
-            'customer_number' => 'nullable|digits:9',
-        ]);
-        $transaction = \App\Models\Guest::whereYear('created_at', \Carbon\Carbon::today()->year)->count();
-        $transaction += 1;
-        $transaction_code = auth()->user()->branch_id . today()->format('y') . str_pad($transaction, 4, '0', STR_PAD_LEFT);
+        // dd('sdsdsdsdsd');
+        // $this->validate([
+        //     'customer_name' => 'required|min:3',
+        //     'customer_number' => 'nullable|digits:9',
+        // ]);
 
+        if ($this->customer_number != null) {
+            $this->validate([
+                'customer_name' => 'required|min:3',
+                'customer_number' => 'required|numeric|digits:9',
+            ]);
+            // dd('may number');
+            $transaction = \App\Models\Guest::whereYear(
+                'created_at',
+                \Carbon\Carbon::today()->year
+            )->count();
+            $transaction += 1;
+            $transaction_code =
+                auth()->user()->branch_id .
+                today()->format('y') .
+                str_pad($transaction, 4, '0', STR_PAD_LEFT);
 
+            $guest = Guest::create([
+                'branch_id' => auth()->user()->branch_id,
+                'qr_code' => $transaction_code,
+                'name' => $this->customer_name,
+                'contact_number' => '09' . $this->customer_number,
+            ]);
 
-        $guest = Guest::create([
-            'branch_id' => auth()->user()->branch_id,
-            'qr_code' => $transaction_code,
-            'name' => $this->customer_name,
-            'contact_number' => '09'.$this->customer_number,
-        ]);
+            $room = Room::where('id', $this->get_room['room_id'])->first();
+            $rate = Rate::where('id', $this->get_room['rate_id'])->first();
 
-        $room = Room::where('id', $this->get_room['room_id'])->first();
-        $rate = Rate::where('id', $this->get_room['rate_id'])->first();
+            $checkinroom = Transaction::create([
+                'branch_id' => auth()->user()->branch_id,
+                'guest_id' => $guest->id,
+                'transaction_type_id' => 1,
+                'payable_amount' => $rate->amount,
+            ]);
+            $checkindeposit = Transaction::create([
+                'branch_id' => auth()->user()->branch_id,
+                'guest_id' => $guest->id,
+                'transaction_type_id' => 2,
+                'payable_amount' => 200,
+            ]);
 
-        $checkinroom = Transaction::create([
-            'branch_id' => auth()->user()->branch_id,
-            'guest_id' => $guest->id,
-            'transaction_type_id' => 1,
-            'payable_amount' => $rate->amount,
-        ]);
-        $checkindeposit = Transaction::create([
-            'branch_id' => auth()->user()->branch_id,
-            'guest_id' => $guest->id,
-            'transaction_type_id' => 2,
-            'payable_amount' => 200,
-        ]);
+            $details = CheckInDetail::create([
+                'transaction_id' => $checkinroom->id,
+                'room_id' => $this->get_room['room_id'],
+                'rate_id' => $this->get_room['rate_id'],
+                'static_amount' => $rate->amount,
+                'static_hours_stayed' => $rate->staying_hour->number,
+            ]);
 
-        $details = CheckInDetail::create([
-            'transaction_id' => $checkinroom->id,
-            'room_id' => $this->get_room['room_id'],
-            'rate_id' => $this->get_room['rate_id'],
-            'static_amount' => $rate->amount,
-            'static_hours_stayed' => $rate->staying_hour->number,
-        ]);
+            $room->update([
+                'room_status_id' => 6,
+                'time_to_terminate_in_queue' => Carbon::now()->addMinutes(10),
+            ]);
 
-        $room->update([
-            'room_status_id' => 6,
-            'time_to_terminate_in_queue' => Carbon::now()->addMinutes(10),
-        ]);
+            $this->qr_code = $transaction_code;
+            $this->step = 4;
 
-        $this->qr_code = $transaction_code;
-        $this->step = 4;
-        
-        $time_to_terminate = 2;
-        TerminateRoomJob::dispatch($room->id,$guest->id)->delay(now()->addHours($time_to_terminate));
+            $time_to_terminate = 2;
+            TerminateRoomJob::dispatch($room->id, $guest->id)->delay(
+                now()->addHours($time_to_terminate)
+            );
+        } else {
+            // dd('no number');
+            $this->validate([
+                'customer_name' => 'required|min:3',
+            ]);
+            $transaction = \App\Models\Guest::whereYear(
+                'created_at',
+                \Carbon\Carbon::today()->year
+            )->count();
+            $transaction += 1;
+            $transaction_code =
+                auth()->user()->branch_id .
+                today()->format('y') .
+                str_pad($transaction, 4, '0', STR_PAD_LEFT);
+
+            $guest = Guest::create([
+                'branch_id' => auth()->user()->branch_id,
+                'qr_code' => $transaction_code,
+                'name' => $this->customer_name,
+            ]);
+
+            $room = Room::where('id', $this->get_room['room_id'])->first();
+            $rate = Rate::where('id', $this->get_room['rate_id'])->first();
+
+            $checkinroom = Transaction::create([
+                'branch_id' => auth()->user()->branch_id,
+                'guest_id' => $guest->id,
+                'transaction_type_id' => 1,
+                'payable_amount' => $rate->amount,
+            ]);
+            $checkindeposit = Transaction::create([
+                'branch_id' => auth()->user()->branch_id,
+                'guest_id' => $guest->id,
+                'transaction_type_id' => 2,
+                'payable_amount' => 200,
+            ]);
+
+            $details = CheckInDetail::create([
+                'transaction_id' => $checkinroom->id,
+                'room_id' => $this->get_room['room_id'],
+                'rate_id' => $this->get_room['rate_id'],
+                'static_amount' => $rate->amount,
+                'static_hours_stayed' => $rate->staying_hour->number,
+            ]);
+
+            $room->update([
+                'room_status_id' => 6,
+                'time_to_terminate_in_queue' => Carbon::now()->addMinutes(10),
+            ]);
+
+            $this->qr_code = $transaction_code;
+            $this->step = 4;
+
+            $time_to_terminate = 2;
+            TerminateRoomJob::dispatch($room->id, $guest->id)->delay(
+                now()->addHours($time_to_terminate)
+            );
+        }
     }
 
     public function confirmRate()
@@ -249,5 +343,59 @@ class Checkin extends Component
         ]);
         $this->manageRoomPanel = false;
         $this->step = 3;
+    }
+
+    public function cancelTransaction()
+    {
+        // dd($this->get_room);
+        if ($this->get_room['room_id'] == null) {
+            redirect()->route('kiosk.transaction');
+        } else {
+            // $query = Room::where('id', $this->get_room['room_id'])->first();
+            $this->confirmModal = true;
+        }
+    }
+
+    public function confirmCancelTransaction()
+    {
+        $query = Room::where('id', $this->get_room['room_id'])->first();
+        $query->update([
+            'room_status_id' => 1,
+            'time_to_terminate_in_queue' => null,
+        ]);
+        $this->confirmModal = false;
+        redirect()->route('kiosk.transaction');
+    }
+
+    public function previousTransaction()
+    {
+        if ($this->get_room['room_id'] == null) {
+            $this->step = $this->step - 1;
+        } else {
+            $this->dialog()->confirm([
+                'title' => 'Go to previous Transaction',
+                'description' =>
+                    'Are you sure you want to go to previous transaction?',
+                'icon' => 'question',
+                'accept' => [
+                    'label' => 'Yes',
+                    'method' => 'confirmPreviousTransaction',
+                ],
+                'reject' => [
+                    'label' => 'No, cancel',
+                ],
+            ]);
+        }
+    }
+
+    public function confirmPreviousTransaction()
+    {
+        $query = Room::where('id', $this->get_room['room_id'])->first();
+        $query->update([
+            'room_status_id' => 1,
+            'time_to_terminate_in_queue' => null,
+        ]);
+        $this->get_room['rate_id'] = null;
+        $this->step = $this->step - 1;
     }
 }
