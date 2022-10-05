@@ -601,6 +601,21 @@
                     </div>
 
                   </dl>
+                  <dl class="text-sm mt-5 border-t space-y-1">
+
+                    <div class="flex py-1 items-center justify-between ">
+                      <dt class="flex flex-col">
+                        <div class="flex space-x-1">
+                          <h1 class="text-gray-600 text-lg font-bold uppercase">
+                            TOTAL CHARGE
+                          </h1>
+                        </div>
+                      </dt>
+                      <dd class="text-gray-600 font-semibold text-lg">&#8369;{{ number_format($subtotal + 200, 2) }}
+                      </dd>
+                    </div>
+
+                  </dl>
                   @php
                     $prompt;
                     if ($customer_name != null || $customer_number != null) {
@@ -619,7 +634,7 @@
                       @if ($customer_name != null)
                         <button wire:click="confirmCheckin"
                           class="p-2 px-5 border-2 border-gray-700 text-lg rounded-full font-semibold bg-green-600 text-white">
-                          <span>CONFIRM INFORMATION</span>
+                          <span>CONFIRM TRANSACTION</span>
                         </button>
                       @endif
                     </div>
