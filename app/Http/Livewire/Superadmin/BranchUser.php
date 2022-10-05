@@ -21,6 +21,7 @@ class BranchUser extends Component
     public $user_role = 1;
     public $branch_modal = false;
     public $modal_edit = false; 
+    
 
     public function mount($branch)
     {
@@ -41,7 +42,7 @@ class BranchUser extends Component
 
         $this->validate([
             'user_name' => 'required',
-            'user_email' => 'required|email',
+            'user_email' => 'required|unique:users,email',
             'user_password' => 'required',
             'user_role' => 'required',
         ]);
@@ -55,6 +56,7 @@ class BranchUser extends Component
         ]);
 
         $this->branch_modal = false;
+        $this->reset('user_name','user_email','user_password','user_role');
         $this->notification()->success(
 
             $title = 'Branch User',
@@ -79,7 +81,7 @@ class BranchUser extends Component
     {
         $this->validate([
             'user_name' => 'required',
-            'user_email' => 'required|email',
+            'user_email' => 'required|email|unique:users,email,'.$this->user_id,
             'user_password' => 'required',
             'user_role' => 'required',
         ]);
@@ -95,6 +97,7 @@ class BranchUser extends Component
 
         $this->branch_modal = false;
         $this->modal_edit = false;
+        $this->reset('user_name','user_email','user_password','user_role');
         $this->notification()->success(
 
             $title = 'Branch User',

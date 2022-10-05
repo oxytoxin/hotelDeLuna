@@ -132,17 +132,24 @@ class Checkin extends Component
 
     public function selectRoomType($type_id)
     {   
-        // $this->floor_id = 1;
-      
-      
-       
-        $this->get_room['type_id'] = $type_id;
+        $is_empty = Room::where('type_id',$type_id)->count() > 0; 
+        if ($is_empty = true) {
+            $this->get_room['type_id'] = $type_id;
         $this->room_array++;
         $this->type_key = $type_id;
         $query = Room::where('type_id', $type_id)->where('room_status_id', 1)->whereHas('floor', function ($query) {
             $query->where('branch_id', auth()->user()->branch_id);
         })->with('floor')->first()->floor_id;
         $this->floor_id = $query;
+        }else{
+            $this->notification()->error(
+                $title = 'Room Type Selection',
+                $description = 'There is no available room in this type.',
+            );
+        }
+        
+       
+        
     }
 
     public function manageRoom($key)
