@@ -122,10 +122,12 @@ class ExtendHours extends Component
         $this->available_hours_for_extension_with_in_this_branch = Extension::where('branch_id', auth()->user()->branch_id)->get();
         $extension_capping = $this->branch_extension_resetting_time = ExtensionCapping::where('branch_id', auth()->user()->branch_id)->first();
         $this->branch_extension_resetting_time = $extension_capping->hours ?? null;
-        $this->checked_in_room_daily_rate = Rate::where('branch_id', auth()->user()->branch_id)
+        if ($this->branch_extension_resetting_time) {
+            $this->checked_in_room_daily_rate = Rate::where('branch_id', auth()->user()->branch_id)
             ->whereHas('staying_hour', function ($query) {
                 $query->where('number', $this->branch_extension_resetting_time);
             })->first()->amount;
+        }
     }
 
     public function render()
