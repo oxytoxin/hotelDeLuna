@@ -52,6 +52,7 @@ class BranchUser extends Component
             'password' => Hash::make($this->user_password),
             'role_id' => $this->user_role,
             'branch_id' => $this->branch_id,
+            'branch_name' => Branch::where('id', $this->branch_id)->first()->name,
         ]);
 
         $this->branch_modal = false;

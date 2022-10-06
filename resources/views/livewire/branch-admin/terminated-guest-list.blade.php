@@ -1,6 +1,6 @@
 <div class="overflow-hidden bg-white border border-gray-300 shadow sm:rounded-lg ">
     <div class="px-5 py-3 border-b">
-        <h1 class="text-lg text-gray-700">Guest Terminated List</h1>
+        <h1 class="text-lg text-gray-700">Terminated Guest List</h1>
     </div>
     <div class="p-4">
         <ul class="grid space-y-2">

@@ -14,9 +14,9 @@ class BranchSeeder extends Seeder
      */
     public function run()
     {
-        // Branch::create([
-        //     'name' => 'ALMA RESIDENCES GENSAN',
-        //     'address' => 'Brgy. 1, Gensan, South Cotabato',
-        // ]);
+        Branch::create([
+            'name' => 'ALMA RESIDENCES GENSAN',
+            'address' => 'Brgy. 1, Gensan, South Cotabato',
+        ]);
     }
 }
