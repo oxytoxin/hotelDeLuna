@@ -3,6 +3,7 @@
         <x-table :headers="['Qr Code', 'Name', 'Contact Number', 'Check In At', '']">
             <x-slot:topLeft>
                 <x-input icon="search"
+                    wire:model.debounce="search"
                     placeholder="Search..." />
             </x-slot:topLeft>
             @forelse ($guests as $guest)
