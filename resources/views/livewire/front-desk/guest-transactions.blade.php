@@ -55,7 +55,7 @@
                 </x-button>
                 <x-button white
                     wire:click="$set('action','item-request')">
-                    Item Request
+                    Amenities
                 </x-button>
             </div>
         @endif

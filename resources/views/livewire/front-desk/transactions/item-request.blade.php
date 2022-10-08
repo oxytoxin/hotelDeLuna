@@ -1,10 +1,10 @@
-<div class="sm:grid sm:grid-cols-2 gap-4">
+<div class="gap-4 sm:grid sm:grid-cols-2">
     <div class="sm:col-span-1">
         <x-card shadow="shadow"
-            title="Request Item"
+            title="Amenities"
             cardClasses="border-gray-300 border">
             <div class="w-full">
-                <form class="sm:grid sm:grid-cols-1 gap-4">
+                <form class="gap-4 sm:grid sm:grid-cols-1">
                     @csrf
                     <x-native-select wire:model="form.requestable_item_id"
                         label="Select Type">
@@ -27,7 +27,7 @@
                 </form>
             </div>
             <x-slot:footer>
-                <div class="flex space-x-3 items-center">
+                <div class="flex items-center space-x-3">
                     <x-button wire:click="clearForm"
                         spinner="clearForm">Clear Form</x-button>
                     <x-button primary
@@ -39,14 +39,14 @@
     </div>
     <div class="sm:col-span-1">
         <div class="grid gap-1">
-            <div class="flex justify-between items-center">
-                <h1 class="text-gray-600 text-center">
+            <div class="flex items-center justify-between">
+                <h1 class="text-center text-gray-600">
                     Requested Items
                 </h1>
                 <div>
                     <button type="button"
                         wire:click="toggleToggleRequestOrder"
-                        class="text-gray-600 flex items-center space-x-2">
+                        class="flex items-center space-x-2 text-gray-600">
                         <span>{{ $requestOrder == 'ASC' ? 'Oldest' : 'Newest' }}</span>
                         <svg xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -65,9 +65,9 @@
                 x-animate>
                 @forelse ($guest_request_items as $guest_request_item)
                     <div wire:key="{{ $guest_request_item->id }}"
-                        class="bg-white rounded-lg border p-2 mb-2">
-                        <div class="w-full flex justify-between">
-                            <div class="flex space-x-2 items-center text-gray-600">
+                        class="p-2 mb-2 bg-white border rounded-lg">
+                        <div class="flex justify-between w-full">
+                            <div class="flex items-center space-x-2 text-gray-600">
                                 <h1>
                                     {{ $guest_request_item->requestable_item->name }}
                                 </h1>
@@ -83,9 +83,9 @@
                     </div>
                 @empty
                     <div wire:key="empty"
-                        class="bg-white rounded-lg border p-2 mb-2">
-                        <div class="w-full flex justify-between">
-                            <div class="flex space-x-2 items-center text-gray-600">
+                        class="p-2 mb-2 bg-white border rounded-lg">
+                        <div class="flex justify-between w-full">
+                            <div class="flex items-center space-x-2 text-gray-600">
                                 <h1>
                                     No changes yet
                                 </h1>

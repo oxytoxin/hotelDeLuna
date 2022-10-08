@@ -207,13 +207,13 @@
     <!-- Static sidebar for desktop -->
     <div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
         <div class="flex flex-col flex-1 min-h-0 bg-white shadow-md">
-            <div class=" pt-5 pb-4 overflow-y-auto">
+            <div class="pt-5 pb-4 overflow-y-auto ">
                 <div class="flex items-center justify-center flex-shrink-0 px-4">
                     <h1 class="text-center text-gray-600">
                         APP_NAME
                     </h1>
                 </div>
-                <nav class="flex-1 pt-2 mt-2  bg-white border-t">
+                <nav class="flex-1 pt-2 mt-2 bg-white border-t">
                     <a href="{{ route('branch.dashboard') }}"
                         @class([
                             'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
@@ -259,8 +259,8 @@
                         Guests
                     </a>
                 </nav>
-                <nav class="flex-1 pt-2 mt-2  bg-white border-t">
-                    <div class="text-gray-800   font-semibold p-2 w-full flex justify-between items-center text-sm">
+                <nav class="flex-1 pt-2 mt-2 bg-white border-t">
+                    <div class="flex items-center justify-between w-full p-2 text-sm font-semibold text-gray-800">
                         <h1> Manage</h1>
                     </div>
                     <a href="{{ route('branch.manage-types') }}"
@@ -438,11 +438,11 @@
                                 stroke-linejoin="round"
                                 d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
                         </svg>
-                        Requestable Items
+                        Amenities
                     </a>
                 </nav>
-                <nav class="flex-1 pt-2 mt-2  bg-white border-t">
-                    <div class="text-gray-800  font-semibold p-2 w-full flex justify-between items-center text-sm">
+                <nav class="flex-1 pt-2 mt-2 bg-white border-t">
+                    <div class="flex items-center justify-between w-full p-2 text-sm font-semibold text-gray-800">
                         <h1>Front Desk Actions</h1>
                     </div>
                     <a href="{{ route('branch.check-in') }}"
@@ -539,8 +539,8 @@
 
 
                 </nav>
-                <nav class="flex-1 pt-2 mt-2  bg-white border-t">
-                    <div class="text-gray-800  font-semibold p-2 w-full flex justify-between items-center text-sm">
+                <nav class="flex-1 pt-2 mt-2 bg-white border-t">
+                    <div class="flex items-center justify-between w-full p-2 text-sm font-semibold text-gray-800">
                         <h1>House Keeping</h1>
                     </div>
                     <a href="{{ route('branch.room-boy-designations') }}"

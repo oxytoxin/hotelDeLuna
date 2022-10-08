@@ -30,7 +30,7 @@ class RequestableItems extends Component
 
     public function getModalTitle()
     {
-        return $this->mode == 'create' ? 'Create Requestable Item' : 'Edit Requestable Item';
+        return $this->mode == 'create' ? 'Create Amenities' : 'Edit Amenities';
     }
 
     public function add()
