@@ -43,7 +43,7 @@
                 </x-button>
                 <x-button white
                     wire:click="$set('action','change-room')">
-                    Change Room
+                    Transfer
                 </x-button>
                 <x-button white
                     wire:click="$set('action','extend-hours')">
@@ -55,7 +55,7 @@
                 </x-button>
                 <x-button white
                     wire:click="$set('action','item-request')">
-                    Item Request
+                    Amenities
                 </x-button>
             </div>
         @endif

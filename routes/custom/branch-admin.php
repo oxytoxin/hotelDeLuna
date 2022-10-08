@@ -62,7 +62,7 @@ Route::prefix('branch')->middleware([
         return view('branch-admin.manage-settings');
     })->name('branch.manage-settings');
     
-    Route::get('/manage-requestable-items', function () {
+    Route::get('/manage-amenities', function () {
         return view('branch-admin.manage-requestable-items');
     })->name('branch.manage-requestable-items');
 
