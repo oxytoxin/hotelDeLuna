@@ -55,8 +55,9 @@
                             class="flex items-center justify-between px-2 py-3 space-x-2 bg-white border-b border-gray-200 sm:px-6">
                             <div class="flex items-center space-x-2">
                                 <x-native-select wire:model="searchBy">
-                                    <option value="1">Search By Qr Code</option>
-                                    <option value="2">Search By Name</option>
+                                    <option value="1">Qr Code</option>
+                                    <option value="2">Name</option>
+                                    <option value="3">Room</option>
                                 </x-native-select>
                                 <x-input icon="search"
                                     wire:model.defer="search"

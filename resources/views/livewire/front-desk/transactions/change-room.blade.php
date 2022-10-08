@@ -1,7 +1,7 @@
 <div class="gap-4 sm:grid sm:grid-cols-2">
     <div class="sm:col-span-1">
         <x-card shadow="shadow"
-            title="Change Room"
+            title="Transfer"
             cardClasses="border-gray-300 border">
             <div class="w-full">
                 <form class="gap-4 sm:grid sm:grid-cols-2">

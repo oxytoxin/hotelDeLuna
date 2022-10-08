@@ -74,18 +74,6 @@ class CheckIn extends Component
         $this->showModal = true;
     }
 
-    // public function pay($transaction_id)
-    // {
-    //     $transaction = Transaction::find($transaction_id);
-    //     $transaction->paid_at = Carbon::now();
-    //     $transaction->save();
-    // }
-    // public function cancelPayment($transaction_id)
-    // {
-    //     $transaction = Transaction::find($transaction_id);
-    //     $transaction->paid_at = null;
-    //     $transaction->save();
-    // }
     public function confirmCheckIn()
     {
         $this->dialog()->confirm([
@@ -128,14 +116,14 @@ class CheckIn extends Component
         );
     }
 
-    public function selectDiscount($id,$amount,$is_percentage)
+    public function selectDiscount($id, $amount, $is_percentage)
     {
         $array = [
             'id' => $id,
             'amount' => $amount,
             'is_percentage' => $is_percentage,
         ];
-        
+
         if (in_array($array, $this->selectedDiscounts)) {
             $this->selectedDiscounts = array_filter($this->selectedDiscounts, function ($item) use ($id) {
                 return $item['id'] != $id;
@@ -159,25 +147,136 @@ class CheckIn extends Component
         }
     }
 
+    public function searchByQrCode()
+    {
+        if ($this->search) {
+            $guest = Guest::where('qr_code', $this->search)
+                ->where('terminated_at', null)
+                ->where('is_checked_in', false)
+                ->where('branch_id', auth()->user()->branch->id)
+                ->first();
+            if (!$guest) {
+                $this->notification()->error(
+                    $title = 'Error!',
+                    $message = 'QR Code not found'
+                );
+                $this->guest = null;
+                $this->search = '';
+                return;
+            }
+            return $guest;
+        }
+    }
+
+    public function searchByRoomNumber()
+    {
+        if ($this->search) {
+            $room = Room::where('number', $this->search)
+                ->whereHas('floor', function ($query) {
+                    $query->where('branch_id', auth()->user()->branch_id);
+                })
+                ->where('room_status_id', 6)
+                ->first();
+            if (!$room) {
+                $this->notification()->error(
+                    $title = 'Error!',
+                    $message = 'Room not exist in the queue'
+                );
+                $this->search = '';
+                return;
+            }
+            $check_in_detail = CheckInDetail::where('room_id', $room->id)
+                ->where('check_in_at', null)
+                ->where('check_out_at', null)
+                ->latest()
+                ->first();
+            if (!$check_in_detail) {
+                $this->notification()->error(
+                    $title = 'Error!',
+                    $message = 'Guest not found or already checked out.'
+                );
+                $this->search = '';
+                return;
+            }
+
+            if ($check_in_detail->transaction->guest->terminated_at != null || $check_in_detail->transaction->guest->is_checked_in != false) {
+                $this->notification()->error(
+                    $title = 'Error!',
+                    $message = 'Guest not found'
+                );
+                $this->search = '';
+                return;
+            }
+            return $check_in_detail->transaction->guest;
+        }
+    }
+
+    public function searchByName()
+    {
+        if ($this->search) {
+            $guest = Guest::where('name', $this->search)
+                ->where('terminated_at', null)
+                ->where('is_checked_in', false)
+                ->where('branch_id', auth()->user()->branch->id)
+                ->paginate(10);
+            if (!$guest) {
+                $this->notification()->error(
+                    $title = 'Error!',
+                    $message = 'Guest not found or already checked out.'
+                );
+                $this->search = '';
+                return;
+            }
+            return $guest;
+        }
+    }
+    public function runQuery()
+    {
+        if ($this->realSearch != '') {
+            switch ($this->searchBy) {
+                case '1':
+                    return $this->searchByQrCode();
+                    break;
+                case '2':
+                    return $this->searchByName();
+                    break;
+                case '3':
+                    return $this->searchByRoomNumber();
+                    break;
+            }
+        } else {
+            return  Guest::query()
+                ->where('terminated_at', null)
+                ->where('is_checked_in', false)
+                ->paginate(10);
+        }
+    }
     public function render()
     {
         return view('livewire.front-desk.check-in', [
-            'guests' => Guest::query()
-                ->where('terminated_at', null)
-                ->when($this->realSearch, function ($query) {
+            'guests' => Guest::where('terminated_at', null)
+                ->where('is_checked_in', false)
+                ->when($this->realSearch != '', function ($query) {
                     switch ($this->searchBy) {
                         case '1':
-                            return $query->where('qr_code', $this->realSearch);
+                            $query->where('qr_code', $this->realSearch);
                             break;
                         case '2':
-                            return $query->where('name', 'like', '%' . $this->realSearch . '%');
+                            $query->where('name', $this->realSearch);
                             break;
                         case '3':
-                            return $query->where('contact_number', $this->realSearch);
+                            $query->whereHas('transactions', function ($query) {
+                                $query->where('transaction_type_id', 1)
+                                    ->whereHas('check_in_detail', function ($query) {
+                                        $query->whereHas('room', function ($query) {
+                                            $query->where('number', $this->realSearch);
+                                        });
+                                    });
+                            });
                             break;
                     }
                 })
-                ->where('is_checked_in', false)
+                ->where('branch_id', auth()->user()->branch->id)
                 ->paginate(10),
             'transactions' => $this->showModal != false ?
                 $this->guest->transactions()
@@ -188,7 +287,7 @@ class CheckIn extends Component
                 ->orderBy('check_in_at', $this->recent_check_in_order)
                 ->take(10)
                 ->get(),
-            'discounts' => $this->showModal==true ?
+            'discounts' => $this->showModal == true ?
                 Discount::where('branch_id', auth()->user()->branch_id)
                 ->where('is_available', true)
                 ->get() : [],
