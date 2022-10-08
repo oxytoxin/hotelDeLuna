@@ -35,20 +35,26 @@ class Checkout extends Component
         ]);
     }
 
-    public function updatedScanner()
-    {
-        $this->guest = Guest::where(
-            'qr_code',
-            'like',
-            '%' . $this->scanner . '%'
-        )
-            ->where('branch_id', auth()->user()->branch_id)
-            ->first()->id;
-        $this->scannerpanel = false;
-    }
+    // public function updatedScanner()
+    // {
+    //     $this->guest = Guest::where(
+    //         'qr_code',
+    //         'like',
+    //         '%' . $this->scanner . '%'
+    //     )
+    //         ->where('branch_id', auth()->user()->branch_id)
+    //         ->first()->id;
+    //     $this->scannerpanel = false;
+    // }
 
     public function searchCode()
     {
-        dd(Guest::where('qr_code', $this->scanner)->first());
+        $query = Guest::where('qr_code', $this->scanner)->first();
+        if ($query) {
+            $this->guest = $query->id;
+            $this->scannerpanel = false;
+        } else {
+            dd('not found');
+        }
     }
 }
