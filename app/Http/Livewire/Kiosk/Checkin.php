@@ -158,30 +158,15 @@ class Checkin extends Component
             $this->type_key = $type_id;
             $this->floor_id = $query->first()->floor_id;
         } else {
-            $this->notification()->error(
+            // $this->notification()->error(
+            //     $title = 'Room Type Selection',
+            //     $description = 'There is no available room in this type.'
+            // );
+            $this->dialog()->error(
                 $title = 'Room Type Selection',
                 $description = 'There is no available room in this type.'
             );
         }
-
-        // if ($is_empty == true) {
-        //     if ($query->floor_id != null) {
-        //         $this->get_room['type_id'] = $type_id;
-        //         $this->room_array++;
-        //         $this->type_key = $type_id;
-        //          $this->floor_id = $query;
-        //     }else{
-        //         $this->notification()->error(
-        //             $title = 'Room Type Selection',
-        //             $description = 'There is no available room in this type.',
-        //         );
-        //     }
-        // }else{
-        //     $this->notification()->error(
-        //         $title = 'Room Type Selection',
-        //         $description = 'There is no available room in this type.',
-        //     );
-        // }
     }
 
     public function manageRoom($key)
@@ -199,7 +184,6 @@ class Checkin extends Component
     public function selectType($type_id)
     {
         $rate = Rate::where('type_id', $type_id)->first();
-        // $this->transaction[$this->room_key]['rate_id'] = $rate->id;
         $this->transaction[$this->room_key]['type_id'] = $type_id;
         $this->room_type = Rate::where('type_id', $type_id)->get();
     }
@@ -211,18 +195,11 @@ class Checkin extends Component
 
     public function confirmCheckin()
     {
-        // dd('sdsdsdsdsd');
-        // $this->validate([
-        //     'customer_name' => 'required|min:3',
-        //     'customer_number' => 'nullable|digits:9',
-        // ]);
-
         if ($this->customer_number != null) {
             $this->validate([
                 'customer_name' => 'required|min:3',
                 'customer_number' => 'required|numeric|digits:9',
             ]);
-            // dd('may number');
             $transaction = \App\Models\Guest::whereYear(
                 'created_at',
                 \Carbon\Carbon::today()->year
