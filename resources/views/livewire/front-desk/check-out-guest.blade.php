@@ -215,6 +215,28 @@
                                                             </td>
                                                         </tr>
                                                     @endforeach
+                                                    <tr>
+                                                        <td
+                                                            class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
+                                                            <span class="font-bold text-gray-700">Total</span>
+                                                        </td>
+
+                                                        <td colspan="3"
+                                                            class="relative py-4 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
+                                                            ₱{{ $transactions->sum('payable_amount') }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td
+                                                            class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
+                                                            <span class="font-bold text-gray-700">Balance</span>
+                                                        </td>
+
+                                                        <td colspan="3"
+                                                            class="relative py-4 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
+                                                            ₱{{ $transactions->where('paid_at', null)->sum('payable_amount') }}
+                                                        </td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
