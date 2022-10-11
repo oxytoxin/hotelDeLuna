@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TransactionTypeSeeder::class);
         $this->call(RoomTypeSeeder::class);
         $this->call(RateSeeder::class);
-        $this->call(DummyCheckInSeeder::class);
+        // $this->call(DummyCheckInSeeder::class);
         $this->call(AlmaResidencesDataSeeder::class);
         StayingHour::create([
             'number' => '6',

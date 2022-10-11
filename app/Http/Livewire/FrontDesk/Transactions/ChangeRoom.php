@@ -20,7 +20,7 @@ class ChangeRoom extends Component
 
     public $historyOrder = 'DESC';
 
-    public $types_within_this_branch = [], $floors_within_this_branch = [],$rooms_within_this_branch = [];
+    public $available_types = [], $floors = [],$available_rooms = [];
 
     public $check_in_detail_id;
 
@@ -94,7 +94,7 @@ class ChangeRoom extends Component
             'authorization_code' => 'required|in:'.auth()->user()->branch->authorization_code,
         ]);
         if ($this->has_already_change_room_twice()) {
-            $this->notification()->error(
+            $this->dialog()->error(
                 $title = 'Error',
                 $description = 'You can not change room more than 2 times'
             );
@@ -104,7 +104,7 @@ class ChangeRoom extends Component
         $transaction = $this->check_in_detail->transaction;
         $new_room = Room::find($this->form['room_id']);
         if ($this->three_hours_already_past_since_check_in()) {
-            $this->notification()->error(
+            $this->dialog()->error(
                 $title = 'Error',
                 $description = 'You can not change room after 3 hours of check in'
             );
@@ -112,7 +112,7 @@ class ChangeRoom extends Component
         }
 
         if ($this->current_room->id == $new_room->id) {
-            $this->notification()->error(
+            $this->dialog()->error(
                 $title = 'Error',
                 $description = 'From and To Room cannot be same'
             );
@@ -125,12 +125,13 @@ class ChangeRoom extends Component
                         ->where('branch_id', auth()->user()->branch_id)
                         ->first();
         $new_selected_room_amount = $new_room_rate->amount;
+        $old_selected_room_amount_paid = $this->check_in_detail->transaction->payable_amount;
 
         Transaction::create([
             'branch_id' => auth()->user()->branch_id,
             'guest_id' => $transaction->guest_id,
             'transaction_type_id' => 7,
-            'payable_amount' => $new_selected_room_amount,
+            'payable_amount' => $old_selected_room_amount_paid - $new_selected_room_amount,
             'paid_at' => $this->form['paid'] ? now() : null,
         ]);
 
@@ -159,7 +160,7 @@ class ChangeRoom extends Component
         );
         $this->reset('form');
         $this->authorization_code = null;
-        $this->rooms_within_this_branch = [];
+        $this->available_rooms = [];
 
     }
 
@@ -172,20 +173,20 @@ class ChangeRoom extends Component
     {
         $this->check_in_detail = CheckInDetail::find($this->check_in_detail_id);
         $this->current_room = $this->check_in_detail->room;
-        $this->types_within_this_branch = Type::query()
+        $this->available_types = Type::query()
             ->where('branch_id', auth()->user()->branch_id)
             ->get();
-        $this->floors_within_this_branch = Floor::where('branch_id', auth()->user()->branch_id)->get();
+        $this->floors = Floor::where('branch_id', auth()->user()->branch_id)->get();
         $this->form['type_id'] = $this->current_room->type_id;
     }
 
     public function updatedFormTypeId()
     {
-        $this->rooms_within_this_branch = Room::where('floor_id', $this->form['floor_id'])
+        $this->available_rooms = Room::where('floor_id', $this->form['floor_id'])
         ->where('type_id', $this->form['type_id'])
         ->where('room_status_id', 1)
         ->get();
-        if ($this->rooms_within_this_branch->count() == 0) {
+        if ($this->available_rooms->count() == 0) {
             if ($this->form['type_id'] != null && $this->form['floor_id'] != null) {
                 $this->notification()->error(
                     $title = 'Error',
@@ -199,14 +200,14 @@ class ChangeRoom extends Component
 
     public function updatedFormFloorId()
     {
-        $this->rooms_within_this_branch = Room::where('floor_id', $this->form['floor_id'])
+        $this->available_rooms = Room::where('floor_id', $this->form['floor_id'])
         ->where('type_id', $this->form['type_id'])
         ->where('room_status_id', 1)
         ->get();
 
-        if ($this->rooms_within_this_branch->count() == 0) {
+        if ($this->available_rooms->count() == 0) {
             if ($this->form['type_id'] != null && $this->form['floor_id'] != null) {
-                $this->notification()->error(
+                $this->dialog()->error(
                     $title = 'Error',
                     $description = 'No room available for this type and floor'
                 );

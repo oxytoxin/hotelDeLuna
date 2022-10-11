@@ -9,7 +9,7 @@
                     <x-native-select wire:model="form.type_id"
                         label="Select Type">
                         <option value="">Select</option>
-                        @foreach ($types_within_this_branch as $type)
+                        @foreach ($available_types as $type)
                             <option value="{{ $type->id }}">
                                 {{ $type->name }}
                             </option>
@@ -18,7 +18,7 @@
                     <x-native-select wire:model="form.floor_id"
                         label="Select Floor">
                         <option value="">Select</option>
-                        @foreach ($floors_within_this_branch as $floor)
+                        @foreach ($floors as $floor)
                             <option value="{{ $floor->id }}">
                                 {{ ordinal($floor->number) }} Floor
                             </option>
@@ -27,12 +27,12 @@
                     <div id="expandable"
                         class="grid col-span-2 gap-3"
                         x-animate>
-                        @if (count($rooms_within_this_branch) > 0)
+                        @if (count($available_rooms) > 0)
                             <div class="sm:col-span-2">
                                 <x-native-select wire:model="form.room_id"
                                     label="Select Room">
                                     <option value="">Select</option>
-                                    @foreach ($rooms_within_this_branch as $room)
+                                    @foreach ($available_rooms as $room)
                                         <option value="{{ $room->id }}">
                                             Room # {{ $room->number }}
                                         </option>

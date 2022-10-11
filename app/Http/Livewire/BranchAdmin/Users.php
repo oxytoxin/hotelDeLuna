@@ -35,16 +35,22 @@ class Users extends Component
 
     public $user=null;
 
-    public function getModalTitle()
+    protected function rules()
     {
-        return $this->mode == 'create' ? 'Add New User' : 'Edit User';
-    }
-
-    public function add()
-    {
-        $this->reset('name', 'email', 'password', 'role_id');
-        $this->mode = 'create';
-        $this->showModal = true;
+        if ($this->mode == 'create') {
+            return [
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email',
+                'password' =>  'required',
+                'role_id' => 'required',
+            ];
+        } else {
+            return [
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email,'.$this->edit_id,
+                'role_id' => 'required',
+            ];
+        }
     }
 
     public function edit($edit_id)
@@ -60,12 +66,7 @@ class Users extends Component
 
     public function create()
     {
-        $this->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' =>  'required',
-            'role_id' => 'required',
-        ]);
+        $this->validate();
         DB::beginTransaction();
         $user = User::create([
             'name' => $this->name,
@@ -75,14 +76,13 @@ class Users extends Component
             'branch_id' => auth()->user()->branch_id,
             'branch_name' => auth()->user()->branch->name,
         ]);
-        if ($this->role_id == 5) {
+        if ($this->role_id == room_boy()) {
             RoomBoy::create([
                 'user_id' => $user->id,
             ]);
         }
         DB::commit();
-        $this->showModal = false;
-        $this->reset('name', 'email', 'role_id');
+        $this->clear_fields_and_close_modal();
         $this->notification()->success(
             $title = 'Success',
             $description = 'User created successfully',
@@ -91,29 +91,22 @@ class Users extends Component
 
     public function update()
     {
-
-        $this->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$this->edit_id,
-            'role_id' => 'required',
-        ]);
+        $this->validate();
         User::find($this->edit_id)->update([
             'name' => $this->name,
             'email' => $this->email,
             'role_id' => $this->role_id,
         ]);
-        $this->showModal = false;
-        $this->reset('name', 'email', 'role_id');
+        $this->clear_fields_and_close_modal();
         $this->notification()->success(
             $title = 'Success',
             $description = 'User updated successfully',
         );
-
     }
 
     public function mount()
     {
-        $this->roles = Role::where('id', '!=', 7)->get();
+        $this->roles = Role::where('id', '!=', super_admin())->get();
     }
 
     public function render()
@@ -130,5 +123,23 @@ class Users extends Component
                     })
                     ->paginate(10),
         ]);
+    }
+
+    public function clear_fields_and_close_modal()
+    {
+        $this->showModal = false;
+        $this->reset('name', 'email', 'role_id');
+    }
+
+    public function getModalTitle()
+    {
+        return $this->mode == 'create' ? 'Add New User' : 'Edit User';
+    }
+
+    public function add()
+    {
+        $this->reset('name', 'email', 'password', 'role_id');
+        $this->mode = 'create';
+        $this->showModal = true;
     }
 }

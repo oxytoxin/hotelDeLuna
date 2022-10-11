@@ -36,16 +36,21 @@ class Rates extends Component
 
     public $rate = null;
 
-    public function getModalTitle()
+    protected function rules()
     {
-        return $this->mode == 'create' ? 'Add New Rate' : 'Edit Rate';
-    }
-
-    public function add()
-    {
-        $this->reset('staying_hour_id', 'room_type_id', 'amount');
-        $this->mode = 'create';
-        $this->showModal = true;
+        if ($this->mode == 'create') {
+            return [
+                'staying_hour_id' => 'required',
+                'room_type_id' => 'required',
+                'amount' => 'required|numeric|min:1',
+            ];
+        } else {
+            return [
+                'staying_hour_id' => 'required',
+                'room_type_id' => 'required',
+                'amount' => 'required|numeric|min:1',
+            ];
+        }
     }
 
     public function edit($edit_id)
@@ -60,19 +65,15 @@ class Rates extends Component
 
     public function create()
     {
-        $this->validate([
-            'staying_hour_id' => 'required',
-            'room_type_id' => 'required',
-            'amount' => 'required|numeric|min:1',
-        ]);
+        $this->validate();
 
-        $rate = Rate::where('staying_hour_id', $this->staying_hour_id)
+        $rate_exists = Rate::where('staying_hour_id', $this->staying_hour_id)
             ->where('type_id', $this->room_type_id)
             ->where('amount', $this->amount)
             ->where('branch_id', auth()->user()->branch_id)
-            ->first();
+            ->exists();
 
-        if ($rate) {
+        if ($rate_exists) {
             $this->notification()->error(
                 $title = 'Rate already exists',
                 $description = 'The rate you are trying to add already exists.'
@@ -87,9 +88,7 @@ class Rates extends Component
             'amount' => $this->amount,
         ]);
 
-        $this->showModal = false;
-
-        $this->reset('staying_hour_id', 'room_type_id', 'amount');
+        $this->clear_fields_and_close_modal();
 
         $this->notification()->success(
             $title = 'Success',
@@ -99,19 +98,16 @@ class Rates extends Component
 
     public function update()
     {
-        $this->validate([
-            'staying_hour_id' => 'required',
-            'room_type_id' => 'required',
-            'amount' => 'required|numeric|min:1',
-        ]);
-        $rate = Rate::where('staying_hour_id', $this->staying_hour_id)
+        $this->validate();
+        
+        $rate_exitst = Rate::where('staying_hour_id', $this->staying_hour_id)
             ->where('type_id', $this->room_type_id)
             ->where('amount', $this->amount)
             ->where('branch_id', auth()->user()->branch_id)
             ->where('id', '!=', $this->rate->id)
             ->first();
 
-        if ($rate) {
+        if ($rate_exitst) {
             $this->notification()->error(
                 $title = 'Rate already exists',
                 $description = 'The rate you are trying to add already exists.'
@@ -123,8 +119,9 @@ class Rates extends Component
             'type_id' => $this->room_type_id,
             'amount' => $this->amount,
         ]);
-        $this->showModal = false;
-        $this->reset('staying_hour_id', 'room_type_id', 'amount');
+
+        $this->clear_fields_and_close_modal();
+
         $this->notification()->success(
             $title = 'Success',
             $description = 'Rate updated successfully'
@@ -143,5 +140,23 @@ class Rates extends Component
                 ->with(['rates.staying_hour'])
                 ->get(),
         ]);
+    }
+
+    public function clear_fields_and_close_modal()
+    {
+        $this->reset('staying_hour_id', 'room_type_id', 'amount');
+        $this->showModal = false;
+    }
+
+    public function getModalTitle()
+    {
+        return $this->mode == 'create' ? 'Add New Rate' : 'Edit Rate';
+    }
+
+    public function add()
+    {
+        $this->reset('staying_hour_id', 'room_type_id', 'amount');
+        $this->mode = 'create';
+        $this->showModal = true;
     }
 }

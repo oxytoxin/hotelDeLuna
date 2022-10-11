@@ -21,32 +21,39 @@ class Types extends Component
         'name' => '',
     ];
 
-    public function getModalTitle()
-    {
-        return $this->modal['mode'] == 'create' ? 'Create Type' : 'Edit Type';
-    }
+    protected $validationAttributes = [
+        'form.name' => 'name',
+    ];
 
-    public function add()
+    protected function rules()
     {
-        $this->reset('form');
-        $this->modal['mode'] = 'create';
-        $this->modal['show'] = true;
+        if ($this->modal['mode'] == 'create') {
+            return [
+                'form.name' => 'required|unique:types,name',
+            ];
+        } else {
+            return [
+                'form.name' => 'required|unique:types,name,' . $this->type->id,
+            ];
+        }
     }
-
+    
     public function create()
     {
-        $this->validate([
-            'form.name' => 'required|unique:types,name',
-        ]);
+        $this->validate();
+
         Type::create([
             'branch_id' => auth()->user()->branch->id,
             'name' => $this->form['name'],
         ]);
+
         $this->notification()->success(
             $title = 'Success!',
             $message = 'Record has been created.'
         );
+
         $this->modal['show'] = false;
+
         $this->reset('form');
     }
 
@@ -60,16 +67,17 @@ class Types extends Component
 
     public function update()
     {
-        $this->validate([
-            'form.name' => 'required|unique:types,name,' . $this->type->id,
-        ]);
+        $this->validate();
+        
         $this->type->update([
             'name' => $this->form['name'],
         ]);
+        
         $this->notification()->success(
             $title = 'Success!',
             $message = 'Record has been updated.'
         );
+
         $this->modal['show'] = false;
     }
     public function render()
@@ -77,5 +85,18 @@ class Types extends Component
         return view('livewire.branch-admin.types',[
             'types' => Type::where('branch_id',auth()->user()->branch_id)->paginate(10)
         ]);
+    }
+
+
+    public function getModalTitle()
+    {
+        return $this->modal['mode'] == 'create' ? 'Create Type' : 'Edit Type';
+    }
+
+    public function add()
+    {
+        $this->reset('form');
+        $this->modal['mode'] = 'create';
+        $this->modal['show'] = true;
     }
 }

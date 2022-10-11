@@ -47,23 +47,30 @@ class Rooms extends Component
 
     public $room = null;
 
-    public function getModeTitle()
+    protected function rules()
     {
-        return $this->mode == 'create' ? 'Add New Room' : 'Edit Room';
-    }
-
-    public function add()
-    {
-        $this->reset('number', 'description', 'floor_id', 'room_status_id', 'type_id');
-        $this->mode = 'create';
-        $this->showModal = true;
+        if ($this->mode == 'create') {
+            return [
+                'number' => 'required|numeric|min:1',
+                'floor_id' => 'required',
+                'room_status_id' => 'required',
+                'type_id' => 'required',
+            ];
+        } else {
+            return [
+                'number' => 'required|numeric|min:1|unique:rooms,number,' . $this->edit_id,
+                'floor_id' => 'required',
+                'room_status_id' => 'required',
+                'type_id' => 'required',
+            ];
+        }
     }
 
     public function edit($edit_id)
     {
         $this->edit_id = $edit_id;
         $this->room = Room::find($edit_id);
-        if ($this->room->room_status_id !== 1 && $this->room->room_status_id !== 5) {
+        if ($this->room->status_is() != available() && $this->room->status_is() != unavailable()) {
             $this->notification()->error(
                 $title = 'Error',
                 $description = 'Room is not available for editing',
@@ -81,19 +88,14 @@ class Rooms extends Component
 
     public function create()
     {
-        $this->validate([
-            'number' => 'required|numeric|min:1',
-            'floor_id' => 'required',
-            'room_status_id' => 'required',
-            'type_id' => 'required',
-        ]);
+        $this->validate();
 
-        $exist_in_this_branch = Room::where('number', $this->number)
+        $room_exist_in_this_branch = Room::where('number', $this->number)
             ->whereHas('floor', function ($query) {
                 $query->where('branch_id', auth()->user()->branch_id);
             })->exists();
 
-        if ($exist_in_this_branch) {
+        if ($room_exist_in_this_branch) {
             $this->notification()->error(
                 $title = 'Error',
                 $description = 'Room number already exist in this branch',
@@ -107,34 +109,34 @@ class Rooms extends Component
             'room_status_id' => $this->room_status_id,
             'type_id' => $this->type_id,
         ]);
-        $this->showModal = false;
-        $this->reset('number', 'floor_id', 'room_status_id', 'type_id');
+
+        $this->clear_fields_and_close_modal();
+
         $this->notification()->success(
             $title = 'Success',
             $description = 'Room created successfully',
         );
+
     }
 
     public function update()
     {
-        $this->validate([
-            'number' => 'required|numeric|min:1|unique:rooms,number,' . $this->edit_id,
-            'floor_id' => 'required',
-            'room_status_id' => 'required',
-            'type_id' => 'required',
-        ]);
+        $this->validate();
+
         $this->room->update([
             'number' => $this->number,
             'floor_id' => $this->floor_id,
             'room_status_id' => $this->room_status_id,
             'type_id' => $this->type_id,
         ]);
-        $this->showModal = false;
-        $this->reset('number', 'floor_id', 'room_status_id', 'type_id');
+
+        $this->clear_fields_and_close_modal();
+
         $this->notification()->success(
             $title = 'Success',
             $description = 'Room updated successfully',
         );
+
     }
 
     public function mount()
@@ -149,9 +151,9 @@ class Rooms extends Component
             'floor_number' => 'required|numeric|min:1',
         ]);
 
-        $exist_in_this_branch = auth()->user()->branch->floors()->where('number', $this->floor_number)->exists();
+        $floor_exist_in_this_branch = auth()->user()->branch->floors()->where('number', $this->floor_number)->exists();
 
-        if ($exist_in_this_branch) {
+        if ($floor_exist_in_this_branch) {
             $this->notification()->error(
                 $title = 'Error',
                 $description = 'Floor number already exist in this branch',
@@ -159,13 +161,12 @@ class Rooms extends Component
             return;
         }
 
-
         auth()->user()->branch->floors()->create([
             'number' => $this->floor_number,
         ]);
 
         $this->reset('floor_number');
-        
+
         $this->notification()->success(
             $title = 'Success',
             $description = 'Floor created successfully',
@@ -189,5 +190,23 @@ class Rooms extends Component
                 ->with(['floor', 'room_status', 'type'])
                 ->paginate(10),
         ]);
+    }
+
+    public function add()
+    {
+        $this->reset('number', 'description', 'floor_id', 'room_status_id', 'type_id');
+        $this->mode = 'create';
+        $this->showModal = true;
+    }
+
+    public function getModeTitle()
+    {
+        return $this->mode == 'create' ? 'Add New Room' : 'Edit Room';
+    }
+
+    public function clear_fields_and_close_modal()
+    {
+        $this->showModal = false;
+        $this->reset('number', 'floor_id', 'room_status_id', 'type_id');
     }
 }

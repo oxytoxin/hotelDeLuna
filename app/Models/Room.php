@@ -49,4 +49,11 @@ class Room extends Model
         return $this->hasMany(Cleaning::class);
     }
 
+    //
+
+    public function status_is()
+    {
+        return $this->room_status_id;
+    }
+
 }

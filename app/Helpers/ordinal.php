@@ -8,3 +8,72 @@ function ordinal($number){
         return $number.$ends[$number % 10];
     }
 }
+
+
+function available(){
+    return 1;
+}
+
+function occupied(){
+    return 2;
+}
+
+function reserved(){
+    return 3;
+}
+
+function maintenance(){
+    return 4;
+}
+
+function unavailable(){
+    return 5;
+}
+
+function selectedInKiosk(){
+    return 6;
+}
+
+function uncleaned(){
+    return 7;
+}
+
+function cleaning(){
+    return 8;
+}
+// 
+function branch_admin()
+{
+    return 1;
+}
+
+function front_desk()
+{
+    return 2;
+}
+
+function kiosk()
+{
+    return 3;
+}
+
+function kitchen()
+{
+    return 4;
+}
+
+function room_boy()
+{
+    return 5;
+}
+
+function house_keeping()
+{
+    return 6;
+}
+
+function super_admin()
+{
+    return 7;
+}
+

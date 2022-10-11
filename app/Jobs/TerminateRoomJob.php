@@ -43,10 +43,10 @@ class TerminateRoomJob implements ShouldQueue
             $room->update([
                 'room_status_id' => 1,
             ]);
+            $guest = Guest::where('id',$this->guest_id)->first();
+            $guest->update([
+                'terminated_at' =>  Carbon::now(),
+            ]);
         }
-        $guest = Guest::where('id',$this->guest_id)->first();
-        $guest->update([
-            'terminated_at' =>  Carbon::now(),
-        ]);
     }
 }
