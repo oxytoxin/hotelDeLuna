@@ -29,12 +29,17 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(AccountSeeder::class);
         $this->call(RoomStatusSeeder::class);
-        $this->call(FloorAndRoomSeeder::class);
         $this->call(TransactionTypeSeeder::class);
         $this->call(RoomTypeSeeder::class);
         $this->call(RateSeeder::class);
-        // $this->call(DummyCheckInSeeder::class);
         $this->call(AlmaResidencesDataSeeder::class);
+
+        if (app()->environment()=='local') {
+            $this->call(FloorAndRoomSeeder::class);
+            $this->call(StayingHourSeeder::class);
+            $this->call(DummyCheckInSeeder::class);
+        }
+
         StayingHour::create([
             'number' => '6',
         ]);
