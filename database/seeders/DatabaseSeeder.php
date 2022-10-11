@@ -36,7 +36,6 @@ class DatabaseSeeder extends Seeder
 
         if (app()->environment()=='local') {
             $this->call(FloorAndRoomSeeder::class);
-            $this->call(StayingHourSeeder::class);
             $this->call(DummyCheckInSeeder::class);
         }
 
