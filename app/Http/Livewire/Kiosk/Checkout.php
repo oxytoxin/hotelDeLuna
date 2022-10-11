@@ -9,6 +9,7 @@ use Livewire\Component;
 class Checkout extends Component
 {
     public $scanner;
+    public $search;
 
     public $guest;
 
@@ -17,14 +18,43 @@ class Checkout extends Component
     public function render()
     {
         return view('livewire.kiosk.checkout', [
-            'transactions' => Transaction::where('guest_id', 'like', '%'.$this->guest.'%')->where('branch_id', auth()->user()->branch_id)->get(),
-            'guests' => Guest::where('qr_code', 'like', '%'.$this->scanner.'%')->where('branch_id', auth()->user()->branch_id)->first(),
+            'transactions' => Transaction::where(
+                'guest_id',
+                'like',
+                '%' . $this->guest . '%'
+            )
+                ->where('branch_id', auth()->user()->branch_id)
+                ->get(),
+            'guests' => Guest::where(
+                'qr_code',
+                'like',
+                '%' . $this->scanner . '%'
+            )
+                ->where('branch_id', auth()->user()->branch_id)
+                ->first(),
         ]);
     }
 
-    public function updatedScanner()
+    // public function updatedScanner()
+    // {
+    //     $this->guest = Guest::where(
+    //         'qr_code',
+    //         'like',
+    //         '%' . $this->scanner . '%'
+    //     )
+    //         ->where('branch_id', auth()->user()->branch_id)
+    //         ->first()->id;
+    //     $this->scannerpanel = false;
+    // }
+
+    public function searchCode()
     {
-        $this->guest = Guest::where('qr_code', 'like', '%'.$this->scanner.'%')->where('branch_id', auth()->user()->branch_id)->first()->id;
-        $this->scannerpanel = false;
+        $query = Guest::where('qr_code', $this->scanner)->first();
+        if ($query) {
+            $this->guest = $query->id;
+            $this->scannerpanel = false;
+        } else {
+            dd('not found');
+        }
     }
 }
