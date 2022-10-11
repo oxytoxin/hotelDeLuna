@@ -21,6 +21,7 @@ return new class extends Migration
             $table->dateTime('started_at')->nullable();
             $table->dateTime('finish_at')->nullable();
             $table->boolean('delayed')->nullable();
+            $table->boolean('unassigned')->default(false);
             $table->timestamps();
         });
     }
