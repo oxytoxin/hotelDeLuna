@@ -40,4 +40,19 @@ class Transaction extends Model
     {
         return $this->belongsToMany(TransactionDiscount::class);
     }
+
+    public function room_change()
+    {
+        return $this->hasOne(RoomChange::class);
+    }
+
+    public function check_in_detail_extensions()
+    {
+        return $this->hasOne(CheckInDetailExtension::class);
+    }
+
+    public function damage()
+    {
+        return $this->hasOne(Damage::class);
+    }
 }

@@ -41,6 +41,15 @@
                             {{ $guest?->transactions->where('transaction_type_id', 1)->first()->check_in_detail->expected_check_out_at }}
                         </dd>
                     </div>
+                    <div class="sm:col-span-1">
+                        <dt class="text-sm font-medium text-gray-500">
+                            Initial Check In
+                        </dt>
+                        <dd class="mt-1 text-sm text-gray-900">
+                            {{ $guest?->transactions->where('transaction_type_id', 1)->first()->check_in_detail->static_hours_stayed }}
+                            hrs
+                        </dd>
+                    </div>
                 </dl>
             </div>
         </div>
@@ -94,7 +103,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach ($guest->transactions()->orderBy('created_at', $transaction_order)->with(['check_in_detail.room', 'check_in_detail.room_changes.toRoom', 'transaction_type'])->get() as $transaction)
+                                    @foreach ($guest->transactions()->orderBy('created_at', $transaction_order)->with(['check_in_detail.room', 'room_change.toRoom.type', 'transaction_type', 'damage.hotel_item'])->get() as $transaction)
                                         <tr>
                                             <td
                                                 class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
@@ -119,22 +128,21 @@
                                             </td>
                                             <td
                                                 class="relative py-4 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
-                                                <div class="flex justify-end">
-                                                    <button
-                                                        class="flex items-center space-x-1 text-gray-600 hover:text-gray-900">
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            stroke-width="1.5"
-                                                            stroke="currentColor"
-                                                            class="w-6 h-6">
-                                                            <path stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                                                        </svg>
-
-                                                        <span> Details</span>
-                                                    </button>
+                                                <div class="flex justify-end text-gray-600">
+                                                    @if ($transaction->transaction_type_id == 7)
+                                                        ROOM # {{ $transaction->room_change->fromRoom->number }}
+                                                        ({{ $transaction->room_change->fromRoom->type->name }})
+                                                        -
+                                                        ROOM # {{ $transaction->room_change->toRoom->number }}
+                                                        ({{ $transaction->room_change->toRoom->type->name }})
+                                                    @endif
+                                                    @if ($transaction->transaction_type_id == 6)
+                                                        Extend for
+                                                        {{ $transaction->check_in_detail_extensions->hours }} hrs
+                                                    @endif
+                                                    @if ($transaction->transaction_type_id == 4)
+                                                        {{ $transaction->damage->hotel_item->name }}
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>

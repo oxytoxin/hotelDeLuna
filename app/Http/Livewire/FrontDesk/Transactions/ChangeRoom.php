@@ -20,7 +20,7 @@ class ChangeRoom extends Component
 
     public $historyOrder = 'DESC';
 
-    public $available_types = [], $floors = [],$available_rooms = [];
+    public $available_types = [], $floors = [], $available_rooms = [];
 
     public $check_in_detail_id;
 
@@ -76,7 +76,9 @@ class ChangeRoom extends Component
 
     protected function has_already_change_room_twice()
     {
-        return  RoomChange::where('check_in_detail_id', $this->check_in_detail_id)->count() >= 2;
+        return  RoomChange::whereHas('transaction', function ($query) {
+            $query->where('guest_id', $this->check_in_detail->transaction->guest_id);
+        })->count() >= 2;
     }
 
     protected function three_hours_already_past_since_check_in()
@@ -91,7 +93,7 @@ class ChangeRoom extends Component
             'form.room_id' => 'required',
             'form.reason' => 'required',
             'form.floor_id' => 'required',
-            'authorization_code' => 'required|in:'.auth()->user()->branch->authorization_code,
+            'authorization_code' => 'required|in:' . auth()->user()->branch->authorization_code,
         ]);
         if ($this->has_already_change_room_twice()) {
             $this->dialog()->error(
@@ -121,17 +123,17 @@ class ChangeRoom extends Component
 
         // identifying the amount applied in the old room and the new room to get the balance to be applied in the new transaction
         $new_room_rate = Rate::where('type_id', $this->form['type_id'])
-                        ->where('staying_hour_id', $this->check_in_detail->rate->staying_hour_id)
-                        ->where('branch_id', auth()->user()->branch_id)
-                        ->first();
+            ->where('staying_hour_id', $this->check_in_detail->rate->staying_hour_id)
+            ->where('branch_id', auth()->user()->branch_id)
+            ->first();
         $new_selected_room_amount = $new_room_rate->amount;
         $old_selected_room_amount_paid = $this->check_in_detail->transaction->payable_amount;
 
-        Transaction::create([
+        $change_room_transaction = Transaction::create([
             'branch_id' => auth()->user()->branch_id,
             'guest_id' => $transaction->guest_id,
             'transaction_type_id' => 7,
-            'payable_amount' => $old_selected_room_amount_paid - $new_selected_room_amount,
+            'payable_amount' => $old_selected_room_amount_paid > $new_selected_room_amount ? $old_selected_room_amount_paid - $new_selected_room_amount : $new_selected_room_amount - $old_selected_room_amount_paid,
             'paid_at' => $this->form['paid'] ? now() : null,
         ]);
 
@@ -141,11 +143,11 @@ class ChangeRoom extends Component
         ]);
 
         RoomChange::create([
-            'check_in_detail_id' => $this->check_in_detail->id,
+            'transaction_id' => $change_room_transaction->id,
             'from_room_id' => $this->current_room->id,
             'to_room_id' => $this->form['room_id'],
             'reason' => $this->form['reason'],
-            'amount'=> $new_selected_room_amount,
+            'amount' => $new_selected_room_amount,
         ]);
         $this->current_room->update([
             'room_status_id' => 5,
@@ -161,7 +163,6 @@ class ChangeRoom extends Component
         $this->reset('form');
         $this->authorization_code = null;
         $this->available_rooms = [];
-
     }
 
     public function clear_form()
@@ -183,9 +184,9 @@ class ChangeRoom extends Component
     public function updatedFormTypeId()
     {
         $this->available_rooms = Room::where('floor_id', $this->form['floor_id'])
-        ->where('type_id', $this->form['type_id'])
-        ->where('room_status_id', 1)
-        ->get();
+            ->where('type_id', $this->form['type_id'])
+            ->where('room_status_id', 1)
+            ->get();
         if ($this->available_rooms->count() == 0) {
             if ($this->form['type_id'] != null && $this->form['floor_id'] != null) {
                 $this->notification()->error(
@@ -193,7 +194,7 @@ class ChangeRoom extends Component
                     $description = 'No room available for this type and floor'
                 );
             }
-        }else{
+        } else {
             $this->dispatchBrowserEvent('room-is-available');
         }
     }
@@ -201,9 +202,9 @@ class ChangeRoom extends Component
     public function updatedFormFloorId()
     {
         $this->available_rooms = Room::where('floor_id', $this->form['floor_id'])
-        ->where('type_id', $this->form['type_id'])
-        ->where('room_status_id', 1)
-        ->get();
+            ->where('type_id', $this->form['type_id'])
+            ->where('room_status_id', 1)
+            ->get();
 
         if ($this->available_rooms->count() == 0) {
             if ($this->form['type_id'] != null && $this->form['floor_id'] != null) {
@@ -212,7 +213,7 @@ class ChangeRoom extends Component
                     $description = 'No room available for this type and floor'
                 );
             }
-        }else{
+        } else {
             $this->dispatchBrowserEvent('room-is-available');
         }
     }
@@ -220,10 +221,11 @@ class ChangeRoom extends Component
     public function render()
     {
         return view('livewire.front-desk.transactions.change-room', [
-            'changes_history' => RoomChange::where('check_in_detail_id', $this->check_in_detail_id)
-                                    ->with(['fromRoom', 'toRoom'])
-                                    ->orderBy('created_at', $this->historyOrder)
-                                    ->get(),
+            'changes_history' => RoomChange::whereHas('transaction', function ($query) {
+                $query->where('guest_id', $this->check_in_detail->transaction->guest_id);
+            })->with(['fromRoom', 'toRoom'])
+                ->orderBy('created_at', $this->historyOrder)
+                ->get(),
         ]);
     }
 }

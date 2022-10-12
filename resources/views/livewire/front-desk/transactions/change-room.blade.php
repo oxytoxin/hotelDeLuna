@@ -50,6 +50,7 @@
                                 wire:model.defer="form.paid" />
                             <div class="mt-2 border-t sm:col-span-2">
                                 <x-input label="AUTHORIZATION CODE"
+                                    type="password"
                                     class="border-red-400"
                                     wire:model.defer="authorization_code" />
                             </div>
@@ -71,7 +72,7 @@
         <div class="grid gap-1">
             <div class="flex items-center justify-between">
                 <h1 class="text-center text-gray-600">
-                    Room Change History
+                    Room transfer history
                 </h1>
                 <div wire:key="{{ $historyOrder }}">
                     <button wire:click="historyOrderToggle"
@@ -96,16 +97,16 @@
                 @forelse ($changes_history as $room_change)
                     <div wire:key="{{ $room_change->id }}"
                         class="p-2 mb-2 bg-white border rounded-lg">
-                        <div class="flex justify-between w-full">
+                        <div class="flex justify-between w-full text-sm">
                             <div class="flex items-center space-x-2 text-gray-600">
                                 <h1>
-                                    From Room #{{ $room_change->fromRoom->number }}
+                                    Transfered from ROOM # {{ $room_change->fromRoom->number }} to ROOM #
+                                    {{ $room_change->toRoom->number }}
                                 </h1>
-                                <h1>
-                                    -
-                                </h1>
-                                <h1>
-                                    To Room # {{ $room_change->toRoom->number }}
+                            </div>
+                            <div>
+                                <h1 class="text-gray-600 ">
+                                    ₱ {{ $room_change->amount }}
                                 </h1>
                             </div>
                         </div>

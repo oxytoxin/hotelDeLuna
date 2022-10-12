@@ -34,7 +34,7 @@ class TransactionTypeSeeder extends Seeder
         ]);
 
         TransactionType::create([
-            'name' => 'Change Room', //7
+            'name' => 'Transfer Room', //7
         ]);
 
         TransactionType::create([

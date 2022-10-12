@@ -26,10 +26,10 @@
                     icon="search"
                     wire:click="searchByRoomNumber"
                     primary />
-                <x-button label="Name"
+                {{-- <x-button label="Name"
                     icon="search"
                     wire:click="searchByName"
-                    primary />
+                    primary /> --}}
             @endif
         </div>
     </div>

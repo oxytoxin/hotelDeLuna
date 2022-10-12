@@ -26,14 +26,8 @@ class CheckInDetail extends Model
         return $this->belongsTo(Rate::class);
     }
 
-    public function check_in_detail_extensions()
-    {
-        return $this->hasMany(CheckInDetailExtension::class);
-    }
+   
 
-    public function room_changes()
-    {
-        return $this->hasMany(RoomChange::class);
-    }
+  
 
 }
