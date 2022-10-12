@@ -60,7 +60,9 @@ class ExtendHours extends Component
     {
         DB::beginTransaction();
         $extension = Extension::find($this->form['extension_id']);
-        $extension_history = CheckInDetailExtension::where('check_in_detail_id', $this->check_in_detail_id);
+        $extension_history = CheckInDetailExtension::whereHas('transaction', function ($query) {
+            $query->where('guest_id', $this->guest_id);
+        });
         $total_check_in_detail_extension_hours = $extension_history->sum('hours');
         $this->form['initial_amount'] = $this->check_in_detail->rate->amount;
         $total_hours = $this->check_in_detail->rate->staying_hour->number + $total_check_in_detail_extension_hours;
@@ -93,17 +95,17 @@ class ExtendHours extends Component
         ]);
         DB::beginTransaction();
         $extension = Extension::find($this->form['extension_id']);
-        CheckInDetailExtension::create([
-            'check_in_detail_id' => $this->check_in_detail_id,
-            'extension_id' => $this->form['extension_id'],
-            'hours' => $extension->hours,
-            'amount' => $this->form['amount_to_be_paid'],
-        ]);
-        Transaction::create([
+        $extension_transaction = Transaction::create([
             'guest_id' => $this->guest_id,
             'branch_id' => auth()->user()->branch_id,
             'transaction_type_id' => 6,
             'payable_amount' => $this->form['amount_to_be_paid'],
+        ]);
+        CheckInDetailExtension::create([
+            'transaction_id' => $extension_transaction->id,
+            'extension_id' => $this->form['extension_id'],
+            'hours' => $extension->hours,
+            'amount' => $this->form['amount_to_be_paid'],
         ]);
         $this->check_in_detail->update([
             'expected_check_out_at' => Carbon::parse($this->check_in_detail->expected_check_out_at)->addHours($extension->hours)
@@ -133,9 +135,9 @@ class ExtendHours extends Component
     public function render()
     {
         return view('livewire.front-desk.transactions.extend-hours', [
-            'extension_history' => CheckInDetailExtension::where('check_in_detail_id', $this->check_in_detail_id)
-                                ->orderBy('created_at', $this->history_order)
-                                ->get(),
+            'extension_history' => CheckInDetailExtension::whereHas('transaction', function ($query) {
+                $query->where('guest_id', $this->guest_id);
+            })->orderBy('created_at', $this->history_order)->get(),
         ]);
     }
 }

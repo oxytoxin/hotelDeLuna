@@ -11,9 +11,9 @@ class Damage extends Model
 
     protected $guarded = [];
 
-    public function guest()
+    public function transaction()
     {
-        return $this->belongsTo(Guest::class);
+        return $this->belongsTo(Transaction::class);
     }
 
     public function room()

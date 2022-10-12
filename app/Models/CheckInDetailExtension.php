@@ -10,9 +10,9 @@ class CheckInDetailExtension extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function check_in_detail()
+    public function transaction()
     {
-        return $this->belongsTo(CheckInDetail::class);
+        return $this->belongsTo(Transaction::class);
     }
 
     public function extension()

@@ -34,7 +34,7 @@
             <div class="grid gap-1">
                 <div class="flex items-center justify-between">
                     <h1 class="text-center text-gray-600">
-                        Room Change History
+                        Hours extension history
                     </h1>
                     <div wire:key="{{ $history_order }}-button">
                         <button wire:click="historyOrderToggle"
@@ -59,17 +59,14 @@
                     @forelse ($extension_history as $extension)
                         <div wire:key="{{ $extension->id }}"
                             class="p-2 mb-2 bg-white border rounded-lg">
-                            <div class="flex justify-between w-full">
-                                <div class="flex items-center space-x-2 text-gray-600">
+                            <div>
+                                <div class="flex items-center justify-between space-x-2 text-sm text-gray-600">
                                     <h1>
-                                        {{ $extension->hours }} Hours
+                                        Extend for {{ $extension->hours }} Hours
                                     </h1>
-                                    <h1>
-                                        -
-                                    </h1>
-                                    <h1>
+                                    <div>
                                         ₱ {{ $extension->amount }}
-                                    </h1>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -87,24 +84,27 @@
                     @endforelse
 
                 </div>
-                <div>
+                <div class="text-sm text-gray-700">
                     <div>
-                        Extended Hours :
-                        {{ $extension_history->sum('hours') }} Hours
+                        Extended hours :
+                        <span class="text-red-600">{{ $extension_history->sum('hours') }} hrs</span>
                     </div>
                     <div>
-                        Checked in Hours : {{ $check_in_detail->rate->staying_hour->number }} Hours
+                        Checked in hours : <span class="text-red-600">{{ $check_in_detail->rate->staying_hour->number }}
+                            hrs</span>
                     </div>
-                    Total : {{ $extension_history->sum('hours') + $check_in_detail->rate->staying_hour->number }} Hours
+                    Total : <span
+                        class="text-red-600">{{ $extension_history->sum('hours') + $check_in_detail->rate->staying_hour->number }}
+                        hrs</span>
                 </div>
             </div>
         </div>
     @else
-        <div class="rounded-md bg-red-50 p-4 sm:col-span-2 border border-red-500">
+        <div class="p-4 border border-red-500 rounded-md bg-red-50 sm:col-span-2">
             <div class="flex">
                 <div class="flex-shrink-0">
                     <!-- Heroicon name: mini/x-circle -->
-                    <svg class="h-5 w-5 text-red-400"
+                    <svg class="w-5 h-5 text-red-400"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"
@@ -120,7 +120,7 @@
                     </h3>
                     <div class="mt-2 text-sm text-red-700">
                         <ul role="list"
-                            class="list-disc space-y-1 pl-5">
+                            class="pl-5 space-y-1 list-disc">
                             <li>
                                 Login to your Admin Account
                             </li>

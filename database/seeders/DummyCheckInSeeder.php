@@ -42,6 +42,7 @@ class DummyCheckInSeeder extends Seeder
             $selected_room = Room::find($check_in_detail->room_id);
             $selected_room->update([
                 'room_status_id' => 6,
+                'priority' => false,
             ]);
         }
     }

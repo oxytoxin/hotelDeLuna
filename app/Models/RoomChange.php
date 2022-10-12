@@ -21,8 +21,8 @@ class RoomChange extends Model
         return $this->belongsTo(Room::class, 'to_room_id');
     }
 
-    public function check_in_detail()
+    public function transaction()
     {
-        return $this->belongsTo(CheckInDetail::class);
+        return $this->belongsTo(Transaction::class);
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use WireUi\Traits\Actions;
+
 class AddDamages extends Component
 {
     use Actions;
@@ -18,7 +19,7 @@ class AddDamages extends Component
 
     public $form = [
         'item_id' => null,
-        'occured_at'=> null,
+        'occured_at' => null,
         'amount' => null,
         'additional_amount' => null,
         'paid' => false,
@@ -48,20 +49,21 @@ class AddDamages extends Component
             'form.occured_at' => 'required',
         ]);
         DB::beginTransaction();
-        $damage = Damage::create([
+        $damage_transaction = Transaction::create([
+            'branch_id' => auth()->user()->branch_id,
             'guest_id' => $this->guest_id,
+            'transaction_type_id' => 4,
+            'payable_amount' => $this->form['amount'] + $this->form['additional_amount'],
+            'paid_at' => $this->form['paid'] ? now() : null,
+        ]);
+        Damage::create([
+            'transaction_id' => $damage_transaction->id,
             'hotel_item_id' => $this->form['item_id'],
             'amount' => $this->form['amount'],
             'additional_amount' => $this->form['additional_amount'],
             'occured_at' => $this->form['occured_at'],
         ]);
-        Transaction::create([
-            'branch_id'=> auth()->user()->branch_id,
-            'guest_id' => $this->guest_id,
-            'transaction_type_id'=>4,
-            'payable_amount'=> $this->form['amount'] + $this->form['additional_amount'],
-            'paid_at' => $this->form['paid'] ? now() : null,
-        ]);
+      
         DB::commit();
         $this->reset('form');
         $this->notification()->success(
@@ -87,10 +89,12 @@ class AddDamages extends Component
 
     public function render()
     {
-        return view('livewire.front-desk.transactions.add-damages',[
-            'damages'=>Damage::where('guest_id',$this->guest_id)
-                        ->orderBy('created_at',$this->damagesOrderBy)
-                        ->get()
+        return view('livewire.front-desk.transactions.add-damages', [
+            'damages' => Damage::whereHas('transaction', function ($query) {
+                $query->where('guest_id', $this->guest_id);
+            })
+            ->orderBy('created_at', $this->damagesOrderBy)
+            ->get()
         ]);
     }
 }

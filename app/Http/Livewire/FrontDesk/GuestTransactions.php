@@ -97,29 +97,29 @@ class GuestTransactions extends Component
         }
     }
 
-    public function searchByName()
-    {
-        $this->searchBy = 'name';
-        if ($this->search) {
-            $guest = Guest::where('name', $this->search)
-                ->where('terminated_at', null)
-                ->where('check_in_at', '!=', null)
-                ->where('totaly_checked_out', false)
-                ->where('branch_id', auth()->user()->branch->id)
-                ->first();
-            if (!$guest) {
-                $this->notification()->error(
-                    $title = 'Error!',
-                    $message = 'Guest not found or already checked out.'
-                );
-                $this->guest = null;
-                $this->search = '';
-                $this->searchBy = null;
-                return;
-            }
-            $this->guest = $guest;
-        }
-    }
+    // public function searchByName()
+    // {
+    //     $this->searchBy = 'name';
+    //     if ($this->search) {
+    //         $guest = Guest::where('name', $this->search)
+    //             ->where('terminated_at', null)
+    //             ->where('check_in_at', '!=', null)
+    //             ->where('totaly_checked_out', false)
+    //             ->where('branch_id', auth()->user()->branch->id)
+    //             ->first();
+    //         if (!$guest) {
+    //             $this->notification()->error(
+    //                 $title = 'Error!',
+    //                 $message = 'Guest not found or already checked out.'
+    //             );
+    //             $this->guest = null;
+    //             $this->search = '';
+    //             $this->searchBy = null;
+    //             return;
+    //         }
+    //         $this->guest = $guest;
+    //     }
+    // }
 
     // public function search($type=null)
     // {

@@ -1,9 +1,9 @@
-<div class="sm:grid sm:grid-cols-2 gap-4">
+<div class="gap-4 sm:grid sm:grid-cols-2">
     <div class="sm:col-span-1">
         <x-card shadow="shadow"
             title="Change Room"
             cardClasses="border-gray-300 border">
-            <form class="sm:grid-cols-1 sm:grid gap-4">
+            <form class="gap-4 sm:grid-cols-1 sm:grid">
                 @csrf
                 <x-native-select label="Item"
                     wire:model="form.item_id">
@@ -29,7 +29,7 @@
                     wire:model.defer="form.paid" />
             </form>
             <x-slot:footer>
-                <div class="flex space-x-3 items-center">
+                <div class="flex items-center space-x-3">
                     <x-button wire:click="clear_form">Clear Form</x-button>
                     <x-button wire:click="save"
                         spinner="save"
@@ -40,14 +40,14 @@
     </div>
     <div class="sm:col-span-1">
         <div class="grid gap-1">
-            <div class="flex justify-between items-center">
-                <h1 class="text-gray-600 text-center">
+            <div class="flex items-center justify-between">
+                <h1 class="text-center text-gray-600">
                     Record List
                 </h1>
                 <div class="flex space-x-3">
                     <button wire:click="toogleDamagesOrderBy"
                         type="button"
-                        class="text-gray-600 flex items-center space-x-2">
+                        class="flex items-center space-x-2 text-gray-600">
                         <span>{{ $damagesOrderBy == 'ASC' ? 'Oldest' : 'Newest' }}</span>
                         <svg xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -66,9 +66,9 @@
                 x-animate>
                 @forelse ($damages as $damage)
                     <div wire:key="{{ $damage->id }}"
-                        class="bg-white rounded-lg border p-2 mb-2">
-                        <div class="w-full flex justify-between">
-                            <div class="flex space-x-2 items-center text-gray-600">
+                        class="p-2 mb-2 bg-white border rounded-lg">
+                        <div class="flex justify-between w-full text-sm text-gray-600">
+                            <div class="flex items-center space-x-2 ">
                                 <h1>
                                     {{ $damage->hotel_item->name }}
                                 </h1>
@@ -78,13 +78,18 @@
                                     {{ $damage->additional_amount ? ' + ₱ ' . $damage->additional_amount : '' }}
                                 </h1>
                             </div>
+                            <div>
+                                <h1>
+                                    ₱ {{ $damage->additional_amount + $damage->additional_amount }}
+                                </h1>
+                            </div>
                         </div>
                     </div>
                 @empty
                     <div wire:key="empty"
-                        class="bg-white rounded-lg border p-2 mb-2">
-                        <div class="w-full flex justify-between">
-                            <div class="flex space-x-2 items-center text-gray-600">
+                        class="p-2 mb-2 bg-white border rounded-lg">
+                        <div class="flex justify-between w-full">
+                            <div class="flex items-center space-x-2 text-gray-600">
                                 <h1>
                                     No records found
                                 </h1>

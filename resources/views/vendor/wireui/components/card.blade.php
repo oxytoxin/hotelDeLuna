@@ -3,7 +3,8 @@
         {{ $header }}
     @elseif ($title || $action)
         <div class="{{ $headerClasses }}">
-            <h3 class="font-medium whitespace-normal text-md text-secondary-700 dark:text-secondary-400">{{ $title }}</h3>
+            <h3 class="font-medium whitespace-normal text-md text-secondary-700 dark:text-secondary-400">
+                {{ $title }}</h3>
 
             @if ($action)
                 {{ $action }}
