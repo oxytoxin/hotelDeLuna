@@ -163,7 +163,7 @@ class Checkin extends Component
             //     $description = 'There is no available room in this type.'
             // );
             $this->dialog()->error(
-                $title = 'Room Type Selection',
+                $title = 'Sorry',
                 $description = 'There is no available room in this type.'
             );
         }
@@ -178,7 +178,7 @@ class Checkin extends Component
     public function removeRoom($key)
     {
         unset($this->transaction[$key]);
-        $this->room_array--;
+        $this->room_array--;    
     }
 
     public function selectType($type_id)
