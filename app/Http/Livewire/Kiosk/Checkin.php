@@ -219,12 +219,22 @@ class Checkin extends Component
             $room = Room::where('id', $this->get_room['room_id'])->first();
             $rate = Rate::where('id', $this->get_room['rate_id'])->first();
 
-            $checkinroom = Transaction::create([
-                'branch_id' => auth()->user()->branch_id,
-                'guest_id' => $guest->id,
-                'transaction_type_id' => 1,
-                'payable_amount' => $rate->amount,
-            ]);
+            if ($this->long_stay == true) {
+                $checkinroom = Transaction::create([
+                    'branch_id' => auth()->user()->branch_id,
+                    'guest_id' => $guest->id,
+                    'transaction_type_id' => 1,
+                    'payable_amount' => $rate->amount * $this->days_stay,
+                ]);
+            } else {
+                $checkinroom = Transaction::create([
+                    'branch_id' => auth()->user()->branch_id,
+                    'guest_id' => $guest->id,
+                    'transaction_type_id' => 1,
+                    'payable_amount' => $rate->amount,
+                ]);
+            }
+
             $checkindeposit = Transaction::create([
                 'branch_id' => auth()->user()->branch_id,
                 'guest_id' => $guest->id,
@@ -232,13 +242,24 @@ class Checkin extends Component
                 'payable_amount' => 200,
             ]);
 
-            $details = CheckInDetail::create([
-                'transaction_id' => $checkinroom->id,
-                'room_id' => $this->get_room['room_id'],
-                'rate_id' => $this->get_room['rate_id'],
-                'static_amount' => $rate->amount,
-                'static_hours_stayed' => $rate->staying_hour->number,
-            ]);
+            if ($this->long_stay == true) {
+                $details = CheckInDetail::create([
+                    'transaction_id' => $checkinroom->id,
+                    'room_id' => $this->get_room['room_id'],
+                    'rate_id' => $this->get_room['rate_id'],
+                    'static_amount' => $rate->amount,
+                    'static_hours_stayed' =>
+                        $rate->staying_hour->number * $this->days_stay,
+                ]);
+            } else {
+                $details = CheckInDetail::create([
+                    'transaction_id' => $checkinroom->id,
+                    'room_id' => $this->get_room['room_id'],
+                    'rate_id' => $this->get_room['rate_id'],
+                    'static_amount' => $rate->amount,
+                    'static_hours_stayed' => $rate->staying_hour->number,
+                ]);
+            }
 
             $room->update([
                 'room_status_id' => 6,
@@ -276,12 +297,22 @@ class Checkin extends Component
             $room = Room::where('id', $this->get_room['room_id'])->first();
             $rate = Rate::where('id', $this->get_room['rate_id'])->first();
 
-            $checkinroom = Transaction::create([
-                'branch_id' => auth()->user()->branch_id,
-                'guest_id' => $guest->id,
-                'transaction_type_id' => 1,
-                'payable_amount' => $rate->amount,
-            ]);
+            if ($this->long_stay == true) {
+                $checkinroom = Transaction::create([
+                    'branch_id' => auth()->user()->branch_id,
+                    'guest_id' => $guest->id,
+                    'transaction_type_id' => 1,
+                    'payable_amount' => $rate->amount * $this->days_stay,
+                ]);
+            } else {
+                $checkinroom = Transaction::create([
+                    'branch_id' => auth()->user()->branch_id,
+                    'guest_id' => $guest->id,
+                    'transaction_type_id' => 1,
+                    'payable_amount' => $rate->amount,
+                ]);
+            }
+
             $checkindeposit = Transaction::create([
                 'branch_id' => auth()->user()->branch_id,
                 'guest_id' => $guest->id,
@@ -289,13 +320,24 @@ class Checkin extends Component
                 'payable_amount' => 200,
             ]);
 
-            $details = CheckInDetail::create([
-                'transaction_id' => $checkinroom->id,
-                'room_id' => $this->get_room['room_id'],
-                'rate_id' => $this->get_room['rate_id'],
-                'static_amount' => $rate->amount,
-                'static_hours_stayed' => $rate->staying_hour->number,
-            ]);
+            if ($this->long_stay == true) {
+                $details = CheckInDetail::create([
+                    'transaction_id' => $checkinroom->id,
+                    'room_id' => $this->get_room['room_id'],
+                    'rate_id' => $this->get_room['rate_id'],
+                    'static_amount' => $rate->amount,
+                    'static_hours_stayed' =>
+                        $rate->staying_hour->number * $this->days_stay,
+                ]);
+            } else {
+                $details = CheckInDetail::create([
+                    'transaction_id' => $checkinroom->id,
+                    'room_id' => $this->get_room['room_id'],
+                    'rate_id' => $this->get_room['rate_id'],
+                    'static_amount' => $rate->amount,
+                    'static_hours_stayed' => $rate->staying_hour->number,
+                ]);
+            }
 
             $room->update([
                 'room_status_id' => 6,
