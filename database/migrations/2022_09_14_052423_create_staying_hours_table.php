@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('staying_hours', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('branch_id')->constrained();
             $table->string('number');
             $table->timestamps();
         });

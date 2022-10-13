@@ -4,6 +4,17 @@
             title="Transfer"
             cardClasses="border-gray-300 border">
             <div class="w-full">
+                <div class="border mb-2 p-2 text-sm bg-gray-50 rounded-lg">
+                    <h1>
+                        Current Room: <span class="font-bold"> Room #{{ $current_room->number }}</span>
+                    </h1>
+                    <h1>
+                        Type: <span class="font-bold">{{ $current_room->type->name }}</span>
+                    </h1>
+                    <h1>
+                        Status: <span class="font-bold">{{ $current_room->room_status->name }}</span>
+                    </h1>
+                </div>
                 <form class="gap-4 sm:grid sm:grid-cols-2">
                     @csrf
                     <x-native-select wire:model="form.type_id"
@@ -28,6 +39,13 @@
                         class="grid col-span-2 gap-3"
                         x-animate>
                         @if (count($available_rooms) > 0)
+                            <div wire:key="reason_input"
+                                class="sm:col-span-2">
+                                <x-input wire:model="new_amount_to_pay"
+                                    prefix="₱"
+                                    disabled
+                                    label="Amount" />
+                            </div>
                             <div class="sm:col-span-2">
                                 <x-native-select wire:model="form.room_id"
                                     label="Select Room">
@@ -45,9 +63,21 @@
                                     label="Reason"
                                     placeholder="Reason for changing room" />
                             </div>
+
                             <x-checkbox id="right-label"
                                 label="Paid"
                                 wire:model.defer="form.paid" />
+                            <div class="sm:col-span-2 py-2 mt-2 border-t ">
+                                <x-native-select wire:model="form.room_status_id"
+                                    label="Mark the previous room as :">
+                                    <option value="">Select</option>
+                                    @foreach ($room_statuses as $room_status)
+                                        <option value="{{ $room_status->id }}">
+                                            {{ $room_status->name }}
+                                        </option>
+                                    @endforeach
+                                </x-native-select>
+                            </div>
                             <div class="py-2 mt-2 border-t sm:col-span-2">
                                 <x-input label="AUTHORIZATION CODE"
                                     type="password"

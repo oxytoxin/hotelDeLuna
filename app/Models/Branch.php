@@ -55,4 +55,9 @@ class Branch extends Model
     {
         return $this->hasMany(RequestableItem::class);
     }
+
+    public function staying_hours()
+    {
+        return $this->hasMany(StayingHour::class);
+    }
 }
