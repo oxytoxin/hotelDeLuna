@@ -20,8 +20,6 @@ class Guest extends Model
         return $this->hasMany(Transaction::class);
     }
 
-    
-
     public function guest_request_items()
     {
         return $this->hasOne(GuestRequestItem::class);

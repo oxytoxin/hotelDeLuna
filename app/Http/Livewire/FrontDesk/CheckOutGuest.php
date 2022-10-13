@@ -18,7 +18,13 @@ class CheckOutGuest extends Component
 
     public $override = [
         'modal' => false,
-        'new_amount'
+        'new_amount',
+        'authorization_code',
+    ];
+
+    protected $validationAttributes = [
+        'override.new_amount' => 'new amount',
+        'override.authorization_code' => 'authorization code',
     ];
 
     public $overridable = null;
@@ -37,6 +43,7 @@ class CheckOutGuest extends Component
 
     public function showOverrideModal($transaction_id)
     {
+        $this->overridable['authorization_code'] = "";
         $this->overridable = Transaction::find($transaction_id);
         $this->override['modal'] = true;
         $this->override['new_amount'] = $this->overridable->payable_amount;
@@ -44,8 +51,10 @@ class CheckOutGuest extends Component
 
     public function overrideTransaction()
     {
+        $authorization_code = auth()->user()->branch->authorization_code;
         $this->validate([
-            'override.new_amount' => 'required|numeric'
+            'override.new_amount' => 'required|numeric',
+            'override.authorization_code' => 'required|in:' . $authorization_code,
         ]);
         $this->overridable->update([
             'payable_amount' => $this->override['new_amount'],
@@ -275,8 +284,8 @@ class CheckOutGuest extends Component
         return view('livewire.front-desk.check-out-guest', [
             'transactions' => $this->guest ?
                 $this->guest->transactions()
-                ->with(['transaction_type', 'check_in_detail.room.type'])
-                ->orderBy('created_at', $this->transactionOrder)->get() : null,
+                ->with(['transaction_type', 'check_in_detail.room.type','room_change.toRoom.type',  'damage.hotel_item', 'guest_request_item.requestable_item'])
+                ->orderBy('created_at', $this->transactionOrder)->get() : [],
         ]);
     }
 }

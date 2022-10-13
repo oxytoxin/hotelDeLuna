@@ -48,19 +48,19 @@ class ItemRequest extends Component
         DB::beginTransaction();
         $requestable_item = RequestableItem::find($this->form['requestable_item_id']);
         $total_amount = $requestable_item->price * $this->form['quantity'];
-        GuestRequestItem::create([
-            'guest_id' => $this->guest_id,
-            'requestable_item_id' => $this->form['requestable_item_id'],
-            'quantity' => $this->form['quantity'],
-            'amount'=> $total_amount,
-            'additional_amount'=> $requestable_item->additional_amount,
-        ]);
-        Transaction::create([
+        $request_item_transaction = Transaction::create([
             'branch_id'=> auth()->user()->branch_id,
             'guest_id' => $this->guest_id,
             'payable_amount' => $total_amount + $requestable_item->additional_amount,
             'paid_at' => $this->form['paid'] ? now() : null,
             'transaction_type_id'=>8
+        ]);
+        GuestRequestItem::create([
+            'transaction_id' => $request_item_transaction->id,
+            'requestable_item_id' => $this->form['requestable_item_id'],
+            'quantity' => $this->form['quantity'],
+            'amount'=> $total_amount,
+            'additional_amount'=> $requestable_item->additional_amount,
         ]);
         DB::commit();
         $this->notification()->success(
@@ -78,7 +78,9 @@ class ItemRequest extends Component
     {
         return view('livewire.front-desk.transactions.item-request',[
             'guest_request_items' => $this->guest_id ? 
-                            GuestRequestItem::where('guest_id',$this->guest_id)
+                            GuestRequestItem::whereHas('transaction',function($query){
+                                $query->where('guest_id',$this->guest_id);
+                            })
                             ->with('requestable_item')
                             ->orderBy('created_at',$this->requestOrder)
                             ->get() : []

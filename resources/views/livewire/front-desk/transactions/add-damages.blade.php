@@ -80,7 +80,7 @@
                             </div>
                             <div>
                                 <h1>
-                                    ₱ {{ $damage->additional_amount + $damage->additional_amount }}
+                                    Total : ₱ {{ $damage->amount + $damage->additional_amount }}
                                 </h1>
                             </div>
                         </div>

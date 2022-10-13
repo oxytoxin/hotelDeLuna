@@ -36,7 +36,7 @@ class ChangeRoom extends Component
 
     public $check_in_detail = null;
 
-    public $authorization_code = null;
+    public $authorization_code;
 
     protected $validationAttributes = [
         'form.type_id' => 'type',
@@ -172,6 +172,7 @@ class ChangeRoom extends Component
 
     public function mount()
     {
+        $this->authorization_code ='';
         $this->check_in_detail = CheckInDetail::find($this->check_in_detail_id);
         $this->current_room = $this->check_in_detail->room;
         $this->available_types = Type::query()
@@ -183,6 +184,7 @@ class ChangeRoom extends Component
 
     public function updatedFormTypeId()
     {
+        $this->authorization_code ='';
         $this->available_rooms = Room::where('floor_id', $this->form['floor_id'])
             ->where('type_id', $this->form['type_id'])
             ->where('room_status_id', 1)
@@ -201,6 +203,7 @@ class ChangeRoom extends Component
 
     public function updatedFormFloorId()
     {
+        $this->authorization_code ='';
         $this->available_rooms = Room::where('floor_id', $this->form['floor_id'])
             ->where('type_id', $this->form['type_id'])
             ->where('room_status_id', 1)

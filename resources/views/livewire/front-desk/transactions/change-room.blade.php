@@ -48,7 +48,7 @@
                             <x-checkbox id="right-label"
                                 label="Paid"
                                 wire:model.defer="form.paid" />
-                            <div class="mt-2 border-t sm:col-span-2">
+                            <div class="py-2 mt-2 border-t sm:col-span-2">
                                 <x-input label="AUTHORIZATION CODE"
                                     type="password"
                                     class="border-red-400"

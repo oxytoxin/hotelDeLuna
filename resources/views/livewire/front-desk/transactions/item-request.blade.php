@@ -72,11 +72,13 @@
                                     {{ $guest_request_item->requestable_item->name }}
                                 </h1>
                                 <h1>
-                                    | Total : ₱ {{ $guest_request_item->amount }}
-                                    {{ $guest_request_item->additional_amount ? ' + ₱ ' . $guest_request_item->additional_amount : '' }}
-                                </h1>
-                                <h1>
                                     | QTY: {{ $guest_request_item->quantity }}
+                                </h1>
+                            </div>
+                            <div>
+                                <h1>
+                                    Total : ₱ {{ $guest_request_item->amount }}
+                                    {{ $guest_request_item->additional_amount ? ' + ₱ ' . $guest_request_item->additional_amount : '' }}
                                 </h1>
                             </div>
                         </div>
