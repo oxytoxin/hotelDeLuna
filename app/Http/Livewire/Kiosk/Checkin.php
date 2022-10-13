@@ -30,6 +30,7 @@ class Checkin extends Component
     ];
 
     public $long_stay = false;
+    public $days_stay;
     public $transaction = [];
 
     public $room_array = 0;
@@ -73,11 +74,8 @@ class Checkin extends Component
                 auth()->user()->branch_id
             )->get(),
             'roomtypes' => Type::get(),
-            'rates' => Rate::where(
-                'type_id',
-                'like',
-                '%' . $this->type_key . '%'
-            )
+            'rates' => Rate::where('branch_id', auth()->user()->branch_id)
+                ->where('type_id', 'like', '%' . $this->type_key . '%')
                 ->with(['staying_hour', 'type'])
                 ->get(),
         ]);
@@ -314,13 +312,23 @@ class Checkin extends Component
         }
     }
 
-    public function confirmRate()
+    public function confirmRate($id)
     {
-        $this->validate([
-            'get_room.rate_id' => 'required',
-        ]);
-        $this->manageRoomPanel = false;
-        $this->step = 3;
+        if ($this->long_stay == false) {
+            $this->validate([
+                'get_room.rate_id' => 'required',
+            ]);
+            $this->manageRoomPanel = false;
+            $this->step = 3;
+        } else {
+            $this->validate([
+                'days_stay' => 'required|numeric',
+            ]);
+            $this->get_room['rate_id'] = $id;
+            $this->manageRoomPanel = false;
+            $this->step = 3;
+        }
+        // dd($this->get_room);
     }
 
     public function cancelTransaction()

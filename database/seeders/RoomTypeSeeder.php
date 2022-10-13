@@ -27,17 +27,17 @@ class RoomTypeSeeder extends Seeder
             'branch_id' => 1,
             'name' => 'Twin Single Size Bed',
         ]);
-        StayingHour::create([
-            'number' => '6',
-        ]);
-        StayingHour::create([
-            'number' => '12',
-        ]);
-        StayingHour::create([
-            'number' => '18',
-        ]);
-        StayingHour::create([
-            'number' => '24',
-        ]);
+        // StayingHour::create([
+        //     'number' => '6',
+        // ]);
+        // StayingHour::create([
+        //     'number' => '12',
+        // ]);
+        // StayingHour::create([
+        //     'number' => '18',
+        // ]);
+        // StayingHour::create([
+        //     'number' => '24',
+        // ]);
     }
 }
