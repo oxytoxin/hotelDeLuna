@@ -36,7 +36,7 @@ class Cleaning extends Component
         if ($query->room_status_id == 8) {
             $this->dialog()->error(
                 $title = 'Cleaning Room',
-                $description = 'This room is alreay in cleaning process.'
+                $description = 'This room is already in cleaning process.'
             );
         } else {
             if (auth()->user()->room_boy->is_cleaning) {
@@ -66,6 +66,13 @@ class Cleaning extends Component
     public function confirmStartRoomCleaning($room_id)
     {
         $room = Room::where('id', $room_id)->first();
+        if ($room->room_status_id == 8) {
+            $this->dialog()->error(
+                $title = 'Cleaning Room',
+                $description = 'This room is already in cleaning process.'
+            );
+            return;
+        }
         $room->update([
             'room_status_id' => 8,
         ]);
