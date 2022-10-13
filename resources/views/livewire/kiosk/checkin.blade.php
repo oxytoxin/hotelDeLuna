@@ -585,12 +585,24 @@
                         @if ($long_stay == true)
                           <h1 class="mt-1">{{ $days_stay }} days</h1>
                         @else
+                          <h1 class="mt-1">{{ $rate->staying_hour->number }} hours</h1>
                         @endif
                       </dt>
-                      <dd class="text-gray-600 font-semibold text-lg">
-                        &#8369;{{ number_format($rate->amount ?? 0, 2) }}</dd>
+                      <dd class="text-gray-600 font-semibold flex flex-col items-end ">
+
+                        @if ($long_stay == true)
+                          <h1 class="text-green-700">&#8369;{{ number_format($rate->amount ?? 0, 2) }}</h1>
+                          <h1 class="mt-1 text-lg">&#8369;{{ number_format($rate->amount * $days_stay, 2) }}</h1>
+                        @else
+                          <h1 class="text-lg">&#8369;{{ number_format($rate->amount ?? 0, 2) }}</h1>
+                        @endif
+                      </dd>
                     </div>
-                    <span class="hidden">{{ $subtotal += $rate->amount ?? 0 }}</span>
+                    @if ($long_stay == true)
+                      <span class="hidden">{{ $subtotal += $rate->amount * $days_stay ?? 0 }}</span>
+                    @else
+                      <span class="hidden">{{ $subtotal += $rate->amount ?? 0 }}</span>
+                    @endif
 
 
                   </dl>
