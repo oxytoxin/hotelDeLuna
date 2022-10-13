@@ -582,6 +582,10 @@
                           {{ $type->name ?? '' }}</h1>
                         <h1 class="leading-3">RM #{{ $room->number ?? 'null' }} |
                           {{ ordinal($room->floor->number ?? 1) }} FLOOR</h1>
+                        @if ($long_stay == true)
+                          <h1 class="mt-1">{{ $days_stay }} days</h1>
+                        @else
+                        @endif
                       </dt>
                       <dd class="text-gray-600 font-semibold text-lg">
                         &#8369;{{ number_format($rate->amount ?? 0, 2) }}</dd>
@@ -859,41 +863,76 @@
 
               </div>
 
-              <div class="mt-20 w-full font-rubik">
-                <h1 class="text-lg text-gray-600 font-rubik font-black">SELECT HOUR </h1>
-                <div class="flex  w-full">
-                  <div class="mt-3 relative flex space-x-4 ">
-                    @foreach ($rates as $item)
-                      <button wire:click="selectRate({{ $item->id }})"
-                        class="{{ $get_room['rate_id'] == $item->id ? 'bg-green-500 text-white' : 'bg-white text-gray-600' }} border h-14 w-20 p-1 rounded-xl flex flex-col justify-center items-center">
-                        <span
-                          class="uppercase text-lg  font-semibold text-center ">{{ $item->staying_hour->number }}</span>
-                        <span class="uppercase   text-center ">&#8369;{{ number_format($item->amount, 2) }}</span>
-                      </button>
-                    @endforeach
+              @if ($long_stay == false)
+                <div class="mt-20 w-full font-rubik">
+                  <h1 class="text-lg text-gray-600 font-rubik font-black">SELECT HOUR </h1>
+                  <div class="flex  w-full">
+                    <div class="mt-3 relative flex space-x-4 ">
+                      @foreach ($rates as $item)
+                        <button wire:click="selectRate({{ $item->id }})"
+                          class="{{ $get_room['rate_id'] == $item->id ? 'bg-green-500 text-white' : 'bg-white text-gray-600' }} border h-14 w-20 p-1 rounded-xl flex flex-col justify-center items-center">
+                          <span
+                            class="uppercase text-lg  font-semibold text-center ">{{ $item->staying_hour->number }}</span>
+                          <span class="uppercase   text-center ">&#8369;{{ number_format($item->amount, 2) }}</span>
+                        </button>
+                      @endforeach
+                    </div>
+
                   </div>
-
+                  @error('get_room.rate_id')
+                    <span class="error mt-2 animate-pulse text-red-600 text-sm">Rate is required to
+                      proceed.</span>
+                  @enderror
                 </div>
-                @error('get_room.rate_id')
-                  <span class="error mt-2 animate-pulse text-red-600 text-sm">Rate is required to
-                    proceed.</span>
-                @enderror
-              </div>
+                <div class="relative w-80 mt-2">
+                  <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                    <div class="w-full border-t border-gray-300"></div>
+                  </div>
+                  <div class="relative flex justify-center">
+                    <span class="bg-transparent px-3 text-lg font-bold text-gray-700">OR</span>
+                  </div>
+                </div>
+                <div class="mt-3">
+                  @if ($get_room['room_id'] != null)
+                    @if ($rates->where('staying_hour.number', 24)->count() == 1)
+                      @if ($long_stay == false)
+                        <x-button md label="Long Stay" wire:click="$set('long_stay', true)" positive />
+                      @else
+                      @endif
+                    @endif
+                  @endif
+                </div>
+              @else
+                <div class="mt-20 w-80">
+                  <div class="relative">
+                    <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                      <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex items-center justify-between">
+                      <span class="pr-3 text-lg font-bold text-gray-700">LONG STAY</span>
+                      <x-button wire:click="$set('long_stay',false)" label="Cancel" negative sm />
 
-              <div class="mt-5">
-                @if ($get_room['room_id'] != null)
-                  @dump(
-                      $rates()->whereHas('staying_hour', function ($query) {
-                              $query->where('number', 24);
-                          })->first(),
-                  )
-                @endif
-              </div>
+                    </div>
+                  </div>
+                  <div class="mt-3">
+                    <input type="number" wire:model="days_stay" placeholder="ENTER # OF DAYS"
+                      class="w-80 rounded-xl text-center border-none focus:outline-none focus:ring-0 focus:border-0 text-lg">
+                    @error('days_stay')
+                      <span class="error mt-2 animate-pulse text-red-600 text-sm">This field is required.</span>
+                    @enderror
+                  </div>
+                </div>
+              @endif
               <div class="absolute bottom-6 right-6">
                 <div class="flex space-x-2">
 
-                  <x-button wire:click="confirmRate" right-icon="arrow-circle-right" xl class="font-bold" primary
-                    label="NEXT" />
+                  @if ($long_stay == false)
+                    <x-button wire:click="confirmRate(1)" right-icon="arrow-circle-right" xl class="font-bold"
+                      primary label="NEXT" />
+                  @else
+                    <x-button wire:click="confirmRate({{ $rates->where('staying_hour.number', 24)->first()->id }})"
+                      right-icon="arrow-circle-right" xl class="font-bold" primary label="NEXT" />
+                  @endif
                 </div>
               </div>
             </div>
