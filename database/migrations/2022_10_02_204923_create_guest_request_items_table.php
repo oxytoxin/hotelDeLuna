@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('guest_request_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('guest_id')->constrained();
+            $table->foreignId('transaction_id')->constrained();
             $table->foreignId('requestable_item_id')->constrained();
             $table->string('quantity');
             $table->string('amount');

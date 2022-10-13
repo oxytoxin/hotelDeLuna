@@ -103,7 +103,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach ($guest->transactions()->orderBy('created_at', $transaction_order)->with(['check_in_detail.room', 'room_change.toRoom.type', 'transaction_type', 'damage.hotel_item'])->get() as $transaction)
+                                    @foreach ($guest->transactions()->orderBy('created_at', $transaction_order)->with(['check_in_detail.room', 'room_change.toRoom.type', 'transaction_type', 'damage.hotel_item', 'guest_request_item.requestable_item'])->get() as $transaction)
                                         <tr>
                                             <td
                                                 class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
@@ -142,6 +142,9 @@
                                                     @endif
                                                     @if ($transaction->transaction_type_id == 4)
                                                         {{ $transaction->damage->hotel_item->name }}
+                                                    @endif
+                                                    @if ($transaction->transaction_type_id == 8)
+                                                        {{ $transaction->guest_request_item->requestable_item->name }}
                                                     @endif
                                                 </div>
                                             </td>

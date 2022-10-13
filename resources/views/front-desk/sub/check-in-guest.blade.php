@@ -34,16 +34,22 @@
                                         class="border border-gray-200 divide-y divide-gray-200 rounded-md">
                                         @foreach ($transactions as $transaction)
                                             <li class="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
-                                                <div class="flex items-center flex-1 w-0">
+                                                <div class="flex items-center justify-between flex-1 w-0">
                                                     <span class="flex-1 w-0 ml-2 truncate">
                                                         {{ $transaction->transaction_type->name }} |
-                                                        ₱{{ $transaction->payable_amount }} @if ($transaction->transaction_type_id == 1)
-                                                            | ROOM # {{ $transaction->check_in_detail->room->number }}
+                                                        @if ($transaction->transaction_type_id == 1)
+                                                            ROOM # {{ $transaction->check_in_detail->room->number }}
+                                                            ({{ $transaction->check_in_detail->room->type->name }})
+                                                            for
+                                                            {{ $transaction->check_in_detail->static_hours_stayed }} hrs
+                                                        @endif
+                                                        @if ($transaction->transaction_type_id == 2)
+                                                            Initial Deposit for Remote and Room Key
                                                         @endif
                                                     </span>
-                                                </div>
-                                                <div class="flex-shrink-0 ml-4">
-
+                                                    <div>
+                                                        <span> ₱{{ $transaction->payable_amount }}</span>
+                                                    </div>
                                                 </div>
                                             </li>
                                         @endforeach

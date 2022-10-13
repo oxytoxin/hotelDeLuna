@@ -38,7 +38,7 @@ class TransactionTypeSeeder extends Seeder
         ]);
 
         TransactionType::create([
-            'name' => 'Item Request', //8
+            'name' => 'Amenities', //8
         ]);
         
     }

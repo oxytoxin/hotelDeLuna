@@ -30,8 +30,9 @@
         class="mt-5"
         x-animate>
         @if ($guest)
-            <div class="grid grid-cols-2 gap-3 ">
-                <div wire:key="information-and-transactions">
+            <div class="grid grid-cols-8 gap-3 ">
+                <div wire:key="information-and-transactions"
+                    class="col-span-3">
                     @if ($guest->totaly_checked_out)
                         <div class="p-4 mb-3 border border-red-500 rounded-md bg-red-50">
                             <div class="flex">
@@ -123,7 +124,8 @@
                         </div>
                     </div>
                 </div>
-                <div wire:key="bill">
+                <div wire:key="bill"
+                    class="col-span-5">
                     <div class="bg-white rounded-lg ring-1 ring-black ring-opacity-10">
                         <div wire:key="{{ $guest->id }}-transactions">
                             <div class="flex p-2 mb-1 space-x-3">
@@ -167,6 +169,11 @@
                                                             class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
                                                             Paid At
                                                         </th>
+
+                                                        <th scope="col"
+                                                            class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                            Details
+                                                        </th>
                                                         <th scope="col"
                                                             class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
                                                         </th>
@@ -200,6 +207,31 @@
                                                                 @endif
                                                             </td>
                                                             <td
+                                                                class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                                                <div class="flex justify-start text-gray-600">
+                                                                    @if ($transaction->transaction_type_id == 7)
+                                                                        ROOM #
+                                                                        {{ $transaction->room_change->fromRoom->number }}
+                                                                        ({{ $transaction->room_change->fromRoom->type->name }})
+                                                                        -
+                                                                        ROOM #
+                                                                        {{ $transaction->room_change->toRoom->number }}
+                                                                        ({{ $transaction->room_change->toRoom->type->name }})
+                                                                    @endif
+                                                                    @if ($transaction->transaction_type_id == 6)
+                                                                        Extend for
+                                                                        {{ $transaction->check_in_detail_extensions->hours }}
+                                                                        hrs
+                                                                    @endif
+                                                                    @if ($transaction->transaction_type_id == 4)
+                                                                        {{ $transaction->damage->hotel_item->name }}
+                                                                    @endif
+                                                                    @if ($transaction->transaction_type_id == 8)
+                                                                        {{ $transaction->guest_request_item->requestable_item->name }}
+                                                                    @endif
+                                                                </div>
+                                                            </td>
+                                                            <td colspan=""
                                                                 class="relative py-4 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
                                                                 <div class="flex justify-end">
                                                                     @if ($transaction->paid_at == null)
@@ -215,24 +247,24 @@
                                                             </td>
                                                         </tr>
                                                     @endforeach
-                                                    <tr>
+                                                    <tr class="bg-gray-50">
                                                         <td
                                                             class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
                                                             <span class="font-bold text-gray-700">Total</span>
                                                         </td>
 
-                                                        <td colspan="3"
+                                                        <td colspan="4"
                                                             class="relative py-4 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
                                                             ₱{{ $transactions->sum('payable_amount') }}
                                                         </td>
                                                     </tr>
-                                                    <tr>
+                                                    <tr class="bg-gray-50">
                                                         <td
                                                             class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
                                                             <span class="font-bold text-gray-700">Balance</span>
                                                         </td>
 
-                                                        <td colspan="3"
+                                                        <td colspan="4"
                                                             class="relative py-4 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
                                                             ₱{{ $transactions->where('paid_at', null)->sum('payable_amount') }}
                                                         </td>
@@ -253,11 +285,14 @@
         <x-modal.card title="Override Action"
             max-width="sm"
             wire:model.defer="override.modal">
-            <form>
+            <form class="grid gap-3">
                 @csrf
                 <x-input label="Amount"
                     wire:model.defer="override.new_amount"
                     type="number" />
+                <x-input label="Authorization Code"
+                    wire:model.defer="override.authorization_code"
+                    type="password" />
             </form>
             <x-slot:footer>
                 <x-button primary

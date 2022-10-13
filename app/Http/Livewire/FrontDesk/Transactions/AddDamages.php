@@ -27,7 +27,7 @@ class AddDamages extends Component
 
     protected $validationAttributes = [
         'form.item_id' => 'item',
-        'form.occured_at' => 'occured at',
+        'form.occured_at' => 'occured at field',
         'form.amount' => 'amount',
         'form.additional_amount' => 'additional amount',
         'form.paid' => 'paid',
@@ -42,11 +42,12 @@ class AddDamages extends Component
 
     public function save()
     {
+        $check_in_detail = Transaction::where('guest_id', $this->guest_id)->where('transaction_type_id', 1)->first();
         $this->validate([
             'form.item_id' => 'required',
             'form.amount' => 'required|numeric',
             'form.additional_amount' => 'nullable|numeric',
-            'form.occured_at' => 'required',
+            'form.occured_at' => 'required|date|after_or_equal:' . $check_in_detail->created_at,
         ]);
         DB::beginTransaction();
         $damage_transaction = Transaction::create([

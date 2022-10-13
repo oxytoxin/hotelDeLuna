@@ -55,4 +55,9 @@ class Transaction extends Model
     {
         return $this->hasOne(Damage::class);
     }
+
+    public function guest_request_item()
+    {
+        return $this->hasOne(GuestRequestItem::class);
+    }
 }

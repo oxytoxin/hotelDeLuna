@@ -10,9 +10,9 @@ class GuestRequestItem extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function guest()
+    public function transaction()
     {
-        return $this->belongsTo(Guest::class);
+        return $this->belongsTo(Transaction::class);
     }
     public function requestable_item()
     {
