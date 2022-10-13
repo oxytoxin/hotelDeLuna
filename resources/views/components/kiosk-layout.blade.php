@@ -113,6 +113,9 @@
   <x-dialog z-index="z-50" align="center" />
   @livewireScripts
   @stack('scripts')
+
+
+
 </body>
 
 </html>

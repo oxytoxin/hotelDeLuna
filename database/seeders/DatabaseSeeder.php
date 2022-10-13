@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RateSeeder::class);
         $this->call(AlmaResidencesDataSeeder::class);
 
-        if (app()->environment()=='local') {
+        if (app()->environment() == 'local') {
             $this->call(FloorAndRoomSeeder::class);
             $this->call(DummyCheckInSeeder::class);
         }

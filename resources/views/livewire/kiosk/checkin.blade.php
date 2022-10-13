@@ -879,6 +879,16 @@
                     proceed.</span>
                 @enderror
               </div>
+
+              <div class="mt-5">
+                @if ($get_room['room_id'] != null)
+                  @dump(
+                      $rates()->whereHas('staying_hour', function ($query) {
+                              $query->where('number', 24);
+                          })->first(),
+                  )
+                @endif
+              </div>
               <div class="absolute bottom-6 right-6">
                 <div class="flex space-x-2">
 
