@@ -130,7 +130,7 @@ class Rates extends Component
 
     public function mount()
     {
-        $this->hours = StayingHour::all();
+        $this->hours = StayingHour::where('branch_id', auth()->user()->branch_id)->get();
         $this->types = Type::where('branch_id', auth()->user()->branch->id)->get();
     }
     public function render()

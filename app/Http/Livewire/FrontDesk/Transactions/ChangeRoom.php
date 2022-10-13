@@ -168,6 +168,7 @@ class ChangeRoom extends Component
         $this->reset('form');
         $this->authorization_code = null;
         $this->available_rooms = [];
+        $this->reload();
     }
 
     public function clear_form()
@@ -226,6 +227,18 @@ class ChangeRoom extends Component
         }
     }
 
+    public function reload()
+    {
+        $this->check_in_detail = CheckInDetail::find($this->check_in_detail_id);
+        $this->current_room = $this->check_in_detail->room;
+        $this->floors = Floor::where('branch_id', auth()->user()->branch_id)->get();
+        $this->form['type_id'] = $this->current_room->type_id;
+        $this->new_room_rate = Rate::where('type_id', $this->form['type_id'])
+            ->where('staying_hour_id', $this->check_in_detail->rate->staying_hour_id)
+            ->where('branch_id', auth()->user()->branch_id)
+            ->first();
+        $this->new_amount_to_pay = $this->new_room_rate->amount;
+    }
     public function mount()
     {
         $this->room_statuses = RoomStatus::whereIn('id', [1, 5, 7])->get();
