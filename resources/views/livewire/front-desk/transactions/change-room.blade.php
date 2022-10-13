@@ -4,7 +4,7 @@
             title="Transfer"
             cardClasses="border-gray-300 border">
             <div class="w-full">
-                <div class="border mb-2 p-2 text-sm bg-gray-50 rounded-lg">
+                <div class="p-2 mb-2 text-sm border rounded-lg bg-gray-50">
                     <h1>
                         Current Room: <span class="font-bold"> Room #{{ $current_room->number }}</span>
                     </h1>
@@ -39,8 +39,7 @@
                         class="grid col-span-2 gap-3"
                         x-animate>
                         @if (count($available_rooms) > 0)
-                            <div wire:key="reason_input"
-                                class="sm:col-span-2">
+                            <div class="sm:col-span-2">
                                 <x-input wire:model="new_amount_to_pay"
                                     prefix="₱"
                                     disabled
@@ -67,7 +66,7 @@
                             <x-checkbox id="right-label"
                                 label="Paid"
                                 wire:model.defer="form.paid" />
-                            <div class="sm:col-span-2 py-2 mt-2 border-t ">
+                            <div class="py-2 mt-2 border-t sm:col-span-2 ">
                                 <x-native-select wire:model="form.room_status_id"
                                     label="Mark the previous room as :">
                                     <option value="">Select</option>

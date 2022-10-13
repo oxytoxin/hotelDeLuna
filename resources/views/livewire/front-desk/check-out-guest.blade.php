@@ -30,9 +30,8 @@
         class="mt-5"
         x-animate>
         @if ($guest)
-            <div class="grid grid-cols-8 gap-3 ">
-                <div wire:key="information-and-transactions"
-                    class="col-span-3">
+            <div class="grid gap-3 ">
+                <div wire:key="information-and-transactions">
                     @if ($guest->totaly_checked_out)
                         <div class="p-4 mb-3 border border-red-500 rounded-md bg-red-50">
                             <div class="flex">
@@ -94,41 +93,12 @@
                             </div>
                         </div>
                     </div>
-                    <div id="buttons"
-                        x-data="{ step: 1 }"
-                        class="w-full mt-2">
-                        <div x-show="step==1"
-                            id="reminder">
-                            <x-button label="Check Out"
-                                lg
-                                x-on:click="
-                                    alert('Please make sure the key and remote has been turned over');
-                                    alert('Check room by the body');
-                                    alert('Call guest to check-out in Kiosk');
-                                    step = 2;
-                                "
-                                class="w-full"
-                                ner="checkOut"
-                                positive />
-                        </div>
-                        <div x-cloak
-                            x-show="step==2">
-                            @if ($guest->totaly_checked_out == false)
-                                <x-button label="Check Out"
-                                    lg
-                                    wire:click="checkOut"
-                                    class="w-full"
-                                    ner="checkOut"
-                                    positive />
-                            @endif
-                        </div>
-                    </div>
+
                 </div>
-                <div wire:key="bill"
-                    class="col-span-5">
+                <div wire:key="bill">
                     <div class="bg-white rounded-lg ring-1 ring-black ring-opacity-10">
                         <div wire:key="{{ $guest->id }}-transactions">
-                            <div class="flex p-2 mb-1 space-x-3">
+                            <div class="flex p-4 mb-1 space-x-3">
                                 <h1 class="text-gray-600">
                                     Transactions
                                 </h1>
@@ -276,6 +246,18 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div id="buttons">
+                    <div>
+                        @if ($guest->totaly_checked_out == false)
+                            <x-button label="Check Out"
+                                lg
+                                wire:click="checkOut"
+                                class="w-full"
+                                ner="checkOut"
+                                positive />
+                        @endif
                     </div>
                 </div>
             </div>
