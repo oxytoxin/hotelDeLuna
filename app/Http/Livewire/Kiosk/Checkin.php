@@ -29,6 +29,7 @@ class Checkin extends Component
         'rate_id' => '',
     ];
 
+    public $long_stay = false;
     public $transaction = [];
 
     public $room_array = 0;
@@ -178,7 +179,7 @@ class Checkin extends Component
     public function removeRoom($key)
     {
         unset($this->transaction[$key]);
-        $this->room_array--;    
+        $this->room_array--;
     }
 
     public function selectType($type_id)
