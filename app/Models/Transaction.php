@@ -60,4 +60,9 @@ class Transaction extends Model
     {
         return $this->hasOne(GuestRequestItem::class);
     }
+    
+    public function deposits()
+    {
+        return $this->hasOne(Deposit::class);
+    }
 }

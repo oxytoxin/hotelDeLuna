@@ -1,9 +1,7 @@
 <div class="gap-4 sm:grid sm:grid-cols-2">
     @if ($branch_extension_resetting_time != null)
-        <div class="sm:col-span-1">
-            <x-card shadow="sm"
-                title="Extend Hours"
-                cardClasses="border border-gray-300">
+        <div class="col-span-2">
+            <x-card title="Extend">
                 <form class="grid grid-cols-1 gap-3">
                     @csrf
                     <x-native-select label="Select Hour"
@@ -30,8 +28,8 @@
                 </x-slot:footer>
             </x-card>
         </div>
-        <div class="sm:col-span-1">
-            <div class="grid gap-1">
+        <div class="col-span-2">
+            {{-- <div class="grid gap-1">
                 <div class="flex items-center justify-between">
                     <h1 class="text-center text-gray-600">
                         Hours extension history
@@ -90,14 +88,72 @@
                         <span class="text-red-600">{{ $extension_history->sum('hours') }} hrs</span>
                     </div>
                     <div>
-                        Checked in hours : <span class="text-red-600">{{ $check_in_detail->rate->staying_hour->number }}
+                        Checked in hours : <span class="text-red-600">{{ $check_in_detail->static_hours_stayed }}
                             hrs</span>
                     </div>
                     Total : <span
-                        class="text-red-600">{{ $extension_history->sum('hours') + $check_in_detail->rate->staying_hour->number }}
-                        hrs</span>
+                        class="text-red-600">{{ $extension_history->sum('hours') + $check_in_detail->static_hours_stayed }}
+                        hrs
+
+                    </span>
                 </div>
-            </div>
+            </div> --}}
+            <x-card title="Extend History">
+                <div>
+                    <div class="flex flex-col ">
+                        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                                    <table class="min-w-full divide-y divide-gray-300">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col"
+                                                    class="py-3 pl-4 pr-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase sm:pl-6">
+                                                    Details
+                                                </th>
+                                                <th scope="col"
+                                                    class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                    Amount
+                                                </th>
+                                                <th scope="col"
+                                                    class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                    Date
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            @forelse ($extension_history as $extension)
+                                                <tr>
+                                                    <td
+                                                        class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
+                                                        Extend for {{ $extension->hours }} hrs
+                                                    </td>
+                                                    <td
+                                                        class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
+                                                        ₱ {{ $extension->amount }}
+                                                    </td>
+                                                    <td
+                                                        class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
+                                                        {{ $extension->created_at->format('Y/m/d h:i:s A') }}
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="3"
+                                                        class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
+                                                        No record found
+                                                    </td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </x-card>
         </div>
     @else
         <div class="p-4 border border-red-500 rounded-md bg-red-50 sm:col-span-2">
@@ -132,6 +188,5 @@
                 </div>
             </div>
         </div>
-
     @endif
 </div>

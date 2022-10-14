@@ -24,4 +24,6 @@ class Guest extends Model
     {
         return $this->hasOne(GuestRequestItem::class);
     }
+
+   
 }
