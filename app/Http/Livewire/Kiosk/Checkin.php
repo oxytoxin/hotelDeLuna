@@ -15,6 +15,7 @@ use Livewire\Component;
 use WireUi\Traits\Actions;
 use App\Models\Floor;
 use Livewire\WithPagination;
+use App\Models\Deposit;
 
 class Checkin extends Component
 {
@@ -241,6 +242,11 @@ class Checkin extends Component
                 'transaction_type_id' => 2,
                 'payable_amount' => 200,
             ]);
+            Deposit::create([
+                'transaction_id' => $checkindeposit->id,
+                'amount' => 200,
+                'remarks' => 'Deposit for remote and key',
+            ]);
 
             if ($this->long_stay == true) {
                 $details = CheckInDetail::create([
@@ -318,6 +324,11 @@ class Checkin extends Component
                 'guest_id' => $guest->id,
                 'transaction_type_id' => 2,
                 'payable_amount' => 200,
+            ]);
+            Deposit::create([
+                'transaction_id' => $checkindeposit->id,
+                'amount' => 200,
+                'remarks' => 'Deposit for remote and key',
             ]);
 
             if ($this->long_stay == true) {
