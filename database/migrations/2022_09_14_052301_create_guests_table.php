@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('check_in_at')->nullable();
             $table->boolean('totaly_checked_out')->default(false);
             $table->string('terminated_at')->nullable();
+            $table->string('total_deposits')->default(0);
             $table->timestamps();
         });
     }

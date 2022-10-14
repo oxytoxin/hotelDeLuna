@@ -35,9 +35,86 @@
     </div>
     <div x-animate>
         @if ($guest)
-            <div wire:key="{{ $guest->id }}-actions"
-                class="flex space-x-3">
-                <x-button white
+            <div wire:key="{{ $guest->id }}-actions">
+                <div>
+                    <div>
+                        <nav class="flex divide-x divide-gray-200 rounded-lg shadow isolate"
+                            aria-label="Tabs">
+                            <!-- Current: "text-gray-900", Default: "text-gray-500 hover:text-gray-700" -->
+                            <button type="button"
+                                wire:click="$set('action',null)"
+                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white rounded-l-lg hover:text-gray-700 group hover:bg-gray-50 focus:z-10"
+                                aria-current="page">
+                                <span>Information</span>
+                                <span aria-hidden="true"
+                                    @class([
+                                        'absolute inset-x-0 bottom-0 h-0.5',
+                                        'bg-primary-500' => $action == null,
+                                    ])></span>
+                            </button>
+                            <button type="button"
+                                wire:click="$set('action','transactions')"
+                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
+                                <span>Transactions</span>
+                                <span aria-hidden="true"
+                                    @class([
+                                        'absolute inset-x-0 bottom-0 h-0.5',
+                                        'bg-primary-500' => $action == 'transactions',
+                                    ])></span>
+                            </button>
+                            <button type="button"
+                                wire:click="$set('action','change-room')"
+                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
+                                <span>Transfer</span>
+                                <span aria-hidden="true"
+                                    @class([
+                                        'absolute inset-x-0 bottom-0 h-0.5',
+                                        'bg-primary-500' => $action == 'change-room',
+                                    ])></span>
+                            </button>
+
+                            <button type="button"
+                                wire:click="$set('action','extend-hours')"
+                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white rounded-r-lg hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
+                                <span>Extend</span>
+                                <span aria-hidden="true"
+                                    @class([
+                                        'absolute inset-x-0 bottom-0 h-0.5',
+                                        'bg-primary-500' => $action == 'extend-hours',
+                                    ])></span>
+                            </button>
+                            <button type="button"
+                                wire:click="$set('action','add-damages')"
+                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white rounded-r-lg hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
+                                <span> Damage Charges</span>
+                                <span aria-hidden="true"
+                                    @class([
+                                        'absolute inset-x-0 bottom-0 h-0.5',
+                                        'bg-primary-500' => $action == 'add-damages',
+                                    ])></span>
+                            </button>
+                            <button type="button"
+                                wire:click="$set('action','item-request')"
+                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white rounded-r-lg hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
+                                <span>Amenities</span>
+                                <span aria-hidden="true"
+                                    @class([
+                                        'absolute inset-x-0 bottom-0 h-0.5',
+                                        'bg-primary-500' => $action == 'item-request',
+                                    ])
+                                    class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
+                            </button>
+                            <button type="button"
+                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white rounded-r-lg hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
+                                <span>Deposit </span>
+                                <span aria-hidden="true"
+                                    class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+
+                {{-- <x-button white
                     wire:click="$set('action',null)">
                     Guest Information/Transactions
                 </x-button>
@@ -56,7 +133,7 @@
                 <x-button white
                     wire:click="$set('action','item-request')">
                     Amenities
-                </x-button>
+                </x-button> --}}
             </div>
         @endif
     </div>
@@ -70,7 +147,13 @@
             @endphp
             @switch($action)
                 @case(null)
-                    @include('front-desk.sub-views.guest-informations-and-transactions')
+                    <div>
+                        @include('front-desk.sub-views.guest-informations-and-transactions')
+                    </div>
+                @break
+
+                @case('transactions')
+                    @include('front-desk.sub-views.transactions')
                 @break
 
                 @case('change-room')

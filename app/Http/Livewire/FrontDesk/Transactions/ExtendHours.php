@@ -60,14 +60,27 @@ class ExtendHours extends Component
     {
         DB::beginTransaction();
         $extension = Extension::find($this->form['extension_id']);
+
+        // to get the sum of hours extended by the guest
         $extension_history = CheckInDetailExtension::whereHas('transaction', function ($query) {
             $query->where('guest_id', $this->guest_id);
         });
-        $total_check_in_detail_extension_hours = $extension_history->sum('hours');
-        $this->form['initial_amount'] = $this->check_in_detail->rate->amount;
-        $total_hours = $this->check_in_detail->rate->staying_hour->number + $total_check_in_detail_extension_hours;
-        $plus_extension_hours = $extension->hours + $total_hours;
-        if ($plus_extension_hours > $this->branch_extension_resetting_time) {
+        $total_check_in_detail_extension_hours = $extension_history->sum('hours'); 
+        // ------------------------------
+
+        $this->form['initial_amount'] = $this->check_in_detail->rate->amount; // the initial amount paid by the guest for the room // where to reset the amount to be paid every resetting time
+
+        // (static hours stayed + total hours extended by the guest)
+        // to identify if the amount to pay for the extension is reset or not (depends on the resetting time)
+        $total_hours = $this->check_in_detail->static_hours_stayed + $total_check_in_detail_extension_hours; 
+        // ------------------------------
+        $plus_extension_hours = $extension->hours + $total_hours; // (static hours stayed + total hours extended by the guest) + selected extension hours
+        
+        if ($plus_extension_hours % $this->branch_extension_resetting_time == 0) {
+            
+            $this->form['amount_to_be_paid'] = $extension->amount;
+
+        } else {
             $qoutient = floor($plus_extension_hours / $this->branch_extension_resetting_time);
             $remainder = $plus_extension_hours % $this->branch_extension_resetting_time;
             $daily_amount = $this->checked_in_room_daily_rate * $qoutient;
@@ -75,14 +88,12 @@ class ExtendHours extends Component
                 ->whereHas('staying_hour', function ($query) use ($remainder) {
                     $query->where('number', '>=', $remainder);
                 })->first();
-            $paid_amount = Transaction::where('guest_id', $this->guest_id)
+            $check_in_and_extension_total_charges = Transaction::where('guest_id', $this->guest_id)
                 ->whereIn('transaction_type_id', [1, 6])
                 ->sum('payable_amount');
             $temp_amount = $daily_amount + $nearest_rate->amount;
-            $total_amount = $temp_amount - $paid_amount;
+            $total_amount = $temp_amount - $check_in_and_extension_total_charges;
             $this->form['amount_to_be_paid'] = $total_amount;
-        } else {
-            $this->form['amount_to_be_paid'] = $extension->amount;
         }
         DB::commit();
     }
@@ -107,6 +118,7 @@ class ExtendHours extends Component
             'hours' => $extension->hours,
             'amount' => $this->form['amount_to_be_paid'],
         ]);
+
         $this->check_in_detail->update([
             'expected_check_out_at' => Carbon::parse($this->check_in_detail->expected_check_out_at)->addHours($extension->hours)
         ]);

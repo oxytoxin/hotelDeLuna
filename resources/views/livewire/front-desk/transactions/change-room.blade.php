@@ -1,8 +1,6 @@
 <div class="gap-4 sm:grid sm:grid-cols-2">
-    <div class="sm:col-span-1">
-        <x-card shadow="shadow"
-            title="Transfer"
-            cardClasses="border-gray-300 border">
+    <div class="sm:col-span-2">
+        <x-card title="Transfer">
             <div class="w-full">
                 <div class="p-2 mb-2 text-sm border rounded-lg bg-gray-50">
                     <h1>
@@ -97,8 +95,71 @@
             </x-slot:footer>
         </x-card>
     </div>
-    <div class="sm:col-span-1">
-        <div class="grid gap-1">
+    <div class="sm:col-span-2">
+        <x-card title="Transfer History">
+            <div>
+                <div class="flex flex-col ">
+                    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                                <table class="min-w-full divide-y divide-gray-300">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th scope="col"
+                                                class="py-3 pl-4 pr-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase sm:pl-6">
+                                                From
+                                            </th>
+                                            <th scope="col"
+                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                To</th>
+                                            <th scope="col"
+                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                Amount
+                                            </th>
+                                            <th scope="col"
+                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                Date Time
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        @forelse ($changes_history as $room_change)
+                                            <tr>
+                                                <td
+                                                    class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
+                                                    ROOM # {{ $room_change->fromRoom->number }}
+                                                </td>
+                                                <td
+                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
+                                                    ROOM # {{ $room_change->toRoom->number }}
+                                                </td>
+                                                <td
+                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
+                                                    ₱ {{ $room_change->amount }}
+                                                </td>
+                                                <td
+                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
+                                                    {{ $room_change->created_at->format('Y/m/d h:i:s A') }}
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="4"
+                                                    class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
+                                                    No record found
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </x-card>
+        {{-- <div class="grid gap-1">
             <div class="flex items-center justify-between">
                 <h1 class="text-center text-gray-600">
                     Room transfer history
@@ -154,6 +215,6 @@
                 @endforelse
             </div>
 
-        </div>
+        </div> --}}
     </div>
 </div>
