@@ -124,7 +124,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach ($guest->transactions()->orderBy('created_at', $transaction_order)->with(['check_in_detail.room', 'room_change.toRoom.type', 'transaction_type', 'damage.hotel_item', 'guest_request_item.requestable_item'])->get() as $transaction)
+                                    @foreach ($guest->transactions()->orderBy('created_at', $transaction_order)->with(['check_in_detail.room', 'room_change.toRoom.type', 'transaction_type', 'damage.hotel_item', 'guest_request_item.requestable_item', 'deposit'])->get() as $transaction)
                                         <tr>
                                             <td
                                                 class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
@@ -141,7 +141,7 @@
                                                     Checked In ROOM # {{ $transaction->check_in_detail->room->number }}
                                                 @endif
                                                 @if ($transaction->transaction_type_id === 2)
-                                                    TV Remote and Room Key
+                                                    {{ $transaction->deposit->remarks }}
                                                 @endif
                                                 @if ($transaction->transaction_type_id == 7)
                                                     ROOM # {{ $transaction->room_change->fromRoom->number }}

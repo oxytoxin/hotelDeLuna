@@ -75,19 +75,18 @@ class ExtendHours extends Component
         $total_hours = $this->check_in_detail->static_hours_stayed + $total_check_in_detail_extension_hours; 
         // ------------------------------
         $plus_extension_hours = $extension->hours + $total_hours; // (static hours stayed + total hours extended by the guest) + selected extension hours
-        
         if ($plus_extension_hours % $this->branch_extension_resetting_time == 0) {
-            
             $this->form['amount_to_be_paid'] = $extension->amount;
-
         } else {
             $qoutient = floor($plus_extension_hours / $this->branch_extension_resetting_time);
             $remainder = $plus_extension_hours % $this->branch_extension_resetting_time;
             $daily_amount = $this->checked_in_room_daily_rate * $qoutient;
+
             $nearest_rate = Rate::where('type_id', $this->check_in_detail->room->type_id)
                 ->whereHas('staying_hour', function ($query) use ($remainder) {
                     $query->where('number', '>=', $remainder);
                 })->first();
+                
             $check_in_and_extension_total_charges = Transaction::where('guest_id', $this->guest_id)
                 ->whereIn('transaction_type_id', [1, 6])
                 ->sum('payable_amount');

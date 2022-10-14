@@ -1,103 +1,54 @@
 <div class="gap-4 sm:grid sm:grid-cols-2">
     @if ($branch_extension_resetting_time != null)
-        <div class="col-span-2">
-            <x-card title="Extend">
-                <form class="grid grid-cols-1 gap-3">
-                    @csrf
-                    <x-native-select label="Select Hour"
-                        wire:model="form.extension_id">
-                        <option value="">Select</option>
-                        @foreach ($available_hours_for_extension_with_in_this_branch as $extention)
-                            <option value="{{ $extention->id }}">
-                                {{ $extention->hours }} {{ Str::plural('hour', $extention->hours) }}
-                            </option>
-                        @endforeach
-                    </x-native-select>
-                    <x-input label="Amount"
-                        disabled
-                        wire:model="form.amount_to_be_paid" />
-                </form>
-                <x-slot:footer>
-                    <div class="flex items-center space-x-3">
-                        <x-button label="Clear" />
-                        <x-button primary
-                            wire:click="save"
-                            spinner="save"
-                            label="Save" />
+        <div class="grid grid-cols-2 col-span-2 gap-4">
+            <div class="col-span-1">
+                <x-card title="Extend">
+                    <form class="grid grid-cols-1 gap-3">
+                        @csrf
+                        <x-native-select label="Select Hour"
+                            wire:model="form.extension_id">
+                            <option value="">Select</option>
+                            @foreach ($available_hours_for_extension_with_in_this_branch as $extention)
+                                <option value="{{ $extention->id }}">
+                                    {{ $extention->hours }} {{ Str::plural('hour', $extention->hours) }}
+                                </option>
+                            @endforeach
+                        </x-native-select>
+                        <x-input label="Amount"
+                            disabled
+                            wire:model="form.amount_to_be_paid" />
+                    </form>
+                    <x-slot:footer>
+                        <div class="flex items-center space-x-3">
+                            <x-button label="Clear" />
+                            <x-button primary
+                                wire:click="save"
+                                spinner="save"
+                                label="Save" />
+                        </div>
+                    </x-slot:footer>
+                </x-card>
+            </div>
+            <div class="col-span-1">
+                <x-card>
+                    <div class="text-sm text-gray-700">
+                        <div>
+                            Extended hours :
+                            <span class="text-red-600">{{ $extension_history->sum('hours') }} hrs</span>
+                        </div>
+                        <div>
+                            Checked in hours : <span class="text-red-600">{{ $check_in_detail->static_hours_stayed }}
+                                hrs</span>
+                        </div>
+                        Total : <span
+                            class="text-red-600">{{ $extension_history->sum('hours') + $check_in_detail->static_hours_stayed }}
+                            hrs
+                        </span>
                     </div>
-                </x-slot:footer>
-            </x-card>
+                </x-card>
+            </div>
         </div>
-        <div class="col-span-2">
-            {{-- <div class="grid gap-1">
-                <div class="flex items-center justify-between">
-                    <h1 class="text-center text-gray-600">
-                        Hours extension history
-                    </h1>
-                    <div wire:key="{{ $history_order }}-button">
-                        <button wire:click="historyOrderToggle"
-                            type="button"
-                            class="flex items-center space-x-2 text-gray-600">
-                            <span>{{ $history_order == 'ASC' ? 'Oldest' : 'Newest' }}</span>
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                class="w-5 h-5">
-                                <path stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                <div wire:key="history-list"
-                    x-animate>
-                    @forelse ($extension_history as $extension)
-                        <div wire:key="{{ $extension->id }}"
-                            class="p-2 mb-2 bg-white border rounded-lg">
-                            <div>
-                                <div class="flex items-center justify-between space-x-2 text-sm text-gray-600">
-                                    <h1>
-                                        Extend for {{ $extension->hours }} Hours
-                                    </h1>
-                                    <div>
-                                        ₱ {{ $extension->amount }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @empty
-                        <div wire:key="empty"
-                            class="p-2 mb-2 bg-white border rounded-lg">
-                            <div class="flex justify-between w-full">
-                                <div class="flex items-center space-x-2 text-gray-600">
-                                    <h1>
-                                        No record fount
-                                    </h1>
-                                </div>
-                            </div>
-                        </div>
-                    @endforelse
-
-                </div>
-                <div class="text-sm text-gray-700">
-                    <div>
-                        Extended hours :
-                        <span class="text-red-600">{{ $extension_history->sum('hours') }} hrs</span>
-                    </div>
-                    <div>
-                        Checked in hours : <span class="text-red-600">{{ $check_in_detail->static_hours_stayed }}
-                            hrs</span>
-                    </div>
-                    Total : <span
-                        class="text-red-600">{{ $extension_history->sum('hours') + $check_in_detail->static_hours_stayed }}
-                        hrs
-
-                    </span>
-                </div>
-            </div> --}}
+        <div class="col-span-2 ">
             <x-card title="Extend History">
                 <div>
                     <div class="flex flex-col ">
@@ -152,7 +103,6 @@
                         </div>
                     </div>
                 </div>
-
             </x-card>
         </div>
     @else

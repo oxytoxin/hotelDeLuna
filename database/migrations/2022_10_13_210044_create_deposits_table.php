@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('transaction_id')->constrained();
             $table->string('amount');
-            $table->string('deducted')->default(0);
+            $table->string('deducted')->nullable();
             $table->string('remarks')->nullable();
             $table->boolean('retrieved')->default(false);
             $table->timestamps();
