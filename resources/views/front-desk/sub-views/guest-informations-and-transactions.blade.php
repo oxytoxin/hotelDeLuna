@@ -1,7 +1,7 @@
 <div class="space-y-5">
     <div wire:key="{{ $guest->id }}-guest-information">
         <x-card title="Guest Information">
-            <div class="">
+            <div>
                 <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                     <div class="sm:col-span-1">
                         <dt class="text-sm font-medium text-gray-500">Qr Code</dt>
