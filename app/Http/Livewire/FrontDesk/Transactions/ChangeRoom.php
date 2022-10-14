@@ -13,6 +13,7 @@ use App\Models\RoomStatus;
 use WireUi\Traits\Actions;
 use App\Models\Transaction;
 use App\Models\CheckInDetail;
+use App\Models\Deposit;
 use Illuminate\Support\Facades\DB;
 
 class ChangeRoom extends Component
@@ -44,6 +45,8 @@ class ChangeRoom extends Component
     public $check_in_detail = null;
 
     public $authorization_code;
+
+    public $has_refundable_amount = false;
 
     protected $validationAttributes = [
         'form.type_id' => 'type',
@@ -138,9 +141,24 @@ class ChangeRoom extends Component
             'branch_id' => auth()->user()->branch_id,
             'guest_id' => $transaction->guest_id,
             'transaction_type_id' => 7,
-            'payable_amount' => $old_selected_room_amount_paid > $new_selected_room_amount ? $old_selected_room_amount_paid - $new_selected_room_amount : $new_selected_room_amount - $old_selected_room_amount_paid,
+            'payable_amount' => $old_selected_room_amount_paid > $new_selected_room_amount ? $old_selected_room_amount_paid - $new_selected_room_amount : 0,
             'paid_at' => $this->form['paid'] ? now() : null,
         ]);
+
+        if ( $old_selected_room_amount_paid > $new_selected_room_amount) {
+            $deposit_transaction = Transaction::create([
+                'branch_id' => auth()->user()->branch_id,
+                'guest_id' => $transaction->guest_id,
+                'transaction_type_id' => 2,
+                'payable_amount' =>  $old_selected_room_amount_paid - $new_selected_room_amount ,
+                'paid_at' => now(),
+            ]);
+            Deposit::create([
+                'transaction_id' => $deposit_transaction->id,
+                'amount' => $new_selected_room_amount - $old_selected_room_amount_paid,
+                'remarks' => 'Deposit from transfer room transaction',
+            ]);
+        }
 
         $this->check_in_detail->update([
             'room_id' => $new_room->id,
@@ -154,6 +172,7 @@ class ChangeRoom extends Component
             'reason' => $this->form['reason'],
             'amount' => $new_selected_room_amount,
         ]);
+       
         $this->current_room->update([
             'room_status_id' => $this->form['room_status_id'],
         ]);
@@ -161,9 +180,13 @@ class ChangeRoom extends Component
             'room_status_id' => 2,
         ]);
         DB::commit();
-        $this->notification()->success(
+        $message = 'Room changed successfully';
+        if ($new_selected_room_amount < $old_selected_room_amount_paid) {
+            $message = 'Room has been changed successfully. ₱ '.$old_selected_room_amount_paid - $new_selected_room_amount.' has been refunded and saved as deposits to the guest account';
+        }
+        $this->dialog()->info(
             $title = 'Success',
-            $description = 'Room has been changed successfully'
+            $description = $message,
         );
         $this->reset('form');
         $this->authorization_code = null;

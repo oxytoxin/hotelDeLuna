@@ -120,7 +120,11 @@
                                             Details</th>
                                         <th scope="col"
                                             class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
-                                            Paid Ad</th>
+                                            Paid At</th>
+                                        <th scope="col"
+                                            class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                            Date
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
@@ -137,17 +141,17 @@
                                             </td>
                                             <td
                                                 class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
-                                                @if ($transaction->transaction_type_id === 1)
+                                                @if ($transaction->transaction_type_id == 1)
                                                     Checked In ROOM # {{ $transaction->check_in_detail->room->number }}
                                                 @endif
-                                                @if ($transaction->transaction_type_id === 2)
+                                                @if ($transaction->transaction_type_id == 2)
                                                     {{ $transaction->deposit->remarks }}
                                                 @endif
                                                 @if ($transaction->transaction_type_id == 7)
-                                                    ROOM # {{ $transaction->room_change->fromRoom->number }}
+                                                    From ROOM # {{ $transaction->room_change->fromRoom->number }}
                                                     ({{ $transaction->room_change->fromRoom->type->name }})
                                                     -
-                                                    ROOM # {{ $transaction->room_change->toRoom->number }}
+                                                    To ROOM # {{ $transaction->room_change->toRoom->number }}
                                                     ({{ $transaction->room_change->toRoom->type->name }})
                                                 @endif
                                                 @if ($transaction->transaction_type_id == 6)
@@ -164,9 +168,8 @@
                                             </td>
                                             <td
                                                 class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
-
                                                 @if ($transaction->paid_at)
-                                                    {{ $transaction->paid_at }}
+                                                    {{ Carbon\Carbon::parse($transaction->paid_at)->format('Y/m/d h:i:s A') }}
                                                 @else
                                                     <button type="button"
                                                         wire:click="payTransaction({{ $transaction->id }})"
@@ -177,7 +180,7 @@
                                             </td>
                                             <td
                                                 class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
-
+                                                {{ $transaction->created_at->format('Y/m/d h:i:s A') }}
                                             </td>
                                         </tr>
                                     @endforeach

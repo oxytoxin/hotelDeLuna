@@ -17,7 +17,8 @@
                     @csrf
                     <x-native-select wire:model="form.type_id"
                         label="Select Type">
-                        <option value="">Select</option>
+                        <option value=""
+                            disabled>Select</option>
                         @foreach ($available_types as $type)
                             <option value="{{ $type->id }}">
                                 {{ $type->name }}
@@ -37,13 +38,13 @@
                         class="grid col-span-2 gap-3"
                         x-animate>
                         @if (count($available_rooms) > 0)
-                            <div class="sm:col-span-2">
+                            <div class="col-span-1">
                                 <x-input wire:model="new_amount_to_pay"
                                     prefix="₱"
                                     disabled
                                     label="Amount" />
                             </div>
-                            <div class="sm:col-span-2">
+                            <div class="col-span-1">
                                 <x-native-select wire:model="form.room_id"
                                     label="Select Room">
                                     <option value="">Select</option>

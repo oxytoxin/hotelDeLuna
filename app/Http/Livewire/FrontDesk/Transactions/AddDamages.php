@@ -47,7 +47,7 @@ class AddDamages extends Component
             'form.item_id' => 'required',
             'form.amount' => 'required|numeric',
             'form.additional_amount' => 'nullable|numeric',
-            'form.occured_at' => 'required|date|after_or_equal:' . $check_in_detail->created_at,
+            'form.occured_at' => 'required|date|after_or_equal:' . $check_in_detail->created_at.'|before_or_equal:'.now(),
         ]);
         DB::beginTransaction();
         $damage_transaction = Transaction::create([
