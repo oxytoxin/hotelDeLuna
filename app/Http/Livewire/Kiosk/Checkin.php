@@ -245,7 +245,7 @@ class Checkin extends Component
             Deposit::create([
                 'transaction_id' => $checkindeposit->id,
                 'amount' => 200,
-                'remarks' => 'Deposit for remote and key',
+                'remarks' => 'TV Remote and Room key',
             ]);
 
             if ($this->long_stay == true) {
@@ -328,7 +328,7 @@ class Checkin extends Component
             Deposit::create([
                 'transaction_id' => $checkindeposit->id,
                 'amount' => 200,
-                'remarks' => 'Deposit for remote and key',
+                'remarks' => 'TV Remote and Room key',
             ]);
 
             if ($this->long_stay == true) {
