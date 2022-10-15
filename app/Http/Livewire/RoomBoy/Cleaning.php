@@ -112,11 +112,11 @@ class Cleaning extends Component
         $room = Room::where('id', $room_id)->first();
         if (
             $room->room_status_id == 8 &&
-            $room->updated_at->diffInMinutes(Carbon::now()) < 20
+            $room->updated_at->diffInMinutes(Carbon::now()) < 15
         ) {
             $this->notification()->error(
                 $title = 'Error',
-                $description = 'You can not finish this room before 20 minutes'
+                $description = 'You can not finish this room before 15 minutes'
             );
             return;
         }
@@ -160,6 +160,7 @@ class Cleaning extends Component
                         $query->where('floor_id', $this->designation->floor_id);
                     })
                     ->whereIn('room_status_id', [7, 8])
+                    ->orderBy('updated_at', 'ASC')
                     ->get()
                 : [],
             'history' => CleaningModel::query()

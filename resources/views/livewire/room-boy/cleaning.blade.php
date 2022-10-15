@@ -84,7 +84,8 @@
       <div class="grid grid-cols-1 gap-4 lg:col-span-2">
         <!-- Welcome panel -->
         <section aria-labelledby="profile-overview-title">
-          <div class="overflow-hidden rounded-3xl lg:rounded-2xl border-4 border-white  bg-gray-50   shadow-lg">
+          <div
+            class=" {{ \App\Models\Designation::where('room_boy_id', auth()->user()->room_boy->id)->exists() == false ? 'border-red-500' : 'border-white' }} overflow-hidden rounded-3xl lg:rounded-2xl border-4 relative  bg-gray-50   shadow-lg">
             <h2 class="sr-only" id="profile-overview-title">Profile Overview</h2>
             <div class="bg-white p-6">
               <div class="sm:flex sm:items-center sm:justify-between">
@@ -92,7 +93,7 @@
                   <div class="flex-shrink-0">
                     <div class="relative h-20 w-20 mx-auto">
                       <img src="{{ auth()->user()->profile_photo_url }}"
-                        class="h-20 rounded-full border-4 mx-auto border-green-500" alt="">
+                        class="h-20 w-20  rounded-full border-4 flex-shrink-0 mx-auto border-green-500" alt="">
                       <div class="absolute bottom-0 right-0">
                         <x-button.circle href="{{ route('profile.show') }}" xs dark icon="camera" />
                       </div>
@@ -133,6 +134,27 @@
                 </div>
               </div>
             </div>
+            @if (\App\Models\Designation::where('room_boy_id', auth()->user()->room_boy->id)->exists() == false)
+              <div
+                class="absolute top-0 left-0 w-full h-full bg-gray-50 bg-opacity-90 flex justify-center items-center">
+                <div class="flex items-center space-x-1 animate-pulse">
+                  <svg class="w-7 h-7 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"
+                    fill="currentColor">
+                    <defs></defs>
+                    <title>warning-square--filled</title>
+                    <path
+                      d="M26.0022,4H5.998A1.998,1.998,0,0,0,4,5.998V26.002A1.998,1.998,0,0,0,5.998,28H26.0022A1.9979,1.9979,0,0,0,28,26.002V5.998A1.9979,1.9979,0,0,0,26.0022,4ZM14.8752,8h2.25V18h-2.25ZM16,24a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,24Z">
+                    </path>
+                    <path id="inner-path" class="cls-1"
+                      d="M14.8751,8h2.25V18h-2.25ZM16,24a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,24Z" style="fill:none">
+                    </path>
+                    <rect id="_Transparent_Rectangle_" data-name="<Transparent Rectangle>" class="cls-1" width="32"
+                      height="32" style="fill:none"></rect>
+                  </svg>
+                  <h1 class="text-red-500 font-bold text-xl">Please assign it to its designated floor.</h1>
+                </div>
+              </div>
+            @endif
 
           </div>
         </section>
@@ -182,7 +204,7 @@
                       $cleaningTime = new Carbon\Carbon(
                           auth()
                               ->user()
-                              ->room_boy->room->updated_at->addMinutes(20),
+                              ->room_boy->room->updated_at->addMinutes(15),
                       );
                       $timeToClean = new Carbon\Carbon(auth()->user()->room_boy->room->time_to_clean);
                       // dd(auth()->user()->room_boy->room->updated_at == null);
@@ -208,8 +230,9 @@
                       @endif
                     </div>
                   @endif
-                  <x-button type="button" spinner="finish" wire:click="finish({{ auth()->user()->room_boy->room_id }})"
-                    lg negative class="font-semibold mt-1" label="FINISH" />
+                  <x-button type="button" spinner="finish"
+                    wire:click="finish({{ auth()->user()->room_boy->room_id }})" lg negative class="font-semibold mt-1"
+                    label="FINISH" />
                 </div>
               </div>
               <div class="div lg:flex  justify-between items-center">
@@ -248,18 +271,19 @@
           <div class="grid lg:grid-cols-2 grid-cols-1 gap-4 mt-3" x-animate>
 
             @if ($this->designation)
-              @forelse ($rooms->whereIn('room_status_id',7) as $room)
+              @foreach ($rooms->whereIn('room_status_id', 7) as $room)
                 @php
                   $timeToClean = new Carbon\Carbon($room->time_to_clean);
                   
                 @endphp
                 @if ($room->room_status_id == 7)
-                  <div class="border-4 border-green-600  p-6 rounded-3xl">
+                  <div class="border-4 {{ $loop->first ? 'border-red-600 ' : 'border-green-600 ' }} p-6 rounded-3xl">
 
                     <div class="flex space-x-2 items-center relative  justify-between">
-                      <div class="rounded-lg inline-flex p-3 bg-green-600 shadow-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-white" width="24"
-                          height="24">
+                      <div
+                        class="rounded-lg inline-flex p-3 {{ $loop->first ? 'bg-red-600' : 'bg-green-600' }} shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-white"
+                          width="24" height="24">
                           <path fill="none" d="M0 0h24v24H0z" />
                           <path
                             d="M17.618 5.968l1.453-1.453 1.414 1.414-1.453 1.453a9 9 0 1 1-1.414-1.414zM11 8v6h2V8h-2zM8 1h8v2H8V1z" />
@@ -267,9 +291,11 @@
                       </div>
 
                       <div class="sdsdsd relative">
-                        <x-button spinner="startRoomCleaning({{ $room->id }})"
-                          wire:click="startRoomCleaning({{ $room->id }})" lg dark class="font-semibold mt-1"
-                          label="START" />
+                        @if ($loop->first)
+                          <x-button spinner="startRoomCleaning({{ $room->id }})"
+                            wire:click="startRoomCleaning({{ $room->id }})" lg dark class="font-semibold mt-1"
+                            label="START" />
+                        @endif
                       </div>
                     </div>
                     <div class="div">
@@ -394,12 +420,7 @@
                     </div>
                   </div>
                 @endif
-              @empty
-                <div class="col-span-2 flex flex-col   justify-center items-center h-64 w-full">
-                  <x-svg.no-result class="h-32" />
-                  <h1>No Rooms to clean...</h1>
-                </div>
-              @endforelse
+              @endforeach
             @endif
           </div>
 

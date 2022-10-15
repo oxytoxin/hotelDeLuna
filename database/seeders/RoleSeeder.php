@@ -27,11 +27,11 @@ class RoleSeeder extends Seeder
             'name' => 'Kitchen', //4
         ]);
         Role::create([
-            'name' => 'Room Boy',  //5
+            'name' => 'Room Boy', //5
         ]);
-        Role::create([
-            'name' => 'House Keeping', //6
-        ]);
+        // Role::create([
+        //     'name' => 'House Keeping', //6
+        // ]);
         Role::create([
             'name' => 'Super Admin', //7
         ]);

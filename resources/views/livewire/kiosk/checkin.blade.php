@@ -429,7 +429,7 @@
             </div>
         </div>
     </div> --}}
-
+    
     <div class="font-rubik" x-data="{ confirm: @entangle('confirmModal'), manage: @entangle('manageRoomPanel') }">
       @switch($step)
         @case(1)

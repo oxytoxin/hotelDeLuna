@@ -16,7 +16,7 @@ class SuperAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->role_id != 7) {
+        if (auth()->user()->role_id != 6) {
             return redirect()->back();
         }
         return $next($request);
