@@ -15,11 +15,11 @@
         </p>
     </dt>
     <dd class="flex items-baseline pb-6 ml-16 sm:pb-7">
-        <p class="text-2xl font-semibold text-gray-900">
+        <p class="text-lg font-semibold text-gray-900">
             {{ $value ?? '0' }}
         </p>
-        <div class="absolute inset-x-0 bottom-0 px-4 py-4 bg-gray-50 sm:px-6">
-            <div class="text-sm">
+        <div class="absolute inset-x-0 bottom-0 px-2 py-2 bg-gray-50 sm:px-2">
+            <div class="text-xs">
                 {{ $actions ?? '' }}
             </div>
         </div>

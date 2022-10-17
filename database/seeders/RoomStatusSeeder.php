@@ -38,5 +38,8 @@ class RoomStatusSeeder extends Seeder
         RoomStatus::create([
             'name' => 'Cleaning',  //8
         ]);
+        RoomStatus::create([
+            'name' => 'Cleaned',  //9
+        ]);
     }
 }
