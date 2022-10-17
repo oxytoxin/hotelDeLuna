@@ -1,11 +1,11 @@
 <div>
-    <dl class="grid grid-cols-1 gap-5 mt-5 sm:grid-cols-2 lg:grid-cols-3">
+    {{-- <dl class="grid grid-cols-1 gap-5 mt-5 sm:grid-cols-4 lg:grid-cols-5">
         <x-stat-card title="Total Check In"
             value="{{ $data['total_check_in_overall_count'] }}">
             <x-slot:icon>
                 <svg xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    class="w-6 h-6 fill-white">
+                    class="w-3 h-3 fill-white">
                     <path fill="none"
                         d="M0 0h24v24H0z" />
                     <path
@@ -35,7 +35,7 @@
             <x-slot:icon>
                 <svg xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    class="w-6 h-6 fill-white">
+                    class="w-3 h-3 fill-white">
                     <path fill="none"
                         d="M0 0h24v24H0z" />
                     <path
@@ -65,7 +65,7 @@
             <x-slot:icon>
                 <svg xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    class="w-6 h-6 fill-white">
+                    class="w-3 h-3 fill-white">
                     <path fill="none"
                         d="M0 0h24v24H0z" />
                     <path
@@ -95,7 +95,7 @@
             <x-slot:icon>
                 <svg xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    class="w-6 h-6 fill-white">
+                    class="w-3 h-3 fill-white">
                     <path fill="none"
                         d="M0 0h24v24H0z" />
                     <path
@@ -125,7 +125,7 @@
             <x-slot:icon>
                 <svg xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    class="w-6 h-6 fill-white">
+                    class="w-3 h-3 fill-white">
                     <path fill="none"
                         d="M0 0h24v24H0z" />
                     <path
@@ -150,5 +150,40 @@
                 </a>
             </x-slot:actions>
         </x-stat-card>
-    </dl>
+    </dl> --}}
+    <div>
+        <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+            <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
+                <dt class="text-sm font-medium text-gray-500 truncate">Total Check In</dt>
+                <dd class="mt-1 text-xl font-semibold tracking-tight text-gray-900">
+                    {{ $data['total_check_in_overall_count'] }}
+                </dd>
+            </div>
+            <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
+                <dt class="text-sm font-medium text-gray-500 truncate">
+                    Check In Today
+                </dt>
+                <dd class="mt-1 text-xl font-semibold tracking-tight text-gray-900">
+                    {{ $data['total_check_in_today_count'] }}
+                </dd>
+            </div>
+            <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
+                <dt class="text-sm font-medium text-gray-500 truncate">
+                    Checked Out Today
+                </dt>
+                <dd class="mt-1 text-xl font-semibold tracking-tight text-gray-900">
+                    {{ $data['total_check_out_today_count'] }}
+                </dd>
+            </div>
+            <div class="px-4 py-5 overflow-hidden bg-white rounded-lg shadow sm:p-6">
+                <dt class="text-sm font-medium text-gray-500 truncate">
+                    Available Room
+                </dt>
+                <dd class="mt-1 text-xl font-semibold tracking-tight text-gray-900">
+                    {{ $available_rooms }}
+                </dd>
+            </div>
+
+        </dl>
+    </div>
 </div>

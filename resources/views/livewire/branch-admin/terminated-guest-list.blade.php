@@ -1,4 +1,4 @@
-<div class="overflow-hidden bg-white border border-gray-300 shadow sm:rounded-lg ">
+<div class="overflow-hidden bg-white shadow sm:rounded-lg ">
     <div class="px-5 py-3 border-b">
         <h1 class="text-lg text-gray-700">Terminated Guest List</h1>
     </div>
