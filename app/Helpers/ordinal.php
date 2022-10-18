@@ -67,13 +67,8 @@ function room_boy()
     return 5;
 }
 
-function house_keeping()
-{
-    return 6;
-}
-
 function super_admin()
 {
-    return 7;
+    return 6;
 }
 

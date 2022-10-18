@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="h-full bg-gray-100"
+<html class="h-screen bg-gray-50"
     lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
@@ -34,7 +34,7 @@
 
 </head>
 
-<body class="h-full antialiased font-inter">
+<body class="h-screen antialiased font-inter">
     @yield('content')
     <x-notifications z-index="z-50" />
     <x-dialog z-index="z-50"

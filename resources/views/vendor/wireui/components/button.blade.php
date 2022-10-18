@@ -1,13 +1,13 @@
 @php
-$tag = $href ? 'a' : 'button';
-
-$defaultAttributes = [
-    'wire:loading.attr' => 'disabled',
-    'wire:loading.class' => '!cursor-wait',
-    'wire:target' => $spinner && strlen($spinner) > 1 ? $spinner : null,
-];
-
-$href === null ? ($defaultAttributes['type'] = 'button') : ($defaultAttributes['href'] = $href);
+    $tag = $href ? 'a' : 'button';
+    
+    $defaultAttributes = [
+        'wire:loading.attr' => 'disabled',
+        'wire:loading.class' => '!cursor-wait',
+        'wire:target' => $spinner && strlen($spinner) > 1 ? $spinner : null,
+    ];
+    
+    $href === null ? ($defaultAttributes['type'] = 'button') : ($defaultAttributes['href'] = $href);
 @endphp
 
 <{{ $tag }} {{ $attributes->class(['!rounded-lg'])->merge($defaultAttributes) }}>

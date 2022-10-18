@@ -1,36 +1,9 @@
 <div class="flex items-center space-x-3">
-    {{-- <button
-        class="relative text-primary-600 hover:text-primary-700 before:absolute before:h-3 before:w-3 before:rounded-full before:bg-red-600 before:right-0 before:top-0 before:z-40">
-        <svg xmlns="http://www.w3.org/2000/svg"
-            class=" h-7"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2">
-            <path stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-        </svg>
-    </button>
-    <button
-        class="relative text-primary-600 hover:text-primary-700 before:absolute before:h-3 before:w-3 before:rounded-full before:bg-red-600 before:right-0 before:top-0 before:z-40">
-        <svg xmlns="http://www.w3.org/2000/svg"
-            class="w-7 h-7"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2">
-            <path stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
-        </svg>
-    </button> --}}
     @admin()
-        <a href="{{ route('branch.manage-settings') }}"
-            type="button"
-            class="text-primary-600 hover:text-primary-700">
+        <x-button href="{{ route('branch.manage-settings') }}"
+            sm>
             <svg xmlns="http://www.w3.org/2000/svg"
-                class="h-7 w-7"
+                class="w-5 h-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -42,26 +15,14 @@
                     stroke-linejoin="round"
                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-        </a>
+        </x-button>
     @endadmin
-    <button class="text-primary-600 hover:text-primary-700">
-        <svg xmlns="http://www.w3.org/2000/svg"
-            class="w-7 h-7"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2">
-            <path stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-    </button>
     <div x-data="{ logout: false }"
         class="flex items-center">
-        <button x-on:click="logout=true"
-            class="text-primary-600 hover:text-primary-700">
+        <x-button x-on:click="logout=true"
+            sm>
             <svg xmlns="http://www.w3.org/2000/svg"
-                class="w-7 h-7"
+                class="w-5 h-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -70,7 +31,7 @@
                     stroke-linejoin="round"
                     d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
-        </button>
+        </x-button>
         <div x-cloak
             x-show="logout"
             class="relative z-50"
@@ -143,4 +104,7 @@
             </div>
         </div>
     </div>
+    <x-button primary>
+        {{ auth()->user()->name }}
+    </x-button>
 </div>

@@ -30,9 +30,10 @@
             </div>
             <x-slot:footer>
                 <div class="flex items-center space-x-3">
-                    <x-button wire:click="clearForm"
+                    <x-button negative
+                        wire:click="clearForm"
                         spinner="clearForm">Clear Form</x-button>
-                    <x-button primary
+                    <x-button emerald
                         wire:click="saveRecord"
                         spinner="saveRecord">Save Record</x-button>
                 </div>
@@ -106,30 +107,30 @@
                         <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                             <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
                                 <table class="min-w-full divide-y divide-gray-300">
-                                    <thead class="bg-gray-50">
+                                    <thead class="bg-primary-600">
                                         <tr>
                                             <th scope="col"
-                                                class="py-3 pl-4 pr-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase sm:pl-6">
+                                                class="py-3 pl-4 pr-3 text-xs font-medium tracking-wide text-left text-white uppercase sm:pl-6">
                                                 Amenities
                                             </th>
                                             <th scope="col"
-                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
                                                 Quantity
                                             </th>
                                             <th scope="col"
-                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
                                                 Amount
                                             </th>
                                             <th scope="col"
-                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
                                                 Additional Amount
                                             </th>
                                             <th scope="col"
-                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
                                                 Total Amount
                                             </th>
                                             <th scope="col"
-                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
                                                 Date Time
                                             </th>
                                         </tr>

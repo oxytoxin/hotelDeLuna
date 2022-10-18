@@ -20,8 +20,9 @@
                     </form>
                     <x-slot:footer>
                         <div class="flex items-center space-x-3">
-                            <x-button label="Clear" />
-                            <x-button primary
+                            <x-button negative
+                                label="Clear" />
+                            <x-button emerald
                                 wire:click="save"
                                 spinner="save"
                                 label="Save" />
@@ -56,18 +57,18 @@
                             <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                                 <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
                                     <table class="min-w-full divide-y divide-gray-300">
-                                        <thead class="bg-gray-50">
+                                        <thead class="bg-primary-600">
                                             <tr>
                                                 <th scope="col"
-                                                    class="py-3 pl-4 pr-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase sm:pl-6">
+                                                    class="py-3 pl-4 pr-3 text-xs font-medium tracking-wide text-left text-white uppercase sm:pl-6">
                                                     Details
                                                 </th>
                                                 <th scope="col"
-                                                    class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                    class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
                                                     Amount
                                                 </th>
                                                 <th scope="col"
-                                                    class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                    class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
                                                     Date
                                                 </th>
                                             </tr>

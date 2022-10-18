@@ -28,76 +28,16 @@
             </form>
             <x-slot:footer>
                 <div class="flex items-center space-x-3">
-                    <x-button wire:click="clear_form">Clear Form</x-button>
+                    <x-button negative
+                        wire:click="clear_form">Clear Form</x-button>
                     <x-button wire:click="save"
                         spinner="save"
-                        primary>Save</x-button>
+                        emerald>Save</x-button>
                 </div>
             </x-slot:footer>
         </x-card>
     </div>
     <div class="sm:col-span-2">
-        {{-- <div class="grid gap-1">
-            <div class="flex items-center justify-between">
-                <h1 class="text-center text-gray-600">
-                    Record List
-                </h1>
-                <div class="flex space-x-3">
-                    <button wire:click="toogleDamagesOrderBy"
-                        type="button"
-                        class="flex items-center space-x-2 text-gray-600">
-                        <span>{{ $damagesOrderBy == 'ASC' ? 'Oldest' : 'Newest' }}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="w-5 h-5">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div wire:key="history-list"
-                x-animate>
-                @forelse ($damages as $damage)
-                    <div wire:key="{{ $damage->id }}"
-                        class="p-2 mb-2 bg-white border rounded-lg">
-                        <div class="flex justify-between w-full text-sm text-gray-600">
-                            <div class="flex items-center space-x-2 ">
-                                <h1>
-                                    {{ $damage->hotel_item->name }}
-                                </h1>
-                                <span>|</span>
-                                <h1>
-                                    ₱ {{ $damage->amount }}
-                                    {{ $damage->additional_amount ? ' + ₱ ' . $damage->additional_amount : '' }}
-                                </h1>
-                            </div>
-                            <div>
-                                <h1>
-                                    Total : ₱ {{ $damage->amount + $damage->additional_amount }}
-                                </h1>
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    <div wire:key="empty"
-                        class="p-2 mb-2 bg-white border rounded-lg">
-                        <div class="flex justify-between w-full">
-                            <div class="flex items-center space-x-2 text-gray-600">
-                                <h1>
-                                    No records found
-                                </h1>
-                            </div>
-                        </div>
-                    </div>
-                @endforelse
-            </div>
-
-        </div> --}}
         <x-card title="Damages Record">
             <div>
                 <div class="flex flex-col ">
@@ -105,26 +45,26 @@
                         <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                             <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
                                 <table class="min-w-full divide-y divide-gray-300">
-                                    <thead class="bg-gray-50">
+                                    <thead class="bg-primary-600">
                                         <tr>
                                             <th scope="col"
-                                                class="py-3 pl-4 pr-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase sm:pl-6">
+                                                class="py-3 pl-4 pr-3 text-xs font-medium tracking-wide text-left text-white uppercase sm:pl-6">
                                                 Item
                                             </th>
                                             <th scope="col"
-                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
                                                 Amount
                                             </th>
                                             <th scope="col"
-                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
                                                 Additional Charge
                                             </th>
                                             <th scope="col"
-                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
                                                 Total
                                             </th>
                                             <th scope="col"
-                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
                                                 Date Time
                                             </th>
                                         </tr>
