@@ -75,7 +75,7 @@
 
                             <button type="button"
                                 wire:click="$set('action','extend-hours')"
-                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white rounded-r-lg hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
+                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
                                 <span>Extend</span>
                                 <span aria-hidden="true"
                                     @class([
@@ -85,7 +85,7 @@
                             </button>
                             <button type="button"
                                 wire:click="$set('action','add-damages')"
-                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white rounded-r-lg hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
+                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
                                 <span> Damage Charges</span>
                                 <span aria-hidden="true"
                                     @class([
@@ -95,7 +95,7 @@
                             </button>
                             <button type="button"
                                 wire:click="$set('action','item-request')"
-                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white rounded-r-lg hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
+                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
                                 <span>Amenities</span>
                                 <span aria-hidden="true"
                                     @class([

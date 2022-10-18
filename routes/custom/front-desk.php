@@ -29,4 +29,8 @@ Route::prefix('frontdesk')->middleware([
     Route::get('/room-monitoring', function () {
         return view('front-desk.room-monitoring');
     })->name('front-desk.room-monitoring');
+
+    Route::get('/priority-rooms', function () {
+        return view('front-desk.priority-room');
+    })->name('front-desk.priority-room');
 });

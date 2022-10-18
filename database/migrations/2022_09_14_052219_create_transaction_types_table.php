@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('transaction_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('position');
             $table->timestamps();
         });
     }

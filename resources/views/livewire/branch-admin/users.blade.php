@@ -13,7 +13,7 @@
                 </x-native-select>
             </x-slot:topLeft>
             <x-slot:topRight>
-                <x-button primary
+                <x-button emerald
                     wire:click="add"
                     label="Add User" />
             </x-slot:topRight>

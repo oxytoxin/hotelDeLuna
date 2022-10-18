@@ -1,4 +1,5 @@
 <div class="space-y-5">
+
     <div wire:key="{{ $guest->id }}-guest-information">
         <x-card title="Guest Information">
             <div>

@@ -42,7 +42,7 @@ class RoomMonitoring extends Component
                         return $query->where('check_out_at', null);
                     },
                 ])
-                ->paginate(10),
+                ->paginate(20),
         ]);
     }
 }

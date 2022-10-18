@@ -9,7 +9,7 @@
             <x-slot:topRight>
                 <x-button label="Add Discount"
                     wire:click="add"
-                    primary />
+                    emerald />
             </x-slot:topRight>
             @forelse ($discounts as $discount)
                 <x-table-row>

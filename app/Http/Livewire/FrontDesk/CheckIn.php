@@ -248,7 +248,7 @@ class CheckIn extends Component
             return  Guest::query()
                 ->where('terminated_at', null)
                 ->where('is_checked_in', false)
-                ->paginate(10);
+                ->paginate(9);
         }
     }
     public function render()
@@ -277,7 +277,7 @@ class CheckIn extends Component
                     }
                 })
                 ->where('branch_id', auth()->user()->branch->id)
-                ->paginate(10),
+                ->paginate(9),
             'transactions' => $this->showModal != false ?
                 $this->guest->transactions()
                 ->with(['transaction_type', 'check_in_detail.room'])

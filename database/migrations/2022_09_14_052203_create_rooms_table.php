@@ -22,7 +22,7 @@ return new class extends Migration
             $table->dateTime('time_to_clean')->nullable();
             $table->unsignedBigInteger('type_id');
             $table->dateTime('time_to_terminate_in_queue')->nullable();
-            $table->boolean('priority')->default(true);
+            $table->boolean('priority')->default(false);
             $table->timestamps();
         });
     }

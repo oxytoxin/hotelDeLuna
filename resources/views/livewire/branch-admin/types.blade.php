@@ -4,7 +4,7 @@
             <x-slot:topRight>
                 <x-button label="Add Type"
                     wire:click="add"
-                    primary />
+                    emerald />
             </x-slot:topRight>
             @forelse ($types as $type)
                 <x-table-row>

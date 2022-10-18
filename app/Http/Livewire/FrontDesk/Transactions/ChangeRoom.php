@@ -264,7 +264,7 @@ class ChangeRoom extends Component
     }
     public function mount()
     {
-        $this->room_statuses = RoomStatus::whereIn('id', [ 5, 7])->get();
+        $this->room_statuses = RoomStatus::whereIn('id', [ 7,9])->get();
         $this->authorization_code ='';
         $this->check_in_detail = CheckInDetail::find($this->check_in_detail_id);
         $this->current_room = $this->check_in_detail->room;
