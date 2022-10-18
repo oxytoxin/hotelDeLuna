@@ -60,5 +60,11 @@ class AccountSeeder extends Seeder
             'email' => 'superadmin@gmail.com',
             'password' => bcrypt('password'),
         ]);
+        User::create([
+            'role_id' => 7,
+            'name' => 'Back-Office',
+            'email' => 'back_office@gmail.com',
+            'password' => bcrypt('password'),
+        ]);
     }
 }

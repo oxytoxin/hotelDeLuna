@@ -137,7 +137,7 @@
             @if (\App\Models\Designation::where('room_boy_id', auth()->user()->room_boy->id)->exists() == false)
               <div
                 class="absolute top-0 left-0 w-full h-full bg-gray-50 bg-opacity-90 flex justify-center items-center">
-                <div class="flex items-center space-x-1 animate-pulse">
+                <div class="flex flex-col justify-center items-center animate-pulse">
                   <svg class="w-7 h-7 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"
                     fill="currentColor">
                     <defs></defs>
@@ -151,7 +151,7 @@
                     <rect id="_Transparent_Rectangle_" data-name="<Transparent Rectangle>" class="cls-1" width="32"
                       height="32" style="fill:none"></rect>
                   </svg>
-                  <h1 class="text-red-500 font-bold text-xl">Please assign it to its designated floor.</h1>
+                  <h1 class="text-red-500 font-bold text-center text-xl">Please assign it to its designated floor.</h1>
                 </div>
               </div>
             @endif
@@ -209,7 +209,7 @@
                       $timeToClean = new Carbon\Carbon(auth()->user()->room_boy->room->time_to_clean);
                       // dd(auth()->user()->room_boy->room->updated_at == null);
                     @endphp
-                    <div class=" text-sm">
+                    <div wire:key="cleaingtime" class=" text-sm">
                       @if (!$cleaningTime->isPast())
                         <x-countdown :expires="$cleaningTime">
                           <div class="font-semibold text-red-800">
@@ -247,7 +247,7 @@
                   </h3>
                 </div>
 
-                <div class="mt-3">
+                <div wire:key="timeToclean" class="mt-3">
                   @if (!$timeToClean->isPast())
                     <x-countdown :expires="$timeToClean">
                       <span class="font-semibold text-green-800" x-text="timer.days">{{ $component->days() }}</span>

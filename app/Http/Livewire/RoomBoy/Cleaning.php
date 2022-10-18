@@ -35,13 +35,13 @@ class Cleaning extends Component
         $query = Room::where('id', $room_id)->first();
         if ($query->room_status_id == 8) {
             $this->dialog()->error(
-                $title = 'Cleaning Room',
+                $title = 'Sorry',
                 $description = 'This room is already in cleaning process.'
             );
         } else {
             if (auth()->user()->room_boy->is_cleaning) {
-                $this->notification()->error(
-                    $title = 'Cleaning Room',
+                $this->dialog()->error(
+                    $title = 'Sorry',
                     $description =
                         'You are not able to clean this room. please make sure you dont have pending unclean room.'
                 );
@@ -68,7 +68,7 @@ class Cleaning extends Component
         $room = Room::where('id', $room_id)->first();
         if ($room->room_status_id == 8) {
             $this->dialog()->error(
-                $title = 'Cleaning Room',
+                $title = 'Sorry',
                 $description = 'This room is already in cleaning process.'
             );
             return;
@@ -122,8 +122,9 @@ class Cleaning extends Component
         }
         $delayed = $room->time_to_clean < Carbon::now();
         $room->update([
-            'room_status_id' => 1,
+            'room_status_id' => 9,
             'time_to_clean' => null,
+            'priority' => false,
         ]);
         $cleaning = CleaningModel::where('room_id', $room_id)
             ->where('finish_at', null)

@@ -73,5 +73,6 @@ class Kernel extends HttpKernel
         'kitchen' => \App\Http\Middleware\Kitchen::class,
         'kiosk' => \App\Http\Middleware\Kiosk::class,
         'super_admin' => \App\Http\Middleware\SuperAdmin::class,
+        'back_office' => \App\Http\Middleware\BackOffice::class,
     ];
 }
