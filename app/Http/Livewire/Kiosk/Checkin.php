@@ -65,7 +65,7 @@ class Checkin extends Component
                 ->whereHas('floor', function ($query) {
                     $query->where('branch_id', auth()->user()->branch_id);
                 })
-                ->orderBy('updated_at', 'DESC')
+                ->orderBy('number', 'asc')
                 ->with(['floor'])
                 ->take(10)
                 ->get(),

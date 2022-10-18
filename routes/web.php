@@ -49,6 +49,9 @@ Route::middleware([
             case '6':
                 return redirect()->route('superadmin.dashboard');
                 break;
+            case '7':
+                return redirect()->route('office.dashboard');
+                break;
             default:
                 // code...
                 break;
@@ -127,5 +130,19 @@ Route::middleware([
             Route::get('/settings', function () {
                 return view('superadmin.settings');
             })->name('superadmin.settings');
+        });
+
+    //BACKOFFICE
+    Route::prefix('/back-office')
+        ->middleware([
+            'auth:sanctum',
+            config('jetstream.auth_session'),
+            'verified',
+            'back_office',
+        ])
+        ->group(function () {
+            Route::get('/', function () {
+                return view('back-office.dashboard');
+            })->name('office.dashboard');
         });
 });
