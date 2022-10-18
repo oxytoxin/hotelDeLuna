@@ -214,7 +214,7 @@
                         APP_NAME
                     </h1>
                 </div>
-                <nav class="flex-1 px-2 pt-5 mt-5 space-y-1 bg-white border-t">
+                <nav class="flex-1 pt-5 mt-5 space-y-1 bg-white border-t">
                     <a href="{{ route('front-desk.dashboard') }}"
                         @class([
                             'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
@@ -327,6 +327,28 @@
                         </svg>
 
                         Room Monitoring
+                    </a>
+                    <a href="{{ route('front-desk.priority-room') }}"
+                        @class([
+                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
+                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
+                                'frontdesk/priority-rooms*'
+                            ),
+                            'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
+                                'frontdesk/priority-rooms*'
+                            ),
+                        ])>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="flex-shrink-0 w-4 h-4 mr-3 ">
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Priority Room
                     </a>
                 </nav>
             </div>

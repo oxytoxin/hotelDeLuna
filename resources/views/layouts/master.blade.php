@@ -40,6 +40,7 @@
     <x-dialog z-index="z-50"
         blur="sm"
         align="center" />
+
     @livewireScripts
 </body>
 

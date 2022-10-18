@@ -21,8 +21,10 @@
             <x-slot:topRight>
                 <div class="flex items-center space-x-3">
                     <x-button wire:click="$set('manageFloorModal',true)"
-                        label="Manage Floor" />
-                    <x-button primary
+                        label="Manage Floor"
+                        emerald
+                        outline />
+                    <x-button emerald
                         wire:click="add"
                         label="Add Room" />
                 </div>

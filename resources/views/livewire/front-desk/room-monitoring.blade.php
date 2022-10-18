@@ -153,9 +153,6 @@
                                             </td>
                                             <td
                                                 class="relative py-3 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
-                                                {{-- <x-button wire:key="{{ $room->id }}"
-                                                    x-on:click="alert('This feature is not yet available')"
-                                                    sm>Option</x-button> --}}
                                             </td>
                                         </tr>
                                     @empty

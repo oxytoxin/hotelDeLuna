@@ -207,155 +207,131 @@
     <!-- Static sidebar for desktop -->
     <div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
         <div class="flex flex-col flex-1 min-h-0 bg-white shadow-md">
-            <div class="pt-5 pb-4 overflow-y-auto ">
+            <div class="pt-5 pb-4 pl-3 overflow-y-auto ">
                 <div class="flex items-center justify-center flex-shrink-0 px-4">
                     <h1 class="text-center text-gray-600">
                         APP_NAME
                     </h1>
                 </div>
-                <nav class="flex-1 pt-2 mt-2 bg-white border-t">
+                <nav class="flex-1 pt-2 mt-2 bg-white">
                     <a href="{{ route('branch.dashboard') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
-                                'branch/dashboard*'
-                            ),
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is('branch/dashboard*'),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
                                 'branch/dashboard*'
                             ),
                         ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
+                            fill="currentColor"
                             class="flex-shrink-0 w-4 h-4 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                            <path
+                                d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
+                            <path
+                                d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
                         </svg>
                         Dashboard
                     </a>
                     <a href="{{ route('branch.guests') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
-                                'branch/guests*'
-                            ),
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is('branch/guests*'),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
                                 'branch/guests*'
                             ),
                         ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
+                            fill="currentColor"
                             class="flex-shrink-0 w-4 h-4 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+                            <path fill-rule="evenodd"
+                                d="M8.25 6.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM15.75 9.75a3 3 0 116 0 3 3 0 01-6 0zM2.25 9.75a3 3 0 116 0 3 3 0 01-6 0zM6.31 15.117A6.745 6.745 0 0112 12a6.745 6.745 0 016.709 7.498.75.75 0 01-.372.568A12.696 12.696 0 0112 21.75c-2.305 0-4.47-.612-6.337-1.684a.75.75 0 01-.372-.568 6.787 6.787 0 011.019-4.38z"
+                                clip-rule="evenodd" />
+                            <path
+                                d="M5.082 14.254a8.287 8.287 0 00-1.308 5.135 9.687 9.687 0 01-1.764-.44l-.115-.04a.563.563 0 01-.373-.487l-.01-.121a3.75 3.75 0 013.57-4.047zM20.226 19.389a8.287 8.287 0 00-1.308-5.135 3.75 3.75 0 013.57 4.047l-.01.121a.563.563 0 01-.373.486l-.115.04c-.567.2-1.156.349-1.764.441z" />
                         </svg>
                         Guests
                     </a>
                 </nav>
-                <nav class="flex-1 pt-2 mt-2 bg-white border-t">
-                    <div class="flex items-center justify-between w-full p-2 text-sm font-semibold text-gray-800">
-                        <h1> Manage</h1>
-                    </div>
+                <nav class="flex-1 pt-2 mt-2 bg-white">
                     <a href="{{ route('branch.manage-types') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
-                                'branch/manage-types*'
-                            ),
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is('branch/manage-types*'),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
                                 'branch/manage-types*'
                             ),
                         ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
+                            fill="currentColor"
                             class="flex-shrink-0 w-4 h-4 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
+                            <path
+                                d="M5.625 3.75a2.625 2.625 0 100 5.25h12.75a2.625 2.625 0 000-5.25H5.625zM3.75 11.25a.75.75 0 000 1.5h16.5a.75.75 0 000-1.5H3.75zM3 15.75a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75zM3.75 18.75a.75.75 0 000 1.5h16.5a.75.75 0 000-1.5H3.75z" />
                         </svg>
                         Types
                     </a>
                     <a href="{{ route('branch.manage-rates') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
-                                'branch/manage-rates*'
-                            ),
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is('branch/manage-rates*'),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
                                 'branch/manage-rates*'
                             ),
                         ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
+                            fill="currentColor"
                             class="flex-shrink-0 w-4 h-4 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+                            <path d="M12 7.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" />
+                            <path fill-rule="evenodd"
+                                d="M1.5 4.875C1.5 3.839 2.34 3 3.375 3h17.25c1.035 0 1.875.84 1.875 1.875v9.75c0 1.036-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 011.5 14.625v-9.75zM8.25 9.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM18.75 9a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75V9.75a.75.75 0 00-.75-.75h-.008zM4.5 9.75A.75.75 0 015.25 9h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H5.25a.75.75 0 01-.75-.75V9.75z"
+                                clip-rule="evenodd" />
+                            <path
+                                d="M2.25 18a.75.75 0 000 1.5c5.4 0 10.63.722 15.6 2.075 1.19.324 2.4-.558 2.4-1.82V18.75a.75.75 0 00-.75-.75H2.25z" />
                         </svg>
                         Rates
                     </a>
                     <a href="{{ route('branch.manage-rooms') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
-                                'branch/manage-rooms*'
-                            ),
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is('branch/manage-rooms*'),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
                                 'branch/manage-rooms*'
                             ),
                         ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
+                            fill="currentColor"
                             class="flex-shrink-0 w-4 h-4 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
+                            <path fill-rule="evenodd"
+                                d="M15.75 1.5a6.75 6.75 0 00-6.651 7.906c.067.39-.032.717-.221.906l-6.5 6.499a3 3 0 00-.878 2.121v2.818c0 .414.336.75.75.75H6a.75.75 0 00.75-.75v-1.5h1.5A.75.75 0 009 19.5V18h1.5a.75.75 0 00.53-.22l2.658-2.658c.19-.189.517-.288.906-.22A6.75 6.75 0 1015.75 1.5zm0 3a.75.75 0 000 1.5A2.25 2.25 0 0118 8.25a.75.75 0 001.5 0 3.75 3.75 0 00-3.75-3.75z"
+                                clip-rule="evenodd" />
                         </svg>
-
                         Rooms
                     </a>
                     <a href="{{ route('branch.manage-users') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
-                                'branch/manage-users*'
-                            ),
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is('branch/manage-users*'),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
                                 'branch/manage-users*'
                             ),
                         ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
+                            fill="currentColor"
                             class="flex-shrink-0 w-4 h-4 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                            <path
+                                d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 005.06-1.01.75.75 0 00.42-.643 4.875 4.875 0 00-6.957-4.611 8.586 8.586 0 011.71 5.157v.003z" />
                         </svg>
                         Users
                     </a>
                     <a href="{{ route('branch.discounts') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is(
                                 'branch/manage-branch-discounts*'
                             ),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
@@ -363,21 +339,19 @@
                             ),
                         ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
+                            fill="currentColor"
                             class="flex-shrink-0 w-4 h-4 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
+                            <path fill-rule="evenodd"
+                                d="M1.5 6.375c0-1.036.84-1.875 1.875-1.875h17.25c1.035 0 1.875.84 1.875 1.875v3.026a.75.75 0 01-.375.65 2.249 2.249 0 000 3.898.75.75 0 01.375.65v3.026c0 1.035-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 011.5 17.625v-3.026a.75.75 0 01.374-.65 2.249 2.249 0 000-3.898.75.75 0 01-.374-.65V6.375zm15-1.125a.75.75 0 01.75.75v.75a.75.75 0 01-1.5 0V6a.75.75 0 01.75-.75zm.75 4.5a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75zm-.75 3a.75.75 0 01.75.75v.75a.75.75 0 01-1.5 0v-.75a.75.75 0 01.75-.75zm.75 4.5a.75.75 0 00-1.5 0V18a.75.75 0 001.5 0v-.75zM6 12a.75.75 0 01.75-.75H12a.75.75 0 010 1.5H6.75A.75.75 0 016 12zm.75 2.25a.75.75 0 000 1.5h3a.75.75 0 000-1.5h-3z"
+                                clip-rule="evenodd" />
                         </svg>
                         Discounts
                     </a>
                     <a href="{{ route('branch.extension-amounts') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is(
                                 'branch/extension-amounts*'
                             ),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
@@ -385,21 +359,19 @@
                             ),
                         ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
+                            fill="currentColor"
                             class="flex-shrink-0 w-4 h-4 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <path fill-rule="evenodd"
+                                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z"
+                                clip-rule="evenodd" />
                         </svg>
                         Extenstion Amounts
                     </a>
                     <a href="{{ route('branch.charges-on-stain-and-damages') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is(
                                 'branch/charges-on-stain-and-damages*'
                             ),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
@@ -407,21 +379,20 @@
                             ),
                         ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
+                            fill="currentColor"
                             class="flex-shrink-0 w-4 h-4 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                            <path d="M4.5 3.75a3 3 0 00-3 3v.75h21v-.75a3 3 0 00-3-3h-15z" />
+                            <path fill-rule="evenodd"
+                                d="M22.5 9.75h-21v7.5a3 3 0 003 3h15a3 3 0 003-3v-7.5zm-18 3.75a.75.75 0 01.75-.75h6a.75.75 0 010 1.5h-6a.75.75 0 01-.75-.75zm.75 2.25a.75.75 0 000 1.5h3a.75.75 0 000-1.5h-3z"
+                                clip-rule="evenodd" />
                         </svg>
                         Additional Charges
                     </a>
                     <a href="{{ route('branch.manage-requestable-items') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is(
                                 'branch/manage-requestable-items*'
                             ),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
@@ -429,71 +400,68 @@
                             ),
                         ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
+                            fill="currentColor"
                             class="flex-shrink-0 w-4 h-4 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                            <path
+                                d="M11.644 1.59a.75.75 0 01.712 0l9.75 5.25a.75.75 0 010 1.32l-9.75 5.25a.75.75 0 01-.712 0l-9.75-5.25a.75.75 0 010-1.32l9.75-5.25z" />
+                            <path
+                                d="M3.265 10.602l7.668 4.129a2.25 2.25 0 002.134 0l7.668-4.13 1.37.739a.75.75 0 010 1.32l-9.75 5.25a.75.75 0 01-.71 0l-9.75-5.25a.75.75 0 010-1.32l1.37-.738z" />
+                            <path
+                                d="M10.933 19.231l-7.668-4.13-1.37.739a.75.75 0 000 1.32l9.75 5.25c.221.12.489.12.71 0l9.75-5.25a.75.75 0 000-1.32l-1.37-.738-7.668 4.13a2.25 2.25 0 01-2.134-.001z" />
                         </svg>
                         Amenities
                     </a>
                 </nav>
-                <nav class="flex-1 pt-2 mt-2 bg-white border-t">
-                    <div class="flex items-center justify-between w-full p-2 text-sm font-semibold text-gray-800">
-                        <h1>Front Desk Actions</h1>
-                    </div>
+                <nav class="flex-1 pt-2 mt-2 bg-white">
+
                     <a href="{{ route('branch.check-in') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
-                                'branch/check-in*'
-                            ),
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is('branch/check-in*'),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
                                 'branch/check-in*'
                             ),
                         ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
+                            fill="currentColor"
                             class="flex-shrink-0 w-4 h-4 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75" />
+                            <path fill-rule="evenodd"
+                                d="M7.502 6h7.128A3.375 3.375 0 0118 9.375v9.375a3 3 0 003-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 00-.673-.05A3 3 0 0015 1.5h-1.5a3 3 0 00-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6zM13.5 3A1.5 1.5 0 0012 4.5h4.5A1.5 1.5 0 0015 3h-1.5z"
+                                clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V9.375zm9.586 4.594a.75.75 0 00-1.172-.938l-2.476 3.096-.908-.907a.75.75 0 00-1.06 1.06l1.5 1.5a.75.75 0 001.116-.062l3-3.75z"
+                                clip-rule="evenodd" />
                         </svg>
                         Check In
                     </a>
                     <a href="{{ route('branch.check-out') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
-                                'branch/check-out*'
-                            ),
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is('branch/check-out*'),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
                                 'branch/check-out*'
                             ),
                         ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
+                            fill="currentColor"
                             class="flex-shrink-0 w-4 h-4 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5A3.375 3.375 0 006.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0015 2.25h-1.5a2.251 2.251 0 00-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 00-9-9z" />
+                            <path fill-rule="evenodd"
+                                d="M17.663 3.118c.225.015.45.032.673.05C19.876 3.298 21 4.604 21 6.109v9.642a3 3 0 01-3 3V16.5c0-5.922-4.576-10.775-10.384-11.217.324-1.132 1.3-2.01 2.548-2.114.224-.019.448-.036.673-.051A3 3 0 0113.5 1.5H15a3 3 0 012.663 1.618zM12 4.5A1.5 1.5 0 0113.5 3H15a1.5 1.5 0 011.5 1.5H12z"
+                                clip-rule="evenodd" />
+                            <path
+                                d="M3 8.625c0-1.036.84-1.875 1.875-1.875h.375A3.75 3.75 0 019 10.5v1.875c0 1.036.84 1.875 1.875 1.875h1.875A3.75 3.75 0 0116.5 18v2.625c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625v-12z" />
+                            <path
+                                d="M10.5 10.5a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963 5.23 5.23 0 00-3.434-1.279h-1.875a.375.375 0 01-.375-.375V10.5z" />
                         </svg>
-
                         Check Out
                     </a>
                     <a href="{{ route('branch.guest-transaction') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is(
                                 'branch/guest-transaction*'
                             ),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
@@ -501,22 +469,22 @@
                             ),
                         ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
+                            fill="currentColor"
                             class="flex-shrink-0 w-4 h-4 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                            <path fill-rule="evenodd"
+                                d="M7.502 6h7.128A3.375 3.375 0 0118 9.375v9.375a3 3 0 003-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 00-.673-.05A3 3 0 0015 1.5h-1.5a3 3 0 00-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6zM13.5 3A1.5 1.5 0 0012 4.5h4.5A1.5 1.5 0 0015 3h-1.5z"
+                                clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V9.375zM6 12a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H6.75a.75.75 0 01-.75-.75V12zm2.25 0a.75.75 0 01.75-.75h3.75a.75.75 0 010 1.5H9a.75.75 0 01-.75-.75zM6 15a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H6.75a.75.75 0 01-.75-.75V15zm2.25 0a.75.75 0 01.75-.75h3.75a.75.75 0 010 1.5H9a.75.75 0 01-.75-.75zM6 18a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H6.75a.75.75 0 01-.75-.75V18zm2.25 0a.75.75 0 01.75-.75h3.75a.75.75 0 010 1.5H9a.75.75 0 01-.75-.75z"
+                                clip-rule="evenodd" />
                         </svg>
-
                         Guest Transaction
                     </a>
                     <a href="{{ route('branch.room-monitoring') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is(
                                 'branch/room-monitoring*'
                             ),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
@@ -524,29 +492,20 @@
                             ),
                         ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
+                            fill="currentColor"
                             class="flex-shrink-0 w-4 h-4 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+                            <path
+                                d="M18.75 12.75h1.5a.75.75 0 000-1.5h-1.5a.75.75 0 000 1.5zM12 6a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5A.75.75 0 0112 6zM12 18a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5A.75.75 0 0112 18zM3.75 6.75h1.5a.75.75 0 100-1.5h-1.5a.75.75 0 000 1.5zM5.25 18.75h-1.5a.75.75 0 010-1.5h1.5a.75.75 0 010 1.5zM3 12a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5A.75.75 0 013 12zM9 3.75a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5zM12.75 12a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0zM9 15.75a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" />
                         </svg>
-
                         Room Monitoring
                     </a>
-
-
                 </nav>
-                <nav class="flex-1 pt-2 mt-2 bg-white border-t">
-                    <div class="flex items-center justify-between w-full p-2 text-sm font-semibold text-gray-800">
-                        <h1>House Keeping</h1>
-                    </div>
+                <nav class="flex-1 pt-2 mt-2 bg-white">
                     <a href="{{ route('branch.room-boy-designations') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is(
                                 'branch/room-boy-designations*'
                             ),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
@@ -554,14 +513,15 @@
                             ),
                         ])>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
+                            fill="currentColor"
                             class="flex-shrink-0 w-4 h-4 mr-3 ">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75" />
+                            <path fill-rule="evenodd"
+                                d="M7.502 6h7.128A3.375 3.375 0 0118 9.375v9.375a3 3 0 003-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 00-.673-.05A3 3 0 0015 1.5h-1.5a3 3 0 00-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6zM13.5 3A1.5 1.5 0 0012 4.5h4.5A1.5 1.5 0 0015 3h-1.5z"
+                                clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V9.375zm9.586 4.594a.75.75 0 00-1.172-.938l-2.476 3.096-.908-.907a.75.75 0 00-1.06 1.06l1.5 1.5a.75.75 0 001.116-.062l3-3.75z"
+                                clip-rule="evenodd" />
                         </svg>
                         Designations
                     </a>

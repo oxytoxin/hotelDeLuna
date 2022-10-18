@@ -10,14 +10,12 @@
             icon="search"
             wire:click="searchByQrCode"
             spinner="searchByQrCode"
+            rightIcon="qrcode"
             primary />
         <x-button label="Room Number"
             icon="search"
             wire:click="searchByRoomNumber"
-            primary />
-        <x-button label="Name"
-            icon="search"
-            wire:click="searchByName"
+            rightIcon="phone"
             primary />
         @if ($guest)
             <x-button negative
@@ -125,27 +123,27 @@
                                     <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                                         <div class="overflow-hidden shadow-md md:rounded-b-lg">
                                             <table class="min-w-full divide-y divide-gray-300">
-                                                <thead class="bg-gray-50">
+                                                <thead class="bg-primary-600">
                                                     <tr>
                                                         <th scope="col"
-                                                            class="py-3 pl-4 pr-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase sm:pl-6">
+                                                            class="py-3 pl-4 pr-3 text-xs font-medium tracking-wide text-left text-white uppercase sm:pl-6">
                                                             Transaction Type
                                                         </th>
                                                         <th scope="col"
-                                                            class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                            class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
                                                             Amount
                                                         </th>
                                                         <th scope="col"
-                                                            class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                            class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
                                                             Paid At
                                                         </th>
 
                                                         <th scope="col"
-                                                            class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                            class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
                                                             Details
                                                         </th>
                                                         <th scope="col"
-                                                            class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase">
+                                                            class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
                                                         </th>
                                                     </tr>
                                                 </thead>
@@ -217,25 +215,25 @@
                                                             </td>
                                                         </tr>
                                                     @endforeach
-                                                    <tr class="bg-gray-50">
+                                                    <tr class="bg-gray-100">
                                                         <td
                                                             class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
                                                             <span class="font-bold text-gray-700">Total</span>
                                                         </td>
 
                                                         <td colspan="4"
-                                                            class="relative py-4 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
+                                                            class="relative py-4 pl-3 pr-4 text-sm font-medium font-extrabold text-right whitespace-nowrap sm:pr-6">
                                                             ₱{{ $transactions->sum('payable_amount') }}
                                                         </td>
                                                     </tr>
-                                                    <tr class="bg-gray-50">
+                                                    <tr class="bg-gray-100">
                                                         <td
                                                             class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
                                                             <span class="font-bold text-gray-700">Balance</span>
                                                         </td>
 
                                                         <td colspan="4"
-                                                            class="relative py-4 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-6">
+                                                            class="relative py-4 pl-3 pr-4 text-sm font-medium font-extrabold text-right whitespace-nowrap sm:pr-6">
                                                             ₱{{ $transactions->where('paid_at', null)->sum('payable_amount') }}
                                                         </td>
                                                     </tr>

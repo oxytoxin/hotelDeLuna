@@ -8,7 +8,7 @@
             </x-slot:topLeft>
             <x-slot:topRight>
                 <div class="flex items-center space-x-3">
-                    <x-button primary
+                    <x-button emerald
                         wire:click="add"
                         label="Add New Item" />
                 </div>

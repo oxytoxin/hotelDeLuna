@@ -62,7 +62,7 @@
                                 <x-input icon="search"
                                     wire:model.defer="search"
                                     placeholder="Search" />
-                                <x-button primary
+                                <x-button emerald
                                     wire:click="searchReal"
                                     spinner="searchReal"
                                     label="Search"
@@ -97,11 +97,11 @@
                                 </thead>
                             @endif
                             <thead id="tableh"
-                                class="bg-gray-50">
+                                class=" bg-primary-600">
                                 <tr>
                                     @foreach ($headers as $header)
                                         <th scope="col"
-                                            class="py-3 pl-4 pr-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase sm:pl-6">
+                                            class="py-3 pl-4 pr-3 text-xs font-medium tracking-wide text-left text-white uppercase sm:pl-6">
                                             {{ $header }}</th>
                                     @endforeach
                                 </tr>
