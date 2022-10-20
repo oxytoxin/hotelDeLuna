@@ -4,10 +4,13 @@ namespace App\Http\Livewire\BackOffice;
 
 use Livewire\Component;
 use App\Models\Transaction;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\OccupiedRoomExport;
+use Carbon\Carbon;
 
 class OccupiedRoom extends Component
 {
-    public $date;
+    public $date = null;
     public $generate_query;
 
     public function render()
@@ -55,5 +58,51 @@ class OccupiedRoom extends Component
             ])
             ->whereDate('created_at', $this->date)
             ->get();
+    }
+
+    public function export($ext)
+    {
+        switch ($ext) {
+            case 'pdf':
+                if ($this->date == null) {
+                    return Excel::download(
+                        new OccupiedRoomExport($this->date),
+                        'occupied-room-' .
+                            Carbon::parse(now())->format('M. d, Y') .
+                            '.' .
+                            $ext,
+                        \Maatwebsite\Excel\Excel::DOMPDF
+                    );
+                } else {
+                    return Excel::download(
+                        new OccupiedRoomExport($this->date),
+                        'occupied-room-' .
+                            Carbon::parse(now())->format('M. d, Y') .
+                            '.' .
+                            $ext
+                    );
+                }
+                break;
+
+            default:
+                if ($this->date == null) {
+                    return Excel::download(
+                        new OccupiedRoomExport($this->date),
+                        'occupied-room-' .
+                            Carbon::parse(now())->format('M. d, Y') .
+                            '.' .
+                            $ext
+                    );
+                } else {
+                    return Excel::download(
+                        new OccupiedRoomExport($this->date),
+                        'occupied-room-' .
+                            Carbon::parse(now())->format('M. d, Y') .
+                            '.' .
+                            $ext
+                    );
+                }
+                break;
+        }
     }
 }
