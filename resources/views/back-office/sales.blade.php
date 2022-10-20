@@ -1,7 +1,7 @@
 <x-back-office-layout>
   <div class="py-6">
     <div class="px-4 sm:px-6 md:px-0">
-      <h1 class="text-2xl font-semibold text-gray-600 uppercase">Dashboard</h1>
+      <h1 class="text-2xl font-semibold text-gray-600 uppercase">Sales</h1>
     </div>
     <div class="px-4 sm:px-6 md:px-0">
       <!-- Replace with your content -->

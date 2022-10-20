@@ -61,6 +61,7 @@ class AccountSeeder extends Seeder
             'password' => bcrypt('password'),
         ]);
         User::create([
+            'branch_id' => 1,
             'role_id' => 7,
             'name' => 'Back-Office',
             'email' => 'back_office@gmail.com',

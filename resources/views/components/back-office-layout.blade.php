@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>{{ config('app.name', 'Laravel') }}</title>
+  <title>HOTEL [hotel_name]</title>
 
   <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
@@ -199,13 +199,13 @@
               d="M480 0C497.7 0 512 14.33 512 32C512 49.67 497.7 64 480 64V448C497.7 448 512 462.3 512 480C512 497.7 497.7 512 480 512H304V448H208V512H32C14.33 512 0 497.7 0 480C0 462.3 14.33 448 32 448V64C14.33 64 0 49.67 0 32C0 14.33 14.33 0 32 0H480zM112 96C103.2 96 96 103.2 96 112V144C96 152.8 103.2 160 112 160H144C152.8 160 160 152.8 160 144V112C160 103.2 152.8 96 144 96H112zM224 144C224 152.8 231.2 160 240 160H272C280.8 160 288 152.8 288 144V112C288 103.2 280.8 96 272 96H240C231.2 96 224 103.2 224 112V144zM368 96C359.2 96 352 103.2 352 112V144C352 152.8 359.2 160 368 160H400C408.8 160 416 152.8 416 144V112C416 103.2 408.8 96 400 96H368zM96 240C96 248.8 103.2 256 112 256H144C152.8 256 160 248.8 160 240V208C160 199.2 152.8 192 144 192H112C103.2 192 96 199.2 96 208V240zM240 192C231.2 192 224 199.2 224 208V240C224 248.8 231.2 256 240 256H272C280.8 256 288 248.8 288 240V208C288 199.2 280.8 192 272 192H240zM352 240C352 248.8 359.2 256 368 256H400C408.8 256 416 248.8 416 240V208C416 199.2 408.8 192 400 192H368C359.2 192 352 199.2 352 208V240zM256 288C211.2 288 173.5 318.7 162.1 360.2C159.7 373.1 170.7 384 184 384H328C341.3 384 352.3 373.1 349 360.2C338.5 318.7 300.8 288 256 288z">
             </path>
           </svg>
-          <span class="text-xl font-semibold text-gray-500 uppercase ml-2">APP_NAME</span>
+          <span class="text-xl font-semibold text-gray-500 uppercase ml-2">{{ app_name() }}</span>
         </div>
         <div class="mt-20 flex flex-grow flex-col">
           <nav class="flex-1 space-y-1 pb-4">
             <!-- Current: "bg-gray-100 text-gray-900", Default: "text-gray-600 hover:bg-gray-50 hover:text-gray-900" -->
-            <a href="#"
-              class="hover:bg-gray-50 hover:text-gray-500 hover:fill-gray-500 fill-gray-400 px-4 text-gray-400 group py-2 flex items-center text-sm
+            <a href="{{ route('office.dashboard') }}"
+              class="{{ request()->routeIs('office.dashboard') ? 'bg-gray-50 before:w-1 before:h-full before:bg-green-500 before:absolute before:right-0 font-semibold text-gray-500' : 'text-gray-400' }} relative hover:bg-gray-50 hover:text-gray-500 hover:fill-gray-500 fill-gray-400 px-4  group py-2 flex items-center text-sm
               ">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="mr-2 flex-shrink-0 h-6 w-6">
                 <path fill="none" d="M0 0H24V24H0z" />
@@ -214,8 +214,8 @@
               </svg>
               Dashboard
             </a>
-            <a href="#"
-              class="hover:bg-gray-50 hover:text-gray-500 hover:fill-gray-500 fill-gray-400 px-4 text-gray-400 group py-2 flex items-center text-sm
+            <a href="{{ route('office.sales') }}"
+              class="{{ request()->routeIs('office.sales') ? 'bg-gray-50 before:w-1 before:h-full before:bg-green-500 before:absolute before:right-0 font-semibold text-gray-500' : 'text-gray-400' }} hover:bg-gray-50  relative hover:text-gray-500 hover:fill-gray-500 fill-gray-400 px-4  group py-2 flex items-center text-sm
               ">
               <svg class="mr-2 flex-shrink-0 h-6 w-6" viewBox="0 0 24 24">
                 <path fill="none" stroke="currentColor" stroke-width="2"
@@ -224,14 +224,9 @@
               </svg>
               Sales
             </a>
-            <a href="#"
-              class="hover:bg-gray-50 hover:text-gray-500 hover:fill-gray-500 fill-gray-400 px-4 text-gray-400 group py-2 flex items-center text-sm
+            <a href="{{ route('office.expenses') }}"
+              class="{{ request()->routeIs('office.expenses') ? 'bg-gray-50 before:w-1 before:h-full before:bg-green-500 before:absolute before:right-0 font-semibold text-gray-500' : 'text-gray-400' }} relative hover:bg-gray-50 hover:text-gray-500 hover:fill-gray-500 fill-gray-400 px-4  group py-2 flex items-center text-sm
               ">
-              {{-- <svg class="mr-2 flex-shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                <path fill="none" stroke="currentColor" stroke-width="2"
-                  d="M16 16c0-1.105-3.134-2-7-2s-7 .895-7 2s3.134 2 7 2s7-.895 7-2zM2 16v4.937C2 22.077 5.134 23 9 23s7-.924 7-2.063V16M9 5c-4.418 0-8 .895-8 2s3.582 2 8 2M1 7v5c0 1.013 3.582 2 8 2M23 4c0-1.105-3.1-2-6.923-2c-3.824 0-6.923.895-6.923 2s3.1 2 6.923 2S23 5.105 23 4zm-7 12c3.824 0 7-.987 7-2V4M9.154 4v10.166M9 9c0 1.013 3.253 2 7.077 2C19.9 11 23 10.013 23 9">
-                </path>
-              </svg> --}}
               <svg class="mr-2 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                 fill="none">
                 <path
@@ -240,47 +235,22 @@
               </svg>
               Expenses
             </a>
-            <div :class="isopen == true ? 'bg-gray-50 ' : 'bg-white'" class="space-y-1  hover:bg-gray-50  px-4"
-              x-data="{ isopen: false }">
-              <!-- Current: "bg-gray-100 text-gray-900", Default: "bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900" -->
-              <button type="button" x-on:click="isopen = !isopen"
-                class=" text-gray-400  hover:text-gray-500 group w-full flex items-center  py-2 text-left text-sm font-medium rounded-md focus:outline-none focus:ring-0 "
-                aria-controls="sub-menu-5" aria-expanded="false">
-                <svg class="mr-2 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" width="24"
-                  height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"></path>
-                  <rect x="9" y="3" width="6" height="4" rx="2"></rect>
-                  <path d="M9 17v-5"></path>
-                  <path d="M12 17v-1"></path>
-                  <path d="M15 17v-3"></path>
-                </svg>
-                <span class="flex-1">Reports</span>
-                <svg :class="isopen == true ? 'text-gray-400 rotate-90 ' : ''"
-                  class="text-gray-300 ml-3 h-5 w-5 flex-shrink-0 transform transition-colors duration-150 ease-in-out group-hover:text-gray-400"
-                  version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                  fill="currentColor">
-                  <path
-                    d="M8.586 5.586c-.781.781-.781 2.047 0 2.828l3.585 3.586-3.585 3.586c-.781.781-.781 2.047 0 2.828.39.391.902.586 1.414.586s1.024-.195 1.414-.586l6.415-6.414-6.415-6.414c-.78-.781-2.048-.781-2.828 0z">
-                  </path>
-                </svg>
-              </button>
-              <!-- Expandable link section, show/hide based on state. -->
-              <div x-show="isopen" x-cloak class="space-y-1" id="sub-menu-5">
-                <a href="#"
-                  class="group flex w-full items-center rounded-md py-2 pl-11 pr-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">Overview</a>
+            <a href="{{ route('office.report') }}"
+              class="{{ request()->routeIs('office.report') ? 'bg-gray-50 before:w-1 before:h-full before:bg-green-500 before:absolute before:right-0 font-semibold text-gray-500' : 'text-gray-400' }} relative hover:bg-gray-50 hover:text-gray-500 hover:fill-gray-500 fill-gray-400 px-4  group py-2 flex items-center text-sm
+              ">
+              <svg class="mr-2 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" width="24"
+                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"></path>
+                <rect x="9" y="3" width="6" height="4" rx="2"></rect>
+                <path d="M9 17v-5"></path>
+                <path d="M12 17v-1"></path>
+                <path d="M15 17v-3"></path>
+              </svg>
+              Reports
+            </a>
 
-                <a href="#"
-                  class="group flex w-full items-center rounded-md py-2 pl-11 pr-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">Members</a>
-
-                <a href="#"
-                  class="group flex w-full items-center rounded-md py-2 pl-11 pr-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">Calendar</a>
-
-                <a href="#"
-                  class="group flex w-full items-center rounded-md py-2 pl-11 pr-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">Settings</a>
-              </div>
-            </div>
 
           </nav>
         </div>
@@ -288,7 +258,7 @@
     </div>
 
     <div class="md:pl-64">
-      <div class="flex mx-10 flex-col md:px-8 xl:px-0">
+      <div class="flex mx-24 flex-col md:px-8 xl:px-0">
         <div class="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white">
           <button type="button"
             class="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden">
@@ -299,73 +269,30 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
             </svg>
           </button>
-          <div class="flex flex-1 justify-between px-4 md:px-0">
+          <div class="flex flex-1 justify-between items-center px-4 md:px-0">
             <div class="flex flex-1">
-              <form class="flex w-full md:ml-0" action="#" method="GET">
-                <label for="search-field" class="sr-only">Search</label>
-                <div class="relative w-full text-gray-400 focus-within:text-gray-600">
-                  <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center">
-                    <!-- Heroicon name: mini/magnifying-glass -->
-                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                      aria-hidden="true">
-                      <path fill-rule="evenodd"
-                        d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                        clip-rule="evenodd" />
-                    </svg>
-                  </div>
-                  <input id="search-field"
-                    class="block h-full w-full border-transparent py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
-                    placeholder="Search" type="search" name="search">
-                </div>
-              </form>
+              <h1 class="text-xl font-bold text-gray-600">{{ auth()->user()->branch->name }}</h1>
+
             </div>
             <div class="ml-4 flex items-center md:ml-6">
-              <button type="button"
-                class="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                <span class="sr-only">View notifications</span>
-                <!-- Heroicon name: outline/bell -->
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                  stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+              <x-button>
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                  version="1.1" viewBox="0 0 36 36" preserveAspectRatio="xMidYMid meet" fill="currentColor">
+                  <title>logout-solid</title>
+                  <path
+                    d="M23,4H7A2,2,0,0,0,5,6V30a2,2,0,0,0,2,2H23a2,2,0,0,0,2-2V24H15.63a1,1,0,0,1-1-1,1,1,0,0,1,1-1H25V6A2,2,0,0,0,23,4Z"
+                    class="clr-i-solid clr-i-solid-path-1"></path>
+                  <path
+                    d="M28.16,17.28a1,1,0,0,0-1.41,1.41L30.13,22H25v2h5.13l-3.38,3.46a1,1,0,1,0,1.41,1.41L34,23.07Z"
+                    class="clr-i-solid clr-i-solid-path-2"></path>
+                  <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>
                 </svg>
-              </button>
+              </x-button>
 
               <!-- Profile dropdown -->
               <div class="relative ml-3">
                 <div>
-                  <button type="button"
-                    class="flex max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                    <span class="sr-only">Open user menu</span>
-                    <img class="h-8 w-8 rounded-full"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                      alt="">
-                  </button>
-                </div>
-
-                <!--
-                  Dropdown menu, show/hide based on menu state.
-  
-                  Entering: "transition ease-out duration-100"
-                    From: "transform opacity-0 scale-95"
-                    To: "transform opacity-100 scale-100"
-                  Leaving: "transition ease-in duration-75"
-                    From: "transform opacity-100 scale-100"
-                    To: "transform opacity-0 scale-95"
-                -->
-                <div
-                  class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                  role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                  <!-- Active: "bg-gray-100", Not Active: "" -->
-                  <a href="#" class="block py-2 px-4 text-sm text-gray-700" role="menuitem" tabindex="-1"
-                    id="user-menu-item-0">Your Profile</a>
-
-                  <a href="#" class="block py-2 px-4 text-sm text-gray-700" role="menuitem" tabindex="-1"
-                    id="user-menu-item-1">Settings</a>
-
-                  <a href="#" class="block py-2 px-4 text-sm text-gray-700" role="menuitem" tabindex="-1"
-                    id="user-menu-item-2">Sign out</a>
+                  <x-button label="{{ auth()->user()->name }}" positive class="font-semibold" />
                 </div>
               </div>
             </div>
@@ -373,18 +300,7 @@
         </div>
 
         <main class="flex-1">
-          <div class="py-6">
-            <div class="px-4 sm:px-6 md:px-0">
-              <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
-            </div>
-            <div class="px-4 sm:px-6 md:px-0">
-              <!-- Replace with your content -->
-              <div class="py-4">
-                <div class="h-96 rounded-lg border-4 border-dashed border-gray-200"></div>
-              </div>
-              <!-- /End replace -->
-            </div>
-          </div>
+          {{ $slot }}
         </main>
       </div>
     </div>

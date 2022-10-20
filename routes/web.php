@@ -144,5 +144,17 @@ Route::middleware([
             Route::get('/', function () {
                 return view('back-office.dashboard');
             })->name('office.dashboard');
+            Route::get('/sales', function () {
+                return view('back-office.sales');
+            })->name('office.sales');
+            Route::get('/expenses', function () {
+                return view('back-office.expenses');
+            })->name('office.expenses');
+            Route::get('/reports', function () {
+                return view('back-office.report');
+            })->name('office.report');
+            Route::get('/reports/occupied-rooms', function () {
+                return view('back-office.report.occupied-rooms');
+            })->name('office.occupied-rooms');
         });
 });

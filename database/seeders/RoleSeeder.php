@@ -35,5 +35,8 @@ class RoleSeeder extends Seeder
         Role::create([
             'name' => 'Super Admin', //7
         ]);
+        Role::create([
+            'name' => 'Back Office', //7
+        ]);
     }
 }
