@@ -16,4 +16,7 @@
             {{ $value }}
         </p>
     </dd>
+    <div class="flex justify-end">
+        {{ $slot }}
+    </div>
 </div>

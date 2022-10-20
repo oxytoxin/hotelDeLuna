@@ -1,6 +1,7 @@
-<div>
+<div class="grid gap-4">
     <div class="grid gap-3">
-        <x-card cardClasses="bg-green-600">
+        <x-card padding="px-2 py-3 md:px-4 "
+            cardClasses="bg-green-600 ">
             <h1 class="text-xl font-semibold text-white">
                 Priority Rooms
             </h1>
@@ -34,14 +35,15 @@
         </ul>
     </div>
     <div class="grid gap-3">
-        <x-card cardClasses="bg-red-600">
+        <x-card padding="px-2 py-3 md:px-4 "
+            cardClasses="bg-red-600">
             <h1 class="text-xl font-semibold text-white">
-                Available Rooms
+                Available Rooms (Cleaned Room)
             </h1>
         </x-card>
         <ul role="list"
             class="grid grid-cols-1 gap-6 sm:grid-cols-4 lg:grid-cols-4">
-            @foreach ($rooms->where('priority', 0)->where('room_status_id', 9) as $room)
+            @foreach ($rooms->where('priority', false)->where('room_status_id', 9) as $room)
                 <li class="col-span-1 bg-white divide-y divide-gray-200 rounded-lg shadow">
                     <div class="flex items-center justify-between w-full p-3 space-x-6">
                         <div class="flex-1 truncate">

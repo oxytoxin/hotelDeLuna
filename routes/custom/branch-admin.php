@@ -69,4 +69,8 @@ Route::prefix('branch')->middleware([
     Route::get('/manage-types', function () {
         return view('branch-admin.manage-types');
     })->name('branch.manage-types');
+
+    Route::get('/priority-room', function () {
+        return view('branch-admin.priority-room');
+    })->name('branch.priority-room');
 });

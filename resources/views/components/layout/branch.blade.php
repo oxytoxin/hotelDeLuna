@@ -500,6 +500,26 @@
                         </svg>
                         Room Monitoring
                     </a>
+                    <a href="{{ route('branch.priority-room') }}"
+                        @class([
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is(
+                                'branch/priority-room*'
+                            ),
+                            'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
+                                'branch/priority-room*'
+                            ),
+                        ])>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            class="flex-shrink-0 w-4 h-4 mr-3 ">
+                            <path fill-rule="evenodd"
+                                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Priority Room
+                    </a>
                 </nav>
                 <nav class="flex-1 pt-2 mt-2 bg-white">
                     <a href="{{ route('branch.room-boy-designations') }}"

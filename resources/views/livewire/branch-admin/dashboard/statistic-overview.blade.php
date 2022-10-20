@@ -9,7 +9,6 @@
                     value="{{ $data['total_check_in_today_count'] }}">
                     <x-slot:icon>
                         <div class="absolute p-3 bg-[#BCCEF8] rounded-md">
-
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
                                 class="w-6 h-6 fill-white">
@@ -20,6 +19,7 @@
                             </svg>
                         </div>
                     </x-slot:icon>
+                    <x-actions.print-excel wire:click="printCheckInToday" />
                 </x-stat-card>
                 <x-stat-card title="Checked Out Today"
                     value="{{ $data['total_check_out_today_count'] }}">
@@ -35,6 +35,7 @@
                             </svg>
                         </div>
                     </x-slot:icon>
+                    <x-actions.print-excel wire:click="printCheckOutToday" />
                 </x-stat-card>
                 <x-stat-card title="Expected Check Out Today"
                     value="{{ $data['total_expected_check_out_today_count'] }}">
@@ -50,6 +51,7 @@
                             </svg>
                         </div>
                     </x-slot:icon>
+                    <x-actions.print-excel wire:click="printExpectedCheckOutToday" />
                 </x-stat-card>
             </dl>
         </div>
@@ -74,6 +76,7 @@
                             </svg>
                         </div>
                     </x-slot:icon>
+                    <x-actions.print-excel wire:click="printTotalCheckIn" />
                 </x-stat-card>
 
             </dl>

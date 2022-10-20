@@ -6,6 +6,8 @@ use App\Models\Room;
 use Carbon\Carbon;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
+use App\Exports\{CheckInToday,CheckOutToday};
+use Maatwebsite\Excel\Facades\Excel;
 
 class StatisticOverview extends Component
 {
@@ -52,6 +54,20 @@ class StatisticOverview extends Component
             })->toArray();
     }
     
+    public function printCheckInToday()
+    {
+        $time = Carbon::now()->format('Y-m-d_H-i-s');
+        $file_name = "check_in_today_{$time}.xlsx";
+        return Excel::download(new CheckInToday, $file_name);
+    }
+
+    public function printCheckOutToday()
+    {
+        $time = Carbon::now()->format('Y-m-d_H-i-s');
+        $file_name = "check_out_today_{$time}.xlsx";
+        return Excel::download(new CheckOutToday, $file_name);
+    }
+
     public function render()
     {
         return view('livewire.branch-admin.dashboard.statistic-overview',[
