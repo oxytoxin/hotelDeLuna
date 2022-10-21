@@ -6,7 +6,7 @@ use App\Models\Room;
 use Carbon\Carbon;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
-use App\Exports\{CheckInToday,CheckOutToday};
+use App\Exports\{CheckInToday,CheckOutToday,ExpectedCheckOutToday,TotalCheckIn};
 use Maatwebsite\Excel\Facades\Excel;
 
 class StatisticOverview extends Component
@@ -66,6 +66,20 @@ class StatisticOverview extends Component
         $time = Carbon::now()->format('Y-m-d_H-i-s');
         $file_name = "check_out_today_{$time}.xlsx";
         return Excel::download(new CheckOutToday, $file_name);
+    }
+
+    public function printExpectedCheckOutToday()
+    {
+        $time = Carbon::now()->format('Y-m-d_H-i-s');
+        $file_name = "expected_check_out_today_{$time}.xlsx";
+        return Excel::download(new ExpectedCheckOutToday, $file_name);
+    }
+
+    public function printTotalCheckIn()
+    {
+        $time = Carbon::now()->format('Y-m-d_H-i-s');
+        $file_name = "total_check_in_{$time}.xlsx";
+        return Excel::download(new TotalCheckIn, $file_name);
     }
 
     public function render()

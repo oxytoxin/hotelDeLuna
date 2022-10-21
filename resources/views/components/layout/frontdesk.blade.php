@@ -217,10 +217,8 @@
                 <nav class="flex-1 pt-5 mt-5 space-y-1 bg-white border-t">
                     <a href="{{ route('front-desk.dashboard') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
-                                'frontdesk/dashboard*'
-                            ),
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is('frontdesk/dashboard*'),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
                                 'frontdesk/dashboard*'
                             ),
@@ -239,10 +237,8 @@
                     </a>
                     <a href="{{ route('front-desk.check-in') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
-                                'frontdesk/check-in*'
-                            ),
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is('frontdesk/check-in*'),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
                                 'frontdesk/check-in*'
                             ),
@@ -261,10 +257,8 @@
                     </a>
                     <a href="{{ route('front-desk.check-out') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
-                                'frontdesk/check-out*'
-                            ),
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is('frontdesk/check-out*'),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
                                 'frontdesk/check-out*'
                             ),
@@ -284,8 +278,8 @@
                     </a>
                     <a href="{{ route('front-desk.guest-transaction') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is(
                                 'frontdesk/guest-transaction*'
                             ),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
@@ -307,8 +301,8 @@
                     </a>
                     <a href="{{ route('front-desk.room-monitoring') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is(
                                 'frontdesk/room-monitoring*'
                             ),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(
@@ -330,8 +324,8 @@
                     </a>
                     <a href="{{ route('front-desk.priority-room') }}"
                         @class([
-                            'group flex items-center px-2 py-1 text-sm font-medium border-l-4',
-                            'text-primary text-gray-700 border-primary-700 bg-gray-100 shadow' => request()->is(
+                            'group flex items-center px-2 py-1.5 text-sm font-medium border-r-4',
+                            'text-gray-700 border-primary-700' => request()->is(
                                 'frontdesk/priority-rooms*'
                             ),
                             'text-gray-500 hover:text-gray-900 border-transparent' => !request()->is(

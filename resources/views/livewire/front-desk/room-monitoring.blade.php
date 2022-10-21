@@ -27,11 +27,11 @@
                                 </div>
                             </div>
                             <table class="min-w-full divide-y divide-gray-300">
-                                <thead class="bg-gray-50">
+                                <thead class="bg-primary-600">
                                     <tr>
                                         @foreach ($headers as $header)
                                             <th scope="col"
-                                                class="py-3 pr-3 text-xs font-medium tracking-wide text-left text-gray-500 uppercase sm:pl-4">
+                                                class="py-3 pr-3 text-xs font-medium tracking-wide text-left text-white uppercase sm:pl-4">
                                                 {{ $header }}</th>
                                         @endforeach
                                     </tr>
