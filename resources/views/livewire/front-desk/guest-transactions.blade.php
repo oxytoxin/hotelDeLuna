@@ -105,6 +105,7 @@
                                     class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
                             </button>
                             <button type="button"
+                                wire:click="$set('action','deposits')"
                                 class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white rounded-r-lg hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
                                 <span>Deposit </span>
                                 <span aria-hidden="true"
@@ -177,6 +178,12 @@
 
                 @case('item-request')
                     @livewire('front-desk.transactions.item-request', [
+                        'guest_id' => $guest->id,
+                    ])
+                @break
+
+                @case('deposits')
+                    @livewire('front-desk.transactions.manage-guest-deposits', [
                         'guest_id' => $guest->id,
                     ])
                 @break
