@@ -79,7 +79,8 @@ class Cleaning extends Component
         CleaningModel::create([
             'room_boy_id' => auth()->user()->room_boy->id,
             'room_id' => $room->id,
-            'suppose_to_start' => $room->time_to_clean,
+            'suppose_to_start' => $room->updated_at,
+            'suppose_to_end' => $room->time_to_clean,
             'started_at' => Carbon::now(),
         ]);
         auth()
@@ -121,14 +122,32 @@ class Cleaning extends Component
             return;
         }
         $delayed = $room->time_to_clean < Carbon::now();
-        $room->update([
-            'room_status_id' => 9,
-            'time_to_clean' => null,
-            'priority' => false,
-        ]);
+
+        $query = Room::whereHas('floor', function ($q) {
+            $q->where('branch_id', auth()->user()->branch_id);
+        })
+            ->where('room_status_id', 1)
+            ->where('priority', 1)
+            ->count();
+
+        if ($query < 5) {
+            $room->update([
+                'room_status_id' => 1,
+                'time_to_clean' => null,
+                'priority' => true,
+            ]);
+        } else {
+            $room->update([
+                'room_status_id' => 9,
+                'time_to_clean' => null,
+                'priority' => false,
+            ]);
+        }
+
         $cleaning = CleaningModel::where('room_id', $room_id)
             ->where('finish_at', null)
             ->first();
+
         $cleaning->update([
             'finish_at' => Carbon::now(),
             'delayed' => $delayed,
