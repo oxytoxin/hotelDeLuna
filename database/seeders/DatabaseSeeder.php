@@ -47,10 +47,7 @@ class DatabaseSeeder extends Seeder
             'branch_id' => 1,
             'number' => '12',
         ]);
-        StayingHour::create([
-            'branch_id' => 1,
-            'number' => '18',
-        ]);
+       
         StayingHour::create([
             'branch_id' => 1,
             'number' => '24',
