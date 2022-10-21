@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean('is_out_of_the_building')->default(false);
             $table->boolean('is_checked_in')->default(false);
             $table->string('check_in_at')->nullable();
+            $table->string('check_out_at')->nullable();
             $table->boolean('totaly_checked_out')->default(false);
             $table->string('terminated_at')->nullable();
             $table->string('total_deposits')->default(0);

@@ -261,6 +261,7 @@ class CheckOutGuest extends Component
         DB::beginTransaction();
         $this->guest->update([
             'totaly_checked_out' => true,
+            'check_out_at' => now(),
         ]);
         $check_in_detail = $this->guest->transactions()->where('transaction_type_id', 1)->first()->check_in_detail;
         $check_in_detail->update([
