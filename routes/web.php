@@ -162,5 +162,8 @@ Route::middleware([
             Route::get('/reports/overdue-rooms', function () {
                 return view('back-office.report.overdue');
             })->name('office.overdue');
+            Route::get('/reports/roomboy', function () {
+                return view('back-office.report.roomboy');
+            })->name('office.roomboy');
         });
 });

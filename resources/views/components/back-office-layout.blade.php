@@ -18,6 +18,12 @@
     [x-cloak] {
       display: none !important;
     }
+
+    @media print {
+      .show-on-print {
+        display: block !important;
+      }
+    }
   </style>
   <!-- Styles -->
   @livewireStyles

@@ -8,26 +8,16 @@
         document.body.innerHTML = originalContents;
     }
 }">
-  <div class="flex justify-between items-center">
-    <div class="flex space-x-1 items-center">
-      <input type="date" wire:model="date" class="rounded-lg border-gray-300 h-10 text-gray-600" name=""
-        id="">
-      @error('date')
-        <span class="text-red-500 text-xs">{{ $message }}</span>
-      @enderror
-      @if ($date != null)
-        <x-button id="dsdsd" wire:click="generate" dark label="GENERATE" spinner="generate" class="font-semibold" />
-      @endif
+  <div class="flex justify-end items-center">
 
-    </div>
     <div class="flex space-x-1">
-      <x-button wire:click="export" wire:loading.attr="disabled" positive class="text-white fill-white font-semibold">
+      {{-- <x-button wire:click="export" wire:loading.attr="disabled" positive class="text-white fill-white font-semibold">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
           <path fill="none" d="M0 0h24v24H0z" />
           <path
             d="M2.859 2.877l12.57-1.795a.5.5 0 0 1 .571.495v20.846a.5.5 0 0 1-.57.495L2.858 21.123a1 1 0 0 1-.859-.99V3.867a1 1 0 0 1 .859-.99zM4 4.735v14.53l10 1.429V3.306L4 4.735zM17 19h3V5h-3V3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-4v-2zm-6.8-7l2.8 4h-2.4L9 13.714 7.4 16H5l2.8-4L5 8h2.4L9 10.286 10.6 8H13l-2.8 4z" />
         </svg>
-      </x-button>
+      </x-button> --}}
       <x-button wire:key="sdsd" x-on:click="printDiv('print')" dark class="text-white fill-white font-semibold">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
           <path fill="none" d="M0 0h24v24H0z" />
@@ -37,37 +27,45 @@
       </x-button>
     </div>
   </div>
-  <div class="mt-10">
-    <div id="print" class="s">
+  <div class="">
+    <div id="print" class="mt-5 flex flex-col">
       <div class="show-on-print" style="display: none">
-        @if ($date != null)
-          <h1 class="text-2xl text-gray-600 font-semibold">OVERDUE REPORT</h1>
-          <h1 class="text-xl text-gray-600 font-semibold">{{ $date }}</h1>
-        @endif
+        <h1 class="text-xl">Roomboy and their overdue rooms</h1>
       </div>
+
+
       <table id="example" class="table-auto mt-2" style="width:100%">
         <thead class="font-normal">
           <tr>
+            <th width="110" class="border"></th>
             <th class="border text-left px-2 text-sm font-semibold text-gray-500 py-2">OVERDUE ROOM</th>
-            <th class="border text-left px-2 text-sm font-semibold text-gray-500 py-2">ASSIGNED ROOMBOY</th>
             <th class="border text-left px-2 text-sm font-semibold text-gray-500 py-2">EXPECTED TIME</th>
             <th class="border text-left px-2 text-sm font-semibold text-gray-500 py-2">TIME ENDED</th>
           </tr>
         </thead>
         <tbody class="">
-          @foreach ($overdues as $overdue)
+          @foreach ($roomboys as $roomboy)
             <tr>
-              <td class="border px-3 py-1">RM #{{ $overdue->room->number }} |
-                {{ ordinal($overdue->room->floor->number) }} Floor</td>
-              <td class="border px-3 py-1">{{ $overdue->room_boy->user->name }}</td>
-              <td class="border px-3 py-1">dfdfdf</td>
-              <td class="border px-3 py-1">dfdfdf</td>
+              <th colspan="4" class="text-left border text-gray-700 font-semibold px-3 uppercase py-2 bg-gray-50">
+                {{ $roomboy->user->name }}
+              </th>
+
             </tr>
+            @foreach ($roomboy->cleanings as $item)
+              <tr>
+                <td class="border px-3 py-1"></td>
+                <td class="border px-3 py-1">RM #{{ $item->room->number }} |
+                  {{ ordinal($item->room->floor->number) }} Floor</td>
+                <td class="border px-3 py-1">dfdfdf</td>
+                <td class="border px-3 py-1">dfdfdf</td>
+              </tr>
+            @endforeach
           @endforeach
         </tbody>
       </table>
     </div>
   </div>
+
 </div>
 @push('scripts')
   <script>
