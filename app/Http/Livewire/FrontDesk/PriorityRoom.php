@@ -51,6 +51,7 @@ class PriorityRoom extends Component
                 ->with([
                     'floor',
                 ])
+                ->orderBy('updated_at', 'ASC')
                 ->get()
         ]);
     }

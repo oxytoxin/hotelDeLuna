@@ -6,9 +6,12 @@
                 Priority Rooms
             </h1>
         </x-card>
+        @php
+            $priority_rooms = $rooms->where('priority', 1)->where('room_status_id', 1);
+        @endphp
         <ul role="list"
             class="grid grid-cols-1 gap-6 sm:grid-cols-4 lg:grid-cols-4">
-            @foreach ($rooms->where('priority', 1)->where('room_status_id', 1) as $room)
+            @foreach ($priority_rooms as $room)
                 <li class="col-span-1 bg-white divide-y divide-gray-200 rounded-lg shadow">
                     <div class="flex items-center justify-between w-full p-3 space-x-6">
                         <div class="flex-1 truncate">
@@ -33,7 +36,18 @@
                 </li>
             @endforeach
         </ul>
+        <div>
+            @if (count($priority_rooms) == 0)
+                <x-card padding="px-2 py-3 md:px-4 "
+                    cardClasses="bg-green-100 ">
+                    <h1 class="text-xl font-semibold text-center text-green-600">
+                        Priority Room is Empty
+                    </h1>
+                </x-card>
+            @endif
+        </div>
     </div>
+    <hr>
     <div class="grid gap-3">
         <x-card padding="px-2 py-3 md:px-4 "
             cardClasses="bg-red-600">
@@ -41,9 +55,12 @@
                 Available Rooms (Cleaned Room)
             </h1>
         </x-card>
+        @php
+            $available_rooms = $rooms->where('priority', false)->where('room_status_id', 9);
+        @endphp
         <ul role="list"
             class="grid grid-cols-1 gap-6 sm:grid-cols-4 lg:grid-cols-4">
-            @foreach ($rooms->where('priority', false)->where('room_status_id', 9) as $room)
+            @foreach ($available_rooms as $room)
                 <li class="col-span-1 bg-white divide-y divide-gray-200 rounded-lg shadow">
                     <div class="flex items-center justify-between w-full p-3 space-x-6">
                         <div class="flex-1 truncate">
@@ -89,5 +106,15 @@
                 </li>
             @endforeach
         </ul>
+        <div>
+            @if (count($available_rooms) == 0)
+                <x-card padding="px-2 py-3 md:px-4 "
+                    cardClasses="bg-red-100 ">
+                    <h1 class="text-xl font-semibold text-center text-red-600">
+                        Available Room is Empty
+                    </h1>
+                </x-card>
+            @endif
+        </div>
     </div>
 </div>
