@@ -16,17 +16,29 @@ class GuestReport extends Component
     public function render()
     {
         return view('livewire.back-office.guest-report', [
-            'guests' =>
-                $this->report_type == 1
-                    ? ($this->generate_query == null
-                        ? Guest::where('branch_id', auth()->user()->branch_id)
-                            ->with('transactions')
-                            ->get()
-                        : $this->generate_query)
-                    : Guest::where('branch_id', auth()->user()->branch_id)
-                        ->whereDate('created_at', now())
-                        ->get(),
+            'guests' => $this->loadQuery(),
         ]);
+    }
+
+    public function loadQuery()
+    {
+        if ($this->report_type == 1) {
+            if ($this->generate_query == null) {
+                return Guest::where('branch_id', auth()->user()->branch_id)
+                    ->with('transactions')
+                    ->get();
+            } else {
+                $this->generate_query;
+            }
+        } elseif ($this->report_type == 2) {
+            return Guest::where('branch_id', auth()->user()->branch_id)
+                ->whereDate('created_at', now())
+                ->get();
+        } else {
+            return Guest::whereHas('transactions', function ($query) {
+                $query->where('transaction_type_id', 6);
+            })->get();
+        }
     }
 
     public function generate()
