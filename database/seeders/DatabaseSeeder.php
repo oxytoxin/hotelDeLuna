@@ -15,6 +15,7 @@ use Database\Seeders\DummyCheckInSeeder;
 use Database\Seeders\FloorAndRoomSeeder;
 use Database\Seeders\TransactionTypeSeeder;
 use Database\Seeders\AlmaResidencesDataSeeder;
+use Database\Seeders\OverdueSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -33,6 +34,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoomTypeSeeder::class);
         $this->call(RateSeeder::class);
         $this->call(AlmaResidencesDataSeeder::class);
+        $this->call(OverdueSeeder::class);
 
         if (app()->environment() == 'local') {
             $this->call(FloorAndRoomSeeder::class);
