@@ -30,8 +30,7 @@ class StatisticOverview extends Component
         ]);
 
         $check_out_count_today = DB::table('check_in_details')
-            ->where('check_out_at', '!=', null)
-            ->where('created_at', '>=', Carbon::today())
+            ->where('check_out_at', '>=', Carbon::today())
             ->select([
             DB::raw('"total_check_out_today_count" as label'),
             DB::raw('count(*) as value'),

@@ -6,6 +6,7 @@
         <div>
             <dl class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-2">
                 <x-stat-card title="Checked In Today"
+                    icon="excel"
                     value="{{ $data['total_check_in_today_count'] }}">
                     <x-slot:icon>
                         <div class="absolute p-3 bg-[#BCCEF8] rounded-md">

@@ -18,6 +18,7 @@ class CheckOutToday implements FromCollection, WithHeadings, WithMapping
     {
         return Guest::where('branch_id', auth()->user()->branch_id)
             ->where('totaly_checked_out', 1)
+            ->where('check_out_at', '>=', Carbon::today())
             ->with([
                'transactions'=>[
                     'check_in_detail'=>[

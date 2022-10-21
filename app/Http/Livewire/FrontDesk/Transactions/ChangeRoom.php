@@ -212,7 +212,7 @@ class ChangeRoom extends Component
         $this->authorization_code ='';
         $this->available_rooms = Room::where('floor_id', $this->form['floor_id'])
             ->where('type_id', $this->form['type_id'])
-            ->where('room_status_id', 1)
+            ->whereIn('room_status_id', [1,9])
             ->get();
         if ($this->available_rooms->count() == 0) {
             if ($this->form['type_id'] != null && $this->form['floor_id'] != null) {
