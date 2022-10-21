@@ -106,7 +106,7 @@
                                                             <x-countdown :expires="$time_to_clean">
                                                                 <span x-cloak
                                                                     x-show="timer.hours == '00'"
-                                                                    class="absolute p-2 text-white bg-gray-400 rounded-r-lg rounded-tl-lg -top-5 -right-10 animate-bounce">
+                                                                    class="absolute p-2 text-white bg-red-600 rounded-r-lg rounded-tl-lg -top-5 -right-10 animate-bounce">
                                                                     About to due
                                                                 </span>
                                                                 <div class="flex space-x-2 ">

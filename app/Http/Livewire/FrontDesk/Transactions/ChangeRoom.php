@@ -104,6 +104,7 @@ class ChangeRoom extends Component
             'form.room_id' => 'required',
             'form.reason' => 'required',
             'form.floor_id' => 'required',
+            'form.room_status_id' => 'required',
             'authorization_code' => 'required|in:' . auth()->user()->branch->authorization_code,
         ]);
         if ($this->has_already_change_room_twice()) {
