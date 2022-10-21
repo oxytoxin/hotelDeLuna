@@ -57,19 +57,19 @@ class RateSeeder extends Seeder
         Rate::create([
             'branch_id' => 1,
             'type_id' => 1,
-            'staying_hour_id' => 4,
+            'staying_hour_id' => 3,
             'amount' => 500,
         ]);
         Rate::create([
             'branch_id' => 1,
             'type_id' => 2,
-            'staying_hour_id' => 4,
+            'staying_hour_id' => 3,
             'amount' => 550,
         ]);
         Rate::create([
             'branch_id' => 1,
             'type_id' => 3,
-            'staying_hour_id' => 4,
+            'staying_hour_id' => 3,
             'amount' => 600,
         ]);
     }

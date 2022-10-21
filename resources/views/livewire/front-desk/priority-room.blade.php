@@ -17,7 +17,7 @@
                         <div class="flex-1 truncate">
                             <div class="flex items-center space-x-3">
                                 <h3 class="text-sm font-bold text-gray-900 truncate">
-                                    ROOM # {{ $room->room_number }}
+                                    ROOM # {{ $room->number }}
                                 </h3>
                             </div>
                             <p class="mt-1 text-sm text-gray-500 truncate">
@@ -66,7 +66,7 @@
                         <div class="flex-1 truncate">
                             <div class="flex items-center space-x-3">
                                 <h3 class="text-sm font-bold text-gray-900 truncate">
-                                    ROOM # {{ $room->room_number }}
+                                    ROOM # {{ $room->number }}
                                 </h3>
                             </div>
                             <p class="mt-1 text-sm text-gray-500 truncate">

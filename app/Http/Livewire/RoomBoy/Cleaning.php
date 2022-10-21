@@ -111,16 +111,16 @@ class Cleaning extends Component
     public function confirmFinish($room_id)
     {
         $room = Room::where('id', $room_id)->first();
-        if (
-            $room->room_status_id == 8 &&
-            $room->updated_at->diffInMinutes(Carbon::now()) < 15
-        ) {
-            $this->notification()->error(
-                $title = 'Error',
-                $description = 'You can not finish this room before 15 minutes'
-            );
-            return;
-        }
+        // if (
+        //     $room->room_status_id == 8 &&
+        //     $room->updated_at->diffInMinutes(Carbon::now()) < 15
+        // ) {
+        //     $this->notification()->error(
+        //         $title = 'Error',
+        //         $description = 'You can not finish this room before 15 minutes'
+        //     );
+        //     return;
+        // }
         $delayed = $room->time_to_clean < Carbon::now();
 
         $query = Room::whereHas('floor', function ($q) {
