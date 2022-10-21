@@ -156,5 +156,11 @@ Route::middleware([
             Route::get('/reports/occupied-rooms', function () {
                 return view('back-office.report.occupied-rooms');
             })->name('office.occupied-rooms');
+            Route::get('/reports/guests', function () {
+                return view('back-office.report.guest');
+            })->name('office.guest');
+            Route::get('/reports/overdue-rooms', function () {
+                return view('back-office.report.overdue');
+            })->name('office.overdue');
         });
 });

@@ -11,11 +11,13 @@ class Cleaning extends Model
 
     protected $guarded = [];
 
-    public function roomboy(){
+    public function room_boy()
+    {
         return $this->belongsTo(RoomBoy::class);
     }
 
-    public function room(){
+    public function room()
+    {
         return $this->belongsTo(Room::class);
     }
 }
