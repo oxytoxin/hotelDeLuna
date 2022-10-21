@@ -42,7 +42,7 @@
     @switch($report_type)
       @case(1)
         <div x-ref="printContainer" id="print" class="mb-10">
-          <h1>TOTAL GUEST: {{ $guests->count() }}</h1>
+          <h1>TOTAL GUEST: {{ $guests ? count($guests) : 0 }}</h1>
           <table id="example" class="table-auto mt-2" style="width:100%">
             <thead class="font-normal">
               <tr>
@@ -64,7 +64,7 @@
 
       @case(2)
         <div x-ref="printContainer" id="print" class="mb-10">
-          <h1>TOTAL GUEST: {{ $guests->count() }}</h1>
+          <h1>TOTAL GUEST: {{ count($guests) }}</h1>
           <table id="example" class="table-auto mt-2" style="width:100%">
             <thead class="font-normal">
               <tr>
@@ -86,7 +86,7 @@
 
       @case(3)
         <div x-ref="printContainer" id="print" class="mb-10">
-          <h1>TOTAL GUEST: {{ $guests->count() }}</h1>
+          <h1>TOTAL GUEST: {{ count($guests) }}</h1>
           <table id="example" class="table-auto mt-2" style="width:100%">
             <thead class="font-normal">
               <tr>

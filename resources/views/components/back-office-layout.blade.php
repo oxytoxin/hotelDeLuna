@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;600;700&display=swap" rel="stylesheet">
   <!-- Scripts -->
+  @wireUiScripts
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 
   <style>
@@ -254,7 +255,8 @@
       </div>
     </div>
   </div>
-
+  <x-notifications z-index="z-50" />
+  <x-dialog z-index="z-50" blur="md" align="center" />
   @livewireScripts
   @stack('scripts')
 </body>

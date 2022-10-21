@@ -28,7 +28,7 @@ class GuestReport extends Component
                     ->with('transactions')
                     ->get();
             } else {
-                $this->generate_query;
+                return $this->generate_query;
             }
         } elseif ($this->report_type == 2) {
             return Guest::where('branch_id', auth()->user()->branch_id)
