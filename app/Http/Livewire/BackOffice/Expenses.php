@@ -17,6 +17,10 @@ class Expenses extends Component
     public $expense_amount;
     public $expense_category_id;
     public $expense_description;
+    public $update_expense = false;
+    public $update_id;
+    public $employee_name;
+    public $manage_employee = false;
 
     public function render()
     {
@@ -66,5 +70,52 @@ class Expenses extends Component
         $this->expense_description = '';
 
         $this->add_expense_modal = false;
+    }
+
+    public function editCategory($id)
+    {
+        $query = ExpenseCategory::where('id', $id)->first();
+        $this->update_expense = true;
+
+        $this->update_id = $id;
+
+        $this->category_name = $query->name;
+    }
+
+    public function updateCategory()
+    {
+        $this->validate([
+            'category_name' => 'required',
+        ]);
+        ExpenseCategory::where('id', $this->update_id)->update([
+            'name' => $this->category_name,
+        ]);
+        $this->notification()->success(
+            $title = 'Category updated',
+            $description = 'The category has been updated successfully.'
+        );
+        $this->category_name = '';
+        $this->update_expense = false;
+    }
+
+    public function searchName()
+    {
+        $this->validate([
+            'employee_name' => 'required',
+        ]);
+
+        $query = Expense::where('name', $this->employee_name)->get();
+        if ($query->count() > 0) {
+            $this->notification()->success(
+                $title = 'Expense found',
+                $description = 'The expense has been found successfully.'
+            );
+            $this->manage_employee = true;
+        } else {
+            $this->notification()->error(
+                $title = 'Expense not found',
+                $description = 'The expense has not been found.'
+            );
+        }
     }
 }

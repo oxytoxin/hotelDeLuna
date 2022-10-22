@@ -43,6 +43,8 @@ class OverdueExport implements FromCollection, WithMapping, WithHeadings
             ordinal($cleaning->room->floor->number) .
             ' Floor',
             $cleaning->room_boy->user->name,
+            $overdue->supposed_to_end ?? 'null',
+            $overdue->finish_at ?? 'null',
         ];
     }
 
