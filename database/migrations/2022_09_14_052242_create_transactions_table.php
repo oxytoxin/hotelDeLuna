@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('branch_id')->constrained()->cascadeOnDelete();
             $table->unsignedBigInteger('guest_id')->constrained();
+            $table->unsignedBigInteger('room_id');
             $table->unsignedBigInteger('transaction_type_id')->constrained();
             $table->string('payable_amount');
             $table->string('paid_amount')->nullable();
