@@ -24,26 +24,30 @@ class DummyCheckInSeeder extends Seeder
                 'contact_number' => fake()->phoneNumber,
                 'is_out_of_the_building' => false,
             ]);
+            
             $transaction = $guest->transactions()->create([
                 'branch_id' => 1,
                 'transaction_type_id' => 1,
                 'payable_amount' => '200',
+                'room_id' => $i,
             ]);
-            $deposite = $guest->transactions()->create([
-                'branch_id' => 1,
-                'transaction_type_id' => 2,
-                'payable_amount' => '200',
-            ]);
-            Deposit::create([
-                'transaction_id' => $deposite->id,
-                'amount' => 200,
-                'remarks' => 'Deposit for remote and key',
-            ]);
+
             $check_in_detail = $transaction->check_in_detail()->create([
                 'room_id' => $i,
                 'rate_id' => 1,
                 'static_amount' => '200',
                 'static_hours_stayed' => '6',
+            ]);
+            $deposite = $guest->transactions()->create([
+                'branch_id' => 1,
+                'transaction_type_id' => 2,
+                'payable_amount' => '200',
+                'room_id' => $i,
+            ]);
+            Deposit::create([
+                'transaction_id' => $deposite->id,
+                'amount' => 200,
+                'remarks' => 'Deposit for remote and key',
             ]);
             $selected_room = Room::find($check_in_detail->room_id);
             $selected_room->update([

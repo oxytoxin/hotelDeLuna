@@ -48,12 +48,14 @@ class ItemRequest extends Component
         DB::beginTransaction();
         $requestable_item = RequestableItem::find($this->form['requestable_item_id']);
         $total_amount = $requestable_item->price * $this->form['quantity'];
+        $check_in_detail = Transaccheck_in_detailtion::where('guest_id', $this->guest_id)->where('transaction_type_id', 1)->first()->check_in_detail;
         $request_item_transaction = Transaction::create([
             'branch_id'=> auth()->user()->branch_id,
             'guest_id' => $this->guest_id,
             'payable_amount' => $total_amount + $requestable_item->additional_amount,
             'paid_at' => $this->form['paid'] ? now() : null,
-            'transaction_type_id'=>8
+            'transaction_type_id'=>8,
+            'room_id' => $check_in_detail->room_id,
         ]);
         GuestRequestItem::create([
             'transaction_id' => $request_item_transaction->id,

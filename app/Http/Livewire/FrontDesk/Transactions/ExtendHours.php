@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\FrontDesk\Transactions;
 
-use App\Http\Livewire\FrontDesk\CheckIn;
 use Carbon\Carbon;
 use App\Models\Guest;
 use Livewire\Component;
@@ -15,9 +14,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\CheckInDetailExtension;
 use App\Models\Rate;
 use App\Models\StayingHour;
-use LDAP\Result;
-use Termwind\Components\Dd;
-use Termwind\Components\Raw;
+
 
 class ExtendHours extends Component
 {
@@ -72,10 +69,6 @@ class ExtendHours extends Component
         $total_hours = $this->check_in_detail->static_hours_stayed + $total_check_in_detail_extension_hours;
         $total_hours_with_about_to_extend = $extension->hours + $total_hours;
         $extension_hours = $extension->hours;
-        // $reset_amount = Rate::where('type_id', $this->check_in_detail->room->type_id)
-        //         ->whereHas('staying_hour', function ($query) use ($extension_hours) {
-        //             return $query->where('number', '>=', $extension_hours)->orderBy('number', 'ASC');
-        //         })->first()->amount;
         $reset_amount = StayingHour::where('branch_id', auth()->user()->branch_id)
             ->where('number', '>=', $extension_hours)
             ->orderBy('number', 'ASC')
@@ -137,6 +130,7 @@ class ExtendHours extends Component
             'branch_id' => auth()->user()->branch_id,
             'transaction_type_id' => 6,
             'payable_amount' => $this->form['amount_to_be_paid'],
+            'room_id' => $this->check_in_detail->room_id,
         ]);
         CheckInDetailExtension::create([
             'transaction_id' => $extension_transaction->id,

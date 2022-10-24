@@ -42,7 +42,7 @@ class AddDamages extends Component
 
     public function save()
     {
-        $check_in_detail = Transaction::where('guest_id', $this->guest_id)->where('transaction_type_id', 1)->first();
+        $check_in_detail = Transaction::where('guest_id', $this->guest_id)->where('transaction_type_id', 1)->first()->check_in_detail;
         $this->validate([
             'form.item_id' => 'required',
             'form.amount' => 'required|numeric',
@@ -56,6 +56,7 @@ class AddDamages extends Component
             'transaction_type_id' => 4,
             'payable_amount' => $this->form['amount'] + $this->form['additional_amount'],
             'paid_at' => $this->form['paid'] ? now() : null,
+            'room_id' => $check_in_detail->room_id,
         ]);
         Damage::create([
             'transaction_id' => $damage_transaction->id,
