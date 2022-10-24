@@ -149,9 +149,9 @@
   </div>
   <div wire:key="manage_employee" class="z-0">
     <x-modal.card max-width="5xl" title="Manage Employee " blur wire:model.defer="manage_employee">
-      dfdf
+      <h1 class="font-bold uppercase">{{ $employee_name }}</h1>
 
-      <div>
+      <div class="mt-5">
         <div class="sm:hidden">
           <label for="tabs" class="sr-only">Select a tab</label>
           <!-- Use an "onChange" listener to redirect the user to the selected tab URL. -->
@@ -184,5 +184,9 @@
         </div>
       </div>
     </x-modal.card>
+
+
+
+
   </div>
 </div>

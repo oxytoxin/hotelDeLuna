@@ -26,8 +26,15 @@ class CheckInDetail extends Model
         return $this->belongsTo(Rate::class);
     }
 
-   
-
-  
-
+    public function guest()
+    {
+        return $this->hasOneThrough(
+            Guest::class,
+            Transaction::class,
+            'id',
+            'id',
+            'transaction_id',
+            'guest_id'
+        );
+    }
 }
