@@ -26,9 +26,10 @@ class Rates extends Component
 
     public $amount;
 
+    public $type = [];
+
     public $hours = [];
 
-    public $types = [];
 
     public $edit_id = null;
 
@@ -47,7 +48,6 @@ class Rates extends Component
         } else {
             return [
                 'staying_hour_id' => 'required',
-                'room_type_id' => 'required',
                 'amount' => 'required|numeric|min:1',
             ];
         }
@@ -90,6 +90,7 @@ class Rates extends Component
 
         $this->clear_fields_and_close_modal();
 
+
         $this->notification()->success(
             $title = 'Success',
             $description = 'Rate created successfully'
@@ -116,11 +117,11 @@ class Rates extends Component
         }
         $this->rate->update([
             'staying_hour_id' => $this->staying_hour_id,
-            'type_id' => $this->room_type_id,
             'amount' => $this->amount,
         ]);
 
         $this->clear_fields_and_close_modal();
+        
 
         $this->notification()->success(
             $title = 'Success',
@@ -131,17 +132,16 @@ class Rates extends Component
     public function mount()
     {
         $this->hours = StayingHour::where('branch_id', auth()->user()->branch_id)->get();
-        $this->types = Type::where('branch_id', auth()->user()->branch->id)->get();
+        
     }
     public function render()
     {
-        return view('livewire.branch-admin.rates', [
-            'type' => Type::where('branch_id', auth()->user()->branch->id)
-                ->with(['rates.staying_hour'])
-                ->get(),
+        return view('livewire.branch-admin.rates',[
+            'types' => Type::where('branch_id', auth()->user()->branch->id)->with(['rates.staying_hour'])->get(),
         ]);
     }
 
+   
     public function clear_fields_and_close_modal()
     {
         $this->reset('staying_hour_id', 'room_type_id', 'amount');
