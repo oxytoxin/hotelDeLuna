@@ -25,15 +25,14 @@ class Expenses extends Component
     public function render()
     {
         return view('livewire.back-office.expenses', [
-            'categories' => ExpenseCategory::get(),
-            'expenses' => Expense::with('expense_category')->get(),
+            'categories' => ExpenseCategory::with('expenses')->get(),
         ]);
     }
 
     public function saveCategory()
     {
         $this->validate([
-            'category_name' => 'required',
+            'category_name' => 'required|unique:expense_categories,name',
         ]);
         ExpenseCategory::create([
             'name' => $this->category_name,
@@ -85,7 +84,7 @@ class Expenses extends Component
     public function updateCategory()
     {
         $this->validate([
-            'category_name' => 'required',
+            'category_name' => 'required|unique:expense_categories,name',
         ]);
         ExpenseCategory::where('id', $this->update_id)->update([
             'name' => $this->category_name,

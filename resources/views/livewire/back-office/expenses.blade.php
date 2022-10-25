@@ -1,14 +1,7 @@
 <div>
   <div class="border rounded-lg flex justify-between items-center p-2 py-3 shadow-lg">
     <div class="flex justify-center space-x-1 items-center">
-      <input type="text" wire:model="employee_name" class="w-80  rounded-lg shadow  border-gray-400"
-        placeholder="Search...">
-      <x-button slate wire:click="searchName">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-      </x-button>
+
     </div>
     <div class="flex space-x-1 items-center justify-center">
       <x-button wire:click="$set('create_modal', true)" slate label="MANAGE CATEGORY" class="font-semibold" />
@@ -21,7 +14,7 @@
     </div>
   </div>
 
-  <div class="mt-5">
+  {{-- <div class="mt-5">
     <div class="">
       <div class="mt-8 flex flex-col">
         <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -44,6 +37,7 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200">
+
                 @forelse ($expenses as $expense)
                   <tr>
                     <td class="whitespace-nowrap py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">
@@ -71,7 +65,54 @@
       </div>
     </div>
 
+  </div> --}}
+  <div class="">
+    <div class="mt-8 flex flex-col">
+      <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+          <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+            <table class="min-w-full">
+              <thead class="bg-white">
+                <tr>
+                  <th width="110" scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-700">
+                  </th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-700">EXPENSE NAME</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-700">DESCRIPTION</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-700">AMOUNT</th>
+
+                </tr>
+              </thead>
+              <tbody class="bg-white">
+                @foreach ($categories as $category)
+                  <tr class="border-t border-gray-200">
+                    <th colspan="6" scope="colgroup"
+                      class="bg-gray-50 px-4 py-2 text-left text-sm font-semibold uppercase text-gray-900 sm:px-6">
+                      {{ $category->name }}</th>
+                  </tr>
+                  @foreach ($category->expenses as $item)
+                    <tr class="border-t border-gray-300">
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700"></td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700">{{ $item->name }}</td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700">{{ $item->description }}</td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
+                        &#8369;{{ number_format($item->amount, 2) }}
+                      </td>
+
+                    </tr>
+                  @endforeach
+                @endforeach
+
+
+
+                <!-- More people... -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
 
 
   <div wire:key="create_modal" class="z-0">
