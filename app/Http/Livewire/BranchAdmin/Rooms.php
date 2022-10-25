@@ -71,7 +71,7 @@ class Rooms extends Component
         $this->edit_id = $edit_id;
         $this->room = Room::find($edit_id);
         if ($this->room->status_is() != available() && $this->room->status_is() != unavailable()) {
-            $this->notification()->error(
+            $this->dialog()->error(
                 $title = 'Error',
                 $description = 'Room is not available for editing',
             );
