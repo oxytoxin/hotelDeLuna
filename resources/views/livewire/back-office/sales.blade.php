@@ -47,11 +47,16 @@
 
         @foreach ($transactions as $transaction)
           <tr>
-            <td class="border px-3 py-1">S</td>
-            <td class="border px-3 py-1">1</td>
+            <td class="border px-3 py-1">{{ $transaction->room->floor->number }} FLOOR</td>
+            <td class="border px-3 py-1">&#8369;{{ number_format($transaction->payable_amount, 2) }}</td>
           </tr>
         @endforeach
-
+        <tr class="col-span-2">
+          <td class=" px-3 py-1 font-bold text-right text-gray-700">TOTAL:</td>
+          </td>
+          <td class="border px-3 py-1 font-bold text-gray-700">
+            &#8369;{{ number_format($transactions->sum('payable_amount'), 2) }}</td>
+        </tr>
       </tbody>
     </table>
   </div>

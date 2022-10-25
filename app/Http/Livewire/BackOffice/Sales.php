@@ -23,8 +23,6 @@ class Sales extends Component
 
     public function render()
     {
-        $data = Floor::first()->rooms;
-        dd($data[0]->check_in_details);
         return view('livewire.back-office.sales', [
             'transactions' => $this->getTransactions(),
         ]);
@@ -33,8 +31,10 @@ class Sales extends Component
     public function getTransactions()
     {
         if ($this->report_type == null) {
-            return Guest::whereBranchId(auth()->user()->branch_id)
-                ->with('transactions')
+            return Transaction::where('branch_id', auth()->user()->branch_id)
+                ->whereIn('transaction_type_id', [1, 3, 4, 5, 6, 7, 8])
+                ->whereNotNull('paid_at')
+                ->with('room.floor', 'guest')
                 ->get();
         } else {
             return [];

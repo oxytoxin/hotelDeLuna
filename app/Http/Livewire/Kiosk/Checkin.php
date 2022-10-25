@@ -223,6 +223,7 @@ class Checkin extends Component
             if ($this->long_stay == true) {
                 $checkinroom = Transaction::create([
                     'branch_id' => auth()->user()->branch_id,
+                    'room_id' => $this->get_room['room_id'],
                     'guest_id' => $guest->id,
                     'transaction_type_id' => 1,
                     'payable_amount' => $rate->amount * $this->days_stay,
@@ -230,6 +231,7 @@ class Checkin extends Component
             } else {
                 $checkinroom = Transaction::create([
                     'branch_id' => auth()->user()->branch_id,
+                    'room_id' => $this->get_room['room_id'],
                     'guest_id' => $guest->id,
                     'transaction_type_id' => 1,
                     'payable_amount' => $rate->amount,
@@ -238,6 +240,7 @@ class Checkin extends Component
 
             $checkindeposit = Transaction::create([
                 'branch_id' => auth()->user()->branch_id,
+                'room_id' => $this->get_room['room_id'],
                 'guest_id' => $guest->id,
                 'transaction_type_id' => 2,
                 'payable_amount' => 200,
@@ -306,6 +309,7 @@ class Checkin extends Component
             if ($this->long_stay == true) {
                 $checkinroom = Transaction::create([
                     'branch_id' => auth()->user()->branch_id,
+                    'room_id' => $this->get_room['room_id'],
                     'guest_id' => $guest->id,
                     'transaction_type_id' => 1,
                     'payable_amount' => $rate->amount * $this->days_stay,
@@ -313,6 +317,7 @@ class Checkin extends Component
             } else {
                 $checkinroom = Transaction::create([
                     'branch_id' => auth()->user()->branch_id,
+                    'room_id' => $this->get_room['room_id'],
                     'guest_id' => $guest->id,
                     'transaction_type_id' => 1,
                     'payable_amount' => $rate->amount,
@@ -321,6 +326,7 @@ class Checkin extends Component
 
             $checkindeposit = Transaction::create([
                 'branch_id' => auth()->user()->branch_id,
+                'room_id' => $this->get_room['room_id'],
                 'guest_id' => $guest->id,
                 'transaction_type_id' => 2,
                 'payable_amount' => 200,
