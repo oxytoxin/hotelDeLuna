@@ -2,5 +2,5 @@
 
 function app_name()
 {
-    return "App Name";
+    return "HIMS";
 }

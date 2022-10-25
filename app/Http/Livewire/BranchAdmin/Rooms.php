@@ -141,7 +141,7 @@ class Rooms extends Component
 
     public function mount()
     {
-        $this->roomStatuses = RoomStatus::all();
+        $this->roomStatuses = RoomStatus::whereNotIn('id', [6])->get();
         $this->roomTypes = auth()->user()->branch->types;
     }
 
