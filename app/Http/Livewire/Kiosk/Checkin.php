@@ -196,6 +196,7 @@ class Checkin extends Component
     public function confirmCheckin()
     {
         if ($this->customer_number != null) {
+            dd($this->get_room['room_id']);
             $this->validate([
                 'customer_name' => 'required|min:3',
                 'customer_number' => 'required|numeric|digits:9',
