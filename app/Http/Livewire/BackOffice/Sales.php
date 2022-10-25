@@ -36,8 +36,32 @@ class Sales extends Component
                 ->whereNotNull('paid_at')
                 ->with('room.floor', 'guest')
                 ->get();
+        } elseif ($this->report_type == 1) {
+            return Transaction::where('branch_id', auth()->user()->branch_id)
+                ->whereIn('transaction_type_id', [1, 3, 4, 5, 6, 7, 8])
+                ->whereTime('paid_at', '>=', '08:01:00')
+                ->whereTime('paid_at', '<=', '20:00:00')
+                ->whereNotNull('paid_at')
+                ->when($this->floor_id, function ($query) {
+                    return $query->whereHas('room', function ($query) {
+                        return $query->where('floor_id', $this->floor_id);
+                    });
+                })
+                ->with('room.floor', 'guest')
+                ->get();
         } else {
-            return [];
+            return Transaction::where('branch_id', auth()->user()->branch_id)
+                ->whereIn('transaction_type_id', [1, 3, 4, 5, 6, 7, 8])
+                ->whereTime('paid_at', '>=', '20:01:00')
+                ->whereTime('paid_at', '<=', '08:00:00')
+                ->whereNotNull('paid_at')
+                ->when($this->floor_id, function ($query) {
+                    return $query->whereHas('room', function ($query) {
+                        return $query->where('floor_id', $this->floor_id);
+                    });
+                })
+                ->with('room.floor', 'guest')
+                ->get();
         }
     }
 }
