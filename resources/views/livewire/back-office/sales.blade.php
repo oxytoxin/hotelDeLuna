@@ -39,7 +39,7 @@
     <table id="example" class="table-auto mt-2" style="width:100%">
       <thead class="font-normal">
         <tr>
-          <th class="border text-left px-2 text-sm font-semibold text-gray-500 py-2">FLOOR</th>
+          <th class="border text-left px-2 text-sm font-semibold text-gray-500 py-2">FLOORS</th>
           <th class="border text-left px-2 text-sm font-semibold text-gray-500 py-2">AMOUNT</th>
         </tr>
       </thead>
