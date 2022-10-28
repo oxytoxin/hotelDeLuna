@@ -3,6 +3,13 @@
         @php
             $headers = ['Room Number', 'Status', 'Alert For Checkout', 'Time To Clean', ''];
         @endphp
+        <div class="flex justify-end mb-2 space-x-2">
+            @foreach ($statuses as $roomStatus)
+                <x-status-badge status="{{ $roomStatus->id }}">
+                    {{ $roomStatus->name }}
+                </x-status-badge>
+            @endforeach
+        </div>
         <div class="mt-5">
             <div class="flex flex-col">
                 <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -17,9 +24,11 @@
                                         placeholder="Room Status">
                                         <option value="">All</option>
                                         @foreach ($statuses as $status)
-                                            <option value="{{ $status->id }}">
-                                                {{ $status->name }}
-                                            </option>
+                                            @if ($status->id != 6)
+                                                <option value="{{ $status->id }}">
+                                                    {{ $status->name }}
+                                                </option>
+                                            @endif
                                         @endforeach
                                     </x-native-select>
                                 </div>
@@ -46,7 +55,9 @@
                                                 ROOM # {{ $room->number }} | {{ ordinal($room->floor->number) }} Floor
                                             </td>
                                             <td class="px-3 py-4 text-sm whitespace-nowrap">
-                                                {{ $room->room_status->name }}
+                                                <x-status-badge status="{{ $room->room_status_id }}">
+                                                    {{ $room->room_status->name }}
+                                                </x-status-badge>
                                             </td>
                                             <td class="px-3 py-4 text-sm whitespace-nowrap">
                                                 <div>
@@ -109,7 +120,7 @@
                                                                     class="absolute p-2 text-white bg-red-600 rounded-r-lg rounded-tl-lg -top-5 -right-10 animate-bounce">
                                                                     About to due
                                                                 </span>
-                                                                <div class="flex space-x-2 ">
+                                                                <div class="flex space-x-2">
                                                                     <div class="flex space-x-1">
                                                                         <span
                                                                             x-text="timer.hours">{{ $component->hours() }}</span>

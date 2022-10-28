@@ -1,8 +1,17 @@
 <div>
     <div>
+        <div class="flex justify-end mb-2 space-x-2">
+            @foreach ($roomStatuses as $roomStatus)
+                <x-status-badge status="{{ $roomStatus->id }}">
+                    {{ $roomStatus->name }}
+                </x-status-badge>
+            @endforeach
+        </div>
         <x-table :headers="['Room Number', 'Floor', 'Status', 'Types', 'Priority', '']">
             <x-slot:topLeft>
-                <x-input placeholder="Search" wire:model.debounce.500ms="search" icon="search" />
+                <x-input placeholder="Search"
+                    wire:model.debounce.500ms="search"
+                    icon="search" />
                 <x-native-select wire:model.debounce="filter.floor">
                     <option value="all">Floor (All)</option>
                     @foreach ($floors as $key => $floor)
@@ -12,14 +21,21 @@
                 <x-native-select wire:model.debounce="filter.room_status">
                     <option value="all">Status (All)</option>
                     @foreach ($roomStatuses as $key => $roomStatuse)
-                        <option value="{{ $roomStatuse->id }}">{{ $roomStatuse->name }}</option>
+                        @if ($roomStatuse->id != 6)
+                            <option value="{{ $roomStatuse->id }}">{{ $roomStatuse->name }}</option>
+                        @endif
                     @endforeach
                 </x-native-select>
             </x-slot:topLeft>
             <x-slot:topRight>
                 <div class="flex items-center space-x-3">
-                    <x-button wire:click="$set('manageFloorModal',true)" label="Manage Floor" emerald outline />
-                    <x-button emerald wire:click="add" label="Add Room" />
+                    <x-button wire:click="$set('manageFloorModal',true)"
+                        label="Manage Floor"
+                        emerald
+                        outline />
+                    <x-button emerald
+                        wire:click="add"
+                        label="Add Room" />
                 </div>
             </x-slot:topRight>
             @forelse ($rooms as $room)
@@ -41,8 +57,10 @@
                     <x-table-data>
                         @if ($room->priority)
                             <button class="flex items-center space-x-2 text-green-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                    class="w-6 h-6 ">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                    class="w-6 h-6">
                                     <path fill-rule="evenodd"
                                         d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
                                         clip-rule="evenodd" />
@@ -53,7 +71,9 @@
                             </button>
                         @else
                             <button class="flex items-center space-x-2 text-red-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
                                     class="w-6 h-6">
                                     <path fill-rule="evenodd"
                                         d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
@@ -67,8 +87,10 @@
                     </x-table-data>
                     <x-table-data>
                         <div class="flex justify-end px-2">
-                            <x-actions.edit wire:key="{{ $room->id }}" wire:click="edit({{ $room->id }})"
-                                wire:loading.class="cursor-progress" wire:loading.attr="disabled"
+                            <x-actions.edit wire:key="{{ $room->id }}"
+                                wire:click="edit({{ $room->id }})"
+                                wire:loading.class="cursor-progress"
+                                wire:loading.attr="disabled"
                                 wire:target="edit({{ $room->id }})" />
                         </div>
                     </x-table-data>
@@ -82,31 +104,42 @@
         </x-table>
     </div>
     <div wire:key="modal-panel">
-        <x-modal.card title="{{ $this->getModeTitle() }}" wire:model.defer="showModal">
+        <x-modal.card title="{{ $this->getModeTitle() }}"
+            wire:model.defer="showModal">
             <form>
                 @csrf
                 <div class="gap-3 sm:grid sm:grid-cols-3">
-                    <x-input label="Number" wire:model.defer="number" type="number" placeholder="Number" />
-                    <x-native-select label="Select Floor" wire:model.defer="floor_id">
-                        <option value="" disabled>Select Floor</option>
+                    <x-input label="Number"
+                        wire:model.defer="number"
+                        type="number"
+                        placeholder="Number" />
+                    <x-native-select label="Select Floor"
+                        wire:model.defer="floor_id">
+                        <option value=""
+                            disabled>Select Floor</option>
                         @foreach ($floors as $key => $floor)
                             <option value="{{ $floor->id }}">{{ $floor->number }}</option>
                         @endforeach
                     </x-native-select>
-                    <x-native-select label="Select Room Status" wire:model.defer="room_status_id">
-                        <option value="" disabled>Select Room Status</option>
+                    <x-native-select label="Select Room Status"
+                        wire:model.defer="room_status_id">
+                        <option value=""
+                            disabled>Select Room Status</option>
                         @foreach ($roomStatuses as $key => $roomStatus)
                             <option value="{{ $roomStatus->id }}">{{ $roomStatus->name }}</option>
                         @endforeach
                     </x-native-select>
                     <div class="sm:col-span-3">
-                        <x-textarea wire:model.defer="description" label="Description"
+                        <x-textarea wire:model.defer="description"
+                            label="Description"
                             placeholder="Leave it blank if none">
                         </x-textarea>
                     </div>
                     <div class="sm:col-span-3">
-                        <x-native-select label="Select Room Type" wire:model.defer="type_id">
-                            <option value="" disabled>Select Room Type</option>
+                        <x-native-select label="Select Room Type"
+                            wire:model.defer="type_id">
+                            <option value=""
+                                disabled>Select Room Type</option>
                             @foreach ($roomTypes as $key => $roomType)
                                 <option value="{{ $roomType->id }}">{{ $roomType->name }}</option>
                             @endforeach
@@ -118,11 +151,17 @@
                 <div wire:key="action-buttons">
                     @switch($mode)
                         @case('create')
-                            <x-button wire:click="create" spinner="create" positive label="Save" />
+                            <x-button wire:click="create"
+                                spinner="create"
+                                positive
+                                label="Save" />
                         @break
 
                         @case('edit')
-                            <x-button wire:click="update" spinner="update" info label="Update" />
+                            <x-button wire:click="update"
+                                spinner="update"
+                                info
+                                label="Update" />
                         @break
 
                         @default
@@ -130,11 +169,15 @@
                 </div>
             </x-slot:footer>
         </x-modal.card>
-        <x-modal.card title="Manage Floor" wire:model.defer="manageFloorModal">
+        <x-modal.card title="Manage Floor"
+            wire:model.defer="manageFloorModal">
             <form>
                 @csrf
                 <div>
-                    <x-input label="Number" wire:model.defer="floor_number" type="number" placeholder="Number" />
+                    <x-input label="Number"
+                        wire:model.defer="floor_number"
+                        type="number"
+                        placeholder="Number" />
                 </div>
             </form>
             <div class="grid mt-5 space-y-2">
@@ -150,7 +193,10 @@
                 @endforeach
             </div>
             <x-slot:footer>
-                <x-button primary wire:click="saveFloor" spinner="saveFloor" label="Save" />
+                <x-button primary
+                    wire:click="saveFloor"
+                    spinner="saveFloor"
+                    label="Save" />
             </x-slot:footer>
         </x-modal.card>
     </div>

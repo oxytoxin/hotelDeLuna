@@ -109,7 +109,7 @@ class Extensions extends Component
         $this->reset('hours', 'amount');
         $this->notification()->success(
             $title = 'Success',
-            $description = 'Extend Amount has been updated successfully.'
+            $description = 'Extend Amount has been Successfully Updated.'
         );
         $this->showModal = false;
     }
