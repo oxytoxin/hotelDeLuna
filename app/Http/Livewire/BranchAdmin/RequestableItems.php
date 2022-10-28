@@ -63,7 +63,7 @@ class RequestableItems extends Component
 
         $this->notification()->success(
             $title = 'Success!',
-            $message = 'Requestable Item Updated Successfully!'
+            $message = 'Requestable Item Successfully Updated!'
         );
         $this->reset('form');
         $this->showModal = false;

@@ -112,7 +112,7 @@ class Discounts extends Component
 
         $this->notification()->success(
             $title = 'Discount Updated',
-            $description = 'Discount has been updated successfully'
+            $description = 'Discount has been Successfully Updated'
         );
 
         $this->reset('name', 'amount', 'description');

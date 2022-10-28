@@ -19,7 +19,7 @@ class RoomMonitoring extends Component
 
     public function mount()
     {
-        $this->statuses = RoomStatus::where('id','!=',6)->get();
+        $this->statuses = RoomStatus::get();
     }
 
     public function render()
