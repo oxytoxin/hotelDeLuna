@@ -177,7 +177,13 @@
           @endforeach
         </x-native-select>
         <x-textarea label="Description" placeholder="write your reasons" wire:model.defer="expense_description" />
-        <x-input label="Amount" placeholder="" wire:model.defer="expense_amount" />
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Amount</label>
+          <div class="mt-1">
+            <input type="number" wire:model.defer="expense_amount"
+              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm">
+          </div>
+        </div>
       </div>
 
       <x-slot:footer>
