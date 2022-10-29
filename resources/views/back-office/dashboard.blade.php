@@ -7,7 +7,7 @@
       <!-- Replace with your content -->
       <div class="py-4">
         <div class="h-96 rounded-lg  border-gray-200">
-          sdsdsd
+          @livewire('branch-admin.dashboard.statistic-overview')
         </div>
       </div>
       <!-- /End replace -->
