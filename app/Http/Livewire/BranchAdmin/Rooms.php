@@ -134,7 +134,7 @@ class Rooms extends Component
 
         $this->notification()->success(
             $title = 'Success',
-            $description = 'Room updated successfully',
+            $description = 'Successfully Updated'
         );
 
     }
