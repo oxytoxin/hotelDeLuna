@@ -81,6 +81,31 @@ class Rates extends Component
             return;
         }
 
+        $rate_exists = Rate::where('staying_hour_id', $this->staying_hour_id)
+            ->where('amount', $this->amount)
+            ->where('branch_id', auth()->user()->branch_id)
+            ->exists();
+
+        if ($rate_exists) {
+            $this->notification()->error(
+                $title = 'Rate already exists',
+                $description = 'The rate you are trying to add already exists.'
+            );
+            return;
+        }
+
+        $rate_exists = Rate::where('staying_hour_id', $this->staying_hour_id)
+            ->where('branch_id', auth()->user()->branch_id)
+            ->exists();
+
+        if ($rate_exists) {
+            $this->notification()->error(
+                $title = 'Rate already exists',
+                $description = 'The rate you are trying to add already exists.'
+            );
+            return;
+        }
+
         Rate::create([
             'branch_id' => auth()->user()->branch->id,
             'staying_hour_id' => $this->staying_hour_id,
@@ -101,31 +126,59 @@ class Rates extends Component
     {
         $this->validate();
         
-        $rate_exitst = Rate::where('staying_hour_id', $this->staying_hour_id)
+        $rate_exists = Rate::where('staying_hour_id', $this->staying_hour_id)
             ->where('type_id', $this->room_type_id)
             ->where('amount', $this->amount)
             ->where('branch_id', auth()->user()->branch_id)
             ->where('id', '!=', $this->rate->id)
-            ->first();
+            ->exists();
 
-        if ($rate_exitst) {
+        if ($rate_exists) {
             $this->notification()->error(
                 $title = 'Rate already exists',
                 $description = 'The rate you are trying to add already exists.'
             );
             return;
         }
+
+        $rate_exists = Rate::where('staying_hour_id', $this->staying_hour_id)
+            ->where('amount', $this->amount)
+            ->where('branch_id', auth()->user()->branch_id)
+            ->where('id', '!=', $this->rate->id)
+            ->exists();
+
+          if ($rate_exists) {
+                $this->notification()->error(
+                    $title = 'Rate already exists',
+                    $description = 'The rate you are trying to add already exists.'
+                );
+                return;
+            }
+
+            $rate_exists = Rate::where('staying_hour_id', $this->staying_hour_id)
+            ->where('id', '!=', $this->rate->id)
+            ->exists();
+
+          if ($rate_exists) {
+                $this->notification()->error(
+                    $title = 'Rate already exists',
+                    $description = 'The rate you are trying to add already exists.'
+                );
+                return;
+            }
+        
         $this->rate->update([
             'staying_hour_id' => $this->staying_hour_id,
             'amount' => $this->amount,
         ]);
+        
 
         $this->clear_fields_and_close_modal();
         
 
         $this->notification()->success(
             $title = 'Success',
-            $description = 'Rate updated successfully'
+            $description = 'Successfully Updated'
         );
     }
 

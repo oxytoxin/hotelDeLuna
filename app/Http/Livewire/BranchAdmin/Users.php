@@ -100,7 +100,7 @@ class Users extends Component
         $this->clear_fields_and_close_modal();
         $this->notification()->success(
             $title = 'Success',
-            $description = 'User updated successfully',
+            $description = 'Successfully Updated'
         );
     }
 
