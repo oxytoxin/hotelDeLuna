@@ -80,7 +80,7 @@ class StainAndDamages extends Component
 
         $this->notification()->success(
             $title = 'Success!',
-            $message = 'Record has been updated.'
+            $description = 'Successfully Updated'
         );
         $this->modal['show'] = false;
         $this->reset('form');

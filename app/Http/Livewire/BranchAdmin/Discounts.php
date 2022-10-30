@@ -80,6 +80,13 @@ class Discounts extends Component
 
     public function create()
     {
+
+        $this->validate([
+            'name' => 'required|unique:discounts,name',
+            'amount' => 'required|numeric|min:1',
+            'description' => 'required',
+            'type' => 'in:percentage,amount'
+        ]);
         Discount::create([
             'branch_id' => auth()->user()->branch_id,
             'name' => $this->name,
@@ -102,6 +109,13 @@ class Discounts extends Component
     public function update()
     {
        
+        $this->validate([
+            'name' => 'required|unique:discounts,name,'.$this->edit_id,
+            'amount' => 'required|numeric|min:1',
+            'description' => 'required',
+            'type' => 'in:percentage,amount'
+
+        ]);
         $this->discount->update([
             'name' => $this->name,
             'amount' => $this->amount,
@@ -112,7 +126,7 @@ class Discounts extends Component
 
         $this->notification()->success(
             $title = 'Discount Updated',
-            $description = 'Discount has been Successfully Updated'
+            $description = 'Successfully Updated'
         );
 
         $this->reset('name', 'amount', 'description');
