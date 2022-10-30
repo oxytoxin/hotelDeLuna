@@ -123,7 +123,7 @@
         <ul role="list" class="divide-y divide-gray-200">
           @forelse ($categories as $key => $category)
             <li wire:key="{{ $key }}">
-              <div class="px-4 hover:bg-gray-50 py-2 sm:px-6">
+              <div class="px-4 hover:bg-gray-50 py-2 sm:px-6 s">
                 <div class="flex items-center justify-between">
                   <p class="truncate text-sm font-semibold uppercase text-gray-600 ">{{ $category->name }}</p>
                   <div class="ml-2 flex flex-shrink-0">
