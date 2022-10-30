@@ -9,14 +9,14 @@ use WireUi\Traits\Actions;
 class RequestableItems extends Component
 {
     use WithPagination, Actions;
-    
+
     public $filter = ['search' => ''];
 
     public $showModal = false;
 
     public $form = [
-        'name'=>'',
-        'price'=>'',
+        'name' => '',
+        'price' => '',
     ];
 
     public $mode = 'create';
@@ -52,7 +52,9 @@ class RequestableItems extends Component
     public function update()
     {
         $this->validate([
-            'form.name' => 'required|unique:requestable_items,name,'.$this->requestable_item->id,
+            'form.name' =>
+                'required|unique:requestable_items,name,' .
+                $this->requestable_item->id,
             'form.price' => 'required|numeric',
         ]);
 
@@ -84,20 +86,26 @@ class RequestableItems extends Component
 
         $this->notification()->success(
             $title = 'Success!',
-            $message = 'Requestable Item has been created.'
+            $message = 'Item has been created.'
         );
         $this->reset('form');
         $this->showModal = false;
     }
 
-
     public function render()
     {
-        return view('livewire.branch-admin.requestable-items',[
-            'requestable_items' =>RequestableItem::query()
-                ->when($this->filter['search']!='', fn($query) => $query->where('name', 'like', '%'.$this->filter['search'].'%'))
+        return view('livewire.branch-admin.requestable-items', [
+            'requestable_items' => RequestableItem::query()
+                ->when(
+                    $this->filter['search'] != '',
+                    fn($query) => $query->where(
+                        'name',
+                        'like',
+                        '%' . $this->filter['search'] . '%'
+                    )
+                )
                 ->where('branch_id', auth()->user()->branch_id)
-                ->paginate(10)
+                ->paginate(10),
         ]);
     }
 }
