@@ -240,7 +240,56 @@ class CheckOutGuest extends Component
             $this->checkOutFalse();
             return;
         }
-        $this->final_reminder = true;
+        $this->dialog()->confirm([
+            'title'       => 'Remider',
+            'description' => 'Hand over by the guest/room boy the key and remote',
+            'icon'        => 'info',
+            'accept'      => [
+                'label'  => ' Next',
+                'method' => 'reminderTwo',
+            ],
+            'reject' => [
+                'label'  => 'Cancel',
+            ],
+        ]);
+    }
+
+    public function reminderTwo()
+    {
+        $this->dialog()->confirm([
+            'title'       => 'Remider',
+            'description' => 'Check room by the body',
+            'icon'        => 'info',
+            'accept'      => [
+                'label'  => ' Next',
+                'method' => 'reminderthree',
+            ],
+            'reject' => [
+                'label'  => 'Cancel',
+            ],
+        ]);
+    }
+
+    public function reminderthree()
+    {
+        $this->dialog()->confirm([
+            'title'       => 'Remider',
+            'description' => 'Call guest to check-out in Kiosk',
+            'icon'        => 'info',
+            'accept'      => [
+                'label'  => ' Next',
+                'method' => 'final_reminder_done',
+            ],
+            'reject' => [
+                'label'  => 'Cancel',
+            ],
+        ]);
+    }
+
+    
+
+    public function final_reminder_done()
+    {
         $this->dialog()->confirm([
             'title'       => 'Are you Sure?',
             'description' => 'This will check out this guest',
@@ -257,7 +306,6 @@ class CheckOutGuest extends Component
 
     public function confirmCheckOut()
     {
-        
         DB::beginTransaction();
         $this->guest->update([
             'totaly_checked_out' => true,

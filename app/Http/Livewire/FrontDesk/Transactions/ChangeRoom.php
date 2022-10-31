@@ -138,11 +138,13 @@ class ChangeRoom extends Component
         $new_selected_room_amount = $this->new_room_rate->amount;
         $old_selected_room_amount_paid = $this->check_in_detail->transaction->payable_amount;
 
+
+        
         $change_room_transaction = Transaction::create([
             'branch_id' => auth()->user()->branch_id,
             'guest_id' => $transaction->guest_id,
             'transaction_type_id' => 7,
-            'payable_amount' => $old_selected_room_amount_paid > $new_selected_room_amount ? $old_selected_room_amount_paid - $new_selected_room_amount : 0,
+            'payable_amount' => $old_selected_room_amount_paid > $new_selected_room_amount ? 0 : $new_selected_room_amount - $old_selected_room_amount_paid,
             'paid_at' => $this->form['paid'] ? now() : null,
             'room_id' => $new_room->id,
         ]);
@@ -158,7 +160,7 @@ class ChangeRoom extends Component
             ]);
             Deposit::create([
                 'transaction_id' => $deposit_transaction->id,
-                'amount' => $new_selected_room_amount - $old_selected_room_amount_paid,
+                'amount' => $old_selected_room_amount_paid - $new_selected_room_amount,
                 'remarks' => 'Deposit from transfer room transaction',
             ]);
         }
