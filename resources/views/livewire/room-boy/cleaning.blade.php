@@ -161,12 +161,13 @@
 
         <!-- Actions panel -->
         <section aria-labelledby="quick-links-title" class="bg-white">
-          <div class="relative my-5">
-            <div class="legend flex space-x-2">
-              <div>Legend:</div>
-              <span class=" text-white bg-red-600 rounded-full px-2">Priority</span>
-              <span class=" text-white bg-green-600 rounded-full px-2">Onqueue</span>
-            </div>
+          <div class="legend flex space-x-2 mt-3">
+            <div>Legend:</div>
+            <span class=" text-white bg-red-600 rounded-full px-2">Priority</span>
+            <span class=" text-white bg-green-600 rounded-full px-2">Onqueue</span>
+          </div>
+          <div class="relative my-2 mb-5">
+
             <div class="absolute inset-0 flex items-center" aria-hidden="true">
               <div class="w-full border-t border-gray-300"></div>
             </div>
