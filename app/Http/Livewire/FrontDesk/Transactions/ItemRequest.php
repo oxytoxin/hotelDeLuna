@@ -48,7 +48,7 @@ class ItemRequest extends Component
         DB::beginTransaction();
         $requestable_item = RequestableItem::find($this->form['requestable_item_id']);
         $total_amount = $requestable_item->price * $this->form['quantity'];
-        $check_in_detail = Transaccheck_in_detailtion::where('guest_id', $this->guest_id)->where('transaction_type_id', 1)->first()->check_in_detail;
+        $check_in_detail = Transaction::where('guest_id', $this->guest_id)->where('transaction_type_id', 1)->first()->check_in_detail;
         $request_item_transaction = Transaction::create([
             'branch_id'=> auth()->user()->branch_id,
             'guest_id' => $this->guest_id,

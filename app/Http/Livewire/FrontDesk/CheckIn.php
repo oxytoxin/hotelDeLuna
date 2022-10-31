@@ -79,6 +79,7 @@ class CheckIn extends Component
 
     public function setGuest($guest_id)
     {
+        $this->reset('excess_amount','given_amount','save_as_deposit');
         $this->guest  = Guest::where('id',$guest_id)->with(['transactions.check_in_detail','transactions.deposit'])->first();
         if ( $this->guest->terminated_at != null) {
             $this->notification()->error(
