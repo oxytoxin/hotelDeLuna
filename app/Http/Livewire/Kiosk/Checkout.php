@@ -24,7 +24,8 @@ class Checkout extends Component
                 '%' . $this->guest . '%'
             )
                 ->where('branch_id', auth()->user()->branch_id)
-                ->get(),
+                ->get()
+                ->groupBy('transaction_type_id'),
             'guests' => Guest::where(
                 'qr_code',
                 'like',
