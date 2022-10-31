@@ -79,9 +79,9 @@
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-700">EXPENSE NAME</th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-700">DESCRIPTION</th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-700">AMOUNT</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-700">
+                  {{-- <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-700">
 
-                  </th>
+                  </th> --}}
 
                 </tr>
               </thead>
@@ -98,11 +98,11 @@
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700">{{ $item->name }}</td>
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700">{{ $item->description }}</td>
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
-                        {{ $item->amount }}
+                        &#8369;{{ number_format($item->amount, 2) }}
                       </td>
-                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
+                      {{-- <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
                         <x-button wire:click="deleteExpense({{ $item->id }})" icon="trash" negative />
-                      </td>
+                      </td> --}}
 
                     </tr>
                   @endforeach
