@@ -70,7 +70,12 @@ class Rooms extends Component
     {
         $this->edit_id = $edit_id;
         $this->room = Room::find($edit_id);
-        if ($this->room->status_is() != available() && $this->room->status_is() != unavailable()) {
+        if ($this->room->status_is() != available() 
+        && $this->room->status_is() != unavailable()
+        &&  $this->room->status_is() != maintenance()
+        &&  $this->room->status_is() != reserved()
+        &&  $this->room->status_is() != uncleaned()
+        ) {
             $this->dialog()->error(
                 $title = 'Error',
                 $description = 'Room is not available for editing',
