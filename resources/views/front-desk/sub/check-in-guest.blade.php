@@ -68,6 +68,32 @@
                                 <span> ₱{{ $guest->transactions->sum('payable_amount') - $discounted_amount }}</span>
                             </h1>
                         </div>
+                        <div wire:key="exxx"
+                            class="pt-2 border-t">
+                            <div class="gap-2 sm:grid sm:grid-cols-2">
+                                <div class="grid-col-1">
+                                    <x-input label="Cash Tender"
+                                        wire:model.debouce.500ms="given_amount"
+                                        type="number"
+                                        prefix="₱" />
+                                </div>
+                                <div class="grid-col-1">
+                                    <x-input label="Excess Amount"
+                                        wire:model="excess_amount"
+                                        type="number"
+                                        prefix="₱" />
+                                </div>
+                                <div id="ccccasdf38924732742"
+                                    class="grid-col-1"
+                                    x-animate>
+                                    @if ($excess_amount)
+                                        <x-checkbox id="right-label"
+                                            wire:model.defer="save_as_deposit"
+                                            label="Save the Excess Amount To Deposit" />
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
                         {{-- <div class="mt-4">
                             <div class="grid grid-cols-4 gap-4">
                                 @foreach ($discounts as $discount)

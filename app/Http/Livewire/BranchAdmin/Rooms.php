@@ -70,18 +70,18 @@ class Rooms extends Component
     {
         $this->edit_id = $edit_id;
         $this->room = Room::find($edit_id);
-        if ($this->room->status_is() != available() 
-        && $this->room->status_is() != unavailable()
-        &&  $this->room->status_is() != maintenance()
-        &&  $this->room->status_is() != reserved()
-        &&  $this->room->status_is() != uncleaned()
-        ) {
-            $this->dialog()->error(
-                $title = 'Error',
-                $description = 'Room is not available for editing',
-            );
-            return;
-        }
+        // if ($this->room->status_is() != available() 
+        // && $this->room->status_is() != unavailable()
+        // &&  $this->room->status_is() != maintenance()
+        // &&  $this->room->status_is() != reserved()
+        // &&  $this->room->status_is() != uncleaned()
+        // ) {
+        //     $this->dialog()->error(
+        //         $title = 'Error',
+        //         $description = 'Room is not available for editing',
+        //     );
+        //     return;
+        // }
         $this->number = $this->room->number;
         $this->description = $this->room->description;
         $this->floor_id = $this->room->floor_id;
