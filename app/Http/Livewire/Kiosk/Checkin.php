@@ -382,7 +382,7 @@ class Checkin extends Component
             $this->step = 3;
         } else {
             $this->validate([
-                'days_stay' => 'required|numeric',
+                'days_stay' => 'required|numeric|min:1|max:31',
             ]);
             $this->get_room['rate_id'] = $id;
             $this->manageRoomPanel = false;

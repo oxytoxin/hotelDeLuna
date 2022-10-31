@@ -429,7 +429,7 @@
             </div>
         </div>
     </div> --}}
-    
+
     <div class="font-rubik" x-data="{ confirm: @entangle('confirmModal'), manage: @entangle('manageRoomPanel') }">
       @switch($step)
         @case(1)
@@ -930,7 +930,7 @@
                     <input type="number" wire:model="days_stay" placeholder="ENTER # OF DAYS"
                       class="w-80 rounded-xl text-center border-none focus:outline-none focus:ring-0 focus:border-0 text-lg">
                     @error('days_stay')
-                      <span class="error mt-2 animate-pulse text-red-600 text-sm">This field is required.</span>
+                      <span class="error mt-2 animate-pulse text-red-600 text-sm">{{ $message }}</span>
                     @enderror
                   </div>
                 </div>

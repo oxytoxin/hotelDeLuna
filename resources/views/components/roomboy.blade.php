@@ -63,7 +63,8 @@
                     id="options-menu-button" aria-expanded="false" aria-haspopup="true">
                     <span class="flex w-full items-center justify-between">
                       <span class="flex min-w-0 items-center justify-between space-x-3">
-                        <img class="h-10 w-10 flex-shrink-0 rounded-full border-2 border-green-500 bg-gray-300"
+                        <img
+                          class="h-10 w-10 object-cover flex-shrink-0 rounded-full border-2 border-green-500 bg-gray-300"
                           src="{{ auth()->user()->profile_photo_url }}" alt="">
                         <span class="flex min-w-0 flex-1 flex-col">
                           <span class="truncate text-sm font-medium text-white">{{ auth()->user()->name }}</span>

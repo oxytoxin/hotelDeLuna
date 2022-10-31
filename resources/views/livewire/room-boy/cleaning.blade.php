@@ -93,7 +93,7 @@
                   <div class="flex-shrink-0">
                     <div class="relative h-20 w-20 mx-auto">
                       <img src="{{ auth()->user()->profile_photo_url }}"
-                        class="h-20 w-20  rounded-full border-4 flex-shrink-0 mx-auto border-green-500" alt="">
+                        class="h-full w-full object-cover  rounded-full border-4  border-green-500" alt="">
                       <div class="absolute bottom-0 right-0">
                         <x-button.circle href="{{ route('profile.show') }}" xs dark icon="camera" />
                       </div>
@@ -162,6 +162,11 @@
         <!-- Actions panel -->
         <section aria-labelledby="quick-links-title" class="bg-white">
           <div class="relative my-5">
+            <div class="legend flex space-x-2">
+              <div>Legend:</div>
+              <span class=" text-white bg-red-600 rounded-full px-2">Priority</span>
+              <span class=" text-white bg-green-600 rounded-full px-2">Onqueue</span>
+            </div>
             <div class="absolute inset-0 flex items-center" aria-hidden="true">
               <div class="w-full border-t border-gray-300"></div>
             </div>
@@ -252,7 +257,8 @@
                     <x-countdown :expires="$timeToClean">
                       <span class="font-semibold text-green-800" x-text="timer.days">{{ $component->days() }}</span>
                       days
-                      <span class="font-semibold text-green-800" x-text="timer.hours">{{ $component->hours() }}</span>
+                      <span class="font-semibold text-green-800"
+                        x-text="timer.hours">{{ $component->hours() }}</span>
                       hours
                       <span class="font-semibold text-green-800"
                         x-text="timer.minutes">{{ $component->minutes() }}</span>
