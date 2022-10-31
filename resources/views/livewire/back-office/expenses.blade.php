@@ -95,7 +95,7 @@
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700">{{ $item->name }}</td>
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700">{{ $item->description }}</td>
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700">
-                        &#8369;{{ number_format($item->amount, 2) }}
+                        {{ $item->amount }}
                       </td>
 
                     </tr>
