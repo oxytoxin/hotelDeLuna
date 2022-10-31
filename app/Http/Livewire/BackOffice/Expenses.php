@@ -117,4 +117,13 @@ class Expenses extends Component
             );
         }
     }
+
+    public function deleteExpense($id)
+    {
+        Expense::where('id', $id)->delete();
+        $this->notification()->success(
+            $title = 'Expense deleted',
+            $description = 'The expense has been deleted successfully.'
+        );
+    }
 }
