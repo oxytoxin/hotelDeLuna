@@ -20,4 +20,9 @@ class Floor extends Model
     {
         return $this->hasMany(Room::class);
     }
+
+    public function designations()
+    {
+        return $this->hasMany(Designation::class);
+    }
 }
