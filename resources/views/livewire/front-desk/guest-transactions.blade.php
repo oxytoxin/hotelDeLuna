@@ -1,7 +1,7 @@
 <div x-data="{ tab: 1 }"
     x-init="$refs.searchBar.focus()"
     class="grid space-y-3">
-    <div class="flex p-2 space-x-3 bg-white border border-gray-300 rounded-lg">
+    <div class="flex space-x-3 rounded-lg border border-gray-300 bg-white p-2">
         <div class="w-1/2">
             <x-input placeholder="Search ...."
                 x-ref="searchBar"
@@ -11,7 +11,6 @@
         </div>
         <div wire:key="buttons"
             class="flex items-center space-x-3">
-
             @if ($guest)
                 <x-button wire:click="clear"
                     negative
@@ -26,10 +25,6 @@
                     icon="search"
                     wire:click="searchByRoomNumber"
                     primary />
-                {{-- <x-button label="Name"
-                    icon="search"
-                    wire:click="searchByName"
-                    primary /> --}}
             @endif
         </div>
     </div>
@@ -38,79 +33,21 @@
             <div wire:key="{{ $guest->id }}-actions">
                 <div>
                     <div>
-                        <nav class="flex divide-x divide-gray-200 rounded-lg shadow isolate"
+                        <nav class="isolate flex divide-x divide-gray-200 rounded-lg shadow"
                             aria-label="Tabs">
-                            <!-- Current: "text-gray-900", Default: "text-gray-500 hover:text-gray-700" -->
-                            <button type="button"
-                                wire:click="$set('action',null)"
-                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white rounded-l-lg hover:text-gray-700 group hover:bg-gray-50 focus:z-10"
-                                aria-current="page">
-                                <span>Information</span>
-                                <span aria-hidden="true"
-                                    @class([
-                                        'absolute inset-x-0 bottom-0 h-0.5',
-                                        'bg-primary-500' => $action == null,
-                                    ])></span>
-                            </button>
-                            <button type="button"
-                                wire:click="$set('action','transactions')"
-                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
-                                <span>Transactions</span>
-                                <span aria-hidden="true"
-                                    @class([
-                                        'absolute inset-x-0 bottom-0 h-0.5',
-                                        'bg-primary-500' => $action == 'transactions',
-                                    ])></span>
-                            </button>
-                            <button type="button"
-                                wire:click="$set('action','change-room')"
-                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
-                                <span>Transfer</span>
-                                <span aria-hidden="true"
-                                    @class([
-                                        'absolute inset-x-0 bottom-0 h-0.5',
-                                        'bg-primary-500' => $action == 'change-room',
-                                    ])></span>
-                            </button>
-
-                            <button type="button"
-                                wire:click="$set('action','extend-hours')"
-                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
-                                <span>Extend</span>
-                                <span aria-hidden="true"
-                                    @class([
-                                        'absolute inset-x-0 bottom-0 h-0.5',
-                                        'bg-primary-500' => $action == 'extend-hours',
-                                    ])></span>
-                            </button>
-                            <button type="button"
-                                wire:click="$set('action','add-damages')"
-                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
-                                <span> Damage Charges</span>
-                                <span aria-hidden="true"
-                                    @class([
-                                        'absolute inset-x-0 bottom-0 h-0.5',
-                                        'bg-primary-500' => $action == 'add-damages',
-                                    ])></span>
-                            </button>
-                            <button type="button"
-                                wire:click="$set('action','item-request')"
-                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
-                                <span>Amenities</span>
-                                <span aria-hidden="true"
-                                    @class([
-                                        'absolute inset-x-0 bottom-0 h-0.5',
-                                        'bg-primary-500' => $action == 'item-request',
-                                    ])
-                                    class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
-                            </button>
-                            <button type="button"
-                                wire:click="$set('action','deposits')"
-                                class="relative flex-1 min-w-0 px-4 py-4 overflow-hidden text-sm font-medium text-center text-gray-500 bg-white rounded-r-lg hover:text-gray-700 group hover:bg-gray-50 focus:z-10">
-                                <span>Deposit </span>
-                                <span aria-hidden="true"
-                                    class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
-                            </button>
+                            @foreach ($tabs as $tabs)
+                                <button type="button"
+                                    wire:click="$set('action',null)"
+                                    class="group relative min-w-0 flex-1 overflow-hidden rounded-l-lg bg-white px-4 py-4 text-center text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700 focus:z-10"
+                                    aria-current="page">
+                                    <span>Information</span>
+                                    <span aria-hidden="true"
+                                        @class([
+                                            'absolute inset-x-0 bottom-0 h-0.5',
+                                            'bg-primary-500' => $action == null,
+                                        ])></span>
+                                </button>
+                            @endforeach
                         </nav>
                     </div>
                 </div>
@@ -138,7 +75,7 @@
             </div>
         @endif
     </div>
-    <div>
+    {{-- <div>
         @if ($guest)
             @php
                 $check_in_detail_id = $guest
@@ -191,5 +128,5 @@
                 @default
             @endswitch
         @endif
-    </div>
+    </div> --}}
 </div>

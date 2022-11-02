@@ -154,18 +154,7 @@ class CheckIn extends Component
             ]);
         }
 
-        // foreach ($this->guest->transactions as  $transaction) {
-        //     if($transaction->transaction_type_id == 1){
-        //         $check_in_detail = CheckInDetail::where('transaction_id', $transaction->id)->first();
-        //         $check_in_detail->update([
-        //             'check_in_at' => Carbon::now(),
-        //             'expected_check_out_at' => Carbon::now()->addHours($transaction->check_in_detail->static_hours_stayed),
-        //         ]);
-        //         Room::where('id', $check_in_detail->room_id)->update([
-        //             'room_status_id' => 2,
-        //         ]);
-        //     }
-        // }
+       
         $this->guest->update([
             'is_checked_in' => true,
             'check_in_at' => Carbon::now(),

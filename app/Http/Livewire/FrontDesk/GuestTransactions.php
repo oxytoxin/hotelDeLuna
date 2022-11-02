@@ -7,10 +7,10 @@ use App\Models\Guest;
 use App\Models\Room;
 use Livewire\Component;
 use WireUi\Traits\Actions;
-
+use App\Traits\WithCaching;
 class GuestTransactions extends Component
 {
-    use Actions;
+    use Actions, WithCaching;
 
     public $search = '';
 
@@ -24,144 +24,139 @@ class GuestTransactions extends Component
 
     public $transaction_order = 'ASC';
 
+    public $tabs = [
+        '0' => 'Information',
+        '1' => 'Transactions',
+        '2' => 'Transfer Room',
+        '3' => 'Extend Stay',
+        '4' => 'Damage Charges',
+        '5' => 'Amenities',
+        '6' => 'Food and Beverage',
+        '7' => 'Deposit',
+    ];
+
+    public $current_tab = '0';
+
+    public function switchTab($tab)
+    {
+        $this->useCacheRows();
+        $this->current_tab = $tab;
+    }
+
+    public function hasQuery()
+    {
+        return $this->search != '' || $this->searchBy != null;
+    }
+
+    public function getSearchedGuestQueryProperty()
+    {
+        if (!$this->hasQuery()) {
+            return null;
+        }
+        return Guest::where('branch_id', auth()->user()->branch_id);
+    }
+
+    public function getSearchedGuestProperty()
+    {
+        if (!$this->hasQuery()) {
+            return null;
+        }
+        if ($this->searchBy == 'qr_code') {
+            $this->searchedGuestQuery->where('qr_code', $this->search)
+                ->where('terminated_at', null)
+                ->where('check_in_at', '!=', null)
+                ->where('totaly_checked_out', false);
+        }
+
+        if ($this->searchBy == 'room_number') {
+            $this->searchedGuestQuery->whereHas('transactions', function($query) {
+                $query->where('transaction_type_id', 1)
+                    ->whereHas('check_in_detail.room', function($query) {
+                        $query->where('number', $this->search);
+                    });
+            });
+        }
+
+        if (!$this->hasQuery()) {
+            $this->guest = null;
+        }
+
+        return $this->cache(function () {
+            return $this->searchedGuestQuery->first();
+        });
+    }
+
     public function searchByQrCode()
     {
         $this->searchBy = 'qr_code';
-        if ($this->search) {
-            $guest = Guest::where('qr_code', $this->search)
-                ->where('terminated_at', null)
-                ->where('check_in_at', '!=', null)
-                ->where('totaly_checked_out', false)
-                ->where('branch_id', auth()->user()->branch->id)
-                ->first();
-            if (!$guest) {
-                $this->notification()->error(
-                    $title = 'Error!',
-                    $message = 'Guest not found or already checked out.'
-                );
-                $this->guest = null;
-                $this->search = '';
-                $this->searchBy = null;
-                return;
-            }
-            $this->guest = $guest;
-            $this->queryString['search'] = $this->search;
-        }
+       $this->guest = $this->searchedGuest ?? null;
     }
 
     public function searchByRoomNumber()
     {
         $this->searchBy = 'room_number';
-        if ($this->search) {
-            $room = Room::where('number', $this->search)
-                ->whereHas('floor', function ($query) {
-                    $query->where('branch_id', auth()->user()->branch_id);
-                })
-                ->where('room_status_id', 2)
-                ->first();
-            if (!$room) {
-                $this->notification()->error(
-                    $title = 'Error!',
-                    $message = 'Guest not found or already checked out.'
-                );
-                $this->guest = null;
-                $this->search = '';
-                $this->searchBy = null;
-                return;
-            }
-            $check_in_detail = CheckInDetail::where('room_id', $room->id)
-                ->where('check_in_at', '!=', null)
-                ->where('check_out_at', null)
-                ->first();
-            if (!$check_in_detail) {
-                $this->notification()->error(
-                    $title = 'Error!',
-                    $message = 'Guest not found or already checked out.'
-                );
-                $this->guest = null;
-                $this->search = '';
-                $this->searchBy = null;
-                return;
-            }
-            if ($check_in_detail->transaction->guest->terminated_at != null) {
-                $this->notification()->error(
-                    $title = 'Error!',
-                    $message = 'Guest not found or already checked out.'
-                );
-                $this->guest = null;
-                $this->search = '';
-                $this->searchBy = null;
-                return;
-            }
-            $this->guest = $check_in_detail->transaction->guest;
-        }
-    }
-
-
-    public function toogleTransactionOrder()
-    {
-        if ($this->transaction_order == 'ASC') {
-            $this->transaction_order = 'DESC';
-        } else {
-            $this->transaction_order = 'ASC';
-        }
-    }
-
-    public function payTransaction($transaction_id)
-    {
-        $this->dialog()->confirm([
-            'title'       => 'Are you Sure?',
-            'description' => 'This will mark this transaction as paid',
-            'icon'        => 'question',
-            'accept'      => [
-                'label'  => 'Yes, Pay',
-                'method' => 'confirmPayTransaction',
-                'params' => $transaction_id,
-            ],
-            'reject' => [
-                'label'  => 'No, cancel',
-            ],
-        ]);
-    }
-
-    public function confirmPayTransaction($transaction_id)
-    {
-        $transaction = $this->guest->transactions()->find($transaction_id);
-        $transaction->update([
-            'paid_at' => now(),
-        ]);
-        $this->notification()->success(
-            $title = 'Transaction Paid',
-            $description = 'Transaction has been marked as paid'
-        );
+        $this->guest = $this->searchedGuest;
     }
 
     public function clear()
     {
         $this->search = '';
-        $this->action = null;
+        $this->searchBy = null;
         $this->guest = null;
     }
 
 
+
+
+    // public function toogleTransactionOrder()
+    // {
+    //     if ($this->transaction_order == 'ASC') {
+    //         $this->transaction_order = 'DESC';
+    //     } else {
+    //         $this->transaction_order = 'ASC';
+    //     }
+    // }
+
+    // public function payTransaction($transaction_id)
+    // {
+    //     $this->dialog()->confirm([
+    //         'title'       => 'Are you Sure?',
+    //         'description' => 'This will mark this transaction as paid',
+    //         'icon'        => 'question',
+    //         'accept'      => [
+    //             'label'  => 'Yes, Pay',
+    //             'method' => 'confirmPayTransaction',
+    //             'params' => $transaction_id,
+    //         ],
+    //         'reject' => [
+    //             'label'  => 'No, cancel',
+    //         ],
+    //     ]);
+    // }
+
+    // public function confirmPayTransaction($transaction_id)
+    // {
+    //     $transaction = $this->guest->transactions()->find($transaction_id);
+    //     $transaction->update([
+    //         'paid_at' => now(),
+    //     ]);
+    //     $this->notification()->success(
+    //         $title = 'Transaction Paid',
+    //         $description = 'Transaction has been marked as paid'
+    //     );
+    // }
+
+    // public function clear()
+    // {
+    //     $this->search = '';
+    //     $this->action = null;
+    //     $this->guest = null;
+    // }
+
+
     public function mount()
     {
-        if ($this->search) {
-            switch ($this->searchBy) {
-                case 'qr_code':
-                    $this->searchByQrCode();
-                    break;
-                case 'room_number':
-                    $this->searchByRoomNumber();
-                    break;
-                case 'name':
-                    $this->searchByName();
-                    break;
-                default:
-                    $this->searchByQrCode();
-                    break;
-            }
-        }
+        $this->guest = $this->searchedGuest;
     }
 
     public function render()
