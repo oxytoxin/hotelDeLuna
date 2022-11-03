@@ -20,6 +20,10 @@ class ChangeRoom extends Component
 {
     use Actions;
 
+    public $checkInDetail;
+
+    public $guest;
+
     public $historyOrder = 'DESC';
 
     public $available_types = [], $floors = [], $available_rooms = [];
@@ -29,6 +33,7 @@ class ChangeRoom extends Component
     public $room_statuses =[];
 
     public $new_room_rate = null;
+    
     public $new_amount_to_pay;
 
     public $form = [
@@ -42,7 +47,7 @@ class ChangeRoom extends Component
 
     public $current_room = null;
 
-    public $check_in_detail = null;
+    public $check_in_detail;
 
     public $authorization_code;
 
@@ -88,7 +93,7 @@ class ChangeRoom extends Component
     protected function has_already_change_room_twice()
     {
         return  RoomChange::whereHas('transaction', function ($query) {
-            $query->where('guest_id', $this->check_in_detail->transaction->guest_id);
+            $query->where('guest_id', $this->checkInDetail->transaction->guest_id);
         })->count() >= 2;
     }
 
@@ -115,7 +120,7 @@ class ChangeRoom extends Component
             return;
         }
         DB::beginTransaction();
-        $transaction = $this->check_in_detail->transaction;
+        $transaction = $this->checkInDetail->transaction;
         $new_room = Room::find($this->form['room_id']);
         if ($this->three_hours_already_past_since_check_in()) {
             $this->dialog()->error(
@@ -136,9 +141,7 @@ class ChangeRoom extends Component
         // identifying the amount applied in the old room and the new room to get the balance to be applied in the new transaction
         
         $new_selected_room_amount = $this->new_room_rate->amount;
-        $old_selected_room_amount_paid = $this->check_in_detail->transaction->payable_amount;
-
-
+        $old_selected_room_amount_paid = $this->checkInDetail->transaction->payable_amount;
         
         $change_room_transaction = Transaction::create([
             'branch_id' => auth()->user()->branch_id,
@@ -165,7 +168,7 @@ class ChangeRoom extends Component
             ]);
         }
 
-        $this->check_in_detail->update([
+        $this->checkInDetail->update([
             'room_id' => $new_room->id,
             'rate_id' => $this->new_room_rate->id,
         ]);
@@ -209,7 +212,7 @@ class ChangeRoom extends Component
     public function updatedFormTypeId()
     {
         $this->new_room_rate = Rate::where('type_id', $this->form['type_id'])
-            ->where('staying_hour_id', $this->check_in_detail->rate->staying_hour_id)
+            ->where('staying_hour_id', $this->checkInDetail->rate->staying_hour_id)
             ->where('branch_id', auth()->user()->branch_id)
             ->first();
         $this->new_amount_to_pay = $this->new_room_rate->amount;
@@ -233,7 +236,7 @@ class ChangeRoom extends Component
     public function updatedFormFloorId()
     {
         $this->new_room_rate = Rate::where('type_id', $this->form['type_id'])
-            ->where('staying_hour_id', $this->check_in_detail->rate->staying_hour_id)
+            ->where('staying_hour_id', $this->checkInDetail->rate->staying_hour_id)
             ->where('branch_id', auth()->user()->branch_id)
             ->first();
         $this->new_amount_to_pay = $this->new_room_rate->amount;
@@ -257,22 +260,22 @@ class ChangeRoom extends Component
 
     public function reload()
     {
-        $this->check_in_detail = CheckInDetail::find($this->check_in_detail_id);
-        $this->current_room = $this->check_in_detail->room;
+        $this->checkInDetail = CheckInDetail::find($this->check_in_detail_id);
+        $this->current_room = $this->checkInDetail->room;
         $this->floors = Floor::where('branch_id', auth()->user()->branch_id)->get();
         $this->form['type_id'] = $this->current_room->type_id;
         $this->new_room_rate = Rate::where('type_id', $this->form['type_id'])
-            ->where('staying_hour_id', $this->check_in_detail->rate->staying_hour_id)
+            ->where('staying_hour_id', $this->checkInDetail->rate->staying_hour_id)
             ->where('branch_id', auth()->user()->branch_id)
             ->first();
         $this->new_amount_to_pay = $this->new_room_rate->amount;
     }
     public function mount()
     {
+        dd($this->checkInDetail);
         $this->room_statuses = RoomStatus::whereIn('id', [ 7,9])->get();
         $this->authorization_code ='';
-        $this->check_in_detail = CheckInDetail::find($this->check_in_detail_id);
-        $this->current_room = $this->check_in_detail->room;
+        $this->current_room = $this->checkInDetail->room;
         $this->available_types = Type::query()
             ->where('branch_id', auth()->user()->branch_id)
             ->get();
@@ -283,7 +286,7 @@ class ChangeRoom extends Component
     {
         return view('livewire.front-desk.transactions.change-room', [
             'changes_history' => RoomChange::whereHas('transaction', function ($query) {
-                $query->where('guest_id', $this->check_in_detail->transaction->guest_id);
+                $query->where('guest_id', $this->checkInDetail->transaction->guest_id);
             })->with(['fromRoom', 'toRoom'])
                 ->orderBy('created_at', $this->historyOrder)
                 ->get(),

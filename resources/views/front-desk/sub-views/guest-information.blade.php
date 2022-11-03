@@ -1,6 +1,6 @@
 <div class="space-y-5">
     <div wire:key="{{ $guest->id }}-guest-information"
-        class="overflow-hidden bg-white border border-gray-300 shadow sm:rounded-lg m-1">
+        class="m-1 overflow-hidden bg-white border border-gray-300 shadow sm:rounded-lg">
         <div class="px-4 py-3 sm:px-6">
             <h3 class="text-lg font-medium leading-6 text-gray-900">Guest Information</h3>
         </div>
@@ -37,7 +37,7 @@
     </div>
     <div wire:key="{{ $guest->id }}-check-in-detials">
         <div class="flex items-center px-3 mb-2 space-x-3">
-            <button class="flex items-center space-x-2 text-sm text-gray-600 hover:underline hover:text-gray-800">
+            <button class="flex items-center space-x-2 text-sm text-gray-600 hover:text-gray-800 hover:underline">
                 <svg xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -51,7 +51,7 @@
                 <span> Extend</span>
             </button>
             <span class="text-gray-400">|</span>
-            <button class="flex items-center space-x-2 text-sm text-gray-600 hover:underline hover:text-gray-800">
+            <button class="flex items-center space-x-2 text-sm text-gray-600 hover:text-gray-800 hover:underline">
                 <svg xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -65,7 +65,7 @@
                 <span> Change Room</span>
             </button>
         </div>
-        <div class="overflow-hidden bg-white border border-gray-300 shadow sm:rounded-lg m-1">
+        <div class="m-1 overflow-hidden bg-white border border-gray-300 shadow sm:rounded-lg">
             <div class="px-4 py-3 sm:px-6">
                 <h3 class="text-lg font-medium leading-6 text-gray-900">Check In Details</h3>
             </div>

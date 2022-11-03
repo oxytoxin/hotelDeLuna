@@ -2,12 +2,16 @@
 
 namespace App\Http\Livewire\FrontDesk;
 
-use App\Models\CheckInDetail;
-use App\Models\Guest;
 use App\Models\Room;
+use App\Models\Guest;
 use Livewire\Component;
 use WireUi\Traits\Actions;
+use App\Models\Transaction;
 use App\Traits\WithCaching;
+use App\Models\CheckInDetail;
+use App\Models\RoomChange;
+use App\Models\TransactionType;
+
 class GuestTransactions extends Component
 {
     use Actions, WithCaching;
@@ -16,13 +20,11 @@ class GuestTransactions extends Component
 
     public $searchBy = null;
 
-    public $guest = null;
+    public $changeRoom;
+
+    public $transaction;
 
     protected $queryString = ['search', 'searchBy'];
-
-    public $action = null;
-
-    public $transaction_order = 'ASC';
 
     public $tabs = [
         '0' => 'Information',
@@ -37,9 +39,24 @@ class GuestTransactions extends Component
 
     public $current_tab = '0';
 
+    public $transactionsGroupedByType = [];
+
+    public $transactionTypes = [];
+
     public function switchTab($tab)
     {
-        $this->useCacheRows();
+        if ($tab!=0) $this->useCacheRows();
+
+        if ($tab == 2) {
+            $this->transaction = Transaction::make([
+                'transaction_type_id' => 7,
+                'guest_id' => $this->searchedGuest->id,
+            ]);
+            $this->changeRoom = RoomChange::make([
+                'transaction_id' => $this->transaction->id,
+            ]);
+        }
+        
         $this->current_tab = $tab;
     }
 
@@ -53,7 +70,9 @@ class GuestTransactions extends Component
         if (!$this->hasQuery()) {
             return null;
         }
-        return Guest::where('branch_id', auth()->user()->branch_id);
+        return Guest::where('terminated_at', null)
+                ->where('check_in_at', '!=', null)
+                ->where('totaly_checked_out', false);
     }
 
     public function getSearchedGuestProperty()
@@ -62,10 +81,7 @@ class GuestTransactions extends Component
             return null;
         }
         if ($this->searchBy == 'qr_code') {
-            $this->searchedGuestQuery->where('qr_code', $this->search)
-                ->where('terminated_at', null)
-                ->where('check_in_at', '!=', null)
-                ->where('totaly_checked_out', false);
+            $this->searchedGuestQuery->where('qr_code', $this->search);
         }
 
         if ($this->searchBy == 'room_number') {
@@ -77,9 +93,13 @@ class GuestTransactions extends Component
             });
         }
 
-        if (!$this->hasQuery()) {
-            $this->guest = null;
-        }
+        if(!$this->searchedGuestQuery) return null;
+
+        $this->searchedGuestQuery->with([
+                'transactions' => function($query) {
+                       return $query->where('transaction_type_id', 1);
+                  },
+        ]);
 
         return $this->cache(function () {
             return $this->searchedGuestQuery->first();
@@ -89,24 +109,18 @@ class GuestTransactions extends Component
     public function searchByQrCode()
     {
         $this->searchBy = 'qr_code';
-       $this->guest = $this->searchedGuest ?? null;
     }
 
     public function searchByRoomNumber()
     {
         $this->searchBy = 'room_number';
-        $this->guest = $this->searchedGuest;
     }
 
     public function clear()
     {
         $this->search = '';
         $this->searchBy = null;
-        $this->guest = null;
     }
-
-
-
 
     // public function toogleTransactionOrder()
     // {
@@ -154,13 +168,10 @@ class GuestTransactions extends Component
     // }
 
 
-    public function mount()
-    {
-        $this->guest = $this->searchedGuest;
-    }
-
     public function render()
     {
-        return view('livewire.front-desk.guest-transactions');
+        return view('livewire.front-desk.guest-transactions',[
+            'guest' => $this->searchedGuest,
+        ]);
     }
 }
