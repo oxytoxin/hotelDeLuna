@@ -1,5 +1,5 @@
 <div class="space-y-4">
-    <div class="border border-gray-200 rounded-lg ">
+    <div class="border border-gray-200 rounded-lg">
         <x-card shadow="shadow-none"
             padding="p-2 md:p-2">
             <div class="flex space-x-2">

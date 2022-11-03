@@ -1,16 +1,15 @@
-<div wire:key="{{ $guest->id }}-transactions">
+<div x-cloak
+    x-show="currentTab == 1"
+    wire:key="{{ $this->guest->id }}-transactions">
     @php
-        $transactions_grouped_by_type = \App\Models\Transaction::where('guest_id', $guest->id)
-            ->with(['check_in_detail.room', 'room_change.toRoom.type', 'transaction_type', 'damage.hotel_item', 'guest_request_item.requestable_item', 'deposit'])
-            ->get()
-            ->groupBy('transaction_type_id');
+        $transactions_grouped_by_type = $this->guest->transactions->groupBy('transaction_type_id');
         $transaction_types = \App\Models\TransactionType::get();
     @endphp
     <div class="grid gap-5">
         @foreach ($transactions_grouped_by_type as $transaction_type_id => $transactions)
             <x-card title="{{ $transaction_types->find($transaction_type_id)->name }}">
                 <div>
-                    <div class="flex flex-col ">
+                    <div class="flex flex-col">
                         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                                 <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
@@ -43,11 +42,11 @@
                                                         {{ $transaction->transaction_type->name }}
                                                     </td>
                                                     <td
-                                                        class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
+                                                        class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                                         ₱ {{ $transaction->payable_amount }}
                                                     </td>
                                                     <td
-                                                        class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
+                                                        class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                                         @if ($transaction->transaction_type_id == 1)
                                                             Checked In ROOM #
                                                             {{ $transaction->check_in_detail->room->number }}
@@ -77,7 +76,7 @@
                                                         @endif
                                                     </td>
                                                     <td
-                                                        class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
+                                                        class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                                         @if ($transaction->paid_at)
                                                             {{ Carbon\Carbon::parse($transaction->paid_at)->format('Y/m/d h:i:s A') }}
                                                         @else
@@ -89,7 +88,7 @@
                                                         @endif
                                                     </td>
                                                     <td
-                                                        class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
+                                                        class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                                         {{ $transaction->created_at->format('Y/m/d h:i:s A') }}
                                                     </td>
                                                 </tr>

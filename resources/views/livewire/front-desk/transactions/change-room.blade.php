@@ -65,7 +65,7 @@
                             <x-checkbox id="right-label"
                                 label="Paid"
                                 wire:model.defer="form.paid" />
-                            <div class="py-2 mt-2 border-t sm:col-span-2 ">
+                            <div class="py-2 mt-2 border-t sm:col-span-2">
                                 <x-native-select wire:model="form.room_status_id"
                                     label="Mark the previous room as :">
                                     <option value="">Select</option>
@@ -100,7 +100,7 @@
     <div class="sm:col-span-2">
         <x-card title="Transfer History">
             <div>
-                <div class="flex flex-col ">
+                <div class="flex flex-col">
                     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                             <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
@@ -132,15 +132,15 @@
                                                     ROOM # {{ $room_change->fromRoom->number }}
                                                 </td>
                                                 <td
-                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
+                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                                     ROOM # {{ $room_change->toRoom->number }}
                                                 </td>
                                                 <td
-                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
+                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                                     ₱ {{ $room_change->amount }}
                                                 </td>
                                                 <td
-                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
+                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                                     {{ $room_change->created_at->format('Y/m/d h:i:s A') }}
                                                 </td>
                                             </tr>
@@ -159,8 +159,6 @@
                     </div>
                 </div>
             </div>
-
         </x-card>
-
     </div>
 </div>

@@ -2,29 +2,21 @@
 
 namespace App\Http\Livewire\FrontDesk;
 
-use App\Models\Room;
-use App\Models\Guest;
+
+use App\Models\{Guest,RoomChange};
 use Livewire\Component;
 use WireUi\Traits\Actions;
-use App\Models\Transaction;
 use App\Traits\WithCaching;
-use App\Models\CheckInDetail;
-use App\Models\RoomChange;
-use App\Models\TransactionType;
+use App\Traits\Extend\TransferRoom;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class GuestTransactions extends Component
 {
-    use Actions, WithCaching;
 
-    public $search = '';
+    use Actions, WithCaching, TransferRoom;
 
-    public $searchBy = null;
-
-    public $changeRoom;
-
-    public $transaction;
-
-    protected $queryString = ['search', 'searchBy'];
+    protected $listeners = ['room_changed'=>'$refresh'];
 
     public $tabs = [
         '0' => 'Information',
@@ -37,141 +29,67 @@ class GuestTransactions extends Component
         '7' => 'Deposit',
     ];
 
-    public $current_tab = '0';
+    public $search = null, $searchBy = "qr_code";
 
-    public $transactionsGroupedByType = [];
+    public $queryString = ['search', 'searchBy'];
 
-    public $transactionTypes = [];
+    public $grouped_transaction;
 
-    public function switchTab($tab)
+    public $changeRoom;
+
+
+    public function getGuestQueryProperty()
     {
-        if ($tab!=0) $this->useCacheRows();
-
-        if ($tab == 2) {
-            $this->transaction = Transaction::make([
-                'transaction_type_id' => 7,
-                'guest_id' => $this->searchedGuest->id,
-            ]);
-            $this->changeRoom = RoomChange::make([
-                'transaction_id' => $this->transaction->id,
-            ]);
-        }
-        
-        $this->current_tab = $tab;
+        return Guest::whereNotNull('check_in_at')
+            ->whereNull('check_out_at');
     }
 
-    public function hasQuery()
+    public function getGuestProperty()
     {
-        return $this->search != '' || $this->searchBy != null;
-    }
+        if (is_null($this->search)) return null;
 
-    public function getSearchedGuestQueryProperty()
-    {
-        if (!$this->hasQuery()) {
-            return null;
-        }
-        return Guest::where('terminated_at', null)
-                ->where('check_in_at', '!=', null)
-                ->where('totaly_checked_out', false);
-    }
-
-    public function getSearchedGuestProperty()
-    {
-        if (!$this->hasQuery()) {
-            return null;
-        }
-        if ($this->searchBy == 'qr_code') {
-            $this->searchedGuestQuery->where('qr_code', $this->search);
-        }
-
-        if ($this->searchBy == 'room_number') {
-            $this->searchedGuestQuery->whereHas('transactions', function($query) {
+        if ($this->searchBy == "qr_code") {
+            $this->guestQuery->where('qr_code', $this->search);
+        } else {
+            $this->guestQuery->whereHas('transactions', function ($query) {
                 $query->where('transaction_type_id', 1)
-                    ->whereHas('check_in_detail.room', function($query) {
+                    ->whereHas('check_in_detail.room', function ($query) {
                         $query->where('number', $this->search);
                     });
             });
         }
-
-        if(!$this->searchedGuestQuery) return null;
-
-        $this->searchedGuestQuery->with([
-                'transactions' => function($query) {
-                       return $query->where('transaction_type_id', 1);
-                  },
-        ]);
-
         return $this->cache(function () {
-            return $this->searchedGuestQuery->first();
+            return $this->guestQuery->with([
+                'transactions' => [
+                    'check_in_detail.room',
+                    'damage',
+                    'room_change',
+                    'check_in_detail_extensions',
+                    'deposit',
+                    'guest_request_item',
+                    'transaction_type',
+                ]
+            ])->first();
         });
     }
 
-    public function searchByQrCode()
+    public function search($searchBy)
     {
-        $this->searchBy = 'qr_code';
+        $this->searchBy = $searchBy;
     }
 
-    public function searchByRoomNumber()
-    {
-        $this->searchBy = 'room_number';
-    }
 
-    public function clear()
-    {
-        $this->search = '';
-        $this->searchBy = null;
-    }
-
-    // public function toogleTransactionOrder()
-    // {
-    //     if ($this->transaction_order == 'ASC') {
-    //         $this->transaction_order = 'DESC';
-    //     } else {
-    //         $this->transaction_order = 'ASC';
-    //     }
-    // }
-
-    // public function payTransaction($transaction_id)
-    // {
-    //     $this->dialog()->confirm([
-    //         'title'       => 'Are you Sure?',
-    //         'description' => 'This will mark this transaction as paid',
-    //         'icon'        => 'question',
-    //         'accept'      => [
-    //             'label'  => 'Yes, Pay',
-    //             'method' => 'confirmPayTransaction',
-    //             'params' => $transaction_id,
-    //         ],
-    //         'reject' => [
-    //             'label'  => 'No, cancel',
-    //         ],
-    //     ]);
-    // }
-
-    // public function confirmPayTransaction($transaction_id)
-    // {
-    //     $transaction = $this->guest->transactions()->find($transaction_id);
-    //     $transaction->update([
-    //         'paid_at' => now(),
-    //     ]);
-    //     $this->notification()->success(
-    //         $title = 'Transaction Paid',
-    //         $description = 'Transaction has been marked as paid'
-    //     );
-    // }
-
-    // public function clear()
-    // {
-    //     $this->search = '';
-    //     $this->action = null;
-    //     $this->guest = null;
-    // }
-
+    
 
     public function render()
     {
-        return view('livewire.front-desk.guest-transactions',[
-            'guest' => $this->searchedGuest,
-        ]);
+        return view('livewire.front-desk.guest-transactions');
+    }
+
+    public function mount()
+    {
+        if ($this->search && $this->searchBy) {
+            $this->search($this->searchBy);
+        }
     }
 }
