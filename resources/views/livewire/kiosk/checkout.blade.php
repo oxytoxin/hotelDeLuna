@@ -149,7 +149,7 @@
                   </div> --}}
               </div>
               <div class=" left-0 w-full border-b bottom-5">
-                <div class="flex items-center justify-between w-full px-10">
+                <div class="flex items-center justify-between w-full s px-10">
                   <dt class="">
                     <div class="flex items-center space-x-2">
                       <h1 class="text-2xl font-bold text-white">TOTAL</h1>
