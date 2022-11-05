@@ -11,9 +11,9 @@ trait WithCaching
         $this->useCache = true;
     }
 
-    public function cache($callback)
+    public function cache($callback,$extra_key=null)
     {
-        $cacheKey = $this->id;
+        $cacheKey = $extra_key ? $this->id . $extra_key : $this->id;
         if ($this->useCache && cache()->has($cacheKey)) {
             return cache()->get($cacheKey);
         }

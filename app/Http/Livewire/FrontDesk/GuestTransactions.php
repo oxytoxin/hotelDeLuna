@@ -37,13 +37,17 @@ class GuestTransactions extends Component
 
     public $changeRoom;
 
+    public $transactionTabIsVisible = false;
 
     public function getGuestQueryProperty()
     {
         return Guest::whereNotNull('check_in_at')
             ->whereNull('check_out_at');
     }
-
+    public function search($searchBy)
+    {
+        $this->searchBy = $searchBy;
+    }
     public function getGuestProperty()
     {
         if (is_null($this->search)) return null;
@@ -58,32 +62,19 @@ class GuestTransactions extends Component
                     });
             });
         }
+
         return $this->cache(function () {
-            return $this->guestQuery->with([
-                'transactions' => [
-                    'check_in_detail.room',
-                    'damage',
-                    'room_change',
-                    'check_in_detail_extensions',
-                    'deposit',
-                    'guest_request_item',
-                    'transaction_type',
-                ]
-            ])->first();
+            return $this->guestQuery->with(['transactions.transaction_type'])->first();
         });
     }
-
-    public function search($searchBy)
+    public function getCheckInDetailProperty()
     {
-        $this->searchBy = $searchBy;
+        return $this->guest->transactions->first()->check_in_detail->load(['room.type']);
     }
-
-
-    
-
-    public function render()
+    public function clear()
     {
-        return view('livewire.front-desk.guest-transactions');
+        $this->search = null;
+        $this->searchBy = "";
     }
 
     public function mount()
@@ -91,5 +82,19 @@ class GuestTransactions extends Component
         if ($this->search && $this->searchBy) {
             $this->search($this->searchBy);
         }
+    }
+
+    public function useNavigatedToTransactions()
+    {
+        $this->useCacheRows();
+        $this->transactionTabIsVisible = true;
+    }
+
+    public function render()
+    {
+        return view('livewire.front-desk.guest-transactions',[
+            'guest_transactions' => $this->transactionTabIsVisible ? $this->guest->transactions->groupBy('transaction_type_id') :  [],
+            'transaction_types' => $this->transactionTabIsVisible ? \App\Models\TransactionType::get() : [],
+        ]);
     }
 }

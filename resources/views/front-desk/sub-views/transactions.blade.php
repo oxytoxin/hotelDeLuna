@@ -1,12 +1,13 @@
 <div x-cloak
     x-show="currentTab == 1"
-    wire:key="{{ $this->guest->id }}-transactions">
-    @php
+    wire:key="{{ $this->guest->id }}-transactions"
+    x-intersect.once="$wire.useNavigatedToTransactions">
+    {{-- @php
         $transactions_grouped_by_type = $this->guest->transactions->groupBy('transaction_type_id');
         $transaction_types = \App\Models\TransactionType::get();
-    @endphp
+    @endphp --}}
     <div class="grid gap-5">
-        @foreach ($transactions_grouped_by_type as $transaction_type_id => $transactions)
+        @foreach ($guest_transactions as $transaction_type_id => $transactions)
             <x-card title="{{ $transaction_types->find($transaction_type_id)->name }}">
                 <div>
                     <div class="flex flex-col">
@@ -47,7 +48,8 @@
                                                     </td>
                                                     <td
                                                         class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
-                                                        @if ($transaction->transaction_type_id == 1)
+                                                        {{ $transaction->remarks }}
+                                                        {{-- @if ($transaction->transaction_type_id == 1)
                                                             Checked In ROOM #
                                                             {{ $transaction->check_in_detail->room->number }}
                                                         @endif
@@ -73,7 +75,7 @@
                                                         @endif
                                                         @if ($transaction->transaction_type_id == 8)
                                                             {{ $transaction->guest_request_item->requestable_item->name }}
-                                                        @endif
+                                                        @endif --}}
                                                     </td>
                                                     <td
                                                         class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">

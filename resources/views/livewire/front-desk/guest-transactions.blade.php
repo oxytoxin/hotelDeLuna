@@ -6,47 +6,53 @@
             <x-input placeholder="Search ...."
                 x-ref="searchBar"
                 wire:model.defer="search"
-                wire:keydown.enter.prevent="searchByQrCode"
+                wire:keydown.enter.prevent="search('qr_code')"
                 type="search" />
         </div>
         <div wire:key="buttons"
             class="flex items-center space-x-3">
-            {{-- <x-button wire:click="clear"
-                negative
-                spinner="clear">Clear</x-button> --}}
-            <x-button label="Qr Code"
-                icon="search"
-                wire:click="search('qr_code')"
-                spinner="searchByQrCode"
-                primary />
-            <x-button label="Room Number"
-                icon="search"
-                wire:click="search('phone_number')"
-                primary />
+            @if ($this->guest)
+                <x-button wire:click="clear"
+                    negative
+                    spinner="clear">Clear</x-button>
+            @else
+                <x-button label="Qr Code"
+                    icon="search"
+                    wire:click="search('qr_code')"
+                    spinner="search('qr_code')"
+                    primary />
+                <x-button label="Room Number"
+                    icon="search"
+                    wire:click="search('phone_number')"
+                    spinner="search('phone_number')"
+                    primary />
+            @endif
         </div>
     </div>
-    <div>
-        <nav class="flex divide-x divide-gray-200 rounded-lg shadow isolate"
-            aria-label="Tabs">
-            @foreach ($tabs as $key => $tab)
-                <button type="button"
-                    x-on:click="currentTab = {{ $key }}"
-                    @class([
-                        'group relative min-w-0 flex-1 overflow-hidden bg-white px-4 py-4 text-center text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700 focus:z-10',
-                        'rounded-l-lg' => $loop->first,
-                        'rounded-r-lg' => $loop->last,
-                    ])
-                    aria-current="page">
-                    <span>
-                        {{ $tab }}
-                    </span>
-                    <span
-                        x-bind:class="currentTab === {{ $key }} ? 'absolute inset-x-0 bottom-0 h-0.5 bg-primary-500' :
-                            'absolute inset-x-0 bottom-0 h-0.5 bg-transparent'"
-                        aria-hidden="true"></span>
-                </button>
-            @endforeach
-        </nav>
+    <div x-animate>
+        @if ($this->guest)
+            <nav class="flex divide-x divide-gray-200 rounded-lg shadow isolate"
+                aria-label="Tabs">
+                @foreach ($tabs as $key => $tab)
+                    <button type="button"
+                        x-on:click="currentTab = {{ $key }}"
+                        @class([
+                            'group relative min-w-0 flex-1 overflow-hidden bg-white px-4 py-4 text-center text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700 focus:z-10',
+                            'rounded-l-lg' => $loop->first,
+                            'rounded-r-lg' => $loop->last,
+                        ])
+                        aria-current="page">
+                        <span>
+                            {{ $tab }}
+                        </span>
+                        <span
+                            x-bind:class="currentTab === {{ $key }} ? 'absolute inset-x-0 bottom-0 h-0.5 bg-primary-500' :
+                                'absolute inset-x-0 bottom-0 h-0.5 bg-transparent'"
+                            aria-hidden="true"></span>
+                    </button>
+                @endforeach
+            </nav>
+        @endif
     </div>
     <div>
         @if ($this->guest)

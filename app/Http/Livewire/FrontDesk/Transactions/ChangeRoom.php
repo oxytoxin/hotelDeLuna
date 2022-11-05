@@ -15,10 +15,13 @@ use App\Models\Transaction;
 use App\Models\CheckInDetail;
 use App\Models\Deposit;
 use Illuminate\Support\Facades\DB;
+use App\Traits\WithCaching;
 
 class ChangeRoom extends Component
 {
-    use Actions;
+    use Actions, WithCaching;
+
+    public $tabIsVisible = false;
 
     public $check_in_detail;
 
@@ -92,13 +95,13 @@ class ChangeRoom extends Component
     protected function has_already_change_room_twice()
     {
         return  RoomChange::whereHas('transaction', function ($query) {
-            $query->where('guest_id', $this->check_in_detail->transaction->guest_id);
+            $query->where('guest_id', $this->checkInDetail->transaction->guest_id);
         })->count() >= 2;
     }
 
     protected function three_hours_already_past_since_check_in()
     {
-        return Carbon::parse($this->check_in_detail->check_in_at)->diffInHours(now()) >= 3;
+        return Carbon::parse($this->checkInDetail->check_in_at)->diffInHours(now()) >= 3;
     }
 
     public function saveChanges()
@@ -119,7 +122,7 @@ class ChangeRoom extends Component
             return;
         }
         DB::beginTransaction();
-        $transaction = $this->check_in_detail->transaction;
+        $transaction = $this->checkInDetail->transaction;
         $new_room = Room::find($this->form['room_id']);
         if ($this->three_hours_already_past_since_check_in()) {
             $this->dialog()->error(
@@ -129,15 +132,16 @@ class ChangeRoom extends Component
             return;
         }
 
-        if ($this->current_room->id == $new_room->id) {
+        if ($this->checkInDetail->room->id == $new_room->id) {
             $this->dialog()->error(
                 $title = 'Error',
                 $description = 'From and To Room cannot be same'
             );
             return;
         }
+
         $new_selected_room_amount = $this->new_room_rate->amount;
-        $old_selected_room_amount_paid = $this->check_in_detail->transaction->payable_amount;
+        $old_selected_room_amount_paid = $this->checkInDetail->transaction->payable_amount;
         $change_room_transaction = Transaction::create([
             'branch_id' => auth()->user()->branch_id,
             'guest_id' => $transaction->guest_id,
@@ -145,6 +149,7 @@ class ChangeRoom extends Component
             'payable_amount' => $old_selected_room_amount_paid > $new_selected_room_amount ? 0 : $new_selected_room_amount - $old_selected_room_amount_paid,
             'paid_at' => $this->form['paid'] ? now() : null,
             'room_id' => $new_room->id,
+            'remarks' => 'Guest transfered from ROOM # ' . $this->checkInDetail->room->number . ' ( '.$this->checkInDetail->room->type->name.' ) to ROOM # ' . $new_room->number .' ( '.$new_room->type->name.' )',
         ]);
 
         if ( $old_selected_room_amount_paid > $new_selected_room_amount) {
@@ -163,20 +168,20 @@ class ChangeRoom extends Component
             ]);
         }
 
-        $this->check_in_detail->update([
+        $this->checkInDetail->update([
             'room_id' => $new_room->id,
             'rate_id' => $this->new_room_rate->id,
         ]);
 
         RoomChange::create([
             'transaction_id' => $change_room_transaction->id,
-            'from_room_id' => $this->current_room->id,
+            'from_room_id' => $this->currentRoom->id,
             'to_room_id' => $this->form['room_id'],
             'reason' => $this->form['reason'],
             'amount' => $new_selected_room_amount,
         ]);
        
-        $this->current_room->update([
+        $this->currentRoom->update([
             'room_status_id' => $this->form['room_status_id'],
         ]);
         $new_room->update([
@@ -194,8 +199,6 @@ class ChangeRoom extends Component
         $this->reset('form');
         $this->authorization_code = null;
         $this->available_rooms = [];
-        $this->reload();
-
         $this->emit('room_changed');
     }
 
@@ -205,8 +208,9 @@ class ChangeRoom extends Component
     }
     public function updatedFormTypeId()
     {
+        $this->useCacheRows();
         $this->new_room_rate = Rate::where('type_id', $this->form['type_id'])
-            ->where('staying_hour_id', $this->check_in_detail->rate->staying_hour_id)
+            ->where('staying_hour_id', $this->checkInDetail->rate->staying_hour_id)
             ->where('branch_id', auth()->user()->branch_id)
             ->first();
         $this->new_amount_to_pay = $this->new_room_rate->amount;
@@ -229,12 +233,12 @@ class ChangeRoom extends Component
 
     public function updatedFormFloorId()
     {
+        $this->useCacheRows();
         $this->new_room_rate = Rate::where('type_id', $this->form['type_id'])
-            ->where('staying_hour_id', $this->check_in_detail->rate->staying_hour_id)
+            ->where('staying_hour_id', $this->checkInDetail->rate->staying_hour_id)
             ->where('branch_id', auth()->user()->branch_id)
             ->first();
         $this->new_amount_to_pay = $this->new_room_rate->amount;
-        $this->authorization_code ='';
         $this->available_rooms = Room::where('floor_id', $this->form['floor_id'])
             ->where('type_id', $this->form['type_id'])
             ->where('room_status_id', 1)
@@ -255,35 +259,74 @@ class ChangeRoom extends Component
     public function reload()
     {
         $this->check_in_detail = CheckInDetail::find($this->check_in_detail_id);
-        $this->current_room = $this->check_in_detail->room;
+        $this->currentRoom = $this->check_in_detail->room;
         $this->floors = Floor::where('branch_id', auth()->user()->branch_id)->get();
-        $this->form['type_id'] = $this->current_room->type_id;
+        $this->form['type_id'] = $this->currentRoom->type_id;
         $this->new_room_rate = Rate::where('type_id', $this->form['type_id'])
             ->where('staying_hour_id', $this->check_in_detail->rate->staying_hour_id)
             ->where('branch_id', auth()->user()->branch_id)
             ->first();
         $this->new_amount_to_pay = $this->new_room_rate->amount;
     }
+
+    public function getCheckInDetailQueryProperty()
+    {
+        return CheckInDetail::where('id', $this->check_in_detail_id)->with(['room.type','rate.staying_hour','transaction']);
+    }
+
+    public function getCheckInDetailProperty()
+    {
+        return  $this->cache(function() {
+            return $this->checkInDetailQuery->first();
+        },'change_room_check_in_detail');
+    }
+
+    public function getCurrentRoomProperty()
+    {
+        return $this->checkInDetail->room;
+    }
+
     public function mount()
     {
-        $this->check_in_detail = CheckInDetail::find($this->check_in_detail_id);
+        // $this->room_statuses = RoomStatus::whereIn('id', [ 7,9])->get();
+        // $this->available_types = Type::query()
+        //     ->where('branch_id', auth()->user()->branch_id)
+        //     ->get();
+        // $this->floors = Floor::where('branch_id', auth()->user()->branch_id)->get();
+        // $this->form['type_id'] = $this->currentRoom->type_id;
+    }
+
+    public function visible()
+    {
+        $this->useCacheRows();
+        $this->tabIsVisible = true;
         $this->room_statuses = RoomStatus::whereIn('id', [ 7,9])->get();
-        $this->authorization_code ='';
-        $this->current_room = $this->check_in_detail->room;
         $this->available_types = Type::query()
             ->where('branch_id', auth()->user()->branch_id)
             ->get();
         $this->floors = Floor::where('branch_id', auth()->user()->branch_id)->get();
-        $this->form['type_id'] = $this->current_room->type_id;
+        $this->form['type_id'] = $this->currentRoom->type_id;
+    }
+
+    public function getTransferHistoriesQueryProperty()
+    {
+        return RoomChange::whereHas('transaction', function ($query) {
+            $query->where('guest_id', $this->checkInDetail->transaction->guest_id);
+            })
+            ->with(['fromRoom', 'toRoom'])
+            ->orderBy('created_at', $this->historyOrder);
+    }
+
+    public function getTransferHistoriesProperty()
+    {
+        return $this->cache(function() {
+            return $this->transferHistoriesQuery->get();
+        },'change_room_transfer_histories');
     }
     public function render()
     {
         return view('livewire.front-desk.transactions.change-room', [
-            'changes_history' => RoomChange::whereHas('transaction', function ($query) {
-                $query->where('guest_id', $this->check_in_detail->transaction->guest_id);
-            })->with(['fromRoom', 'toRoom'])
-                ->orderBy('created_at', $this->historyOrder)
-                ->get(),
+            'changes_history' => $this->tabIsVisible ? $this->transferHistories : [],
         ]);
     }
 }
