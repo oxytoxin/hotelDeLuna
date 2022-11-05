@@ -228,6 +228,7 @@ class Checkin extends Component
                     'guest_id' => $guest->id,
                     'transaction_type_id' => 1,
                     'payable_amount' => $rate->amount * $this->days_stay,
+                    'remarks' => 'Guest checked in : ROOM #' . $room->number,
                 ]);
             } else {
                 $checkinroom = Transaction::create([
@@ -236,6 +237,7 @@ class Checkin extends Component
                     'guest_id' => $guest->id,
                     'transaction_type_id' => 1,
                     'payable_amount' => $rate->amount,
+                    'remarks' => 'Guest checked in : ROOM #' . $room->number,
                 ]);
             }
 
@@ -245,6 +247,7 @@ class Checkin extends Component
                 'guest_id' => $guest->id,
                 'transaction_type_id' => 2,
                 'payable_amount' => 200,
+                'remarks' => 'Guest deposit: Room Key & TV Remote',
             ]);
             Deposit::create([
                 'transaction_id' => $checkindeposit->id,
@@ -314,6 +317,7 @@ class Checkin extends Component
                     'guest_id' => $guest->id,
                     'transaction_type_id' => 1,
                     'payable_amount' => $rate->amount * $this->days_stay,
+                    'remarks' => 'Guest checked in : ROOM #' . $room->number,
                 ]);
             } else {
                 $checkinroom = Transaction::create([
@@ -322,6 +326,7 @@ class Checkin extends Component
                     'guest_id' => $guest->id,
                     'transaction_type_id' => 1,
                     'payable_amount' => $rate->amount,
+                    'remarks' => 'Guest checked in : ROOM #' . $room->number,
                 ]);
             }
 
@@ -331,6 +336,7 @@ class Checkin extends Component
                 'guest_id' => $guest->id,
                 'transaction_type_id' => 2,
                 'payable_amount' => 200,
+                'remarks' => 'Guest deposit: Room Key & TV Remote',
             ]);
             Deposit::create([
                 'transaction_id' => $checkindeposit->id,
