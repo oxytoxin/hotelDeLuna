@@ -28,13 +28,6 @@ class CheckInDetail extends Model
 
     public function guest()
     {
-        return $this->hasOneThrough(
-            Guest::class,
-            Transaction::class,
-            'id',
-            'id',
-            'transaction_id',
-            'guest_id'
-        );
+        return $this->belongsTo(Guest::class);
     }
 }

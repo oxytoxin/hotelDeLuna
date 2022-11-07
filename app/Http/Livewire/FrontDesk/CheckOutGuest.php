@@ -11,10 +11,10 @@ use App\Models\CheckInDetail;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Termwind\Components\Dd;
-
+use App\Traits\WithCaching;
 class CheckOutGuest extends Component
 {
-    use Actions;
+    use Actions, WithCaching;
 
     public $override = [
         'modal' => false,
@@ -28,8 +28,6 @@ class CheckOutGuest extends Component
     ];
 
     public $overridable = null;
-
-    public $guest = null;
 
     public $search = '';
 
@@ -72,105 +70,14 @@ class CheckOutGuest extends Component
     {
         $this->transactionOrder = $this->transactionOrder == 'DESC' ? 'ASC' : 'DESC';
     }
-
-    public function searchByQrCode()
+    public function search($searchBy)
     {
-        $this->searchBy = 'qr_code';
-        if ($this->search) {
-            $guest = Guest::where('qr_code', $this->search)
-                ->where('terminated_at', null)
-                ->where('check_in_at', '!=', null)
-                ->where('branch_id', auth()->user()->branch->id)
-                ->first();
-            if (!$guest) {
-                $this->notification()->error(
-                    $title = 'Error!',
-                    $message = 'QR Code not found'
-                );
-                $this->guest = null;
-                $this->search = '';
-                $this->searchBy = null;
-                return;
-            }
-            $this->guest = $guest;
-            $this->queryString['search'] = $this->search;
-        }
-    }
-
-    public function searchByRoomNumber()
-    {
-        $this->searchBy = 'room_number';
-        if ($this->search) {
-            $room = Room::where('number', $this->search)
-                ->whereHas('floor', function ($query) {
-                    $query->where('branch_id', auth()->user()->branch_id);
-                })
-                ->where('room_status_id', 2)
-                ->first();
-            if (!$room) {
-                $this->notification()->error(
-                    $title = 'Error!',
-                    $message = 'Room is currently not occupied.'
-                );
-                $this->guest = null;
-                $this->search = '';
-                $this->searchBy = null;
-                return;
-            }
-            $check_in_detail = CheckInDetail::where('room_id', $room->id)
-                ->where('check_in_at', '!=', null)
-                ->where('check_out_at', null)
-                ->first();
-            if (!$check_in_detail) {
-                $this->notification()->error(
-                    $title = 'Error!',
-                    $message = 'Guest not found or already checked out.'
-                );
-                $this->guest = null;
-                $this->search = '';
-                $this->searchBy = null;
-                return;
-            }
-            if ($check_in_detail->transaction->guest->terminated_at != null) {
-                $this->guest = null;
-                $this->search = '';
-                $this->searchBy = null;
-                return;
-            }
-            $this->guest = $check_in_detail->transaction->guest;
-        }
-    }
-
-    public function searchByName()
-    {
-        $this->dialog()->info(
-            $title = 'Reminder',
-            $description = 'Guest may have the same name. Results may not be accurate. Please counter check the guest\'s qr coder / room number / contact number.'
-        );
-        $this->searchBy = 'name';
-        if ($this->search) {
-            $guest = Guest::where('name', $this->search)
-                ->where('terminated_at', null)
-                ->where('check_in_at', '!=', null)
-                ->where('totaly_checked_out', false)
-                ->where('branch_id', auth()->user()->branch->id)
-                ->first();
-            if (!$guest) {
-                $this->notification()->error(
-                    $title = 'Error!',
-                    $message = 'Guest not found or already checked out.'
-                );
-                $this->guest = null;
-                $this->search = '';
-                $this->searchBy = null;
-                return;
-            }
-            $this->guest = $guest;
-        }
+        $this->searchBy = $searchBy;
     }
 
     public function payTransaction($transaction_id)
     {
+        $this->useCacheRows();
         $this->dialog()->confirm([
             'title'       => 'Are you Sure?',
             'description' => 'This will mark this transaction as paid',
@@ -192,37 +99,17 @@ class CheckOutGuest extends Component
         $transaction->update([
             'paid_at' => now(),
         ]);
-        $this->notification()->success(
+        $this->dialog()->success(
             $title = 'Transaction Paid',
             $description = 'Transaction has been marked as paid'
         );
+        $this->guest->refresh();
     }
 
     public function clear()
     {
-        $this->guest = null;
         $this->search = '';
         $this->searchBy = null;
-    }
-
-    public function mount()
-    {
-        if ($this->search) {
-            switch ($this->searchBy) {
-                case 'qr_code':
-                    $this->searchByQrCode();
-                    break;
-                case 'room_number':
-                    $this->searchByRoomNumber();
-                    break;
-                case 'name':
-                    $this->searchByName();
-                    break;
-                default:
-                    $this->searchByQrCode();
-                    break;
-            }
-        }
     }
 
     public function checkOutFalse()
@@ -235,6 +122,7 @@ class CheckOutGuest extends Component
 
     public function checkOut()
     {
+        $this->useCacheRows();
         $has_unpaid_transaction = $this->guest->transactions()->where('paid_at', null)->exists();
         if ($has_unpaid_transaction) {
             $this->checkOutFalse();
@@ -256,6 +144,7 @@ class CheckOutGuest extends Component
 
     public function reminderTwo()
     {
+        $this->useCacheRows();
         $this->dialog()->confirm([
             'title'       => 'Remider',
             'description' => 'Check room by the body',
@@ -272,6 +161,7 @@ class CheckOutGuest extends Component
 
     public function reminderthree()
     {
+        $this->useCacheRows();
         $this->dialog()->confirm([
             'title'       => 'Remider',
             'description' => 'Call guest to check-out in Kiosk',
@@ -285,8 +175,6 @@ class CheckOutGuest extends Component
             ],
         ]);
     }
-
-    
 
     public function final_reminder_done()
     {
@@ -311,7 +199,7 @@ class CheckOutGuest extends Component
             'totaly_checked_out' => true,
             'check_out_at' => now(),
         ]);
-        $check_in_detail = $this->guest->transactions()->where('transaction_type_id', 1)->first()->check_in_detail;
+        $check_in_detail = $this->guest->checkInDetail;
         $check_in_detail->update([
             'check_out_at' => now(),
         ]);
@@ -328,13 +216,53 @@ class CheckOutGuest extends Component
         $this->search = '';
         $this->searchBy = null;
     }
+
+    public function getGuestQueryProperty()
+    {
+        return Guest::where('branch_id', auth()->user()->branch->id)
+            ->where('terminated_at', null)
+            ->whereNotNull('check_in_at',)
+            ->where('totaly_checked_out', false);
+    }
+
+    public function getGuestProperty()
+    {
+        if (is_null($this->search)) return null;
+
+        if ($this->searchBy == "qr_code") {
+            $this->guestQuery->where('qr_code', $this->search);
+        } else {
+            $this->guestQuery->whereHas('checkInDetail.room', function ($query) {
+                        $query->where('number', $this->search);
+             });
+        }
+
+        return $this->cache(function () {
+            return $this->guestQuery->with(['checkInDetail','transactions.transaction_type'])
+                ->withSum(
+                    'transactions','payable_amount',
+                )
+                ->first();
+        });
+    }
+
+    public function getTransactionsQueryProperty()
+    {
+       return  $this->guest->transactions;
+    }
+
+    public function getTransactionsProperty()
+    {
+       return $this->transactionsQuery->groupBy('transaction_type_id');
+    }
+   
     public function render()
     {
         return view('livewire.front-desk.check-out-guest', [
-            'transactions' => $this->guest ?
-                $this->guest->transactions()
-                ->with(['transaction_type', 'check_in_detail.room.type','room_change.toRoom.type',  'damage.hotel_item', 'guest_request_item.requestable_item'])
-                ->orderBy('created_at', $this->transactionOrder)->get() : [],
+            'guest_transactions' => $this->guest ? $this->transactions : [],
+            'transaction_types' => $this->guest ? \App\Models\TransactionType::get() : [],
+            'total_amount_to_pay'=> $this->guest ? $this->guest->transactions->sum('payable_amount') : 0,
+            'balance' => $this->guest ? $this->guest->transactions->whereNull('paid_at')->sum('payable_amount') : 0,
         ]);
     }
 }

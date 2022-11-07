@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\FrontDesk;
 
 use App\Models\CheckInDetail;
+use App\Models\Deposit;
 use App\Models\Discount;
 use App\Models\Guest;
 use App\Models\Room;
@@ -14,10 +15,11 @@ use Livewire\WithPagination;
 use Psy\Readline\Transient;
 use Termwind\Components\Dd;
 use WireUi\Traits\Actions;
+use App\Traits\WithCaching;
 
 class CheckIn extends Component
 {
-    use WithPagination, Actions;
+    use WithPagination, Actions, WithCaching;
 
     public $search;
 
@@ -29,7 +31,7 @@ class CheckIn extends Component
 
     public $given_amount;
 
-    public $save_as_deposit =false;
+    public $save_as_deposit = false;
 
     protected $listeners = ['refreshRecentCheckInList' => 'clearSearches'];
 
@@ -47,11 +49,14 @@ class CheckIn extends Component
 
     public $recent_check_in_order = 'DESC';
 
+    public $discounts = [];
+
     public function updatedGivenAmount()
     {
+        $this->useCacheRows();
         if ($this->given_amount) {
             $this->excess_amount = $this->given_amount - $this->total_amount;
-        }else{
+        } else {
             $this->excess_amount = 0;
         }
     }
@@ -77,11 +82,17 @@ class CheckIn extends Component
         $this->searchBy = '1';
     }
 
+
     public function setGuest($guest_id)
     {
-        $this->reset('excess_amount','given_amount','save_as_deposit');
-        $this->guest  = Guest::where('id',$guest_id)->with(['transactions.check_in_detail','transactions.deposit'])->first();
-        if ( $this->guest->terminated_at != null) {
+        $this->useCacheRows();
+        $this->reset('excess_amount', 'given_amount', 'save_as_deposit');
+        $this->guest  = Guest::where('id', $guest_id)
+            ->with([
+                'checkInDetail',
+                'transactions'
+            ])->first();
+        if ($this->guest->terminated_at != null) {
             $this->notification()->error(
                 $title = 'Error',
                 $description = 'Guest failed to check in within 2 hours. As per policy, guest is terminated.',
@@ -94,7 +105,7 @@ class CheckIn extends Component
 
     public function confirmCheckIn()
     {
-        
+        $this->useCacheRows();
         $this->dialog()->confirm([
             'title' => 'Are you Sure?',
             'description' => 'Are you sure you want to check in this guest?',
@@ -115,21 +126,25 @@ class CheckIn extends Component
             'given_amount' => 'required|numeric|min:0|min:' . $this->total_amount + 1,
         ]);
         DB::beginTransaction();
-        
+
         $check_in_transaction = $this->guest->transactions()->where('transaction_type_id', 1)->first();
         $default_deposite = $this->guest->transactions()->where('transaction_type_id', 2)->first();
+
         $check_in_transaction->update([
             'paid_amount' => $this->given_amount - 200,  // 200 pesos will be added to remote and key deposite
             'change_amount' => $this->excess_amount,
             'paid_at' => Carbon::now()
         ]);
-        $check_in_detail = $check_in_transaction->check_in_detail;
+
+        $check_in_detail = $this->guest->checkInDetail;
+
         $check_in_detail->update([
-                'check_in_at' => Carbon::now(),
-                 'expected_check_out_at' => Carbon::now()->addHours($check_in_detail->static_hours_stayed),
-            ]);
-         Room::where('id', $check_in_detail->room_id)->update([
-              'room_status_id' => 2,
+            'check_in_at' => Carbon::now(),
+            'expected_check_out_at' => Carbon::now()->addHours($check_in_detail->static_hours_stayed),
+        ]);
+
+        Room::where('id', $check_in_detail->room_id)->update([
+            'room_status_id' => 2,
         ]);
 
         $default_deposite->update([
@@ -139,22 +154,24 @@ class CheckIn extends Component
         ]);
 
         if ($this->save_as_deposit) {
-            $excess_deposit = $this->guest->transactions()->create([
+            $this->guest->transactions()->create([
                 'room_id' => $check_in_detail->room_id,
                 'branch_id' => auth()->user()->branch_id,
                 'transaction_type_id' => 2,
                 'payable_amount' => $this->excess_amount,
                 'paid_amount' => $this->excess_amount,
                 'change_amount' => 0,
-                'paid_at' => Carbon::now()
+                'paid_at' => Carbon::now(),
+                'remarks' => 'Excess amount from check in',
             ]);
-            $excess_deposit->deposit()->create([
-                'remarks' => "Excess Deposit from Check In payment",
+
+            Deposit::create([
+                'guest_id' => $this->guest->id,
                 'amount' => $this->excess_amount,
+                'remarks' => 'Excess amount from check in',
             ]);
         }
 
-       
         $this->guest->update([
             'is_checked_in' => true,
             'check_in_at' => Carbon::now(),
@@ -302,46 +319,66 @@ class CheckIn extends Component
                 ->paginate(9);
         }
     }
+
+    public function getGuestsQueryProperty()
+    {
+        return Guest::where('branch_id', auth()->user()->branch->id)
+            ->where('terminated_at', null)
+            ->where('is_checked_in', false)
+            ->with(['checkInDetail','transactions']);
+    }
+
+    public function getGuestsProperty()
+    {
+        if ($this->realSearch != '') {
+            switch ($this->searchBy) {
+                case '1':
+                    $this->guestsQuery->where('qr_code', $this->realSearch);
+                    break;
+                case '2':
+                    $this->guestsQuery->where('name', 'like', '%' . $this->realSearch . '%');
+                    break;
+                case '3':
+                    $this->guestsQuery->whereHas('checkInDetail.room', function ($query) {
+                            $query->where('number', $this->realSearch);
+                      });
+                    break;
+            }
+        }
+        return $this->cache(function () {
+            return $this->guestsQuery->paginate(9);
+        }, 'guests');
+    }
+
+    public function mount()
+    {
+        $this->discounts = Discount::where('branch_id', auth()->user()->branch_id)
+            ->where('is_available', true)
+            ->get();
+    }
+
+    public function getRecentCheckInsQueryProperty()
+    {
+        return Guest::query()->where('is_checked_in', true)
+                ->orderBy('check_in_at', 'desc')
+                ->take(10);
+    }
+
+    public function getRecentCheckInsProperty()
+    {
+        return $this->cache(function () {
+            return $this->recentCheckInsQuery->get();
+        }, 'recentCheckIns');
+    }
+
     public function render()
     {
         return view('livewire.front-desk.check-in', [
-            'guests' => Guest::where('terminated_at', null)
-                ->where('is_checked_in', false)
-                ->when($this->realSearch != '', function ($query) {
-                    switch ($this->searchBy) {
-                        case '1':
-                            $query->where('qr_code', $this->realSearch);
-                            break;
-                        case '2':
-                            $query->where('name', $this->realSearch);
-                            break;
-                        case '3':
-                            $query->whereHas('transactions', function ($query) {
-                                $query->where('transaction_type_id', 1)
-                                    ->whereHas('check_in_detail', function ($query) {
-                                        $query->whereHas('room', function ($query) {
-                                            $query->where('number', $this->realSearch);
-                                        });
-                                    });
-                            });
-                            break;
-                    }
-                })
-                ->where('branch_id', auth()->user()->branch->id)
-                ->paginate(9),
+            'guests' => $this->guests,
             'transactions' => $this->showModal != false ?
                 $this->guest->transactions()
-                ->with(['transaction_type', 'check_in_detail.room'])
                 ->orderBy('created_at', 'desc')->get() : [],
-            'recent_check_in_list' => Guest::query()
-                ->where('is_checked_in', true)
-                ->orderBy('check_in_at', $this->recent_check_in_order)
-                ->take(10)
-                ->get(),
-            'discounts' => $this->showModal == true ?
-                Discount::where('branch_id', auth()->user()->branch_id)
-                ->where('is_available', true)
-                ->get() : [],
+            'recent_check_in_list' => $this->recentCheckIns,
         ]);
     }
 }

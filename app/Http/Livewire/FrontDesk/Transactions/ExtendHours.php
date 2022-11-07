@@ -14,11 +14,13 @@ use Illuminate\Support\Facades\DB;
 use App\Models\CheckInDetailExtension;
 use App\Models\Rate;
 use App\Models\StayingHour;
-
+use App\Traits\WithCaching;
 
 class ExtendHours extends Component
 {
-    use Actions;
+    use Actions, WithCaching;
+
+    public $tabIsVisible = false;
 
     public $branch_extension_resetting_time = null;
 
@@ -28,6 +30,7 @@ class ExtendHours extends Component
         'extension_id' => null,
         'amount_to_be_paid' => null,
         'initial_amount' => null,
+        'paid_at' => false,
     ];
 
     protected $validationAttributes = [
@@ -58,6 +61,7 @@ class ExtendHours extends Component
 
     public function updatedFormExtensionId()
     {
+        $this->useCacheRows();
         DB::beginTransaction();
         $extension = Extension::find($this->form['extension_id']);
 
@@ -73,7 +77,7 @@ class ExtendHours extends Component
             ->where('number', '>=', $extension_hours)
             ->orderBy('number', 'ASC')
             ->first()->rates()->where('type_id', $this->check_in_detail->room->type_id)->first()->amount;
-      
+
         if ($total_hours % $this->branch_extension_resetting_time == 0) {
             if ($extension->hours < $this->branch_extension_resetting_time) {
                 $this->form['amount_to_be_paid'] = $reset_amount;
@@ -93,12 +97,12 @@ class ExtendHours extends Component
                 $total_amount = $daily_amount + $hourly_rate_amount;
                 $this->form['amount_to_be_paid'] =  $total_amount - $total_checked_in_amount_and_extension_amount;
             }
-        }else{
+        } else {
             if ($extension->hours + $total_hours <= $this->branch_extension_resetting_time) {
                 $this->form['amount_to_be_paid'] =  $extension->amount;
             } else {
                 $temp_total = $extension->hours + $total_hours;
-                $days = floor( $temp_total / $this->branch_extension_resetting_time);
+                $days = floor($temp_total / $this->branch_extension_resetting_time);
                 $hours = $temp_total % $this->branch_extension_resetting_time;
                 $daily_amount = $this->checked_in_room_daily_rate * $days;
                 $hourly_rate_amount =  $hours > 0 ? Rate::where('type_id', $this->check_in_detail->room->type_id)
@@ -108,7 +112,7 @@ class ExtendHours extends Component
                 $total_extend_amount = CheckInDetailExtension::whereHas('transaction', function ($query) {
                     $query->where('guest_id', $this->guest_id);
                 })->sum('amount');
-               
+
                 $total_checked_in_amount_and_extension_amount = $this->check_in_detail->rate->amount + $total_extend_amount;
                 $total_amount = $daily_amount + $hourly_rate_amount;
                 $this->form['amount_to_be_paid'] =  $total_amount - $total_checked_in_amount_and_extension_amount;
@@ -131,6 +135,8 @@ class ExtendHours extends Component
             'transaction_type_id' => 6,
             'payable_amount' => $this->form['amount_to_be_paid'],
             'room_id' => $this->check_in_detail->room_id,
+            'remarks' => 'Guest extended his/her stay for ' . $extension->hours . ' hours',
+            'paid_at' => $this->form['paid_at'] ? now() : null,
         ]);
         CheckInDetailExtension::create([
             'transaction_id' => $extension_transaction->id,
@@ -142,6 +148,7 @@ class ExtendHours extends Component
         $this->check_in_detail->update([
             'expected_check_out_at' => Carbon::parse($this->check_in_detail->expected_check_out_at)->addHours($extension->hours)
         ]);
+
         DB::commit();
         $this->reset('form');
         $this->notification()->success(
@@ -150,9 +157,9 @@ class ExtendHours extends Component
         );
     }
 
-    public function mount()
+    public function visible()
     {
-        $this->check_in_detail = CheckInDetail::where('id', $this->check_in_detail_id)->with(['rate.staying_hour'])->first();
+        $this->tabIsVisible = true;
         $this->available_hours_for_extension_with_in_this_branch = Extension::where('branch_id', auth()->user()->branch_id)->get();
         $extension_capping = ExtensionCapping::where('branch_id', auth()->user()->branch_id)->first();
         $this->branch_extension_resetting_time = $extension_capping->hours ?? null;
@@ -164,12 +171,63 @@ class ExtendHours extends Component
         }
     }
 
+    public function mount()
+    {
+        $this->check_in_detail = CheckInDetail::where('id', $this->check_in_detail_id)->with(['rate.staying_hour'])->first();
+    }
+
+    public function getExtendHistoriesQueryProperty()
+    {
+        return Transaction::where('transaction_type_id', 6)
+            ->where('guest_id', $this->guest_id)->with(['check_in_detail_extension']);
+    }
+
+    public function getExtendHistoriesProperty()
+    {
+        return $this->cache(function () {
+            return $this->extendHistoriesQuery->get();
+        });
+    }
+
+    // public function payTransaction($transaction_id)
+    // {
+    //     $this->useCacheRows();
+
+    //     $this->dialog()->confirm([
+    //         'title'       => 'Are you Sure?',
+    //         'description' => 'This will mark the transaction as paid.',
+    //         'icon'        => 'question',
+    //         'accept'      => [
+    //             'label'  => 'Yes, continue',
+    //             'method' => 'confirmPayTransaction',
+    //             'params' => $transaction_id,
+    //         ],
+    //         'reject' => [
+    //             'label'  => 'No, cancel',
+    //         ],
+    //     ]);
+    // }
+
+    // public function confirmPayTransaction($transaction_id)
+    // {
+    //     $transaction = Transaction::find($transaction_id);
+
+    //     $transaction->update([
+    //         'paid_at' => Carbon::now(),
+    //     ]);
+
+    //     $this->dialog()->success(
+    //         $title = 'Success',
+    //         $description = 'Transaction has been marked as paid.',
+    //     );
+
+    //     $this->emit('transactionUpdated');
+    // }
+
     public function render()
     {
         return view('livewire.front-desk.transactions.extend-hours', [
-            'extension_history' => CheckInDetailExtension::whereHas('transaction', function ($query) {
-                $query->where('guest_id', $this->guest_id);
-            })->orderBy('created_at', $this->history_order)->get(),
+            'extend_histories' => $this->tabIsVisible ? $this->extendHistories : [],
         ]);
     }
 }

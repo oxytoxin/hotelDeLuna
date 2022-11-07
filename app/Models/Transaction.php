@@ -51,23 +51,8 @@ class Transaction extends Model
         return $this->hasOne(RoomChange::class);
     }
 
-    public function check_in_detail_extensions()
+    public function check_in_detail_extension()
     {
         return $this->hasOne(CheckInDetailExtension::class);
-    }
-
-    public function damage()
-    {
-        return $this->hasOne(Damage::class);
-    }
-
-    public function guest_request_item()
-    {
-        return $this->hasOne(GuestRequestItem::class);
-    }
-    
-    public function deposit()
-    {
-        return $this->hasOne(Deposit::class);
     }
 }

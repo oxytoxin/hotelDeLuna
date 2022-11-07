@@ -32,8 +32,6 @@ class Transactions extends Component
         'extension.extension_id' => 'Hours',
     ];
 
- 
-
     public function search()
     {
         $this->validate([

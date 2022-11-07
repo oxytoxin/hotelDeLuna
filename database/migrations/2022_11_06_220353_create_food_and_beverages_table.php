@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('damages', function (Blueprint $table) {
+        Schema::create('food_and_beverages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('guest_id')->constrained();
-            $table->unsignedBigInteger('hotel_item_id')->constrained();
-            $table->dateTime('occured_at');
+            $table->unsignedBigInteger('guest_id');
+            $table->string('name');
+            $table->string('quantity');
             $table->string('price');
-            $table->string('additional_charge')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('damages');
+        Schema::dropIfExists('food_and_beverages');
     }
 };
