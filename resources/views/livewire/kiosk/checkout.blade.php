@@ -129,24 +129,7 @@
 
 
                 </dl>
-                {{-- <div class="flex justify-between px-10 pt-7">
-                    <dt class="">
-                      <div class="flex items-center space-x-2">
-                        <div class="flex flex-col">
-                          <div class="font-bold text-white uppercase border-b">CHECK-IN DEPOSITS</div>
-                          <div class="text-gray-300">Room Key & TV Remote </div>
-                        </div>
-                        @if ($transactions->where('transaction_type_id', 2)->count() > 1)
-                          <div class="text-white"> x
-                            {{ $transactions->where('transaction_type_id', 2)->count() }}</div>
-                        @endif
-                        <div class="text-white"></div>
-                      </div>
-                    </dt>
-                    <dd class="text-lg font-bold text-white">
-                      &#8369;{{ number_format($transactions->where('transaction_type_id', 2)->sum('payable_amount'), 2) }}
-                    </dd>
-                  </div> --}}
+
               </div>
               <div class=" left-0 w-full border-b bottom-5">
                 <div class="flex items-center justify-between w-full s px-10">
