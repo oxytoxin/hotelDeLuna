@@ -165,5 +165,8 @@ Route::middleware([
             Route::get('/reports/roomboy', function () {
                 return view('back-office.report.roomboy');
             })->name('office.roomboy');
+            Route::get('/reports/time-interval', function () {
+                return view('back-office.report.time-interval');
+            })->name('office.time-interval');
         });
 });

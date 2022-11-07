@@ -8,8 +8,21 @@
         document.body.innerHTML = originalContents;
     }
 }">
-  <div class="flex justify-end items-center">
-
+  <div class="flex justify-between items-center">
+    <div class="flex space-x-1 items-center">
+      <div>
+        <div class="">
+          <input type="date"
+            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            placeholder="you@example.com">
+        </div>
+      </div>
+      <x-native-select wire:model="model">
+        <option>Select Shift</option>
+        <option>1st Shift (8:00am - 8:00pm)</option>
+        <option>2nd Shift (8:00pm - 8:00am)</option>
+      </x-native-select>
+    </div>
     <div class="flex space-x-1">
       {{-- <x-button wire:click="export" wire:loading.attr="disabled" positive class="text-white fill-white font-semibold">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -37,55 +50,21 @@
       <table id="example" class="table-auto mt-2" style="width:100%">
         <thead class="font-normal">
           <tr>
-            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">GUEST NAME</th>
+            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">ROOM NUMBER</th>
             <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">CHECK IN</th>
             <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">CHECK OUT</th>
-            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">TIME ENTRY AS CLEAN</th>
-            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">ROOMBOY NAME</th>
-            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">CLEANING TIME INTERVAL</th>
+            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">ROOM INTERVAL</th>
           </tr>
         </thead>
         <tbody class="">
-          {{-- @foreach ($roomboys as $roomboy)
+          @foreach ($checkInDetails as $key => $interval)
             <tr>
-              <th colspan="4" class="text-left border text-gray-700 font-semibold px-3 uppercase py-2 bg-gray-50">
-                {{ $roomboy->user->name }}
-              </th>
-
-            </tr>
-            @foreach ($roomboy->cleanings as $item)
-              <tr>
-                <td class="border px-3 py-1"></td>
-                <td class="border px-3 py-1">RM #{{ $item->room->number }} |
-                  {{ ordinal($item->room->floor->number) }} Floor</td>
-                <td class="border px-3 py-1">dfdfdf</td>
-                <td class="border px-3 py-1">dfdfdf</td>
-              </tr>
-            @endforeach
-          @endforeach --}}
-          @foreach ($cleanings as $item)
-            <tr>
-              @php
-                $guest = \App\Models\Transaction::where('room_id', $item->room_id)
-                    ->where('transaction_type_id', 1)
-                    ->latest()
-                    ->first();
-                
-                $time_start = \Carbon\Carbon::parse($item->started_at);
-                $time_end = \Carbon\Carbon::parse($item->finish_at);
-                $time_interval = $time_start->diff($time_end)->format('%H') . ' hr ' . $time_start->diff($time_end)->format('%I') . ' mins';
-              @endphp
-              <td class="border px-3 py-1">{{ $guest->guest->name }}</td>
-              <td class="border px-3 py-1">{{ \Carbon\Carbon::parse($guest->guest->check_in_at)->format('m/d/Y') }} |
-                {{ \Carbon\Carbon::parse($guest->guest->check_in_at)->format('g:i A') }}</td>
-              <td class="border px-3 py-1">{{ \Carbon\Carbon::parse($guest->guest->check_out_at)->format('m/d/Y') }} |
-                {{ \Carbon\Carbon::parse($guest->guest->check_out_at)->format('g:i A') }}</td>
-              <td class="border px-3 py-1">{{ \Carbon\Carbon::parse($item->started_at)->format('g:i A') }}</td>
-              <td class="border px-3 py-1">{{ $item->room_boy->user->name }}</td>
-              <td class="border px-3 py-1">{{ $time_interval }}</td>
+              <td class="border px-3 py-1">{{ $interval }}</td>
+              <td class="border px-3 py-1">sdsdsds</td>
+              <td class="border px-3 py-1">sdsdsds</td>
+              <td class="border px-3 py-1">sdsdsds</td>
             </tr>
           @endforeach
-
         </tbody>
       </table>
     </div>
