@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('room_changes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('transaction_id')->constrained();
+            $table->foreignId('guest_id')->constrained();
             $table->unsignedBigInteger('from_room_id')->references('id')->on('rooms');
             $table->unsignedBigInteger('to_room_id')->references('id')->on('rooms');
             $table->string('reason');

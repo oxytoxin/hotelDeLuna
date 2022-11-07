@@ -1,4 +1,4 @@
-<div class="gap-4 sm:grid sm:grid-cols-2">
+{{-- <div class="gap-4 sm:grid sm:grid-cols-2">
     <div class="sm:col-span-2">
         <x-card title="Change Room">
             <form class="gap-4 sm:grid-cols-2 sm:grid">
@@ -109,6 +109,84 @@
                 </div>
             </div>
 
+        </x-card>
+    </div>
+</div> --}}
+<div class="grid gap-4"
+    x-data
+    x-intersect.once="$wire.componentIsLoaded">
+    <form wire:submit.prevent="save">
+        <x-card title="Damages">
+            @csrf
+            <div class="grid-cols-2 sm:grid sm:gap-3">
+                <x-native-select label="Select"
+                    wire:model="form.hotel_item_id">
+                    <option value="">Select</option>
+                    @foreach ($hotel_items as $item)
+                        <option value="{{ $item->id }}">
+                            {{ $item->name }}
+                        </option>
+                    @endforeach
+                </x-native-select>
+                <x-input label="Amount"
+                    wire:model.defer="form.price"
+                    disabled />
+                <x-input label="Additional Amount"
+                    wire:model.defer="form.additional_charge"
+                    hint="Optional"
+                    type="numeric" />
+                <x-input label="Occured At"
+                    wire:model.defer="form.occured_at"
+                    type="date" />
+            </div>
+            <x-slot:footer>
+                <div class="flex space-x-3">
+                    <x-button label="Clean Form"
+                        negative />
+                    <x-button label="Save"
+                        type="submit"
+                        spinner="save"
+                        positive />
+                </div>
+            </x-slot:footer>
+        </x-card>
+    </form>
+    <div wire:key="salkjhfdq98ehrlkahfznkcvneiuhf9q328">
+        <x-card title="Transactions">
+            <x-transactions :headers="['Details', 'Amount', 'Paid At', 'Date']">
+                <x-slot:body>
+                    @forelse ($transactions as $key => $transaction)
+                        <tr wire:key="{{ $key . $transaction->id }}">
+                            <x-transactions.cell>
+                                {{ $transaction->remarks }}
+                            </x-transactions.cell>
+                            <x-transactions.cell>
+                                {{ $transaction->payable_amount }}
+                            </x-transactions.cell>
+                            <x-transactions.cell>
+                                @if ($transaction->paid_at)
+                                    {{ Carbon\Carbon::parse($transaction->paid_at)->format('Y/m/d h:i:s A') }}
+                                @else
+                                    <button type="button"
+                                        wire:click="payTransaction({{ $transaction->id }})"
+                                        class="text-green-600 hover:text-green-900">
+                                        <span> Pay </span>
+                                    </button>
+                                @endif
+                            </x-transactions.cell>
+                            <x-transactions.cell>
+                                {{ $transaction->created_at }}
+                            </x-transactions.cell>
+                        </tr>
+                    @empty
+                        <tr>
+                            <x-transactions.cell colspan="4">
+                                No transactions found
+                            </x-transactions.cell>
+                        </tr>
+                    @endforelse
+                </x-slot:body>
+            </x-transactions>
         </x-card>
     </div>
 </div>

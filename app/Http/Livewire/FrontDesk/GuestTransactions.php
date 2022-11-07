@@ -16,7 +16,8 @@ class GuestTransactions extends Component
 
     use Actions, WithCaching, TransferRoom;
 
-    protected $listeners = ['room_changed'=>'$refresh'];
+    protected $listeners = ['transactionUpdated'=>'$refresh'];
+
 
     public $tabs = [
         '0' => 'Information',
@@ -44,10 +45,12 @@ class GuestTransactions extends Component
         return Guest::whereNotNull('check_in_at')
             ->whereNull('check_out_at');
     }
+
     public function search($searchBy)
     {
         $this->searchBy = $searchBy;
     }
+
     public function getGuestProperty()
     {
         if (is_null($this->search)) return null;
@@ -55,26 +58,59 @@ class GuestTransactions extends Component
         if ($this->searchBy == "qr_code") {
             $this->guestQuery->where('qr_code', $this->search);
         } else {
-            $this->guestQuery->whereHas('transactions', function ($query) {
-                $query->where('transaction_type_id', 1)
-                    ->whereHas('check_in_detail.room', function ($query) {
-                        $query->where('number', $this->search);
-                    });
-            });
+            $this->guestQuery->whereHas('checkInDetail.room', function ($query) {
+                    $query->where('number', $this->search);
+             });
         }
 
         return $this->cache(function () {
-            return $this->guestQuery->with(['transactions.transaction_type'])->first();
+            return $this->guestQuery->with(['checkInDetail','transactions.transaction_type'])->first();
         });
     }
+
     public function getCheckInDetailProperty()
     {
-        return $this->guest->transactions->first()->check_in_detail->load(['room.type']);
+        return $this->guest->checkInDetail;
     }
+
     public function clear()
     {
         $this->search = null;
         $this->searchBy = "";
+        $this->transactionTabIsVisible = false;
+    }
+
+    public function payTransaction($transaction_id)
+    {
+        $this->useCacheRows();
+
+        $this->dialog()->confirm([
+            'title'       => 'Are you Sure?',
+            'description' => 'This will mark the transaction as paid.',
+            'icon'        => 'question',
+            'accept'      => [
+                'label'  => 'Yes, continue',
+                'method' => 'confirmPayTransaction',
+                'params' => $transaction_id,
+            ],
+            'reject' => [
+                'label'  => 'No, cancel',
+            ],
+        ]);
+    }
+
+    public function confirmPayTransaction($transaction_id)
+    {
+        $transaction = $this->guest->transactions->find($transaction_id);
+
+        $transaction->update([
+            'paid_at' => Carbon::now(),
+        ]);
+
+        $this->dialog()->success(
+            $title = 'Success',
+            $description= 'Transaction has been marked as paid.',
+        );
     }
 
     public function mount()

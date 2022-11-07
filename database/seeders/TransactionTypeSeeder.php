@@ -48,6 +48,11 @@ class TransactionTypeSeeder extends Seeder
             'name' => 'Amenities', //8
             'position' => 6,
         ]);
+
+        TransactionType::create([
+            'name' => 'Food and Beverage', //9
+            'position' => 6,
+        ]);
         
     }
 }

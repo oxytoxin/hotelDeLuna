@@ -61,7 +61,43 @@
             <div x-cloak
                 x-show="currentTab==2">
                 @livewire('front-desk.transactions.change-room', [
-                    'check_in_detail_id' => $this->guest->transactions->first()->check_in_detail->id,
+                    'check_in_detail_id' => $this->checkInDetail->id,
+                    'guest_id' => $this->guest->id,
+                ])
+            </div>
+            <div x-cloak
+                x-show="currentTab==3">
+                @livewire('front-desk.transactions.extend-hours', [
+                    'check_in_detail_id' => $this->checkInDetail->id,
+                    'guest_id' => $this->guest->id,
+                ])
+            </div>
+            <div x-cloak
+                x-show="currentTab==4">
+                @livewire('front-desk.transactions.add-damages', [
+                    'guest_id' => $this->guest->id,
+                    'current_room_id' => $this->guest->checkInDetail->room_id,
+                ])
+            </div>
+            <div x-cloak
+                x-show="currentTab==5">
+                @livewire('front-desk.transactions.amenities', [
+                    'guest_id' => $this->guest->id,
+                    'current_room_id' => $this->guest->checkInDetail->room_id,
+                ])
+            </div>
+            <div x-cloak
+                x-show="currentTab==6">
+                @livewire('front-desk.transactions.food-and-beverage', [
+                    'guest_id' => $this->guest->id,
+                    'current_room_id' => $this->guest->checkInDetail->room_id,
+                ])
+            </div>
+            <div x-cloak
+                x-show="currentTab==7">
+                @livewire('front-desk.transactions.guest-deposits', [
+                    'guest_id' => $this->guest->id,
+                    'current_room_id' => $this->guest->checkInDetail->room_id,
                 ])
             </div>
         @endif

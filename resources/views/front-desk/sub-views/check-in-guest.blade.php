@@ -36,16 +36,7 @@
                                             <li class="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
                                                 <div class="flex items-center justify-between flex-1 w-0">
                                                     <span class="flex-1 w-0 ml-2 truncate">
-                                                        {{ $transaction->transaction_type->name }} |
-                                                        @if ($transaction->transaction_type_id == 1)
-                                                            ROOM # {{ $transaction->check_in_detail->room->number }}
-                                                            ({{ $transaction->check_in_detail->room->type->name }})
-                                                            for
-                                                            {{ $transaction->check_in_detail->static_hours_stayed }} hrs
-                                                        @endif
-                                                        @if ($transaction->transaction_type_id == 2)
-                                                            Initial Deposit for Remote and Room Key
-                                                        @endif
+                                                        {{ $transaction->remarks }}
                                                     </span>
                                                     <div>
                                                         <span> ₱{{ $transaction->payable_amount }}</span>

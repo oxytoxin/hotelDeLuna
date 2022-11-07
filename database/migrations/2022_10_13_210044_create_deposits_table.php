@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('deposits', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('transaction_id')->constrained();
+            $table->foreignId('guest_id')->constrained();
             $table->string('amount');
             $table->string('deducted')->nullable();
             $table->string('remarks')->nullable();

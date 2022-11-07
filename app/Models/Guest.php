@@ -25,5 +25,29 @@ class Guest extends Model
         return $this->hasOne(GuestRequestItem::class);
     }
 
+    public function foodAndBeverages()
+    {
+        return $this->hasMany(FoodAndBeverage::class);
+    }
+
+    public function amenities()
+    {
+        return $this->hasMany(Amenity::class);
+    }
+
+    public function deposites()
+    {
+        return $this->hasMany(Deposit::class);
+    }
+
+    public function roomChanges()
+    {
+        return $this->hasMany(RoomChange::class);
+    }
+
+    public function checkInDetail()
+    {
+        return $this->hasOne(CheckInDetail::class);
+    }
    
 }

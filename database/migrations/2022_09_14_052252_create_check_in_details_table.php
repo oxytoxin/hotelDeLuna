@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('check_in_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('transaction_id');
+            $table->unsignedBigInteger('guest_id');
             $table->unsignedBigInteger('room_id');
             $table->unsignedBigInteger('rate_id');
             $table->string('static_amount');
