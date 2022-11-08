@@ -1,110 +1,76 @@
-<div class="gap-4 sm:grid sm:grid-cols-2"
-    x-intersect.once="$wire.visible">
+<div x-intersect.once="$wire.visible">
     @if ($tabIsVisible)
         @if ($branch_extension_resetting_time != null)
-            <div class="grid grid-cols-2 col-span-2 gap-4">
-                <div class="col-span-2">
-                    <x-card title="Extend">
-                        <form class="grid grid-cols-2 gap-3">
-                            @csrf
-                            <x-native-select label="Select Hour"
-                                wire:model="form.extension_id">
-                                <option value="">Select</option>
-                                @foreach ($available_hours_for_extension_with_in_this_branch as $extention)
-                                    <option value="{{ $extention->id }}">
-                                        {{ $extention->hours }} {{ Str::plural('hour', $extention->hours) }}
-                                    </option>
-                                @endforeach
-                            </x-native-select>
-                            <x-input label="Amount"
-                                disabled
-                                wire:model="form.amount_to_be_paid" />
-                        </form>
-                        <x-slot:footer>
-                            <div class="flex items-center space-x-3">
-                                <x-button negative
-                                    label="Clear" />
-                                <x-button emerald
-                                    wire:click="save"
-                                    spinner="save"
-                                    label="Save" />
-                            </div>
-                        </x-slot:footer>
+            <div class="grid gap-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <x-card title="Extend">
+                            <form class="grid grid-cols-2 gap-3">
+                                @csrf
+                                <x-native-select label="Select Hour"
+                                    wire:model="form.extension_id">
+                                    <option value="">Select</option>
+                                    @foreach ($available_hours_for_extension_with_in_this_branch as $extention)
+                                        <option value="{{ $extention->id }}">
+                                            {{ $extention->hours }} {{ Str::plural('hour', $extention->hours) }}
+                                        </option>
+                                    @endforeach
+                                </x-native-select>
+                                <x-input label="Amount"
+                                    disabled
+                                    wire:model="form.amount_to_be_paid" />
+                            </form>
+                            <x-slot:footer>
+                                <div class="flex items-center space-x-3">
+                                    <x-button negative
+                                        label="Clear" />
+                                    <x-button emerald
+                                        wire:click="save"
+                                        spinner="save"
+                                        label="Save" />
+                                </div>
+                            </x-slot:footer>
+                        </x-card>
+                    </div>
+                </div>
+                <div wire:key="salkjhfdq98ehrlkahfznkcvneiuhf9q328">
+                    <x-card title="Transactions">
+                        <x-transactions :headers="['Details', 'Amount', 'Paid At', 'Date']">
+                            <x-slot:body>
+                                @forelse ($transactions as $key => $transaction)
+                                    <tr wire:key="{{ $key . $transaction->id }}">
+                                        <x-transactions.cell>
+                                            {{ $transaction->remarks }}
+                                        </x-transactions.cell>
+                                        <x-transactions.cell>
+                                            {{ $transaction->payable_amount }}
+                                        </x-transactions.cell>
+                                        <x-transactions.cell>
+                                            @if ($transaction->paid_at)
+                                                {{ Carbon\Carbon::parse($transaction->paid_at)->format('Y/m/d h:i:s A') }}
+                                            @else
+                                                <button type="button"
+                                                    wire:click="payTransaction({{ $transaction->id }})"
+                                                    class="text-green-600 hover:text-green-900">
+                                                    <span> Pay </span>
+                                                </button>
+                                            @endif
+                                        </x-transactions.cell>
+                                        <x-transactions.cell>
+                                            {{ $transaction->created_at }}
+                                        </x-transactions.cell>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <x-transactions.cell colspan="4">
+                                            No transactions found
+                                        </x-transactions.cell>
+                                    </tr>
+                                @endforelse
+                            </x-slot:body>
+                        </x-transactions>
                     </x-card>
                 </div>
-            </div>
-            <div class="col-span-2">
-                <x-card title="Extend History">
-                    <div>
-                        <div class="flex flex-col">
-                            <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                                <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                                    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                                        <table class="min-w-full divide-y divide-gray-300">
-                                            <thead class="bg-primary-600">
-                                                <tr>
-                                                    <th scope="col"
-                                                        class="py-3 pl-4 pr-3 text-xs font-medium tracking-wide text-left text-white uppercase sm:pl-6">
-                                                        Details
-                                                    </th>
-                                                    <th scope="col"
-                                                        class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
-                                                        Amount
-                                                    </th>
-                                                    <th scope="col"
-                                                        class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
-                                                        Pait At
-                                                    </th>
-                                                    <th scope="col"
-                                                        class="px-3 py-3 text-xs font-medium tracking-wide text-left text-white uppercase">
-                                                        Date Time
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="bg-white divide-y divide-gray-200">
-                                                @forelse ($extend_histories as $transaction)
-                                                    <tr>
-                                                        <td
-                                                            class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
-                                                            {{ $transaction->remarks }}
-                                                        </td>
-                                                        <td
-                                                            class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
-                                                            ₱ {{ $transaction->payable_amount }}
-                                                        </td>
-                                                        <td
-                                                            class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
-                                                            @if ($transaction->paid_at)
-                                                                {{ Carbon\Carbon::parse($transaction->paid_at)->format('Y/m/d h:i:s A') }}
-                                                            @else
-                                                                <button type="button"
-                                                                    wire:click="payTransaction({{ $transaction->id }})"
-                                                                    class="text-green-600 hover:text-green-900">
-                                                                    <span> Pay </span>
-                                                                </button>
-                                                            @endif
-                                                        </td>
-                                                        <td
-                                                            class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
-                                                            {{ $transaction->created_at->format('Y/m/d h:i:s A') }}
-                                                        </td>
-                                                    </tr>
-                                                @empty
-                                                    <tr>
-                                                        <td colspan="3"
-                                                            class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
-                                                            No record found
-                                                        </td>
-                                                    </tr>
-                                                @endforelse
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </x-card>
             </div>
         @else
             <div class="p-4 border border-red-500 rounded-md bg-red-50 sm:col-span-2">

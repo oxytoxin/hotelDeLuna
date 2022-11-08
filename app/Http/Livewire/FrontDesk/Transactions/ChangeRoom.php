@@ -159,6 +159,8 @@ class ChangeRoom extends Component
             'paid_at' => $this->form['paid'] ? now() : null,
             'room_id' => $new_room->id,
             'remarks' => 'Guest transfered from ROOM # ' . $this->guestCheckInDetail->room->number . ' ( ' . $this->guestCheckInDetail->room->type->name . ' ) to ROOM # ' . $new_room->number . ' ( ' . $new_room->type->name . ' )',
+            'front_desk_name' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
         ]);
 
         if ($old_room_amount > $new_room_amount) {
@@ -169,6 +171,8 @@ class ChangeRoom extends Component
                 'payable_amount' =>  $old_room_amount - $new_room_amount,
                 'paid_at' => now(),
                 'room_id' => $new_room->id,
+                'front_desk_name' => auth()->user()->name,
+                'user_id' => auth()->user()->id,
             ]);
             Deposit::create([
                 'transaction_id' => $deposit_transaction->id,
