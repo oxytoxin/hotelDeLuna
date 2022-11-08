@@ -37,22 +37,21 @@
       <table id="example" class="table-auto mt-2" style="width:100%">
         <thead class="font-normal">
           <tr>
-            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">ROOM #</th>
-            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2"># OF TRANSFER</th>
+            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">FROM ROOM #</th>
+            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">TRANSFER TO ROOM #</th>
             <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">REASON</th>
             <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">FRONT DESK IN-CHARGE</th>
 
           </tr>
         </thead>
-        {{-- @dump($checkInDetails) --}}
 
         <tbody class="">
-          @foreach ($roomChanges as $roomchange)
+          @foreach ($roomChanges as $change)
             <tr>
-              <td class="border px-2 py-2 text-sm text-gray-700">sdsd</td>
-              <td class="border px-2 py-2 text-sm text-gray-700">sdsd</td>
-              <td class="border px-2 py-2 text-sm text-gray-700">{{ $roomchange->reason }}</td>
-
+              <td class="border px-2 py-2 text-sm text-gray-700">{{ $change->fromRoom->number }}</td>
+              <td class="border px-2 py-2 text-sm text-gray-700">{{ $change->toRoom->number }}</td>
+              <td class="border px-2 py-2 text-sm text-gray-700">{{ $change->reason }}</td>
+              <td class="border px-2 py-2 text-sm text-gray-700">ssd</td>
             </tr>
           @endforeach
         </tbody>
