@@ -10,13 +10,11 @@
             icon="search"
             wire:click="search('qr_code')"
             spinner="search('qr_code')"
-            rightIcon="qrcode"
             primary />
         <x-button label="Room Number"
             icon="search"
             wire:click="search('phone_number')"
             spinner="search('phone_number')"
-            rightIcon="phone"
             primary />
         @if ($this->guest)
             <x-button negative
