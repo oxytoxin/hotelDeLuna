@@ -124,7 +124,7 @@ class CheckIn extends Component
     public function checkIn()
     {
         $this->validate([
-            'given_amount' => 'required|numeric|min:0|min:' . $this->total_amount + 1,
+            'given_amount' => 'required|numeric|min:0|min:' . $this->total_amount,
         ]);
         DB::beginTransaction();
 
@@ -178,13 +178,13 @@ class CheckIn extends Component
             'check_in_at' => Carbon::now(),
         ]);
 
-        RoomTransactionLog::create([
-            'room_id' =>$check_in_detail->room_id,
-            'room_number' => $check_in_detail->room->number,
-            'check_in_detail_id' => $check_in_detail->id,
-            'check_in_at' => $check_in_detail->check_in_at,
-            'time_interval' => $check_in_detail->room->last_check_out_at ? $check_in_detail->check_in_at->diffInMinutes($check_in_detail->room->last_check_out_at) : 0,
-        ]);
+        // RoomTransactionLog::create([
+        //     'room_id' =>$check_in_detail->room_id,
+        //     'room_number' => $check_in_detail->room->number,
+        //     'check_in_detail_id' => $check_in_detail->id,
+        //     'check_in_at' => $check_in_detail->check_in_at,
+        //     'time_interval' => $check_in_detail->room->last_check_out_at ? $check_in_detail->check_in_at->diffInMinutes($check_in_detail->room->last_check_out_at) : 0,
+        // ]);
 
         DB::commit();
         $this->showModal = false;
