@@ -171,5 +171,8 @@ Route::middleware([
             Route::get('/reports/number-of-stay', function () {
                 return view('back-office.report.stay');
             })->name('office.stay');
+            Route::get('/reports/transfer', function () {
+                return view('back-office.report.transfer');
+            })->name('office.transfer');
         });
 });
