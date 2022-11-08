@@ -55,9 +55,8 @@ class NumberOfStay extends Component
             return CheckInDetail::whereHas('room.floor', function ($query) {
                 $query->where('branch_id', auth()->user()->branch_id);
             })
-                ->whereDate('created_at', $this->date)
-                ->whereTime('check_in_at', '>=', '20:01:00')
-                ->whereTime('check_out_at', '<=', '08:00:00')
+                ->where('check_in_at', '>=', $this->datefrom)
+                ->where('check_out_at', '<=', $this->dateto)
                 ->with('room.floor', 'guest')
                 ->get();
         } else {
