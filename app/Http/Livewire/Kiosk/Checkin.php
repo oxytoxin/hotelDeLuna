@@ -317,7 +317,7 @@ class Checkin extends Component
                     'guest_id' => $guest->id,
                     'transaction_type_id' => 1,
                     'payable_amount' => $rate->amount * $this->days_stay,
-                    'remarks' => 'Guest checked in : ROOM #' . $room->number,
+                    'remarks' => 'Guest checked in : ROOM #' . $room->number, 
                 ]);
             } else {
                 $checkinroom = Transaction::create([

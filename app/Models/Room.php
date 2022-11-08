@@ -61,4 +61,10 @@ class Room extends Model
         return $this->room_status_id;
     }
 
+
+    public function roomTransactionLogs()
+    {
+        return $this->hasMany(RoomTransactionLog::class);
+    }
+
 }

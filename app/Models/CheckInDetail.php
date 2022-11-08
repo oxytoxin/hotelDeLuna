@@ -30,4 +30,9 @@ class CheckInDetail extends Model
     {
         return $this->belongsTo(Guest::class);
     }
+
+    public function roomTransactionLogs()
+    {
+        return $this->hasMany(RoomTransactionLog::class);
+    }
 }

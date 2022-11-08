@@ -206,6 +206,7 @@ class CheckOutGuest extends Component
         $check_in_detail->room->update([
             'room_status_id' => 7,
             'time_to_clean' => Carbon::now()->addHours(3),
+            'last_check_out_at' => Carbon::now(),
         ]);
         DB::commit();
         $this->notification()->success(
