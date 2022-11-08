@@ -173,9 +173,10 @@ class ChangeRoom extends Component
                 'room_id' => $new_room->id,
                 'front_desk_name' => auth()->user()->name,
                 'user_id' => auth()->user()->id,
+                'remarks'=>'Extra amount paid from previous room',
             ]);
             Deposit::create([
-                'transaction_id' => $deposit_transaction->id,
+                'guest_id' => $this->guestCheckInDetail->guest_id,
                 'amount' => $old_room_amount - $new_room_amount,
                 'remarks' => 'Deposit from transfer room transaction',
             ]);
