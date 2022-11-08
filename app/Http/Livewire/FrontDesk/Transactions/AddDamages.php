@@ -32,6 +32,8 @@ class AddDamages extends Component
             'form.occured_at' => 'required|date',
             'form.price' => 'required|numeric',
             'form.additional_charge' => 'nullable|numeric',
+            'form.front_desk_name' => 'nullable',
+            'form.user_id' => 'nullable',
         ];
     }
 
@@ -41,6 +43,8 @@ class AddDamages extends Component
     {
         $this->form = Damage::make([
             'guest_id' => $this->guest_id,
+            'front_desk_name' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
         ]);
     }
     

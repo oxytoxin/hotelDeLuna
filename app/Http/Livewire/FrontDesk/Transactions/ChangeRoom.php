@@ -179,6 +179,8 @@ class ChangeRoom extends Component
                 'guest_id' => $this->guestCheckInDetail->guest_id,
                 'amount' => $old_room_amount - $new_room_amount,
                 'remarks' => 'Deposit from transfer room transaction',
+                'front_desk_name' => auth()->user()->name,
+                'user_id' => auth()->user()->id,
             ]);
         }
 
@@ -188,6 +190,8 @@ class ChangeRoom extends Component
             'to_room_id' => $this->form['room_id'],
             'reason' => $this->form['reason'],
             'amount' => $new_room_amount,
+            'front_desk_name' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
         ]);
 
         $this->guestCheckInDetail->update([

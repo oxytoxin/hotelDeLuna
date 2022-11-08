@@ -24,6 +24,8 @@ class FoodAndBeverage extends Component
             'form.name' => 'required',
             'form.quantity' => 'required|numeric',
             'form.price' => 'required|numeric',
+            'form.front_desk_name' => 'nullable',
+            'form.user_id' => 'nullable',
         ];
     }
 
@@ -69,7 +71,11 @@ class FoodAndBeverage extends Component
 
     public function makeNewForm()
     {
-        $this->form = ModelsFoodAndBeverage::make(['guest_id' => $this->guest_id,'quantity' => 1]);
+        $this->form = ModelsFoodAndBeverage::make([
+            'guest_id' => $this->guest_id,'quantity' => 1,
+            'front_desk_name' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
+        ]);
     }
 
     public function mount()

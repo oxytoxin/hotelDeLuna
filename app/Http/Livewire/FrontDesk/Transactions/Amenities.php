@@ -32,6 +32,8 @@ class Amenities extends Component
             'form.quantity' => 'required|numeric',
             'form.price' => 'required|numeric',
             'form.additional_charge' => 'nullable|numeric',
+            'form.front_desk_name' => 'nullable',
+            'form.user_id' => 'nullable',
         ];
     }
 
@@ -69,6 +71,8 @@ class Amenities extends Component
         $this->form = Amenity::make([
             'guest_id' => $this->guest_id,
             'quantity' => 1,
+            'front_desk_name' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
         ]);
     }
 

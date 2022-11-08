@@ -141,6 +141,8 @@ class ExtendHours extends Component
             'extension_id' => $this->form['extension_id'],
             'hours' => $extension->hours,
             'amount' => $this->form['amount_to_be_paid'],
+            'front_desk_name' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
         ]);
 
         $this->check_in_detail->update([
@@ -149,7 +151,7 @@ class ExtendHours extends Component
 
         DB::commit();
         $this->reset('form');
-        $this->notification()->success(
+        $this->dialog()->success(
             $title = 'Success',
             $description = 'Hour extension saved successfully',
         );
