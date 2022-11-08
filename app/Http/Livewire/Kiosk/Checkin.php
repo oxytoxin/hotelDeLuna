@@ -250,14 +250,14 @@ class Checkin extends Component
                 'remarks' => 'Guest deposit: Room Key & TV Remote',
             ]);
             Deposit::create([
-                'transaction_id' => $checkindeposit->id,
+                'guest_id' => $guest->id,
                 'amount' => 200,
                 'remarks' => 'TV Remote and Room key',
             ]);
 
             if ($this->long_stay == true) {
                 $details = CheckInDetail::create([
-                    'transaction_id' => $checkinroom->id,
+                    'guest_id' => $guest->id,
                     'room_id' => $this->get_room['room_id'],
                     'rate_id' => $this->get_room['rate_id'],
                     'static_amount' => $rate->amount,
@@ -266,7 +266,7 @@ class Checkin extends Component
                 ]);
             } else {
                 $details = CheckInDetail::create([
-                    'transaction_id' => $checkinroom->id,
+                    'guest_id' => $guest->id,
                     'room_id' => $this->get_room['room_id'],
                     'rate_id' => $this->get_room['rate_id'],
                     'static_amount' => $rate->amount,
@@ -339,14 +339,14 @@ class Checkin extends Component
                 'remarks' => 'Guest deposit: Room Key & TV Remote',
             ]);
             Deposit::create([
-                'transaction_id' => $checkindeposit->id,
+                'guest_id' => $guest->id,
                 'amount' => 200,
                 'remarks' => 'TV Remote and Room key',
             ]);
 
             if ($this->long_stay == true) {
                 $details = CheckInDetail::create([
-                    'transaction_id' => $checkinroom->id,
+                    'guest_id' => $guest->id,
                     'room_id' => $this->get_room['room_id'],
                     'rate_id' => $this->get_room['rate_id'],
                     'static_amount' => $rate->amount,
@@ -355,7 +355,7 @@ class Checkin extends Component
                 ]);
             } else {
                 $details = CheckInDetail::create([
-                    'transaction_id' => $checkinroom->id,
+                    'guest_id' => $guest->id,
                     'room_id' => $this->get_room['room_id'],
                     'rate_id' => $this->get_room['rate_id'],
                     'static_amount' => $rate->amount,

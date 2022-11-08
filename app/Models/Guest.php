@@ -35,6 +35,11 @@ class Guest extends Model
         return $this->hasMany(Amenity::class);
     }
 
+    public function damages()
+    {
+        return $this->hasMany(Damage::class);
+    }
+
     public function deposites()
     {
         return $this->hasMany(Deposit::class);

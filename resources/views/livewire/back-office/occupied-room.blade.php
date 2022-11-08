@@ -68,11 +68,11 @@
                 </tr>
               </thead>
               <tbody class="">
-                @foreach ($rooms as $room)
+                @foreach ($transactions as $transaction)
                   <tr>
-                    <td class="border px-3 py-1"> {{ $room->guest->qr_code }}</td>
-                    <td class="border px-3 py-1"> RM #{{ $room->check_in_detail->room->number }} |
-                      {{ ordinal($room->check_in_detail->room->floor->number) }} Floor</td>
+                    <td class="border px-3 py-1"> {{ $transaction->guest->qr_code }}</td>
+                    <td class="border px-3 py-1"> RM #{{ $transaction->room->number }} |
+                      {{ ordinal($transaction->room->floor->number) }} Floor</td>
                   </tr>
                 @endforeach
               </tbody>

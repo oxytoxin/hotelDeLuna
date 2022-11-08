@@ -16,10 +16,10 @@ class OccupiedRoom extends Component
     public function render()
     {
         return view('livewire.back-office.occupied-room', [
-            'rooms' =>
+            'transactions' =>
                 $this->generate_query == null
                     ? Transaction::where('transaction_type_id', 1)
-                        ->whereHas('check_in_detail', function ($query) {
+                        ->whereHas('guest.checkInDetail', function ($query) {
                             $query->whereHas('room', function ($query) {
                                 $query
                                     ->where(
@@ -29,12 +29,7 @@ class OccupiedRoom extends Component
                                     ->where('room_status_id', 2);
                             });
                         })
-                        ->with([
-                            'check_in_detail.room.floor',
-                            'guest',
-                            'check_in_detail',
-                            'check_in_detail.room',
-                        ])
+                        ->with(['room.floor', 'guest'])
                         ->get()
                     : $this->generate_query,
         ]);
@@ -43,19 +38,14 @@ class OccupiedRoom extends Component
     public function generate()
     {
         $this->generate_query = Transaction::where('transaction_type_id', 1)
-            ->whereHas('check_in_detail', function ($query) {
+            ->whereHas('guest.checkInDetail', function ($query) {
                 $query->whereHas('room', function ($query) {
                     $query
                         ->where('branch_id', auth()->user()->branch_id)
                         ->where('room_status_id', 2);
                 });
             })
-            ->with([
-                'check_in_detail.room.floor',
-                'guest',
-                'check_in_detail',
-                'check_in_detail.room',
-            ])
+
             ->whereDate('created_at', $this->date)
             ->get();
     }
