@@ -30,7 +30,7 @@
   <div class="">
     <div x-ref="printContainer" class="mt-5 flex flex-col">
       <div class="show-on-print" style="display: none">
-        <h1 class="text-xl">Roomboy and their overdue rooms</h1>
+        <h1 class="text-xl">Roomboy and their overdue roomss</h1>
       </div>
 
 
