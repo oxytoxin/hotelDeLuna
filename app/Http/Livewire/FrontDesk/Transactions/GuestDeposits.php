@@ -28,6 +28,8 @@ class GuestDeposits extends Component
             'form.remarks' => 'nullable|string',
             'form.deducted' => 'nullable',
             'form.retrieved' => 'nullable',
+            'form.front_desk_name' => 'nullable',
+            'form.user_id' => 'nullable',
         ];
     }
 
@@ -51,6 +53,8 @@ class GuestDeposits extends Component
         $this->form = Deposit::make([
             'guest_id' => $this->guest_id,
             'retrieved' => false,
+            'front_desk_name' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
         ]);
     }
 
