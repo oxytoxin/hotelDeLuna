@@ -237,7 +237,12 @@ class Checkin extends Component
                     'guest_id' => $guest->id,
                     'transaction_type_id' => 1,
                     'payable_amount' => $rate->amount,
-                    'remarks' => 'Guest checked in : ROOM #' . $room->number,
+                    'remarks' =>
+                        'Guest checked in : ROOM #' .
+                        $room->number .
+                        ' (' .
+                        $type->name .
+                        ')',
                 ]);
             }
 
@@ -309,6 +314,7 @@ class Checkin extends Component
 
             $room = Room::where('id', $this->get_room['room_id'])->first();
             $rate = Rate::where('id', $this->get_room['rate_id'])->first();
+            $type = Type::where('id', $this->get_room['type_id'])->first();
 
             if ($this->long_stay == true) {
                 $checkinroom = Transaction::create([
@@ -326,7 +332,12 @@ class Checkin extends Component
                     'guest_id' => $guest->id,
                     'transaction_type_id' => 1,
                     'payable_amount' => $rate->amount,
-                    'remarks' => 'Guest checked in : ROOM #' . $room->number,
+                    'remarks' =>
+                        'Guest checked in : ROOM #' .
+                        $room->number .
+                        ' (' .
+                        $type->name .
+                        ')',
                 ]);
             }
 
