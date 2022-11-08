@@ -37,22 +37,32 @@
       <table id="example" class="table-auto mt-2" style="width:100%">
         <thead class="font-normal">
           <tr>
-            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">FROM ROOM #</th>
-            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">TRANSFER TO ROOM #</th>
-            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">REASON</th>
+            <th width="110" class="border text-left px-2 text-sm font-semibold text-gray-700 py-2"></th>
+            <th class="border text-left px-2 text-sm font-semibold uppercase text-gray-700 py-2">Extension Hour</th>
+            <th class="border text-left px-2 text-sm font-semibold uppercase text-gray-700 py-2">Date & TIME</th>
             <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">FRONT DESK IN-CHARGE</th>
 
           </tr>
         </thead>
-
+        @php
+          $guests = App\Models\Guest::whereIn('id', $stays)->get();
+          //   dd($guests);
+        @endphp
         <tbody class="">
-          @foreach ($roomChanges as $change)
+          @foreach ($guests as $guest)
             <tr>
-              <td class="border px-2 py-2 text-sm text-gray-700">{{ $change->fromRoom->number }}</td>
-              <td class="border px-2 py-2 text-sm text-gray-700">{{ $change->toRoom->number }}</td>
-              <td class="border px-2 py-2 text-sm text-gray-700">{{ $change->reason }}</td>
-              <td class="border px-2 py-2 text-sm text-gray-700">{{ $change->front_desk_name }}</td>
+              <td colspan="5" class="border px-2 bg-gray-50 py-2 text-sm text-gray-700">ROOM
+                #{{ $guest->checkInDetail->room->number }}</td>
             </tr>
+            @foreach ($guest->stayExtensions as $extension)
+              <tr>
+                <td class="border px-2 py-2 text-sm text-gray-700"></td>
+                <td class="border px-2 py-2 text-sm text-gray-700">{{ $extension->hours }} HOURS</td>
+                <td class="border px-2 py-2 text-sm text-gray-700">{{ $extension->created_at->format('m/d/Y') }}</td>
+                <td class="border px-2 py-2 text-sm text-gray-700">{{ $extension->front_desk_name }}</td>
+
+              </tr>
+            @endforeach
           @endforeach
         </tbody>
       </table>

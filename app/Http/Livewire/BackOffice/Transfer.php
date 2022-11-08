@@ -45,15 +45,13 @@ class Transfer extends Component
     public function generatedQuery()
     {
         if ($this->shift == 1) {
-            return RoomChange::where('check_in_at', '>=', $this->datefrom)
-                ->where('check_out_at', '<=', $this->dateto)
-                ->pluck('from_room_id')
-                ->toArray();
+            return RoomChange::where('created_at', '>=', $this->datefrom)
+                ->where('created_at', '<=', $this->dateto)
+                ->get();
         } elseif ($this->shift == 2) {
-            return RoomChange::where('check_in_at', '>=', $this->datefrom)
-                ->where('check_out_at', '<=', $this->dateto)
-                ->pluck('from_room_id')
-                ->toArray();
+            return RoomChange::where('created_at', '>=', $this->datefrom)
+                ->where('created_at', '<=', $this->dateto)
+                ->get();
         } else {
             return RoomChange::get();
         }
