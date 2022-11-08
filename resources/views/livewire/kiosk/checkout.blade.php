@@ -13,7 +13,7 @@
               <div class="flex-1">
                 @php
                   $transactions_grouped_by_type = \App\Models\Transaction::where('guest_id', $guest)
-                      ->with(['check_in_detail.room', 'room_change.toRoom.type', 'transaction_type', 'damage.hotel_item', 'guest_request_item.requestable_item', 'deposit'])
+                  
                       ->get()
                       ->groupBy('transaction_type_id');
                   $transaction_types = \App\Models\TransactionType::get();
@@ -28,7 +28,8 @@
                           @foreach ($transactions as $transaction)
                             <div class="flex space-x-1">
                               <div class="text-white">
-                                @if ($transaction->transaction_type_id == 1)
+                                {{ $transaction->remarks }}
+                                {{-- @if ($transaction->transaction_type_id == 1)
                                   Checked In ROOM #
                                   {{ $transaction->check_in_detail->room->number }}
                                 @endif
@@ -54,7 +55,7 @@
                                 @endif
                                 @if ($transaction->transaction_type_id == 8)
                                   {{ $transaction->guest_request_item->requestable_item->name }}
-                                @endif
+                                @endif --}}
                               </div>
                               <span class="text-white"> - ₱{{ $transaction->payable_amount }}.00</span>
                             </div>

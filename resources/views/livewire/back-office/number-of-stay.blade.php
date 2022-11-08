@@ -12,16 +12,18 @@
     <div class="flex space-x-1 items-center">
       <div>
         <div class="">
-          <input type="date"
+          <input type="date" wire:model="date"
             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             placeholder="you@example.com">
         </div>
       </div>
-      <x-native-select wire:model="model">
-        <option>Select Shift</option>
-        <option>1st Shift (8:00am - 8:00pm)</option>
-        <option>2nd Shift (8:00pm - 8:00am)</option>
-      </x-native-select>
+      @if ($date)
+        <x-native-select wire:model="shift">
+          <option>Select Shift</option>
+          <option value="1">1st Shift (8:00am - 8:00pm)</option>
+          <option value="2">2nd Shift (8:00pm - 8:00am)</option>
+        </x-native-select>
+      @endif
     </div>
     <div class="flex space-x-1">
       {{-- <x-button wire:click="export" wire:loading.attr="disabled" positive class="text-white fill-white font-semibold">
@@ -50,27 +52,51 @@
       <table id="example" class="table-auto mt-2" style="width:100%">
         <thead class="font-normal">
           <tr>
-            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">ROOM NUMBER</th>
-            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">CHECK IN - CHECK OUT</th>
-
-            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">ROOM INTERVAL</th>
+            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">ROOM #</th>
+            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">TYPE OF ROOM</th>
+            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">RATE</th>
+            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">GUEST NAME</th>
+            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">CHECK IN</th>
+            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">CHECK OUT</th>
+            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">DAMAGES</th>
+            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">DEPOSIT</th>
           </tr>
         </thead>
         {{-- @dump($checkInDetails) --}}
-        @php
-          $checkIns = App\Models\Room::whereIn('id', $checkInDetails)->get();
-        @endphp
+
         <tbody class="">
-          @foreach ($checkIns as $key => $interval)
+          @foreach ($checkInDetails as $checkInDetail)
             <tr>
-              <td class="border px-3 py-1">{{ $interval->number }}</td>
-              <td class="border px-3 py-1">
-                @foreach ($interval->check_in_details as $item)
-                  {{ \Carbon\Carbon::parse($item->check_in_at)->format('H:i') }} -
-                  {{ \Carbon\Carbon::parse($item->check_out_at)->format('H:i') }}
+              <td class="border px-2 py-2 text-sm text-gray-700">{{ $checkInDetail->room->number }}</td>
+              <td class="border px-2 py-2 text-sm text-gray-700">{{ $checkInDetail->room->type->name }}</td>
+              <td class="border px-2 py-2 text-sm text-gray-700">
+                &#8369;{{ number_format($checkInDetail->rate->amount, 2) }}
+              </td>
+              <td class="border px-2 py-2 text-sm text-gray-700">
+                {{ $checkInDetail->guest->name }}
+              </td>
+              <td class="border px-2 py-2 text-sm text-gray-700">
+                {{ Carbon\Carbon::parse($checkInDetail->check_in_at)->format('m/d/Y') }}
+              </td>
+              <td class="border px-2 py-2 text-sm text-gray-700">
+                {{ Carbon\Carbon::parse($checkInDetail->check_out_at)->format('m/d/Y') }}
+              </td>
+              <td class="border px-2 py-2 text-sm text-gray-700">
+                @foreach ($checkInDetail->guest->damages as $item)
+                  <div class="flex flex-col">
+                    {{ $item->hotel_item->name }} - &#8369;{{ number_format($item->price, 2) }}
+                  </div>
                 @endforeach
               </td>
-              <td class="border px-3 py-1">sdsdsds</td>
+              <td class="border px-2 py-2 text-sm text-gray-700">
+
+                @foreach ($checkInDetail->guest->deposites as $item)
+                  <div class="flex flex-col">
+                    &#8369;{{ number_format($item->amount, 2) }}
+                  </div>
+                @endforeach
+
+              </td>
             </tr>
           @endforeach
         </tbody>

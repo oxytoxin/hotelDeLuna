@@ -168,5 +168,8 @@ Route::middleware([
             Route::get('/reports/time-interval', function () {
                 return view('back-office.report.time-interval');
             })->name('office.time-interval');
+            Route::get('/reports/number-of-stay', function () {
+                return view('back-office.report.stay');
+            })->name('office.stay');
         });
 });

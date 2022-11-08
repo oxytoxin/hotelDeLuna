@@ -10,7 +10,7 @@ class TimeInterval extends Component
     public function render()
     {
         return view('livewire.back-office.time-interval', [
-            'checkInDetails' => CheckInDetail::get()->groupBy('room_id'),
+            'checkInDetails' => CheckInDetail::pluck('room_id')->toArray(),
         ]);
     }
 }

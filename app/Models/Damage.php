@@ -11,10 +11,10 @@ class Damage extends Model
 
     protected $guarded = [];
 
-    public function transaction()
-    {
-        return $this->belongsTo(Transaction::class);
-    }
+    // public function transaction()
+    // {
+    //     return $this->belongsTo(Transaction::class);
+    // }
 
     public function room()
     {
@@ -24,5 +24,10 @@ class Damage extends Model
     public function hotel_item()
     {
         return $this->belongsTo(HotelItem::class);
+    }
+
+    public function guest()
+    {
+        return $this->belongsTo(Guest::class);
     }
 }
