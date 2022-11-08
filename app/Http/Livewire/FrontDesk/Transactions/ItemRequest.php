@@ -56,6 +56,8 @@ class ItemRequest extends Component
             'paid_at' => $this->form['paid'] ? now() : null,
             'transaction_type_id'=>8,
             'room_id' => $check_in_detail->room_id,
+            'front_desk_name' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
         ]);
         GuestRequestItem::create([
             'transaction_id' => $request_item_transaction->id,

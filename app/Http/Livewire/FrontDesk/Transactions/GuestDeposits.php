@@ -67,6 +67,8 @@ class GuestDeposits extends Component
             'payable_amount' => $this->form->amount,
             'paid_at' => Carbon::now(),
             'remarks' => $this->form->remarks,
+            'front_desk_name' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
         ]);
 
         $this->form->save();

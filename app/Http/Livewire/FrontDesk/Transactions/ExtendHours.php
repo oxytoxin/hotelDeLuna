@@ -11,14 +11,14 @@ use App\Models\Transaction;
 use App\Models\CheckInDetail;
 use App\Models\ExtensionCapping;
 use Illuminate\Support\Facades\DB;
-use App\Models\CheckInDetailExtension;
+use App\Models\StayExtension;
 use App\Models\Rate;
 use App\Models\StayingHour;
-use App\Traits\WithCaching;
+use App\Traits\{WithCaching,PayTransaction};
 
 class ExtendHours extends Component
 {
-    use Actions, WithCaching;
+    use Actions, WithCaching, PayTransaction;
 
     public $tabIsVisible = false;
 
@@ -66,9 +66,7 @@ class ExtendHours extends Component
         $extension = Extension::find($this->form['extension_id']);
 
         // to get the sum of hours extended by the guest
-        $extension_history = CheckInDetailExtension::whereHas('transaction', function ($query) {
-            $query->where('guest_id', $this->guest_id);
-        });
+        $extension_history = StayExtension::where('guest_id',$this->guest_id);
         $total_check_in_detail_extension_hours = $extension_history->sum('hours');
         $total_hours = $this->check_in_detail->static_hours_stayed + $total_check_in_detail_extension_hours;
         $total_hours_with_about_to_extend = $extension->hours + $total_hours;
@@ -89,7 +87,7 @@ class ExtendHours extends Component
                     ->whereHas('staying_hour', function ($query) use ($hours) {
                         $query->where('number', '>=', $hours);
                     })->first()->amount : 0;
-                $total_extend_amount = CheckInDetailExtension::whereHas('transaction', function ($query) {
+                $total_extend_amount = StayExtension::whereHas('transaction', function ($query) {
                     $query->where('guest_id', $this->guest_id);
                 })->sum('amount');
                 dd($total_extend_amount);
@@ -109,9 +107,7 @@ class ExtendHours extends Component
                     ->whereHas('staying_hour', function ($query) use ($hours) {
                         $query->where('number', '>=', $hours);
                     })->first()->amount : 0;
-                $total_extend_amount = CheckInDetailExtension::whereHas('transaction', function ($query) {
-                    $query->where('guest_id', $this->guest_id);
-                })->sum('amount');
+                $total_extend_amount = StayExtension::where('guest_id', $this->guest_id)->sum('amount');
 
                 $total_checked_in_amount_and_extension_amount = $this->check_in_detail->rate->amount + $total_extend_amount;
                 $total_amount = $daily_amount + $hourly_rate_amount;
@@ -137,9 +133,11 @@ class ExtendHours extends Component
             'room_id' => $this->check_in_detail->room_id,
             'remarks' => 'Guest extended his/her stay for ' . $extension->hours . ' hours',
             'paid_at' => $this->form['paid_at'] ? now() : null,
+            'front_desk_name' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
         ]);
-        CheckInDetailExtension::create([
-            'transaction_id' => $extension_transaction->id,
+        StayExtension::create([
+            'guest_id' => $this->guest_id,
             'extension_id' => $this->form['extension_id'],
             'hours' => $extension->hours,
             'amount' => $this->form['amount_to_be_paid'],
@@ -174,19 +172,6 @@ class ExtendHours extends Component
     public function mount()
     {
         $this->check_in_detail = CheckInDetail::where('id', $this->check_in_detail_id)->with(['rate.staying_hour'])->first();
-    }
-
-    public function getExtendHistoriesQueryProperty()
-    {
-        return Transaction::where('transaction_type_id', 6)
-            ->where('guest_id', $this->guest_id)->with(['check_in_detail_extension']);
-    }
-
-    public function getExtendHistoriesProperty()
-    {
-        return $this->cache(function () {
-            return $this->extendHistoriesQuery->get();
-        });
     }
 
     // public function payTransaction($transaction_id)
@@ -224,10 +209,22 @@ class ExtendHours extends Component
     //     $this->emit('transactionUpdated');
     // }
 
+    public function getTransactionsQueryProperty()
+    {
+        return Transaction::where('guest_id', $this->guest_id)->where('transaction_type_id', 6);
+    }
+    
+    public function getTransactionsProperty()
+    {
+        return $this->cache(function () {
+            return $this->transactionsQuery->get();
+        });
+    }
+
     public function render()
     {
         return view('livewire.front-desk.transactions.extend-hours', [
-            'extend_histories' => $this->tabIsVisible ? $this->extendHistories : [],
+            'transactions' => $this->tabIsVisible ? $this->transactions : [],
         ]);
     }
 }

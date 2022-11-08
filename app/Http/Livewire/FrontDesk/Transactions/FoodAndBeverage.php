@@ -50,6 +50,8 @@ class FoodAndBeverage extends Component
             'room_id' => $this->current_room_id,
             'payable_amount' => $this->form->price,
             'remarks' => $this->form->name,
+            'front_desk_name' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
        ]);
 
        $this->form->save();

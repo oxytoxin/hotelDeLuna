@@ -49,5 +49,9 @@ class Guest extends Model
     {
         return $this->hasOne(CheckInDetail::class);
     }
-   
+
+    public function stayExtensions()
+    {
+        return $this->hasMany(StayExtension::class);
+    }
 }

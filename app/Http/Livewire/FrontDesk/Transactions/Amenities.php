@@ -48,6 +48,8 @@ class Amenities extends Component
             'room_id' => $this->current_room_id,
             'payable_amount' => $this->form->price + $this->form->additional_charge,
             'remarks' => $this->remarks,
+            'front_desk_name' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
         ]);
 
         $this->form->save();
