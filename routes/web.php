@@ -174,5 +174,8 @@ Route::middleware([
             Route::get('/reports/transfer', function () {
                 return view('back-office.report.transfer');
             })->name('office.transfer');
+            Route::get('/reports/extend', function () {
+                return view('back-office.report.extend');
+            })->name('office.extend');
         });
 });
