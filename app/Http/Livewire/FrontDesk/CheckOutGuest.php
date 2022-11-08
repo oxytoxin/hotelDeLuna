@@ -209,7 +209,6 @@ class CheckOutGuest extends Component
             'time_to_clean' => Carbon::now()->addHours(3),
             // 'last_check_out_at' => Carbon::now(),
         ]);
-        RoomTransactionLog::where('room_id', $check_in_detail->room_id)-
         DB::commit();
         $this->notification()->success(
             $title = 'Guest Checked Out',
