@@ -65,6 +65,8 @@ class ItemRequest extends Component
             'quantity' => $this->form['quantity'],
             'amount'=> $total_amount,
             'additional_amount'=> $requestable_item->additional_amount,
+            'front_desk_name' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
         ]);
         DB::commit();
         $this->notification()->success(

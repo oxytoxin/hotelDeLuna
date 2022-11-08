@@ -20,6 +20,8 @@ return new class extends Migration
             $table->dateTime('occured_at');
             $table->string('price');
             $table->string('additional_charge')->nullable();
+            $table->string('front_desk_name')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
         });
     }
