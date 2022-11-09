@@ -208,8 +208,13 @@ class CheckOutGuest extends Component
         $check_in_detail->room->update([
             'room_status_id' => 7,
             'time_to_clean' => Carbon::now()->addHours(3),
-            // 'last_check_out_at' => Carbon::now(),
+            'last_check_out_at' => Carbon::now(),
         ]);
+
+        $check_in_detail->room->roomTransactionLogs()->latest()->first()->update([
+            'check_out_at' => now(),
+        ]);
+        
         DB::commit();
         $this->notification()->success(
             $title = 'Guest Checked Out',

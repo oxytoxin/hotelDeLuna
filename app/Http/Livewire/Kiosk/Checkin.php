@@ -239,10 +239,7 @@ class Checkin extends Component
                     'payable_amount' => $rate->amount,
                     'remarks' =>
                         'Guest checked in : ROOM #' .
-                        $room->number .
-                        ' (' .
-                        $type->name .
-                        ')',
+                        $room->number .' (' . $type->name . ')',
                 ]);
             }
 
@@ -340,7 +337,6 @@ class Checkin extends Component
                         ')',
                 ]);
             }
-
             $checkindeposit = Transaction::create([
                 'branch_id' => auth()->user()->branch_id,
                 'room_id' => $this->get_room['room_id'],

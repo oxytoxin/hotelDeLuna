@@ -19,4 +19,9 @@ class RoomTransactionLog extends Model
     {
         return $this->belongsTo(CheckInDetail::class);
     }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
 }

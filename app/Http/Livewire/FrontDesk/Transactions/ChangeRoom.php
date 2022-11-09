@@ -14,6 +14,7 @@ use WireUi\Traits\Actions;
 use App\Models\Transaction;
 use App\Models\CheckInDetail;
 use App\Models\Deposit;
+use App\Models\RoomTransactionLog;
 use Illuminate\Support\Facades\DB;
 use App\Traits\{WithCaching,PayTransaction};
 class ChangeRoom extends Component
@@ -201,11 +202,27 @@ class ChangeRoom extends Component
 
         $old_room->update([
             'room_status_id' => $this->form['room_status_id'],
+            'last_check_out_at'=> Carbon::now(),
+        ]);
+
+        $old_room->roomTransactionLogs()->latest()->first()->update([
+            'check_out_at' => Carbon::now(),
+            'guest_transfered'=>true,
         ]);
 
         $new_room->update([
             'room_status_id' => 2,
         ]);
+
+        $new_room->roomTransactionLogs()->create([
+            'branch_id' => auth()->user()->branch_id,
+            'room_number'=> $new_room->number,
+            'check_in_detail_id' => $this->guestCheckInDetail->id,
+            'check_in_at' => Carbon::now(),
+            'time_interval'=> $new_room->last_check_out_at ? Carbon::parse($new_room->last_check_out_at)->diffInMinutes(Carbon::now()) : 0,
+        ]);
+
+
         DB::commit();
         $message = 'Room changed successfully';
         if ($new_room_amount < $old_room_amount) {

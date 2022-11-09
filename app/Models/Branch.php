@@ -60,4 +60,9 @@ class Branch extends Model
     {
         return $this->hasMany(StayingHour::class);
     }
+
+    public function roomTransactionLogs()
+    {
+        return $this->hasMany(RoomTransactionLog::class);
+    }
 }

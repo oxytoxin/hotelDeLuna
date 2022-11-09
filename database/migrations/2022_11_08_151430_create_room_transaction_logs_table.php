@@ -14,11 +14,13 @@ return new class extends Migration {
     {
         Schema::create('room_transaction_logs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('branch_id')->constrained();
             $table->foreignId('room_id')->constrained();
             $table->string('room_number');
             $table->foreignId('check_in_detail_id')->constrained();
             $table->dateTime('check_in_at');
             $table->dateTime('check_out_at')->nullable();
+            $table->boolean('guest_transfered')->default(false);
             $table->string('time_interval');
             $table->timestamps();
         });

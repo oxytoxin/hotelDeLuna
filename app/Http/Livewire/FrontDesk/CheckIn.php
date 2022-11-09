@@ -178,13 +178,14 @@ class CheckIn extends Component
             'check_in_at' => Carbon::now(),
         ]);
 
-        // RoomTransactionLog::create([
-        //     'room_id' =>$check_in_detail->room_id,
-        //     'room_number' => $check_in_detail->room->number,
-        //     'check_in_detail_id' => $check_in_detail->id,
-        //     'check_in_at' => $check_in_detail->check_in_at,
-        //     'time_interval' => $check_in_detail->room->last_check_out_at ? $check_in_detail->check_in_at->diffInMinutes($check_in_detail->room->last_check_out_at) : 0,
-        // ]);
+        RoomTransactionLog::create([
+            'branch_id' => auth()->user()->branch_id,
+            'room_id' =>$check_in_detail->room_id,
+            'room_number' => $check_in_detail->room->number,
+            'check_in_detail_id' => $check_in_detail->id,
+            'check_in_at' => $check_in_detail->check_in_at,
+            'time_interval' => $check_in_detail->room->last_check_out_at ? $check_in_detail->check_in_at->diffInMinutes($check_in_detail->room->last_check_out_at) : 0,
+        ]);
 
         DB::commit();
         $this->showModal = false;
