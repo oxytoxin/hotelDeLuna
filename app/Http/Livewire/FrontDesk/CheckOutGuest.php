@@ -8,6 +8,7 @@ use Livewire\Component;
 use WireUi\Traits\Actions;
 use App\Models\Transaction;
 use App\Models\CheckInDetail;
+use App\Models\Deposit;
 use App\Models\RoomTransactionLog;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -257,6 +258,45 @@ class CheckOutGuest extends Component
     {
        return $this->transactionsQuery->groupBy('transaction_type_id');
     }
+
+    public function getDepositsQueryProperty()
+    {
+        return Deposit::where('guest_id', $this->guest->id);
+    }
+
+    public function getDepositsProperty()
+    {
+       return $this->cache(function () {
+            return $this->depositsQuery->get();
+        },'deposits');
+    }
+
+    public function claimDeposit($deposit_id)
+   {
+        $deposit = $this->deposits->find($deposit_id);
+        if ($deposit->claimed_at) {
+            $this->dialog()->error(
+                $title = 'Error',
+                $message = 'Deposit is already claimed',
+            );
+            return;
+        }
+        
+        if ($deposit->amount == $deposit->deducted) {
+            $this->dialog()->error(
+                $title = 'Error',
+                $message = 'Deposit is already fully deducted',
+            );
+            return;
+        }
+        $deposit->update([
+            'claimed_at' => now(),
+        ]);
+        $this->dialog()->success(
+            $title = 'Deposit Claimed',
+            $message = 'Deposit has been claimed',
+        );
+    }
    
     public function render()
     {
@@ -265,6 +305,7 @@ class CheckOutGuest extends Component
             'transaction_types' => $this->guest ? \App\Models\TransactionType::get() : [],
             'total_amount_to_pay'=> $this->guest ? $this->guest->transactions->sum('payable_amount') : 0,
             'balance' => $this->guest ? $this->guest->transactions->whereNull('paid_at')->sum('payable_amount') : 0,
+            'deposits' => $this->guest ? $this->deposits : [],
         ]);
     }
 }

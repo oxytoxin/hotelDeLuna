@@ -194,7 +194,6 @@ class GuestDeposits extends Component
             $title = 'Success',
             $message = 'Deposit has been claimed successfully',
         );
-        
     }
 
     public function render()

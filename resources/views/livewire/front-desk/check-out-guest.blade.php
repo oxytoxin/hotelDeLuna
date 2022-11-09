@@ -91,6 +91,56 @@
                         </div>
                     </div>
                 </div>
+                <div wire:key="deposits">
+                    <x-card title="Deposits">
+                        <x-transactions :headers="['Remarks', 'Amount', 'Deposit At', 'Deduction', 'Retrived', 'Actions']">
+                            <x-slot:body>
+                                @forelse ($deposits as $key => $deposit)
+                                    <tr wire:key="{{ $key . $deposit->id }}">
+                                        <x-transactions.cell>
+                                            {{ $deposit->remarks }}
+                                        </x-transactions.cell>
+                                        <x-transactions.cell>
+                                            {{ $deposit->amount }}
+                                        </x-transactions.cell>
+                                        <x-transactions.cell>
+                                            {{ $deposit->created_at->format('d M Y') }}
+                                        </x-transactions.cell>
+                                        <x-transactions.cell>
+                                            ₱{{ $deposit->deducted ?? '0' }}
+                                        </x-transactions.cell>
+                                        <x-transactions.cell>
+                                            @if ($deposit->claimed_at)
+                                                {{ Carbon\Carbon::parse($deposit->claimed_at)->format('d M Y') }}
+                                            @else
+                                                'Not yet'
+                                            @endif
+                                        </x-transactions.cell>
+                                        <x-transactions.cell>
+                                            <div class="flex space-x-3">
+                                                @if ($deposit->claimed_at)
+                                                    Claimed
+                                                @else
+                                                    <x-button positive
+                                                        wire:click="claimDeposit({{ $deposit->id }})"
+                                                        xs>
+                                                        Claim
+                                                    </x-button>
+                                                @endif
+                                            </div>
+                                        </x-transactions.cell>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <x-transactions.cell colspan="5">
+                                            No transactions found
+                                        </x-transactions.cell>
+                                    </tr>
+                                @endforelse
+                            </x-slot:body>
+                        </x-transactions>
+                    </x-card>
+                </div>
                 <div wire:key="transactions">
                     <div class="bg-white border rounded-md shadow">
                         <div class="p-2">
@@ -199,6 +249,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div wire:key="button-checkOut">
                     <div>
                         @if ($this->guest->totaly_checked_out == false)
