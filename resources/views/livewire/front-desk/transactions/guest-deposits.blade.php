@@ -26,34 +26,49 @@
 
     <div wire:key="salkjhfdq98ehrlkahfznkcvneiuhf9q328">
         <x-card title="Transactions">
-            <x-transactions :headers="['Details', 'Amount', 'Paid At', 'Date']">
+            <x-transactions :headers="['Remarks', 'Amount', 'Deposit At', 'Deduction', 'Retrived', 'Actions']">
                 <x-slot:body>
-                    @forelse ($transactions as $key => $transaction)
-                        <tr wire:key="{{ $key . $transaction->id }}">
+                    @forelse ($deposits as $key => $deposit)
+                        <tr wire:key="{{ $key . $deposit->id }}">
                             <x-transactions.cell>
-                                {{ $transaction->remarks }}
+                                {{ $deposit->remarks }}
                             </x-transactions.cell>
                             <x-transactions.cell>
-                                {{ $transaction->payable_amount }}
+                                {{ $deposit->amount }}
                             </x-transactions.cell>
                             <x-transactions.cell>
-                                @if ($transaction->paid_at)
-                                    {{ Carbon\Carbon::parse($transaction->paid_at)->format('Y/m/d h:i:s A') }}
+                                {{ $deposit->created_at->format('d M Y') }}
+                            </x-transactions.cell>
+                            <x-transactions.cell>
+                                ₱{{ $deposit->deducted ?? '0' }}
+                            </x-transactions.cell>
+                            <x-transactions.cell>
+                                @if ($deposit->claimed_at)
+                                    {{ Carbon\Carbon::parse($deposit->claimed_at)->format('d M Y') }}
                                 @else
-                                    <button type="button"
-                                        wire:click="payTransaction({{ $transaction->id }})"
-                                        class="text-green-600 hover:text-green-900">
-                                        <span> Pay </span>
-                                    </button>
+                                    'Not yet'
                                 @endif
                             </x-transactions.cell>
                             <x-transactions.cell>
-                                {{ $transaction->created_at }}
+                                <div class="flex space-x-3">
+                                    @if (!$deposit->claimed_at || $deposit->deducted != $deposit->amount)
+                                        <x-button wire:click="showDeductionModal({{ $deposit->id }})"
+                                            warning
+                                            xs>
+                                            Deduct
+                                        </x-button>
+                                        <x-button positive
+                                            wire:click="claimeDeposit({{ $deposit->id }})"
+                                            xs>
+                                            Claim
+                                        </x-button>
+                                    @endif
+                                </div>
                             </x-transactions.cell>
                         </tr>
                     @empty
                         <tr>
-                            <x-transactions.cell colspan="4">
+                            <x-transactions.cell colspan="5">
                                 No transactions found
                             </x-transactions.cell>
                         </tr>
@@ -61,5 +76,29 @@
                 </x-slot:body>
             </x-transactions>
         </x-card>
+    </div>
+
+    <div wire:key="modals-deposit">
+        <form wire:submit.prevent="saveDeduction">
+            @csrf
+            <x-modal.card wire:model.defer="deductionModal"
+                title="Deposit Deduction">
+                <x-input wire:model.defer="deductionAmount"
+                    label="Amount"
+                    type="number" />
+                <x-slot:footer>
+                    <div class="flex space-x-3">
+                        <x-button negative
+                            x-on:click="close">
+                            Cancel
+                        </x-button>
+                        <x-button type="submit"
+                            positive>
+                            Save
+                        </x-button>
+                    </div>
+                </x-slot:footer>
+            </x-modal.card>
+        </form>
     </div>
 </div>
