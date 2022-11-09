@@ -51,18 +51,16 @@
                             </x-transactions.cell>
                             <x-transactions.cell>
                                 <div class="flex space-x-3">
-                                    @if (!$deposit->claimed_at || $deposit->deducted != $deposit->amount)
-                                        <x-button wire:click="showDeductionModal({{ $deposit->id }})"
-                                            warning
-                                            xs>
-                                            Deduct
-                                        </x-button>
-                                        <x-button positive
-                                            wire:click="claimeDeposit({{ $deposit->id }})"
-                                            xs>
-                                            Claim
-                                        </x-button>
-                                    @endif
+                                    <x-button wire:click="showDeductionModal({{ $deposit->id }})"
+                                        warning
+                                        xs>
+                                        Deduct
+                                    </x-button>
+                                    <x-button positive
+                                        wire:click="claimeDeposit({{ $deposit->id }})"
+                                        xs>
+                                        Claim
+                                    </x-button>
                                 </div>
                             </x-transactions.cell>
                         </tr>
