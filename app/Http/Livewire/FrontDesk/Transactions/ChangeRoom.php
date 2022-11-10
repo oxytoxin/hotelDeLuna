@@ -94,11 +94,7 @@ class ChangeRoom extends Component
     function getPreviousRoomAmount()
     {
             if (RoomChange::where('guest_id', $this->guest_id)->exists()) {
-               return Transaction::where('guest_id', $this->guest_id)
-                                ->where('transaction_type_id', 7)
-                                ->latest()
-                                ->first()
-                                 ->payable_amount;
+               return RoomChange::where('guest_id', $this->guest_id)->latest()->first()->amount;
             } else {
                 return Transaction::where('guest_id', $this->guest_id)
                                 ->where('transaction_type_id', 1)
@@ -151,13 +147,15 @@ class ChangeRoom extends Component
         $new_room_amount = $this->new_room_rate->amount;
         
         $old_room_amount  = $this->getPreviousRoomAmount();
+
+        $amount_to_pay = $old_room_amount >= $new_room_amount ? 0 : $new_room_amount - $old_room_amount;
        
         Transaction::create([
             'branch_id' => auth()->user()->branch_id,
             'guest_id' => $this->guestCheckInDetail->guest_id,
             'transaction_type_id' => 7,
-            'payable_amount' => $old_room_amount > $new_room_amount ? 0 : $new_room_amount - $old_room_amount,
-            'paid_at' => $this->form['paid'] ? now() : null,
+            'payable_amount' => $amount_to_pay,
+            'paid_at' => $this->form['paid'] || $amount_to_pay == 0 ? now() : null,
             'room_id' => $new_room->id,
             'remarks' => 'Guest transfered from ROOM # ' . $this->guestCheckInDetail->room->number . ' ( ' . $this->guestCheckInDetail->room->type->name . ' ) to ROOM # ' . $new_room->number . ' ( ' . $new_room->type->name . ' )',
             'front_desk_name' => auth()->user()->name,
@@ -321,6 +319,7 @@ class ChangeRoom extends Component
             ->where('branch_id', auth()->user()->branch_id)
             ->first();
         $this->new_amount_to_pay = $this->new_room_rate->amount;
+       
         $this->available_rooms = Room::where('floor_id', $this->form['floor_id'])
             ->where('type_id', $this->form['type_id'])
             ->whereIn('room_status_id', [1, 9])

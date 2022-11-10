@@ -35,12 +35,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RateSeeder::class);
         $this->call(AlmaResidencesDataSeeder::class);
         // $this->call(OverdueSeeder::class);
-
-        if (app()->environment() == 'local') {
-            $this->call(FloorAndRoomSeeder::class);
-            $this->call(DummyCheckInSeeder::class);
-        }
-
         StayingHour::create([
             'branch_id' => 1,
             'number' => '6',
@@ -54,5 +48,11 @@ class DatabaseSeeder extends Seeder
             'branch_id' => 1,
             'number' => '24',
         ]);
+        if (app()->environment() == 'local') {
+            $this->call(FloorAndRoomSeeder::class);
+            $this->call(DummyCheckInSeeder::class);
+        }
+
+     
     }
 }

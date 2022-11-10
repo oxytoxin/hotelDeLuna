@@ -18,6 +18,8 @@ class DummyCheckInSeeder extends Seeder
     public function run()
     {
         for ($i = 1; $i < 20; $i++) {
+
+            $room = Room::find($i);
             $guest = Guest::create([
                 'branch_id' => 1,
                 'qr_code' => 'qr_code_' . $i,
@@ -25,24 +27,24 @@ class DummyCheckInSeeder extends Seeder
                 'contact_number' => fake()->phoneNumber,
                 'is_out_of_the_building' => false,
             ]);
-
-            $rate = Rate::inRandomOrder()->first();
+            // select random rate from this type of room
+            $rate = Rate::where('type_id', $room->type_id)->inRandomOrder()->first();
 
 
             // ------
            $checkInDetail = $guest->checkInDetail()->create([
-                'room_id' => $i,
+                'room_id' => $room->id,
                 'rate_id' => $rate->id,
                 'static_amount' =>  $rate->amount,
-                'static_hours_stayed' => '6',
+                'static_hours_stayed' => $rate->staying_hour->number,
             ]);
             
             $guest->transactions()->create([
                 'branch_id' => 1,
                 'transaction_type_id' => 1,
                 'payable_amount' => $rate->amount,
-                'room_id' => $i,
-                'remarks' => 'Guest Checked In : ROOM #' . $i,
+                'room_id' => $room->id,
+                'remarks' => 'Guest Checked In : ROOM #' . $i . ' ( ' . $room->type->name . ' ) for ' . $rate->staying_hour->number . ' hours',
             ]);
 
             // --------
