@@ -4,10 +4,11 @@ namespace App\Http\Livewire\FrontDesk\Transactions;
 
 use Livewire\Component;
 use WireUi\Traits\Actions;
+use App\Models\Transaction;
 use App\Traits\WithCaching;
+use App\Traits\PayTransaction;
 use Illuminate\Support\Facades\DB;
 use App\Models\FoodAndBeverage as ModelsFoodAndBeverage;
-use App\Traits\PayTransaction;
 
 class FoodAndBeverage extends Component
 {
