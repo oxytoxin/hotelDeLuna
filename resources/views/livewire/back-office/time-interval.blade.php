@@ -3,16 +3,18 @@
     <div class="flex space-x-1 items-center">
       <div>
         <div class="">
-          <input type="date"
+          <input type="date" wire:model="date"
             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             placeholder="you@example.com">
         </div>
       </div>
-      <x-native-select wire:model="model">
-        <option>Select Shift</option>
-        <option>1st Shift (8:00am - 8:00pm)</option>
-        <option>2nd Shift (8:00pm - 8:00am)</option>
-      </x-native-select>
+      @if ($date)
+        <x-native-select wire:model="shift">
+          <option>Select Shift</option>
+          <option value="1">1st Shift (8:00am - 8:00pm)</option>
+          <option value="2">2nd Shift (8:00pm - 8:00am)</option>
+        </x-native-select>
+      @endif
     </div>
     <div class="flex space-x-1">
       {{-- <x-button wire:click="export" wire:loading.attr="disabled" positive class="text-white fill-white font-semibold">
@@ -33,7 +35,7 @@
     </div>
   </div>
   <div class="">
-    <div id="print" class="mt-5 flex flex-col">
+    <div x-ref="printContainer" class="mt-5 flex flex-col">
       <div class="show-on-print" style="display: none">
         <h1 class="text-xl">Roomboy and their overdue rooms</h1>
       </div>
@@ -42,9 +44,9 @@
       <table id="example" class="table-auto mt-2" style="width:100%">
         <thead class="font-normal">
           <tr>
-            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">ROOM NUMBER</th>
-            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">CHECK IN - CHECK OUT</th>
-
+            <th width="150" class="border text-left px-2 text-sm font-semibold text-gray-700 py-2"></th>
+            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">CHECK IN</th>
+            <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">CHECK OUT</th>
             <th class="border text-left px-2 text-sm font-semibold text-gray-700 py-2">ROOM INTERVAL</th>
           </tr>
         </thead>
@@ -53,34 +55,46 @@
           $checkIns = App\Models\Room::whereIn('id', $checkInDetails)->get();
         @endphp
         <tbody class="">
-          @foreach ($checkIns as $key => $interval)
+          @foreach ($checkIns as $room_id => $transaction)
             <tr>
-              <td class="border px-3 py-1">{{ $interval->number }}</td>
-              <td class="border px-3 py-1">
-                @foreach ($interval->check_in_details as $item)
-                  {{ \Carbon\Carbon::parse($item->check_in_at)->format('H:i') }} -
-                  {{ \Carbon\Carbon::parse($item->check_out_at)->format('H:i') }}
-                @endforeach
-              </td>
-              <td class="border px-3 py-1">sdsdsds</td>
+              <td colspan="4" class="border bg-gray-50 px-3 py-1">ROOM #{{ $transaction->number }}</td>
             </tr>
+            @foreach ($transaction->roomTransactionLogs as $item)
+              <tr>
+                <td class="border px-3 py-1"></td>
+                <td class="border px-3 py-1">{{ \Carbon\Carbon::parse($item->check_in_at)->format('g:i A') }}</td>
+                <td class="border px-3 py-1">{{ \Carbon\Carbon::parse($item->check_out_at)->format('g:i A') }}</td>
+                <td class="border px-3 py-1">
+                  @if ($item->time_interval > 0)
+                    {{ $item->time_interval }} mins.
+                  @endif
+                </td>
+              </tr>
+            @endforeach
           @endforeach
+
         </tbody>
       </table>
     </div>
   </div>
-
-</div>
-@push('scripts')
   <script>
-    function printReport() {
-      var prtContent = document.getElementById("resultsPrint");
-      var WinPrint = window.open();
-      WinPrint.document.write(prtContent.innerHTML);
-      WinPrint.document.close();
-      WinPrint.focus();
-      WinPrint.print();
-      WinPrint.close();
+    function printOut(data) {
+      var mywindow = window.open('', 'Report On Room Time Interval', 'height=1000,width=1000');
+      mywindow.document.write('<html><head>');
+      mywindow.document.write('<title>Report On Room Time Interval</title>');
+      mywindow.document.write(`<link rel="stylesheet" href="{{ Vite::asset('resources/css/app.css') }}" />`);
+      mywindow.document.write('</head><body >');
+      mywindow.document.write(data);
+      mywindow.document.write('</body></html>');
+
+      mywindow.document.close();
+      mywindow.focus();
+      setTimeout(() => {
+        mywindow.print();
+        return true;
+      }, 1000);
+
+
     }
   </script>
-@endpush
+</div>
