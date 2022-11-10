@@ -6,6 +6,7 @@
             <div id="form"
                 class="sm:col-span-2">
                 <x-card title="Transfer">
+                    {{ $new_amount_to_pay }}
                     <div class="w-full">
                         <form class="gap-4 sm:grid sm:grid-cols-2">
                             @csrf
