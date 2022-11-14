@@ -228,7 +228,14 @@ class Checkin extends Component
                     'guest_id' => $guest->id,
                     'transaction_type_id' => 1,
                     'payable_amount' => $rate->amount * $this->days_stay,
-                    'remarks' => 'Guest checked in : ROOM #' . $room->number,
+                    'remarks' =>
+                        'Guest checked in : ROOM #' .
+                        $room->number .
+                        ' (' .
+                        $type->name .
+                        ') for ' .
+                        $rate->staying_hour->number .
+                        ' hours',
                 ]);
             } else {
                 $checkinroom = Transaction::create([
@@ -239,7 +246,12 @@ class Checkin extends Component
                     'payable_amount' => $rate->amount,
                     'remarks' =>
                         'Guest checked in : ROOM #' .
-                        $room->number .' (' . $type->name . ')',
+                        $room->number .
+                        ' (' .
+                        $type->name .
+                        ') for ' .
+                        $rate->staying_hour->number .
+                        ' hours',
                 ]);
             }
 
@@ -320,7 +332,14 @@ class Checkin extends Component
                     'guest_id' => $guest->id,
                     'transaction_type_id' => 1,
                     'payable_amount' => $rate->amount * $this->days_stay,
-                    'remarks' => 'Guest checked in : ROOM #' . $room->number,
+                    'remarks' =>
+                        'Guest checked in : ROOM #' .
+                        $room->number .
+                        ' (' .
+                        $type->name .
+                        ') for ' .
+                        $rate->staying_hour->number .
+                        ' hours',
                 ]);
             } else {
                 $checkinroom = Transaction::create([
@@ -334,7 +353,9 @@ class Checkin extends Component
                         $room->number .
                         ' (' .
                         $type->name .
-                        ')',
+                        ') for ' .
+                        $rate->staying_hour->number .
+                        ' hours',
                 ]);
             }
             $checkindeposit = Transaction::create([
