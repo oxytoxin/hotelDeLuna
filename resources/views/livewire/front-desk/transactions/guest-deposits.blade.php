@@ -37,30 +37,34 @@
                                 {{ $deposit->amount }}
                             </x-transactions.cell>
                             <x-transactions.cell>
-                                {{ $deposit->created_at->format('d M Y') }}
+                                {{ $deposit->created_at->format('M d, Y h:i:s A') }}
                             </x-transactions.cell>
                             <x-transactions.cell>
                                 ₱{{ $deposit->deducted ?? '0' }}
                             </x-transactions.cell>
                             <x-transactions.cell>
                                 @if ($deposit->claimed_at)
-                                    {{ Carbon\Carbon::parse($deposit->claimed_at)->format('d M Y') }}
+                                    {{ Carbon\Carbon::parse($deposit->paid_at)->format('M d, Y h:i:s A') }}
                                 @else
                                     'Not yet'
                                 @endif
                             </x-transactions.cell>
                             <x-transactions.cell>
                                 <div class="flex space-x-3">
-                                    <x-button wire:click="showDeductionModal({{ $deposit->id }})"
-                                        warning
-                                        xs>
-                                        Deduct
-                                    </x-button>
-                                    <x-button positive
-                                        wire:click="claimeDeposit({{ $deposit->id }})"
-                                        xs>
-                                        Claim
-                                    </x-button>
+                                    @if (!$deposit->claimed_at)
+                                        <x-button wire:click="showDeductionModal({{ $deposit->id }})"
+                                            warning
+                                            xs>
+                                            Deduct
+                                        </x-button>
+                                        <x-button positive
+                                            wire:click="claimeDeposit({{ $deposit->id }})"
+                                            xs>
+                                            Claim
+                                        </x-button>
+                                    @else
+                                        <span> Claimed</span>
+                                    @endif
                                 </div>
                             </x-transactions.cell>
                         </tr>

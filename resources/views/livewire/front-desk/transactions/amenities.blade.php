@@ -50,17 +50,24 @@
                             </x-transactions.cell>
                             <x-transactions.cell>
                                 @if ($transaction->paid_at)
-                                    {{ Carbon\Carbon::parse($transaction->paid_at)->format('Y/m/d h:i:s A') }}
+                                    {{ Carbon\Carbon::parse($transaction->paid_at)->format('M d, Y h:i:s A') }}
                                 @else
-                                    <button type="button"
-                                        wire:click="payTransaction({{ $transaction->id }})"
-                                        class="text-green-600 hover:text-green-900">
-                                        <span> Pay </span>
-                                    </button>
+                                    <div wire:key="{{ $transaction->id }}actions"
+                                        class="flex space-x-3">
+                                        <button type="button"
+                                            wire:click="payTransaction({{ $transaction->id }})"
+                                            class="text-green-600 hover:text-green-900">
+                                            <span> Pay </span>
+                                        </button>
+                                        {{-- <x-button sm
+                                            wire:click="payWithDeposits({{ $transaction->id }}, {{ $transaction->payable_amount }})"
+                                            positive
+                                            label="Pay With Deposits" /> --}}
+                                    </div>
                                 @endif
                             </x-transactions.cell>
                             <x-transactions.cell>
-                                {{ $transaction->created_at }}
+                                {{ $transaction->created_at->format('M d, Y h:i:s A') }}
                             </x-transactions.cell>
                         </tr>
                     @empty
@@ -73,5 +80,7 @@
                 </x-slot:body>
             </x-transactions>
         </x-card>
+    </div>
+    <div>
     </div>
 </div>

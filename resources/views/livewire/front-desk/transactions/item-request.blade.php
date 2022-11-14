@@ -102,7 +102,7 @@
         </div> --}}
         <x-card title="Damages Record">
             <div>
-                <div class="flex flex-col ">
+                <div class="flex flex-col">
                     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                             <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
@@ -143,25 +143,25 @@
                                                     {{ $guest_request_item->requestable_item->name }}
                                                 </td>
                                                 <td
-                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
+                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                                     {{ $guest_request_item->quantity }}
                                                 </td>
                                                 <td
-                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
+                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                                     ₱ {{ $guest_request_item->amount }}
                                                 </td>
                                                 <td
-                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
+                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                                     ₱ {{ $guest_request_item->additional_amount ?? 0 }}
                                                 </td>
                                                 <td
-                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
+                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                                     ₱
                                                     {{ $guest_request_item->amount + $guest_request_item->additional_amount }}
                                                 </td>
                                                 <td
-                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap ">
-                                                    {{ $guest_request_item->created_at->format('Y/m/d h:i:s A') }}
+                                                    class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
+                                                    {{ $guest_request_item->created_at->format('M d, Y h:i:s A') }}
                                                 </td>
                                             </tr>
                                         @empty

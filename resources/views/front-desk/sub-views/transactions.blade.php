@@ -49,38 +49,11 @@
                                                     <td
                                                         class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                                         {{ $transaction->remarks }}
-                                                        {{-- @if ($transaction->transaction_type_id == 1)
-                                                            Checked In ROOM #
-                                                            {{ $transaction->check_in_detail->room->number }}
-                                                        @endif
-                                                        @if ($transaction->transaction_type_id == 2)
-                                                            {{ $transaction->deposit->remarks }}
-                                                        @endif
-                                                        @if ($transaction->transaction_type_id == 7)
-                                                            From ROOM #
-                                                            {{ $transaction->room_change->fromRoom->number }}
-                                                            ({{ $transaction->room_change->fromRoom->type->name }})
-                                                            -
-                                                            To ROOM #
-                                                            {{ $transaction->room_change->toRoom->number }}
-                                                            ({{ $transaction->room_change->toRoom->type->name }})
-                                                        @endif
-                                                        @if ($transaction->transaction_type_id == 6)
-                                                            Extend for
-                                                            {{ $transaction->check_in_detail_extensions->hours }}
-                                                            hrs
-                                                        @endif
-                                                        @if ($transaction->transaction_type_id == 4)
-                                                            {{ $transaction->damage->hotel_item->name }}
-                                                        @endif
-                                                        @if ($transaction->transaction_type_id == 8)
-                                                            {{ $transaction->guest_request_item->requestable_item->name }}
-                                                        @endif --}}
                                                     </td>
                                                     <td
                                                         class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
                                                         @if ($transaction->paid_at)
-                                                            {{ Carbon\Carbon::parse($transaction->paid_at)->format('Y/m/d h:i:s A') }}
+                                                            {{ Carbon\Carbon::parse($transaction->paid_at)->format('M d, Y h:i:s A') }}
                                                         @else
                                                             <button type="button"
                                                                 wire:click="payTransaction({{ $transaction->id }})"
@@ -91,7 +64,7 @@
                                                     </td>
                                                     <td
                                                         class="py-4 pl-2 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap">
-                                                        {{ $transaction->created_at->format('Y/m/d h:i:s A') }}
+                                                        {{ $transaction->created_at->format('M d, Y h:i:s A') }}
                                                     </td>
                                                 </tr>
                                             @empty

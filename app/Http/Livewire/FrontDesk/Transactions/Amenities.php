@@ -16,6 +16,8 @@ class Amenities extends Component
 
     public $current_room_id;
 
+    public $payWithDepositsModal=false;
+
     public $form;
 
     public $loaded = false;
@@ -118,6 +120,29 @@ class Amenities extends Component
     {
         return view('livewire.front-desk.transactions.amenities',[
             'transactions' => $this->loaded ? $this->transactions : [],
+            'deposits'=> $this->payWithDepositsModal ? $this->deposits : [],
         ]);
+    }
+
+    public function getDepositsQueryProperty()
+    {
+        return \App\Models\Deposit::where('guest_id', $this->guest_id);
+    }
+
+    public function getDepositsProperty()
+    {
+        return $this->cache(function () {
+            return $this->depositsQuery->get();
+        }, 'deposits');
+    }
+
+    public $transactionId, $transactionAmount;
+
+
+    public function payWithDeposits($transactionId,$transactionAmount)
+    {
+        $this->transactionId = $transactionId;
+        $this->transactionAmount = $transactionAmount;
+        $this->payWithDepositsModal = true;
     }
 }

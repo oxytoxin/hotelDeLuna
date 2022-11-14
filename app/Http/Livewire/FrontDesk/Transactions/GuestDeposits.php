@@ -23,6 +23,8 @@ class GuestDeposits extends Component
 
     public $deductionModal;
 
+    public $selectedDeposit;
+
     public $loaded = false;
     public function rules()
     {
@@ -104,13 +106,14 @@ class GuestDeposits extends Component
     public function showDeductionModal(Deposit $deposit)
     {
         $this->useCacheRows();
-        $this->form = $deposit;
+        $this->selectedDeposit = $deposit;
+        $this->deductionAmount = '';
         $this->deductionModal = true;
     }
 
     public function saveDeduction()
     {
-        if ($this->form->amount == $this->form->deducted) {
+        if ($this->selectedDeposit->amount == $this->selectedDeposit->deducted) {
             $this->dialog()->error(
                 $title = 'Error',
                 $message = 'Deposit is already fully deducted',
@@ -118,7 +121,7 @@ class GuestDeposits extends Component
             return;
         }
 
-        if ($this->deductionAmount + $this->form->deducted > $this->form->amount) {
+        if ($this->deductionAmount + $this->selectedDeposit->deducted > $this->selectedDeposit->amount) {
             $this->dialog()->error(
                 $title = 'Error',
                 $message = 'Deduction exceeds deposit amount',
@@ -127,11 +130,12 @@ class GuestDeposits extends Component
         }
 
         $this->validate([
-            'deductionAmount' => 'required|numeric|max:' . $this->form->amount,
+            'deductionAmount' => 'required|numeric|max:' . $this->selectedDeposit->amount,
         ]);
 
-        $this->form->update([
-            'deducted' => $this->form->deducted + $this->deductionAmount,
+        $this->selectedDeposit->update([
+            'deducted' => $this->selectedDeposit->deducted + $this->deductionAmount,
+            'claimed_at'=>  $this->deductionAmount + $this->selectedDeposit->deducted == $this->selectedDeposit->amount ? Carbon::now() : null,
         ]);
 
         $this->emit('transactionUpdated');

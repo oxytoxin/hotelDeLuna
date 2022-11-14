@@ -34,12 +34,15 @@
 
 </head>
 
-<body class="h-screen antialiased font-inter">
+<body class="h-screen font-inter antialiased">
     @yield('content')
     <x-notifications z-index="z-50" />
     <x-dialog z-index="z-50"
         blur="sm"
         align="center" />
+
+    <x-pop-ups.notification />
+    <x-pop-ups.confirm-dialog />
 
     @livewireScripts
 </body>

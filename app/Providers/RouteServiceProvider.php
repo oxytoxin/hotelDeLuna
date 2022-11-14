@@ -43,6 +43,8 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/custom/housekeeping.php'));
             Route::middleware('web')
                 ->group(base_path('routes/custom/roomboy.php'));
+           Route::middleware('web')
+                ->group(base_path('routes/custom/re-branch-admin.php'));
         });
     }
 

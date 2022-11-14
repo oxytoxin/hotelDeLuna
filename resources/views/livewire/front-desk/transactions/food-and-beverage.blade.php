@@ -2,7 +2,7 @@
     <x-card title="Food and Beverage">
         <form>
             @csrf
-            <div class="sm:grid sm:grid-cols-2 sm:gap-3">
+            <div class="sm:grid sm:grid-cols-1 sm:gap-3">
                 <x-input wire:model.defer="form.name"
                     label="Name" />
                 <x-input type="number"
@@ -37,7 +37,7 @@
                             </x-transactions.cell>
                             <x-transactions.cell>
                                 @if ($transaction->paid_at)
-                                    {{ Carbon\Carbon::parse($transaction->paid_at)->format('Y/m/d h:i:s A') }}
+                                    {{ Carbon\Carbon::parse($transaction->paid_at)->format('M d, Y h:i:s A') }}
                                 @else
                                     <button type="button"
                                         wire:click="payTransaction({{ $transaction->id }})"
