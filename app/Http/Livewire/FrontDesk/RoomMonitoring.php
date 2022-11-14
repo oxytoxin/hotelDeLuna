@@ -17,13 +17,28 @@ class RoomMonitoring extends Component
 
     public $statuses = [];
 
+
     public function mount()
     {
         $this->statuses = RoomStatus::get();
     }
 
+    public function getHeadersProperty()
+    {
+        if ($this->status_filter == 2) {
+           return  ['Room Number', 'Status', 'Alert For Checkout'];
+        }elseif ($this->status_filter == 7) {
+            return   ['Room Number', 'Status', 'Time To Clean'];
+        }elseif($this->status_filter == ""){
+           return ['Room Number', 'Status', 'Alert For Checkout', 'Time To Clean'];
+        }else{
+            return ['Room Number', 'Status'];
+        }
+    }
+
     public function render()
     {
+
         return view('livewire.front-desk.room-monitoring', [
             'rooms' => Room::query()
                 ->when($this->status_filter != '', function ($query) {
@@ -39,10 +54,13 @@ class RoomMonitoring extends Component
                     'floor',
                     'room_status',
                     'check_in_details' => function ($query) {
-                        return $query->where('check_out_at', null);
+                        return $query->where('check_out_at', null)->when($this->status_filter == 2, function ($query) {
+                            return $query->orderBy('expected_check_out_at', 'asc');
+                        });
                     },
                 ])
                 ->paginate(20),
+            'headers' => $this->headers,
         ]);
     }
 }
