@@ -2,10 +2,7 @@
     class="grid space-y-4">
     {{-- bulk actions --}}
     <div class="sm:flex sm:items-center sm:justify-between">
-        <div class="flex">
-            <x-my.input.search wire:model.debounce="search" />
-        </div>
-        <div class="flex mt-1 space-x-2 sm:ml-16 sm:flex-none">
+        <div class="mt-1 flex space-x-2 sm:flex-none">
             <x-my.button-primary label="Add New"
                 wire:click="create">
                 <x-slot name="icon">
@@ -14,7 +11,7 @@
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-5 h-5">
+                        class="h-5 w-5">
                         <path stroke-linecap="round"
                             stroke-linejoin="round"
                             d="M12 4.5v15m7.5-7.5h-15" />
@@ -22,6 +19,10 @@
                 </x-slot>
             </x-my.button-primary>
         </div>
+        <div class="flex">
+            <x-my.input.search wire:model.debounce="search" />
+        </div>
+
     </div>
     {{-- table --}}
     <x-my.table>
@@ -34,7 +35,7 @@
         @foreach ($types as $type)
             <tr>
                 <x-my.table.cell colspan="4"
-                    class="font-bold bg-gray-50">
+                    class="bg-gray-50 font-bold">
                     {{ $type->name }}
                 </x-my.table.cell>
             </tr>
@@ -64,11 +65,12 @@
     {{-- modals --}}
 
     <div>
-        <form>
+        <form wire:submit.prevent="save">
             @csrf
             <x-my.modal title="{{ $editMode ? 'Edit Rate' : 'Create Rate' }}"
                 :showOn="['show-create-modal', 'show-edit-modal']"
                 :closeOn="['close-create-modal', 'close-edit-modal']">
+                <x-my.alert.error />
                 <div class="grid space-y-4">
                     <div>
                         <x-my.input.select required
@@ -106,6 +108,7 @@
                         <x-my.button-secondary x-on:click="close"
                             label="Cancel" />
                         <x-my.button-success type="submit"
+                            loadingOn="save"
                             label="Save" />
                     </div>
                 </x-slot>

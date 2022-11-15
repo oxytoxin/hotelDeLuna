@@ -28,41 +28,63 @@
     <x-my.table>
         <x-slot name="header">
             <x-my.table.head name="Name" />
+            <x-my.table.head name="Email" />
+            <x-my.table.head name="Role" />
             <x-my.table.head name="" />
         </x-slot>
-        @forelse ($types as $type)
+        @forelse ($users as $user)
             <tr>
-                <x-my.table.cell>{{ $type->name }}</x-my.table.cell>
+                <x-my.table.cell>{{ $user->name }}</x-my.table.cell>
+                <x-my.table.cell>{{ $user->email }}</x-my.table.cell>
+                <x-my.table.cell>{{ $user->role->name }}</x-my.table.cell>
                 <x-my.table.cell>
                     <div class="flex justify-end">
-                        <x-my.edit-button wire:click="edit({{ $type->id }})" />
+                        <x-my.edit-button wire:click="edit({{ $user->id }})" />
                     </div>
                 </x-my.table.cell>
             </tr>
         @empty
-            <x-my.table.empty span="2" />
+            <x-my.table.empty span="4" />
         @endforelse
         <x-slot name="footer">
-            {{ $types->links() }}
+            {{ $users->links() }}
         </x-slot>
     </x-my.table>
-
-    {{-- modals --}}
 
     <div>
         <form wire:submit.prevent="save">
             @csrf
-            <x-my.modal title="{{ $editMode ? 'Edit Type' : 'Create Type' }}"
-                :showOn="['show-create-modal', 'show-edit-modal']"
-                :closeOn="['close-create-modal', 'close-edit-modal']">
-                <div>
+            <x-my.modal title="{{ $editMode ? 'Edit User' : 'Create User' }}"
+                :showOn="['show-modal']"
+                :closeOn="['close-modal']">
+                <div class="grid space-y-4">
                     <x-my.input label="Name"
                         wire:model.defer="form.name"
                         required />
+                    <x-my.input label="Email"
+                        wire:model.defer="form.email"
+                        required />
+                    <div>
+                        @if ($editMode == false)
+                            <x-my.input label="Password"
+                                wire:model.defer="form.password"
+                                type="password"
+                                required />
+                        @endif
+                    </div>
+                    <x-my.input.select label="Role"
+                        wire:model.defer="form.role_id"
+                        required>
+                        @foreach ($roles as $role)
+                            <option value="{{ $role->id }}">
+                                {{ $role->name }}
+                            </option>
+                        @endforeach
+                    </x-my.input.select>
                 </div>
                 <x-slot name="footer">
-                    <div class="flex space-x-3">
-                        <x-my.button-secondary x-on:click="close"
+                    <div class="flex items-center space-x-3">
+                        <x-my.button-secondary x-on:click="close()"
                             label="Cancel" />
                         <x-my.button-success type="submit"
                             loadingOn="save"

@@ -29,6 +29,10 @@ Route::prefix('branch-admin')->middleware([
         return view('v2.branch-admin.rooms');
     })->name('re-branch-admin.rooms');
 
+    Route::get('/floors', function () {
+        return view('v2.branch-admin.floors');
+    })->name('re-branch-admin.floors');
+
     Route::get('/users', function () {
         return view('v2.branch-admin.users');
     })->name('re-branch-admin.users');

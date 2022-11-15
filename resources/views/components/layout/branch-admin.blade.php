@@ -9,13 +9,13 @@
             aria-modal="true">
             <div class="fixed inset-0 bg-gray-600 bg-opacity-75"></div>
             <div class="fixed inset-0 z-40 flex">
-                <div class="relative flex flex-col flex-1 w-full max-w-xs bg-white">
-                    <div class="absolute top-0 right-0 pt-2 -mr-12">
+                <div class="relative flex w-full max-w-xs flex-1 flex-col bg-white">
+                    <div class="absolute top-0 right-0 -mr-12 pt-2">
                         <button type="button"
-                            class="flex items-center justify-center w-10 h-10 ml-1 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                            class="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                             <span class="sr-only">Close sidebar</span>
                             <!-- Heroicon name: outline/x-mark -->
-                            <svg class="w-6 h-6 text-white"
+                            <svg class="h-6 w-6 text-white"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
@@ -29,22 +29,22 @@
                         </button>
                     </div>
 
-                    <div class="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
-                        <div class="flex items-center flex-shrink-0 px-4">
-                            <img class="w-auto h-8"
+                    <div class="h-0 flex-1 overflow-y-auto pt-5 pb-4">
+                        <div class="flex flex-shrink-0 items-center px-4">
+                            <img class="h-8 w-auto"
                                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                                 alt="Your Company">
                         </div>
-                        <nav class="px-2 mt-5 space-y-1">
+                        <nav class="mt-5 space-y-1 px-2">
                             <!-- Current: "bg-gray-100 text-gray-900", Default: "text-gray-600 hover:bg-gray-50 hover:text-gray-900" -->
                             <a href="#"
-                                class="flex items-center px-2 py-2 text-base font-medium text-gray-900 bg-gray-100 rounded-md group">
+                                class="group flex items-center rounded-md bg-gray-100 px-2 py-1.5 text-base font-medium text-gray-900">
                                 <!--
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                              Heroicon name: outline/home
-                                                                                                                                                                                                                                                                                                                                                                                                                                                              
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                              Current: "text-gray-500", Default: "text-gray-400 group-hover:text-gray-500"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            -->
-                                <svg class="flex-shrink-0 w-6 h-6 mr-4 text-gray-500"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      Heroicon name: outline/home
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      Current: "text-gray-500", Default: "text-gray-400 group-hover:text-gray-500"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    -->
+                                <svg class="mr-4 h-6 w-6 flex-shrink-0 text-gray-500"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -59,9 +59,9 @@
                             </a>
 
                             <a href="#"
-                                class="flex items-center px-2 py-2 text-base font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900">
+                                class="group flex items-center rounded-md px-2 py-1.5 text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
                                 <!-- Heroicon name: outline/users -->
-                                <svg class="flex-shrink-0 w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500"
+                                <svg class="mr-4 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -76,9 +76,9 @@
                             </a>
 
                             <a href="#"
-                                class="flex items-center px-2 py-2 text-base font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900">
+                                class="group flex items-center rounded-md px-2 py-1.5 text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
                                 <!-- Heroicon name: outline/folder -->
-                                <svg class="flex-shrink-0 w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500"
+                                <svg class="mr-4 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -93,9 +93,9 @@
                             </a>
 
                             <a href="#"
-                                class="flex items-center px-2 py-2 text-base font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900">
+                                class="group flex items-center rounded-md px-2 py-1.5 text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
                                 <!-- Heroicon name: outline/calendar -->
-                                <svg class="flex-shrink-0 w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500"
+                                <svg class="mr-4 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -110,9 +110,9 @@
                             </a>
 
                             <a href="#"
-                                class="flex items-center px-2 py-2 text-base font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900">
+                                class="group flex items-center rounded-md px-2 py-1.5 text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
                                 <!-- Heroicon name: outline/inbox -->
-                                <svg class="flex-shrink-0 w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500"
+                                <svg class="mr-4 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -127,9 +127,9 @@
                             </a>
 
                             <a href="#"
-                                class="flex items-center px-2 py-2 text-base font-medium text-gray-600 rounded-md group hover:bg-gray-50 hover:text-gray-900">
+                                class="group flex items-center rounded-md px-2 py-1.5 text-base font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
                                 <!-- Heroicon name: outline/chart-bar -->
-                                <svg class="flex-shrink-0 w-6 h-6 mr-4 text-gray-400 group-hover:text-gray-500"
+                                <svg class="mr-4 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -144,12 +144,12 @@
                             </a>
                         </nav>
                     </div>
-                    <div class="flex flex-shrink-0 p-4 border-t border-gray-200">
+                    <div class="flex flex-shrink-0 border-t border-gray-200 p-4">
                         <a href="#"
-                            class="flex-shrink-0 block group">
+                            class="group block flex-shrink-0">
                             <div class="flex items-center">
                                 <div>
-                                    <img class="inline-block w-10 h-10 rounded-full"
+                                    <img class="inline-block h-10 w-10 rounded-full"
                                         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                                         alt="">
                                 </div>
@@ -162,7 +162,7 @@
                     </div>
                 </div>
 
-                <div class="flex-shrink-0 w-14">
+                <div class="w-14 flex-shrink-0">
                     <!-- Force sidebar to shrink to fit close icon -->
                 </div>
             </div>
@@ -170,23 +170,23 @@
 
         <!-- Static sidebar for desktop -->
         <div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
-            <div class="flex flex-col flex-1 min-h-0 bg-transparent">
-                <div class="flex flex-col flex-1 pt-5 pb-10 overflow-y-auto">
-                    <div class="flex items-center flex-shrink-0 px-4">
-                        <img class="w-auto h-8"
+            <div class="flex min-h-0 flex-1 flex-col bg-white shadow-md">
+                <div class="flex flex-1 flex-col overflow-y-auto pt-5 pb-10">
+                    <div class="flex flex-shrink-0 items-center px-4">
+                        <img class="h-8 w-auto"
                             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                             alt="Your Company">
                     </div>
-                    <nav class="grid px-2 mt-5 space-y-3 bg-transparent">
-                        <div class="flex-1 px-3 pt-3 pb-6 space-y-1 bg-blue-700 rounded-lg">
+                    <nav class="mt-5 grid space-y-2 bg-white px-2">
+                        <div class="flex-1 space-y-1 rounded-lg bg-blue-100 px-3 pt-3 pb-3">
                             <div>
-                                <h1 class="text-white">
+                                <h1 class="text-blue-700">
                                     Overview
                                 </h1>
                             </div>
                             <a href="{{ route('re-branch-admin.dashboard') }}"
-                                class="flex items-center px-2 py-2 text-sm font-medium text-white bg-blue-700 border rounded-md group hover:bg-blue-600">
-                                <svg class="flex-shrink-0 w-6 h-6 mr-3"
+                                class="group flex items-center rounded-md bg-blue-700 px-2 py-1.5 text-sm font-medium text-white hover:bg-blue-600">
+                                <svg class="mr-3 h-6 w-6 flex-shrink-0"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -200,8 +200,8 @@
                                 Dashboard
                             </a>
                             <a href="{{ route('re-branch-admin.guests') }}"
-                                class="flex items-center px-2 py-2 text-sm font-medium text-white bg-blue-700 border rounded-md group hover:bg-blue-600">
-                                <svg class="flex-shrink-0 w-6 h-6 mr-3"
+                                class="group flex items-center rounded-md bg-blue-700 px-2 py-1.5 text-sm font-medium text-white hover:bg-blue-600">
+                                <svg class="mr-3 h-6 w-6 flex-shrink-0"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -213,16 +213,16 @@
                             </a>
                         </div>
                         {{-- ----------------------------------------------------- --}}
-                        <div class="flex-1 px-3 pt-3 pb-6 space-y-1 bg-yellow-600 rounded-lg">
+                        <div class="flex-1 space-y-1 rounded-lg bg-yellow-100 px-3 pt-3 pb-3">
                             <div>
-                                <h1 class="text-white">
+                                <h1 class="text-yellow-700">
                                     Manage
                                 </h1>
                             </div>
                             <a href="{{ route('re-branch-admin.types') }}"
-                                class="flex items-center px-2 py-2 text-sm font-medium text-white bg-yellow-600 border rounded-md group hover:bg-yellow-500">
+                                class="group flex items-center rounded-md bg-yellow-600 px-2 py-1.5 text-sm font-medium text-white hover:bg-yellow-500">
                                 <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="flex-shrink-0 w-6 h-6 mr-3 fill-white"
+                                    class="mr-3 h-6 w-6 flex-shrink-0 fill-white"
                                     viewBox="0 0 24 24">
                                     <path
                                         d="M10 3H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM9 9H5V5h4v4zm11 4h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1zm-1 6h-4v-4h4v4zM17 3c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4zm0 6c-1.103 0-2-.897-2-2s.897-2 2-2 2 .897 2 2-.897 2-2 2zM7 13c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4zm0 6c-1.103 0-2-.897-2-2s.897-2 2-2 2 .897 2 2-.897 2-2 2z">
@@ -231,22 +231,37 @@
                                 Types
                             </a>
                             <a href="{{ route('re-branch-admin.rates') }}"
-                                class="flex items-center px-2 py-2 text-sm font-medium text-white bg-yellow-600 border rounded-md group hover:bg-yellow-500">
+                                class="group flex items-center rounded-md bg-yellow-600 px-2 py-1.5 text-sm font-medium text-white hover:bg-yellow-500">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke-width="1.5"
                                     stroke="currentColor"
-                                    class="flex-shrink-0 w-6 h-6 mr-3 fill-white">
+                                    class="mr-3 h-6 w-6 flex-shrink-0 fill-white">
                                     <path stroke-linecap="round"
                                         stroke-linejoin="round"
                                         d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
                                 </svg>
                                 Rates
                             </a>
+
+                            <a href="{{ route('re-branch-admin.floors') }}"
+                                class="group flex items-center rounded-md bg-yellow-600 px-2 py-1.5 text-sm font-medium text-white hover:bg-yellow-500">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"class="mr-3 h-6 w-6 flex-shrink-0">
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+                                </svg>
+                                Floors
+                            </a>
+
                             <a href="{{ route('re-branch-admin.rooms') }}"
-                                class="flex items-center px-2 py-2 text-sm font-medium text-white bg-yellow-600 border rounded-md group hover:bg-yellow-500">
-                                <svg class="flex-shrink-0 w-6 h-6 mr-3 fill-white"
+                                class="group flex items-center rounded-md bg-yellow-600 px-2 py-1.5 text-sm font-medium text-white hover:bg-yellow-500">
+                                <svg class="mr-3 h-6 w-6 flex-shrink-0 fill-white"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -257,13 +272,13 @@
                                 Rooms
                             </a>
                             <a href="{{ route('re-branch-admin.users') }}"
-                                class="flex items-center px-2 py-2 text-sm font-medium text-white bg-yellow-600 border rounded-md group hover:bg-yellow-500">
+                                class="group flex items-center rounded-md bg-yellow-600 px-2 py-1.5 text-sm font-medium text-white hover:bg-yellow-500">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke-width="1.5"
                                     stroke="currentColor"
-                                    class="flex-shrink-0 w-6 h-6 mr-3 text-white">
+                                    class="mr-3 h-6 w-6 flex-shrink-0 text-white">
                                     <path stroke-linecap="round"
                                         stroke-linejoin="round"
                                         d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
@@ -271,13 +286,13 @@
                                 Users
                             </a>
                             <a href="{{ route('re-branch-admin.discounts') }}"
-                                class="flex items-center px-2 py-2 text-sm font-medium text-white bg-yellow-600 border rounded-md group hover:bg-yellow-500">
+                                class="group flex items-center rounded-md bg-yellow-600 px-2 py-1.5 text-sm font-medium text-white hover:bg-yellow-500">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke-width="1.5"
                                     stroke="currentColor"
-                                    class="flex-shrink-0 w-6 h-6 mr-3 text-white">
+                                    class="mr-3 h-6 w-6 flex-shrink-0 text-white">
                                     <path stroke-linecap="round"
                                         stroke-linejoin="round"
                                         d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
@@ -285,13 +300,13 @@
                                 Discounts
                             </a>
                             <a href="{{ route('re-branch-admin.extensions') }}"
-                                class="flex items-center px-2 py-2 text-sm font-medium text-white bg-yellow-600 border rounded-md group hover:bg-yellow-500">
+                                class="group flex items-center rounded-md bg-yellow-600 px-2 py-1.5 text-sm font-medium text-white hover:bg-yellow-500">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke-width="1.5"
                                     stroke="currentColor"
-                                    class="flex-shrink-0 w-6 h-6 mr-3 fill-white">
+                                    class="mr-3 h-6 w-6 flex-shrink-0 fill-white">
                                     <path stroke-linecap="round"
                                         stroke-linejoin="round"
                                         d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
@@ -299,13 +314,13 @@
                                 Extension Rates
                             </a>
                             <a href="{{ route('re-branch-admin.charges-for-damages') }}"
-                                class="flex items-center px-2 py-2 text-sm font-medium text-white bg-yellow-600 border rounded-md group hover:bg-yellow-500">
+                                class="group flex items-center rounded-md bg-yellow-600 px-2 py-1.5 text-sm font-medium text-white hover:bg-yellow-500">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke-width="1.5"
                                     stroke="currentColor"
-                                    class="flex-shrink-0 w-6 h-6 mr-3 text-white">
+                                    class="mr-3 h-6 w-6 flex-shrink-0 text-white">
                                     <path stroke-linecap="round"
                                         stroke-linejoin="round"
                                         d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
@@ -313,8 +328,8 @@
                                 Charges for Damages
                             </a>
                             <a href="{{ route('re-branch-admin.amenities') }}"
-                                class="flex items-center px-2 py-2 text-sm font-medium text-white bg-yellow-600 border rounded-md group hover:bg-yellow-500">
-                                <svg class="flex-shrink-0 w-6 h-6 mr-3 fill-white"
+                                class="group flex items-center rounded-md bg-yellow-600 px-2 py-1.5 text-sm font-medium text-white hover:bg-yellow-500">
+                                <svg class="mr-3 h-6 w-6 flex-shrink-0 fill-white"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -330,15 +345,15 @@
                             </a>
                         </div>
                         {{-- ------------------ --}}
-                        <div class="flex-1 px-3 pt-3 pb-6 space-y-1 bg-green-700 rounded-lg">
+                        <div class="flex-1 space-y-1 rounded-lg bg-green-100 px-3 pt-3 pb-3">
                             <div>
-                                <h1 class="text-white">
+                                <h1 class="text-green-700">
                                     Front Desk Actions
                                 </h1>
                             </div>
                             <a href="#"
-                                class="flex items-center px-2 py-2 text-sm font-medium text-white bg-green-700 border rounded-md group hover:bg-green-600">
-                                <svg class="flex-shrink-0 w-6 h-6 mr-3"
+                                class="group flex items-center rounded-md bg-green-700 px-2 py-1.5 text-sm font-medium text-white hover:bg-green-600">
+                                <svg class="mr-3 h-6 w-6 flex-shrink-0"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -352,8 +367,8 @@
                                 Check In
                             </a>
                             <a href="#"
-                                class="flex items-center px-2 py-2 text-sm font-medium text-white bg-green-700 border rounded-md group hover:bg-green-600">
-                                <svg class="flex-shrink-0 w-6 h-6 mr-3"
+                                class="group flex items-center rounded-md bg-green-700 px-2 py-1.5 text-sm font-medium text-white hover:bg-green-600">
+                                <svg class="mr-3 h-6 w-6 flex-shrink-0"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -364,8 +379,8 @@
                                 Check Out
                             </a>
                             <a href="#"
-                                class="flex items-center px-2 py-2 text-sm font-medium text-white bg-green-700 border rounded-md group hover:bg-green-600">
-                                <svg class="flex-shrink-0 w-6 h-6 mr-3"
+                                class="group flex items-center rounded-md bg-green-700 px-2 py-1.5 text-sm font-medium text-white hover:bg-green-600">
+                                <svg class="mr-3 h-6 w-6 flex-shrink-0"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -376,8 +391,8 @@
                                 Transactions
                             </a>
                             <a href="#"
-                                class="flex items-center px-2 py-2 text-sm font-medium text-white bg-green-700 border rounded-md group hover:bg-green-600">
-                                <svg class="flex-shrink-0 w-6 h-6 mr-3"
+                                class="group flex items-center rounded-md bg-green-700 px-2 py-1.5 text-sm font-medium text-white hover:bg-green-600">
+                                <svg class="mr-3 h-6 w-6 flex-shrink-0"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -388,8 +403,8 @@
                                 Room Monitoring
                             </a>
                             <a href="#"
-                                class="flex items-center px-2 py-2 text-sm font-medium text-white bg-green-700 border rounded-md group hover:bg-green-600">
-                                <svg class="flex-shrink-0 w-6 h-6 mr-3"
+                                class="group flex items-center rounded-md bg-green-700 px-2 py-1.5 text-sm font-medium text-white hover:bg-green-600">
+                                <svg class="mr-3 h-6 w-6 flex-shrink-0"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -401,15 +416,15 @@
                             </a>
                         </div>
                         {{-- ------------------------------- --}}
-                        <div class="flex-1 px-3 pt-3 pb-6 space-y-1 bg-red-700 rounded-lg">
+                        <div class="flex-1 space-y-1 rounded-lg bg-red-100 px-3 pt-3 pb-3">
                             <div>
-                                <h1 class="text-white">
+                                <h1 class="text-red-700">
                                     Housekeeping Actions
                                 </h1>
                             </div>
                             <a href="#"
-                                class="flex items-center px-2 py-2 text-sm font-medium text-white bg-red-700 border rounded-md group hover:bg-red-600">
-                                <svg class="flex-shrink-0 w-6 h-6 mr-3"
+                                class="group flex items-center rounded-md bg-red-700 px-2 py-1.5 text-sm font-medium text-white hover:bg-red-600">
+                                <svg class="mr-3 h-6 w-6 flex-shrink-0"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -427,13 +442,13 @@
                 </div>
             </div>
         </div>
-        <div class="flex flex-col flex-1 md:pl-64">
-            <div class="sticky top-0 z-10 pt-1 pl-1 bg-gray-100 sm:pl-3 sm:pt-3 md:hidden">
+        <div class="flex flex-1 flex-col md:pl-64">
+            <div class="sticky top-0 z-10 bg-gray-100 pt-1 pl-1 sm:pl-3 sm:pt-3 md:hidden">
                 <button type="button"
                     class="-ml-0.5 -mt-0.5 inline-flex h-12 w-12 items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                     <span class="sr-only">Open sidebar</span>
                     <!-- Heroicon name: outline/bars-3 -->
-                    <svg class="w-6 h-6"
+                    <svg class="h-6 w-6"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -448,7 +463,7 @@
             </div>
             <main class="flex-1">
                 <div class="py-6">
-                    <div class="sticky z-40 p-2 mx-auto bg-white rounded-lg shadow top-6 max-w-7xl">
+                    <div class="sticky top-6 z-40 mx-auto max-w-7xl rounded-lg bg-white p-2 shadow">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-2">
                                 <svg class="h-10 fill-gray-700"
@@ -464,17 +479,17 @@
                                     {{ auth()->user()->branch_name }}
                                 </h1>
                             </div>
-                            <div class="flex space-x-3 item-center">
+                            <div class="item-center flex space-x-3">
                                 <x-quick-menu />
                             </div>
                         </div>
                     </div>
-                    <div class="px-4 mx-auto mt-4 max-w-7xl sm:px-6 md:px-8">
+                    <div class="mx-auto mt-4 max-w-7xl px-4 sm:px-6 md:px-8">
                         <h1 class="text-2xl font-semibold text-gray-900">
                             {{ $title }}
                         </h1>
                     </div>
-                    <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 md:px-8">
+                    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 md:px-8">
                         {{ $slot }}
                     </div>
                 </div>
