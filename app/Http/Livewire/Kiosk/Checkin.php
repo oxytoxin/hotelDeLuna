@@ -77,6 +77,7 @@ class Checkin extends Component
             'roomtypes' => Type::get(),
             'rates' => Rate::where('branch_id', auth()->user()->branch_id)
                 ->where('type_id', 'like', '%' . $this->type_key . '%')
+                ->where('is_available', 1)
                 ->with(['staying_hour', 'type'])
                 ->get(),
         ]);
