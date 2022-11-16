@@ -29,6 +29,10 @@ Route::prefix('branch-admin')->middleware([
         return view('v2.branch-admin.rooms');
     })->name('re-branch-admin.rooms');
 
+    Route::get('/floors', function () {
+        return view('v2.branch-admin.floors');
+    })->name('re-branch-admin.floors');
+
     Route::get('/users', function () {
         return view('v2.branch-admin.users');
     })->name('re-branch-admin.users');
@@ -49,4 +53,26 @@ Route::prefix('branch-admin')->middleware([
         return view('v2.branch-admin.amenities');
     })->name('re-branch-admin.amenities');
 
+
+    // --- guest actions
+
+    Route::get('/check-in', function () {
+        return view('v2.branch-admin.check-in');
+    })->name('re-branch-admin.check-in');
+
+    Route::get('/check-out', function () {
+        return view('v2.branch-admin.check-out');
+    })->name('re-branch-admin.check-out');
+
+    Route::get('/transactions', function () {
+        return view('v2.branch-admin.transactions');
+    })->name('re-branch-admin.transactions');
+
+    Route::get('/rooms-monitoring', function () {
+        return view('v2.branch-admin.rooms-monitoring');
+    })->name('re-branch-admin.rooms-monitoring');
+
+    Route::get('/priority-rooms', function () {
+        return view('v2.branch-admin.priority-rooms');
+    })->name('re-branch-admin.priority-rooms');
 });

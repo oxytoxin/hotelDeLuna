@@ -1,6 +1,5 @@
 <x-layout.branch-admin title="Discounts">
     <div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat ipsa aliquid fugiat est voluptates minus unde
-        earum minima nobis. Quisquam rerum repellat odio earum molestias placeat dolorum, iusto velit libero?
+        @livewire('v2.branch-admin.discounts.index')
     </div>
 </x-layout.branch-admin>

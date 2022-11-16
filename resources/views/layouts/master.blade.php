@@ -42,6 +42,7 @@
         align="center" />
 
     <x-pop-ups.notification />
+    <x-pop-ups.notification-alert />
     <x-pop-ups.confirm-dialog />
 
     @livewireScripts

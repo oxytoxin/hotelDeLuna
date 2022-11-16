@@ -21,9 +21,24 @@ class Index extends Component
 
     public $form;
 
+    protected $listeners = ['markAsUnavailable', 'markAsAvailable'];
+
+    public function rules()
+    {
+        return [
+            'form.branch_id' => 'nullable',
+            'form.staying_hour_id' => 'required',
+            'form.type_id' => 'required',
+            'form.amount' => 'required',
+        ];
+    }
+
     public function makeForm()
     {
-        $this->form = Rate::make(['branch_id' => auth()->user()->branch_id]);
+        $this->form = Rate::make([
+            'branch_id' => auth()->user()->branch_id,
+            'is_available' => 1,
+        ]);
     }
 
     public function getRateGroupedByTypeQueryProperty()
@@ -38,12 +53,126 @@ class Index extends Component
         },'rateGroupedByType');
     }
 
+    public function save()
+    {
+         if($this->editMode){
+            $this->update();
+         }else{
+            $this->store();
+         }
+    }
+
     public function create()
     {
+        $this->makeForm();
         $this->useCacheRows();
         $this->editMode = false;
         $this->dispatchBrowserEvent('show-create-modal');
     }
+
+    public function store()
+    {
+        $this->validate();
+
+        $rateExist = Rate::where('branch_id', $this->form->branch_id)
+            ->where('type_id', $this->form->type_id)
+            ->where('staying_hour_id', $this->form->staying_hour_id)
+            ->first();
+
+        if($rateExist){
+            session()->flash('error', 'Rate already exist !');
+            return;
+        }
+
+        $rateExist = Rate::where('branch_id', $this->form->branch_id)
+            ->where('type_id', $this->form->type_id)
+            ->where('staying_hour_id', $this->form->staying_hour_id)
+            ->where('amount', $this->form->amount)
+            ->first();
+        
+        if($rateExist){
+            session()->flash('error', 'Rate already exist !');
+            return;
+        }
+
+        $this->form->save();
+        $this->dispatchBrowserEvent('close-create-modal');
+        $this->dispatchBrowserEvent('notify',[
+            'type' => 'success',
+            'title' => 'Success',
+            'message' => 'Rate created successfully!'
+        ]);
+    }
+
+    public function edit(Rate $rate)
+    {
+        $this->form = $rate;
+        $this->useCacheRows();
+        $this->editMode = true;
+        $this->dispatchBrowserEvent('show-edit-modal');
+    }
+
+    public function update()
+    {
+        $this->validate();
+
+        $rateExist = Rate::where('branch_id', $this->form->branch_id)
+            ->where('type_id', $this->form->type_id)
+            ->where('staying_hour_id', $this->form->staying_hour_id)
+            ->where('id', '!=', $this->form->id)
+            ->first();
+
+        if($rateExist){
+            session()->flash('error', 'Rate already exist !');
+            return;
+        }
+
+        $rateExist = Rate::where('branch_id', $this->form->branch_id)
+            ->where('type_id', $this->form->type_id)
+            ->where('staying_hour_id', $this->form->staying_hour_id)
+            ->where('amount', $this->form->amount)
+            ->where('id', '!=', $this->form->id)
+            ->first();
+        
+        if($rateExist){
+            session()->flash('error', 'Rate already exist !');
+            return;
+        }
+
+        $this->form->save();
+        $this->dispatchBrowserEvent('close-edit-modal');
+        $this->dispatchBrowserEvent('notify',[
+            'type' => 'success',
+            'title' => 'Success',
+            'message' => 'Rate updated successfully!'
+        ]);
+    }
+
+    public function markAsAvailable(Rate $rate)
+    {
+        $rate->update([
+            'is_available' => 1
+        ]);
+        $this->dispatchBrowserEvent('notify',[
+            'type' => 'success',
+            'title' => 'Success',
+            'message' => 'Rate marked as available successfully!'
+        ]);
+    }
+
+    public function markAsUnavailable(Rate $rate)
+    {
+        $rate->update([
+            'is_available' => 0
+        ]);
+        $this->dispatchBrowserEvent('notify',[
+            'type' => 'success',
+            'title' => 'Success',
+            'message' => 'Rate marked as unavailable successfully!'
+        ]);
+    }
+
+   
 
 
     public function mount()

@@ -3,6 +3,9 @@
     'label' => 'Submit',
     'type' => 'button',
     'icon' => null,
+    'py' => 'py-2',
+    'px' => 'px-4',
+    'textSize' => 'text-sm',
 ])
 
 <button type="{{ $type }}"
@@ -10,7 +13,7 @@
     {{ $attributes->whereStartsWith('x-on:click') }}
     @if ($attributes->has('wire:click')) wire:loading.attr="disabled"
         wire:loading.class="cursor-progress" @endif
-    class="inline-flex items-center space-x-3 rounded-md border border-transparent bg-yellow-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
+    class="{{ $py }} {{ $px }} {{ $textSize }} inline-flex items-center space-x-3 rounded-md border border-transparent bg-yellow-600 font-medium text-white shadow-sm hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
     {{ $icon ?? '' }}
     <span>
         {{ $label }}
