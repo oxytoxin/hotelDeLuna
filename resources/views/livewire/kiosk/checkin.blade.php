@@ -867,7 +867,7 @@
                     #{{ $room->number ?? 'none' }} | {{ ordinal($room->floor->number ?? 1) }}
                     FLOOR</h1>
                 </div>
-                <div class="texttts ">
+                <div class="textttss ">
                   <h1 class="text-lg text-green-700 font-semibold flex-auto font-rubik">
                     {{ $type['name'] ?? 'None' }}</h1>
                 </div>
