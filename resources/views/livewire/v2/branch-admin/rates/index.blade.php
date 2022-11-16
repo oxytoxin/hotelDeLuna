@@ -30,6 +30,7 @@
             <x-my.table.head name="Staying Hour" />
             <x-my.table.head name="Amount" />
             <x-my.table.head name="Type" />
+            <x-my.table.head name="Status" />
             <x-my.table.head name="" />
         </x-slot>
         @foreach ($types as $type)
@@ -49,6 +50,33 @@
                     </x-my.table.cell>
                     <x-my.table.cell>
                         {{ $rate->type->name }}
+                    </x-my.table.cell>
+                    <x-my.table.cell>
+                        <div>
+                            @if ($rate->is_available)
+                                <x-my.button-success py="py-1"
+                                    x-on:click="$dispatch('confirm', {
+                                        title : 'Are you sure?',
+                                        message : 'This will make this rate unavailable.',
+                                        confirmButtonText : 'Continue', 
+                                        cancelButtonText : 'No', 
+                                        confirmMethod : 'markAsUnavailable',
+                                        'confirmParams' : {{ $rate->id }}
+                                    } )"
+                                    label="Available" />
+                            @else
+                                <x-my.button-danger py="py-1"
+                                    x-on:click="$dispatch('confirm', {
+                                    title : 'Are you sure?',
+                                    message : 'This will make this rate available.',
+                                    confirmButtonText : 'Continue', 
+                                    cancelButtonText : 'No', 
+                                    confirmMethod : 'markAsAvailable',
+                                    'confirmParams' : {{ $rate->id }}
+                                } )"
+                                    label="Not Available" />
+                            @endif
+                        </div>
                     </x-my.table.cell>
                     <x-my.table.cell>
                         <div class="flex justify-end px-2">

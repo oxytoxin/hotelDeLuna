@@ -13,7 +13,7 @@
     {{ $attributes->whereStartsWith('x-on:click') }}
     @if ($attributes->has('wire:click')) wire:loading.attr="disabled"
         wire:loading.class="cursor-progress" @endif
-    class="{{ $py }} {{ $px }} {{ $textSize }} bg-trasparent inline-flex items-center space-x-3 rounded-md border border-gray-300 font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2">
+    class="{{ $py }} {{ $px }} {{ $textSize }} inline-flex items-center space-x-3 rounded-md border border-transparent bg-red-600 font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
     {{ $icon ?? '' }}
     <span>
         {{ $label }}

@@ -1,6 +1,5 @@
 <x-layout.branch-admin title="Exentions Rates">
     <div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat ipsa aliquid fugiat est voluptates minus unde
-        earum minima nobis. Quisquam rerum repellat odio earum molestias placeat dolorum, iusto velit libero?
+        @livewire('v2.branch-admin.extension-rates.index')
     </div>
 </x-layout.branch-admin>

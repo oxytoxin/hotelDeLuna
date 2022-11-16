@@ -16,6 +16,7 @@
         <input type="{{ $type }}"
             {{ $attributes->whereStartsWith('wire:model') }}
             {{ $attributes->whereStartsWith('x') }}
+            {{ $attributes->whereStartsWith('disabled') }}
             @if ($numberOnly) x-on:keyup="$el.value = $el.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')" @endif
             :name="$id('base-input')"\
             :id="$id('base-input')"

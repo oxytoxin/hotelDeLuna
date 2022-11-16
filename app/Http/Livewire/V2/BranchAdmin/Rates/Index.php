@@ -21,6 +21,8 @@ class Index extends Component
 
     public $form;
 
+    protected $listeners = ['markAsUnavailable', 'markAsAvailable'];
+
     public function rules()
     {
         return [
@@ -33,7 +35,10 @@ class Index extends Component
 
     public function makeForm()
     {
-        $this->form = Rate::make(['branch_id' => auth()->user()->branch_id]);
+        $this->form = Rate::make([
+            'branch_id' => auth()->user()->branch_id,
+            'is_available' => 1,
+        ]);
     }
 
     public function getRateGroupedByTypeQueryProperty()
@@ -140,6 +145,30 @@ class Index extends Component
             'type' => 'success',
             'title' => 'Success',
             'message' => 'Rate updated successfully!'
+        ]);
+    }
+
+    public function markAsAvailable(Rate $rate)
+    {
+        $rate->update([
+            'is_available' => 1
+        ]);
+        $this->dispatchBrowserEvent('notify',[
+            'type' => 'success',
+            'title' => 'Success',
+            'message' => 'Rate marked as available successfully!'
+        ]);
+    }
+
+    public function markAsUnavailable(Rate $rate)
+    {
+        $rate->update([
+            'is_available' => 0
+        ]);
+        $this->dispatchBrowserEvent('notify',[
+            'type' => 'success',
+            'title' => 'Success',
+            'message' => 'Rate marked as unavailable successfully!'
         ]);
     }
 

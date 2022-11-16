@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('type_id')->constrained();
             $table->unsignedBigInteger('staying_hour_id')->constrained();
             $table->string('amount');
+            $table->boolean('is_available')->default(true);
             $table->timestamps();
         });
     }

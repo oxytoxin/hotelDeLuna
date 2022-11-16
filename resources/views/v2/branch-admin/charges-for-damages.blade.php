@@ -1,6 +1,5 @@
 <x-layout.branch-admin title="Charges For Damages">
     <div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat ipsa aliquid fugiat est voluptates minus unde
-        earum minima nobis. Quisquam rerum repellat odio earum molestias placeat dolorum, iusto velit libero?
+        @livewire('v2.branch-admin.charges-for-damages.index')
     </div>
 </x-layout.branch-admin>

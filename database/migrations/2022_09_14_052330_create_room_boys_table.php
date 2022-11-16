@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('room_boys', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id');
             $table->boolean('is_cleaning')->default(false);
             $table->foreignId('room_id')->nullable()->constrained();
             $table->timestamps();
