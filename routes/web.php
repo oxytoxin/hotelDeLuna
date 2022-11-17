@@ -29,7 +29,7 @@ Route::middleware([
         $role_id = auth()->user()->role_id;
         switch ($role_id) {
             case '1':
-                return redirect()->route('branch.dashboard');
+                return redirect()->route('re-branch-admin.dashboard');
                 break;
             case '2':
                 return redirect()->route('front-desk.dashboard');

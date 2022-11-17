@@ -2,7 +2,7 @@
 @section('content')
     <x-layout.frontdesk>
         <x-page-layout title="Guest Transaction">
-            @livewire('front-desk.guest-transactions')
+            @livewire('v2.front-desk.transactions.index')
         </x-page-layout>
     </x-layout.frontdesk>
 @endsection

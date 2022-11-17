@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('guest_id')->constrained();
             $table->unsignedBigInteger('hotel_item_id')->constrained();
-            $table->dateTime('occured_at');
+            $table->dateTime('occurred_at');
             $table->string('price');
             $table->string('additional_charge')->nullable();
             $table->string('front_desk_name')->nullable();

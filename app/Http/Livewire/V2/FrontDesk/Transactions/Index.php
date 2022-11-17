@@ -13,9 +13,12 @@ class Index extends Component
 
     public $search='';
 
+
     public $searchBy='1';
 
-    public $queryString = ['realSearch'];
+    public $queryString = ['realSearch','activeTab','searchBy'];
+
+    protected $listeners = ['transactionUpdated'=>'$refresh'];
 
     public $tabs = [
         [
@@ -59,6 +62,7 @@ class Index extends Component
     {
         $this->search = '';
         $this->realSearch = '';
+        $this->activeTab = 1;
     }
 
     public function getGuestQueryProperty()
@@ -85,7 +89,7 @@ class Index extends Component
         }
 
         return $this->cache(function () {
-            return $this->guestQuery->with(['checkInDetail.room','checkInDetail.rate'])->first();
+            return $this->guestQuery->with(['checkInDetail.room','checkInDetail.rate.staying_hour'])->first();
         }, 'guest');
     }
 
@@ -93,6 +97,13 @@ class Index extends Component
     {
         $this->useCacheRows();
         $this->activeTab = $tabId;
+    }
+
+    public function mount()
+    {
+        if ($this->realSearch != '') {
+            $this->search = $this->realSearch;
+        }
     }
 
     public function render()

@@ -67,4 +67,9 @@ class Room extends Model
         return $this->hasMany(RoomTransactionLog::class);
     }
 
+    public function checkInDetails()
+    {
+        return $this->hasMany(CheckInDetail::class);
+    }
+
 }

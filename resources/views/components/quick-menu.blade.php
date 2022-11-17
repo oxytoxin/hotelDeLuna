@@ -1,28 +1,47 @@
 <div class="flex items-center space-x-3">
     @admin()
-        <x-button href="{{ route('branch.manage-settings') }}"
-            sm>
-            <svg xmlns="http://www.w3.org/2000/svg"
-                class="w-5 h-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2">
-                <path stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                <path stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-        </x-button>
+        <div x-data="{ guideShow: false }"
+            x-on:reset-guide-show.window="guideShow = true"
+            x-on:reset-guide-hide.window="guideShow = false">
+            <x-button href="{{ route('branch.manage-settings') }}"
+                class="relative"
+                sm>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2">
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <div x-cloak
+                    x-show="guideShow"
+                    class="absolute -bottom-8 -left-4">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="3"
+                        stroke="currentColor"
+                        class="h-10 w-10 animate-bounce text-red-500">
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                    </svg>
+                </div>
+            </x-button>
+        </div>
     @endadmin
     <div x-data="{ logout: false }"
         class="flex items-center">
         <x-button x-on:click="logout=true"
             sm>
             <svg xmlns="http://www.w3.org/2000/svg"
-                class="w-5 h-5"
+                class="h-5 w-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -46,9 +65,9 @@
                 x-transition:leave="transition ease-in duration-200"
                 x-transition:leave-start="opacity-100"
                 x-transition:leave-end="opacity-0"
-                class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"></div>
+                class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
             <div class="fixed inset-0 z-50 overflow-y-auto">
-                <div class="flex items-end justify-center min-h-full p-4 text-center sm:items-center sm:p-0">
+                <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                     <div x-cloak
                         x-show="logout"
                         x-transition:enter="transition ease-out duration-300"
@@ -57,12 +76,12 @@
                         x-transition:leave="transition ease-in duration-200"
                         x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        class="relative z-50 px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:w-96 sm:max-w-lg sm:p-6">
+                        class="relative z-50 transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-96 sm:max-w-lg sm:p-6">
                         <div class="sm:flex sm:items-start">
                             <div
-                                class="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
+                                class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                                 <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="w-6 h-6 text-red-600"
+                                    class="h-6 w-6 text-red-600"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
@@ -90,14 +109,14 @@
                                 x-data>
                                 @csrf
                                 <a href="{{ route('logout') }}"
-                                    class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                                    class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                                     @click.prevent="$root.submit();">
                                     {{ __('Logout') }}
                                 </a>
                             </form>
                             <button type="button"
                                 x-on:click="logout=false"
-                                class="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
+                                class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm">Cancel</button>
                         </div>
                     </div>
                 </div>

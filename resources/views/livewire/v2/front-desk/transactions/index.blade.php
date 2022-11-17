@@ -72,104 +72,233 @@
                     </div>
                 </div>
             </div>
-            <div class="grid grid-cols-12 gap-5">
-                <div class="col-span-4 grid gap-3"
-                    x-animate>
-                    <div wire:key="99892398423jkjlsdjfskdlfjksjdklmvxclvlksdjflkse"
-                        class="rounded-lg bg-white p-3 shadow">
-                        <div wire:key="doja8324i2o3joirwf89c793q7c9r8"
-                            class="mb-2 flex">
-                            <h1 class="text-lg font-semibold text-gray-800">
-                                Guest Details
-                            </h1>
-                        </div>
-                        <div x-animate>
-                            @if ($guest)
-                                <div wire:key="ajs8213412qcxjzcnasyfdsaf"
-                                    class="grid">
-                                    <div class="grid">
-                                        <label class="text-sm text-gray-500">
-                                            QR Code
-                                        </label>
-                                        <h1 class="text-gray-700">
-                                            {{ $guest->qr_code }}
-                                        </h1>
-                                    </div>
-                                    <div class="grid border-t pt-2">
-                                        <label class="text-sm text-gray-500">
-                                            Name
-                                        </label>
-                                        <h1 class="text-gray-700">
-                                            {{ $guest->name }}
-                                        </h1>
-                                    </div>
-                                    <div class="grid border-t pt-2">
-                                        <label class="text-sm text-gray-500">
-                                            Contact Number
-                                        </label>
-                                        <h1 class="text-gray-700">
-                                            {{ $guest->contact_number }}
-                                        </h1>
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                    <div wire:key="923jfsjzjdfisdfw39r823sdcvkszdjcv"
-                        x-animate>
-                        <div class="rounded-lg bg-white p-3 shadow">
-                            <div class="mb-2 flex">
-                                <h1 class="text-lg font-semibold text-gray-800">
-                                    Check In Details
-                                </h1>
-                            </div>
-                            <div class="grid">
-                                <div class="grid">
-                                    <label class="text-sm text-gray-500">
-                                        Room Number
-                                    </label>
-                                    <h1 class="text-gray-700">
-                                        ROOM # {{ $guest->checkInDetail->room->number }}
-                                    </h1>
-                                </div>
-                                <div class="grid border-t pt-2">
-                                    <label class="text-sm text-gray-500">
-                                        Staying Hours
-                                    </label>
-                                    <h1 class="text-gray-700">
-                                        {{ $guest->checkInDetail->rate->staying_hour->number }}
-                                        {{ Str::plural('Hour', $guest->checkInDetail->rate->staying_hour->number) }}
-                                    </h1>
-                                </div>
-                                <div class="grid border-t pt-2">
-                                    <label class="text-sm text-gray-500">
-                                        Check In Date
-                                    </label>
-                                    <h1 class="text-gray-700">
-                                        {{ Carbon\Carbon::parse($guest->check_in_at)->format('M d, Y h:i A') }}
-                                    </h1>
-                                </div>
-                                <div class="grid border-t pt-2">
-                                    <label class="text-sm text-gray-500">
-                                        Expected Check Out Date
-                                    </label>
-                                    <h1 class="text-lg text-red-700">
-                                        {{ Carbon\Carbon::parse($guest->checkInDetail->expected_check_out_at)->format('M d, Y H:i A') }}
-                                    </h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-span-8 rounded-lg bg-white p-2 shadow">
-                    <div>
+            <div x-data="{ openGuestInfo: true }"
+                class="grid grid-cols-12 gap-5"
+                x-animate>
+                <template x-if="openGuestInfo">
+                    <div x-show="openGuestInfo"
+                        wire:key="99892398423jkjlsdjfskdlfjksjdklmvxclvlksdjflkse"
+                        class="col-span-3 grid gap-3 duration-150">
                         <div>
-
+                            <div class="rounded-lg bg-white p-3 shadow">
+                                <div wire:key="doja8324i2o3joirwf89c793q7c9r8"
+                                    class="mb-2 flex">
+                                    <h1 class="text-lg font-semibold text-gray-800">
+                                        Guest Details
+                                    </h1>
+                                </div>
+                                <div class="grid gap-5">
+                                    @if ($guest)
+                                        <div wire:key="ajs8213412qcxjzcnasyfdsaf"
+                                            class="grid">
+                                            <div class="grid">
+                                                <label class="text-sm text-gray-500">
+                                                    QR Code
+                                                </label>
+                                                <h1 class="text-gray-700">
+                                                    {{ $guest->qr_code }}
+                                                </h1>
+                                            </div>
+                                            <div class="grid border-t pt-2">
+                                                <label class="text-sm text-gray-500">
+                                                    Name
+                                                </label>
+                                                <h1 class="text-gray-700">
+                                                    {{ $guest->name }}
+                                                </h1>
+                                            </div>
+                                            <div class="grid border-t pt-2">
+                                                <label class="text-sm text-gray-500">
+                                                    Contact Number
+                                                </label>
+                                                <h1 class="text-gray-700">
+                                                    {{ $guest->contact_number }}
+                                                </h1>
+                                            </div>
+                                        </div>
+                                        <div class="rounded-lg bg-gray-100 p-3 shadow">
+                                            <div class="mb-2 flex">
+                                                <h1 class="text-lg font-semibold text-gray-800">
+                                                    Check In Details
+                                                </h1>
+                                            </div>
+                                            <div class="grid">
+                                                <div class="grid">
+                                                    <label class="text-sm text-gray-500">
+                                                        Room Number
+                                                    </label>
+                                                    <h1 class="text-gray-700">
+                                                        ROOM # {{ $guest->checkInDetail->room->number }}
+                                                    </h1>
+                                                </div>
+                                                <div class="grid border-t pt-2">
+                                                    <label class="text-sm text-gray-500">
+                                                        Initial Check In Hour
+                                                    </label>
+                                                    <h1 class="text-gray-700">
+                                                        {{ $guest->checkInDetail->rate->staying_hour->number }}
+                                                        {{ Str::plural('Hour', $guest->checkInDetail->rate->staying_hour->number) }}
+                                                    </h1>
+                                                </div>
+                                                <div class="grid border-t pt-2">
+                                                    <label class="text-sm text-gray-500">
+                                                        Time Remaining
+                                                    </label>
+                                                    <h1 class="text-gray-700">
+                                                        @php
+                                                            $expiredAt = Carbon\Carbon::parse($guest->checkInDetail->expected_check_out_at);
+                                                        @endphp
+                                                        <x-countdown :expires="$expiredAt">
+                                                            <div class="flex space-x-2 text-xs"
+                                                                x-bind:class="timer.hours == '00' ? 'text-red-600' :
+                                                                    'text-green-600'">
+                                                                <div class="flex space-x-1">
+                                                                    <span
+                                                                        x-text="timer.days">{{ $component->days() }}</span>
+                                                                    <span> days -</span>
+                                                                </div>
+                                                                <div class="flex space-x-1">
+                                                                    <span
+                                                                        x-text="timer.hours">{{ $component->hours() }}</span>
+                                                                    <span> hrs -</span>
+                                                                </div>
+                                                                <div class="flex space-x-1">
+                                                                    <span
+                                                                        x-text="timer.minutes">{{ $component->minutes() }}</span>
+                                                                    <span> mins-</span>
+                                                                </div>
+                                                                <div class="flex space-x-1">
+                                                                    <span
+                                                                        x-text="timer.seconds">{{ $component->seconds() }}</span>
+                                                                    <span>secs</span>
+                                                                </div>
+                                                            </div>
+                                                        </x-countdown>
+                                                    </h1>
+                                                </div>
+                                                <div class="grid border-t pt-2">
+                                                    <label class="text-sm text-gray-500">
+                                                        Check In Date
+                                                    </label>
+                                                    <h1 class="text-gray-700">
+                                                        {{ Carbon\Carbon::parse($guest->check_in_at)->format('M d, Y h:i A') }}
+                                                    </h1>
+                                                </div>
+                                                <div class="grid border-t pt-2">
+                                                    <label class="text-sm text-gray-500">
+                                                        Expected Check Out Date
+                                                    </label>
+                                                    <h1 class="text-lg text-red-700">
+                                                        {{ Carbon\Carbon::parse($guest->checkInDetail->expected_check_out_at)->format('M d, Y H:i A') }}
+                                                    </h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
-
                     </div>
+                </template>
+                <div x-bind:class="openGuestInfo ? 'translate-x-0  duration-300 ease-in-out' :
+                    'col-span-12  duration-300 ease-in-out'"
+                    class="col-span-9 rounded-lg bg-white shadow">
+                    {{-- <button type="button"
+                        x-on:click="openGuestInfo = !openGuestInfo"
+                        class="absolute top-2 -left-4 inline-flex items-center rounded-full border border-transparent bg-primary-600 p-1.5 text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            x-bind:class="openGuestInfo ? '' : 'transform rotate-180'"
+                            class="h-6 w-6 duration-150">
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75" />
+                        </svg>
+                    </button> --}}
+                    @switch($activeTab)
+                        @case(1)
+                            <div wire:key="cccdsjfjdfsdiofsiodfu">
+                                @livewire('v2.front-desk.transactions.transactions', [
+                                    'guest_id' => $guest->id,
+                                ])
+                            </div>
+                        @break
+
+                        @case(2)
+                            <div wire:key="jcjascni823jawjhfdalsndfasc">
+                                @livewire('v2.front-desk.transactions.transfer-room', [
+                                    'guestId' => $guest->id,
+                                    'newRoomTypeId' => $guest->checkInDetail->room->type_id,
+                                    'newRoomFloorId' => $guest->checkInDetail->room->floor_id,
+                                    'oldCheckInRateId' => $guest->checkInDetail->rate_id,
+                                    'oldCheckInStayingHourId' => $guest->checkInDetail->rate->staying_hour_id,
+                                    'guestCheckInTime' => $guest->check_in_at,
+                                    'oldRoomId' => $guest->checkInDetail->room_id,
+                                    'oldRoomNumber' => $guest->checkInDetail->room->number,
+                                    'oldRoomTypeName' => $guest->checkInDetail->room->type->name,
+                                    'guestCheckInDetailId' => $guest->checkInDetail->id,
+                                ])
+                            </div>
+                        @break
+
+                        @case(3)
+                            @livewire('v2.front-desk.transactions.extend', [
+                                'guestId' => $guest->id,
+                                'guestCheckInDetailId' => $guest->checkInDetail->id,
+                                'checkInDetailStaticHourStayed' => $guest->checkInDetail->static_hours_stayed,
+                                'checkInDetailRoomId' => $guest->checkInDetail->room_id,
+                                'checkInDetailRoomTypeId' => $guest->checkInDetail->room->type_id,
+                                'checkInDetailRoomRateAmount' => $guest->checkInDetail->rate->amount,
+                                'checkInDetailExpectedCheckOutAt' => $guest->checkInDetail->expected_check_out_at,
+                            ])
+                            {{-- @livewire('front-desk.transactions.extend-hours', [
+                                'check_in_detail_id' => $guest->checkInDetail->id,
+                                'guest_id' => $guest->id,
+                            ]) --}}
+                        @break
+
+                        @case(4)
+                            <div wire:key="e23q9knklncascowadihjowajioioj">
+                                @livewire('v2.front-desk.transactions.damage-charges', [
+                                    'guestId' => $guest->id,
+                                    'checkInRoomId' => $guest->checkInDetail->room_id,
+                                ])
+                            </div>
+                        @break
+
+                        @case(5)
+                            <div wire:key="9099adsjijdjasjdsajkjklklj">
+                                @livewire('v2.front-desk.transactions.amenities', [
+                                    'guestId' => $guest->id,
+                                    'checkInRoomId' => $guest->checkInDetail->room_id,
+                                ])
+                            </div>
+                        @break
+
+                        @case(6)
+                            <div wire:key="hwqjqnnenwqlkewqlkej">
+                                @livewire('v2.front-desk.transactions.food-and-beverage', [
+                                    'guestId' => $guest->id,
+                                    'guestCheckInRoomId' => $guest->checkInDetail->room_id,
+                                ])
+                            </div>
+                        @break
+
+                        @case(7)
+                            <div wire:key="dasmqeqiwejqndnajsdas">
+                                @livewire('v2.front-desk.transactions.deposits', [
+                                    'guestId' => $guest->id,
+                                    'guestCheckInRoomId' => $guest->checkInDetail->room_id,
+                                ])
+                            </div>
+                        @break
+                    @endswitch
                 </div>
             </div>
         @endif
     </div>
+    @livewire('v2.pay-with-deposits')
 </div>

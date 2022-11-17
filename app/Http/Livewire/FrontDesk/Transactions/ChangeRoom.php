@@ -205,7 +205,7 @@ class ChangeRoom extends Component
 
         $old_room->roomTransactionLogs()->latest()->first()->update([
             'check_out_at' => Carbon::now(),
-            'guest_transfered'=>true,
+            'guest_transferred'=>true,
         ]);
 
         $new_room->update([
