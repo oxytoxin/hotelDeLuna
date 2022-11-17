@@ -21,7 +21,7 @@
             x-on:{{ $event }}.window="close()" @endforeach>
     <div x-cloak
         x-show="show"
-        class="relative z-50"
+        class="relative inset-0 z-50"
         aria-labelledby="modal-title"
         role="dialog"
         aria-modal="true">
@@ -36,7 +36,7 @@
             x-transition:leave-end="opacity-0"
             class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
         <div class="fixed inset-0 z-50 overflow-y-auto">
-            <div class="flex min-h-full items-start justify-center p-4 text-center sm:p-0">
+            <div class="inset-0 flex min-h-full items-start justify-center p-4 text-center sm:p-0">
                 <div x-cloak
                     x-show="show"
                     x-transition:enter="ease-out duration-300"

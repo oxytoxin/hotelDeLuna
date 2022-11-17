@@ -16,7 +16,7 @@ class Index extends Component
 {
     use WithPagination, WithCaching;
 
-    public $guest=null;
+    public $viewGuest=null;
 
     public $search;
 
@@ -83,8 +83,8 @@ class Index extends Component
     public function viewGuest($guest_id)
     {
         $this->useCacheRows();
-        $this->guest = Guest::where('id',$guest_id)->withSum('transactions','payable_amount')->with(['checkInDetail.room','checkInDetail.rate','transactions'])->first();
-        $this->guestTotalAmountToPay = $this->guest->transactions_sum_payable_amount;
+        $this->viewGuest = Guest::where('id',$guest_id)->withSum('transactions','payable_amount')->with(['checkInDetail.room','checkInDetail.rate','transactions'])->first();
+        $this->guestTotalAmountToPay = $this->viewGuest->transactions_sum_payable_amount;
         $this->dispatchBrowserEvent('show-modal');
     }
 
@@ -103,8 +103,8 @@ class Index extends Component
         ]);
         DB::beginTransaction();
 
-        $check_in_transaction = $this->guest->transactions()->where('transaction_type_id', 1)->first();
-        $default_deposite = $this->guest->transactions()->where('transaction_type_id', 2)->first();
+        $check_in_transaction = $this->viewGuest->transactions()->where('transaction_type_id', 1)->first();
+        $default_deposit = $this->viewGuest->transactions()->where('transaction_type_id', 2)->first();
 
         $check_in_transaction->update([
             'paid_amount' => $this->guestGivenAmount - 200,  // 200 pesos will be added to remote and key deposite
@@ -112,7 +112,7 @@ class Index extends Component
             'paid_at' => Carbon::now()
         ]);
 
-        $check_in_detail = $this->guest->checkInDetail;
+        $check_in_detail = $this->viewGuest->checkInDetail;
 
         $check_in_detail->update([
             'check_in_at' => Carbon::now(),
@@ -123,14 +123,14 @@ class Index extends Component
             'room_status_id' => 2,
         ]);
 
-        $default_deposite->update([
+        $default_deposit->update([
             'paid_amount' => 200,
             'change_amount' => 0,
             'paid_at' => Carbon::now()
         ]);
 
         if ($this->saveToDeposit) {
-            $this->guest->transactions()->create([
+            $this->viewGuest->transactions()->create([
                 'room_id' => $check_in_detail->room_id,
                 'branch_id' => auth()->user()->branch_id,
                 'transaction_type_id' => 2,
@@ -142,13 +142,13 @@ class Index extends Component
             ]);
 
             Deposit::create([
-                'guest_id' => $this->guest->id,
+                'guest_id' => $this->viewGuest->id,
                 'amount' => $this->guestExcessAmount,
                 'remarks' => 'Excess amount from check in',
             ]);
         }
 
-        $this->guest->update([
+        $this->viewGuest->update([
             'is_checked_in' => true,
             'check_in_at' => Carbon::now(),
         ]);
@@ -164,7 +164,7 @@ class Index extends Component
 
         DB::commit();
 
-        $this->guest=null;
+        $this->viewGuest=null;
         $this->loadRecentlyCheckedInGuests();
 
         $this->dispatchBrowserEvent('close-modal');

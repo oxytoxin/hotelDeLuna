@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->foreignId('check_in_detail_id')->constrained();
             $table->dateTime('check_in_at');
             $table->dateTime('check_out_at')->nullable();
-            $table->boolean('guest_transfered')->default(false);
+            $table->boolean('guest_transferred')->default(false);
             $table->string('time_interval');
             $table->timestamps();
         });

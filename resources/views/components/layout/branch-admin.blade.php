@@ -40,10 +40,10 @@
                             <a href="#"
                                 class="group flex items-center rounded-md bg-gray-100 px-2 py-1.5 text-base font-medium text-gray-900">
                                 <!--
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              Heroicon name: outline/home
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              Current: "text-gray-500", Default: "text-gray-400 group-hover:text-gray-500"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  Heroicon name: outline/home
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  Current: "text-gray-500", Default: "text-gray-400 group-hover:text-gray-500"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                -->
                                 <svg class="mr-4 h-6 w-6 flex-shrink-0 text-gray-500"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -299,20 +299,39 @@
                                 </svg>
                                 Discounts
                             </a>
-                            <a href="{{ route('re-branch-admin.extensions') }}"
-                                class="group flex items-center rounded-md bg-yellow-600 px-2 py-1.5 text-sm font-medium text-white hover:bg-yellow-500">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="1.5"
-                                    stroke="currentColor"
-                                    class="mr-3 h-6 w-6 flex-shrink-0 fill-white">
-                                    <path stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-                                </svg>
-                                Extension Rates
-                            </a>
+                            <div class="relative"
+                                x-data="{ guideShow: false }"
+                                x-on:ext-guide-show.window="guideShow = true"
+                                x-on:ext-guide-hide.window="guideShow = false">
+                                <a href="{{ route('re-branch-admin.extensions') }}"
+                                    class="group flex items-center rounded-md bg-yellow-600 px-2 py-1.5 text-sm font-medium text-white hover:bg-yellow-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="1.5"
+                                        stroke="currentColor"
+                                        class="mr-3 h-6 w-6 flex-shrink-0 fill-white">
+                                        <path stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+                                    </svg>
+                                    Extension Rates
+                                </a>
+                                <div x-cloak
+                                    x-show="guideShow"
+                                    class="absolute -top-5">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="3"
+                                        stroke="currentColor"
+                                        class="h-10 w-10 animate-bounce text-red-600">
+                                        <path stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" />
+                                    </svg>
+                                </div>
+                            </div>
                             <a href="{{ route('re-branch-admin.charges-for-damages') }}"
                                 class="group flex items-center rounded-md bg-yellow-600 px-2 py-1.5 text-sm font-medium text-white hover:bg-yellow-500">
                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -424,7 +443,7 @@
                                     Housekeeping Actions
                                 </h1>
                             </div>
-                            <a href="#"
+                            <a href="{{ route('re-branch-admin.house-keeping') }}"
                                 class="group flex items-center rounded-md bg-red-700 px-2 py-1.5 text-sm font-medium text-white hover:bg-red-600">
                                 <svg class="mr-3 h-6 w-6 flex-shrink-0"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -491,7 +510,7 @@
                             {{ $title }}
                         </h1>
                     </div>
-                    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 md:px-8">
+                    <div class="mx-auto max-w-[83rem] px-4 py-6 sm:px-6 md:px-8">
                         {{ $slot }}
                     </div>
                 </div>

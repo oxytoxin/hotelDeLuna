@@ -173,43 +173,43 @@
             :showOn="['show-modal']"
             :closeOn="['close-modal']">
             <div class="overflow-hidden">
-                @if ($guest)
+                @if ($viewGuest)
                     <div class="grid space-y-4">
                         <div class="rounded-lg border p-2 sm:p-0">
                             <dl class="sm:divide-y sm:divide-gray-200">
                                 <div class="py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-3 sm:px-6">
                                     <dt class="text-sm font-medium text-gray-500">QR Code</dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                        {{ $guest->qr_code }}
+                                        {{ $viewGuest->qr_code }}
                                     </dd>
                                 </div>
 
                                 <div class="py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-3 sm:px-6">
                                     <dt class="text-sm font-medium text-gray-500">Name</dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                        {{ $guest->name }}
+                                        {{ $viewGuest->name }}
                                     </dd>
                                 </div>
 
                                 <div class="py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-3 sm:px-6">
                                     <dt class="text-sm font-medium text-gray-500">Contact Number</dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                        {{ $guest->contact_number }}
+                                        {{ $viewGuest->contact_number }}
                                     </dd>
                                 </div>
 
                                 <div class="py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-3 sm:px-6">
                                     <dt class="text-sm font-medium text-gray-500">Room Number</dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                        Room # {{ $guest->checkInDetail->room->number }}
+                                        Room # {{ $viewGuest->checkInDetail->room->number }}
                                     </dd>
                                 </div>
 
                                 <div class="py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-3 sm:px-6">
                                     <dt class="text-sm font-medium text-gray-500">Hours</dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                        {{ $guest->checkInDetail->rate->staying_hour->number }}
-                                        {{ Str::plural('hour', $guest->checkInDetail->rate->staying_hour->number) }}
+                                        {{ $viewGuest->checkInDetail->rate->staying_hour->number }}
+                                        {{ Str::plural('hour', $viewGuest->checkInDetail->rate->staying_hour->number) }}
                                     </dd>
                                 </div>
 
@@ -218,7 +218,7 @@
                         <div>
                             <dl
                                 class="divide-y divide-gray-200 rounded-lg bg-gray-100 p-4 text-sm lg:col-span-5 lg:mt-0">
-                                @foreach ($guest->transactions as $transaction)
+                                @foreach ($viewGuest->transactions as $transaction)
                                     <div class="flex items-center justify-between py-4">
                                         <dt class="text-gray-600">
                                             {{ $transaction->remarks }}

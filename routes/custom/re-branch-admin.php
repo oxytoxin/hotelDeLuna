@@ -75,4 +75,10 @@ Route::prefix('branch-admin')->middleware([
     Route::get('/priority-rooms', function () {
         return view('v2.branch-admin.priority-rooms');
     })->name('re-branch-admin.priority-rooms');
+
+    // ------
+
+    Route::get('/house-keeping', function () {
+        return view('v2.branch-admin.housekeeping');
+    })->name('re-branch-admin.house-keeping');
 });

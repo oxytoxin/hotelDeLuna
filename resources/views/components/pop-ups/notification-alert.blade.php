@@ -1,9 +1,10 @@
-<div x-data="{ show: false, type: null, title: null, message: null }"
+<div x-data="{ show: false, type: null, title: null, message: null, buttonText: null }"
     x-on:notify-alert.window="
         show = true;
         type = $event.detail.type ?? 'info';
         title = $event.detail.title?? 'Info';
         message = $event.detail.message;
+        buttonText = $event.detail.buttonText ?? 'OK';
     ">
     <div x-cloak
         x-show="show"
@@ -111,8 +112,9 @@
                                 'bg-blue-500 hover:bg-blue-700 focus:ring-blue-500': type === 'info',
                                 'bg-yellow-500 hover:bg-yellow-700 focus:ring-yellow-500': type === 'warning',
                             }"
+                            x-text="buttonText"
                             class="inline-flex w-full justify-center rounded-md border border-transparent px-4 py-2 text-base font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm">
-                            Ok
+
                         </button>
                     </div>
                 </div>

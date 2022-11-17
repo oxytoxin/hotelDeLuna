@@ -1,6 +1,10 @@
 <x-layout.branch-admin title="Dashboard">
-    <div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat ipsa aliquid fugiat est voluptates minus unde
-        earum minima nobis. Quisquam rerum repellat odio earum molestias placeat dolorum, iusto velit libero?
+    <div class="flex h-screen space-x-2">
+        <div class="h-full w-full">
+            @livewire('branch-admin.dashboard.statistic-overview')
+        </div>
+        <div class="h-full w-[45%] px-2">
+            @livewire('branch-admin.terminated-guest-list')
+        </div>
     </div>
 </x-layout.branch-admin>

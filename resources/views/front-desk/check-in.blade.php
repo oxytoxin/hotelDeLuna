@@ -2,7 +2,7 @@
 @section('content')
     <x-layout.frontdesk>
         <x-page-layout title="Check In">
-            @livewire('front-desk.check-in')
+            @livewire('v2.front-desk.check-in.index')
         </x-page-layout>
     </x-layout.frontdesk>
 @endsection

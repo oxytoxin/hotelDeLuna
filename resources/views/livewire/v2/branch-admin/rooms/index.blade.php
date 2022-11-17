@@ -19,14 +19,64 @@
                 </x-slot>
             </x-my.button-primary>
         </div>
-        <div class="flex">
-            <x-my.input.search wire:model.debounce="search" />
+        <div class="flex space-x-3">
+            <div class="flex items-center space-x-2">
+                <span class="mt-2 text-sm text-gray-600">
+                    Status :
+                </span>
+                <x-my.input.select placeholder="Select"
+                    wire:model="filters.room_status_id">
+                    @foreach ($roomStatuses as $roomStatus)
+                        <option value="{{ $roomStatus->id }}">
+                            {{ $roomStatus->name }}
+                        </option>
+                    @endforeach
+                </x-my.input.select>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="mt-2 text-sm text-gray-600">
+                    Floors :
+                </span>
+                <x-my.input.select placeholder="Select"
+                    wire:model="filters.floor_id">
+                    @foreach ($floors as $floor)
+                        <option value="{{ $floor->id }}">
+                            {{ ordinal($floor->number) }} FLOOR
+                        </option>
+                    @endforeach
+                </x-my.input.select>
+            </div>
+            <div class="mt-1"
+                x-animate>
+                @if ($this->hasFilters())
+                    <x-my.button-secondary label="Clear Filter"
+                        py="py-1.5"
+                        wire:click="clearFilter">
+                        <x-slot name="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="h-6 w-6">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </x-slot>
+                    </x-my.button-secondary>
+                @endif
+            </div>
+            <div class="border-l pl-2">
+                <x-my.input.search wire:model.debounce="search" />
+            </div>
         </div>
     </div>
     {{-- table --}}
     <x-my.table>
         <x-slot name="header">
             <x-my.table.head name="Number" />
+            <x-my.table.head name="Type" />
             <x-my.table.head name="Status" />
             <x-my.table.head name="Floor" />
             <x-my.table.head name="" />
@@ -35,6 +85,9 @@
             <tr>
                 <x-my.table.cell>
                     ROOM #{{ $room->number }}
+                </x-my.table.cell>
+                <x-my.table.cell>
+                    {{ $room->type->name }}
                 </x-my.table.cell>
                 <x-my.table.cell>
                     <x-status-badge status="{{ $room->room_status_id }}">

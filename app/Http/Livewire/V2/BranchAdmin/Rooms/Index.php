@@ -22,6 +22,12 @@ class Index extends Component
 
     public $form;
 
+    public $filters = [
+        'floor_id' => '',
+        'type_id' => '',
+        'room_status_id' => '',
+    ];
+
     public function rules()
     {
         return [
@@ -37,6 +43,16 @@ class Index extends Component
         ];
     }
 
+    public function clearFilter()
+    {
+        $this->reset('filters');
+    }
+
+    public function hasFilters()
+    {
+        return $this->filters['floor_id'] || $this->filters['type_id'] || $this->filters['room_status_id'];
+    }
+
     public function makeForm()
     {
         $this->form = Room::make(['priority' => 0]);
@@ -44,7 +60,9 @@ class Index extends Component
 
     public function getRoomsQueryProperty()
     {
-        return Room::query();
+        return Room::whereHas('floor', function ($query) {
+            $query->where('branch_id', auth()->user()->branch_id);
+        });
     }
 
     public function getRoomsProperty()
@@ -52,8 +70,17 @@ class Index extends Component
         if ($this->search != '') {
             $this->roomsQuery->where('number', 'like', '%' . $this->search . '%');
         }
+
+        if ($this->filters['room_status_id'] != '') {
+            $this->roomsQuery->where('room_status_id', $this->filters['room_status_id']);
+        }
+    
+        if ($this->filters['floor_id'] != '') {
+            $this->roomsQuery->where('floor_id', $this->filters['floor_id']);
+        }
+
         return $this->cache(function () {
-            return $this->roomsQuery->with(['room_status', 'floor'])->paginate(10);
+            return $this->roomsQuery->with(['room_status', 'floor','type'])->paginate(10);
         }, 'rooms');
     }
 
