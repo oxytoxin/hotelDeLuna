@@ -22,6 +22,8 @@ class Index extends Component
 
     public $overrideAmount ='',$transaction;
 
+    public $totalAmountToPay,$balance;
+
 
 
     protected $listeners = ['claimDeposit','payTransaction'];
@@ -58,6 +60,12 @@ class Index extends Component
                                             $query->where('number', $this->search);
                                       })->first();
                     break;
+            }
+
+            if ($this->guest) {
+                $this->totalAmountToPay = $this->guest->transactions()->sum('payable_amount');
+                $this->balance = $this->guest->transactions()->where('paid_at', null)->sum('payable_amount');
+
             }
         }
     }

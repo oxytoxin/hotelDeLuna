@@ -245,13 +245,13 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="bg-gray-100 p-3">
+                        <div class="bg-gray-100 p-3">
                             <dl class="mt-10 space-y-6 text-sm font-medium text-gray-500">
                                 <div wire:key="totalAmount"
                                     class="flex justify-between">
                                     <dt class="flex text-gray-900">Total Amount</dt>
                                     <dd class="text-xl font-bold text-gray-900">
-                                        ₱ {{ $total_amount_to_pay }}
+                                        ₱ {{ $totalAmountToPay }}
                                     </dd>
                                 </div>
                                 <div wire:key="balance"
@@ -264,7 +264,7 @@
                                     </dd>
                                 </div>
                             </dl>
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
 
