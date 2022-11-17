@@ -65,7 +65,7 @@ class Checkin extends Component
                 ->whereHas('floor', function ($query) {
                     $query->where('branch_id', auth()->user()->branch_id);
                 })
-                ->orderBy('number', 'asc')
+                ->orderByRaw('LENGTH(number) asc')
                 ->with(['floor'])
                 ->take(10)
                 ->get(),
@@ -287,7 +287,6 @@ class Checkin extends Component
                     'static_hours_stayed' => $rate->staying_hour->number,
                 ]);
             }
-
             $room->update([
                 'room_status_id' => 6,
                 'time_to_terminate_in_queue' => Carbon::now()->addMinutes(10),
@@ -301,7 +300,6 @@ class Checkin extends Component
                 now()->addHours($time_to_terminate)
             );
         } else {
-            // dd('no number');
             $this->validate([
                 'customer_name' => 'required|min:3',
             ]);

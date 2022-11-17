@@ -52,7 +52,5 @@ class DatabaseSeeder extends Seeder
             $this->call(FloorAndRoomSeeder::class);
             $this->call(DummyCheckInSeeder::class);
         }
-
-     
     }
 }
