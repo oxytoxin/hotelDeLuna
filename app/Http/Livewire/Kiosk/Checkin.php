@@ -410,48 +410,18 @@ class Checkin extends Component
             $this->validate([
                 'get_room.rate_id' => 'required',
             ]);
-            $this->dialog()->confirm([
-                'title' => 'Next',
-                'description' =>
-                    'Are you sure you want to proceed to final transaction?',
-                'icon' => 'question',
-                'accept' => [
-                    'label' => 'Yes',
-                    'method' => 'proceedFinal',
-                ],
-                'reject' => [
-                    'label' => 'No, cancel',
-                ],
-            ]);
+            $this->manageRoomPanel = false;
+            $this->step = 3;
         } else {
             $this->validate([
                 'days_stay' => 'required|numeric|min:1|max:31',
             ]);
             $this->get_room['rate_id'] = $id;
-            // $this->manageRoomPanel = false;
-            // $this->step = 3;
-            $this->dialog()->confirm([
-                'title' => 'Next',
-                'description' =>
-                    'Are you sure you want to proceed to final transaction?',
-                'icon' => 'question',
-                'accept' => [
-                    'label' => 'Yes',
-                    'method' => 'proceedFinal',
-                ],
-                'reject' => [
-                    'label' => 'No, cancel',
-                ],
-            ]);
+            $this->manageRoomPanel = false;
+            $this->step = 3;
         }
 
         // dd($this->get_room);
-    }
-
-    public function proceedFinal()
-    {
-        $this->manageRoomPanel = false;
-        $this->step = 3;
     }
 
     public function cancelTransaction()
