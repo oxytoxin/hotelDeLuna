@@ -475,5 +475,7 @@ class Checkin extends Component
         ]);
         $this->get_room['rate_id'] = null;
         $this->step = $this->step - 1;
+        $this->customer_name = '';
+        $this->customer_number = '';
     }
 }
