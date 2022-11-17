@@ -150,9 +150,11 @@
                         required
                         wire:model.defer="form.room_status_id">
                         @foreach ($roomStatuses as $roomStatus)
-                            <option value="{{ $roomStatus->id }}">
-                                {{ $roomStatus->name }}
-                            </option>
+                            @if ($roomStatus->id != 6)
+                                <option value="{{ $roomStatus->id }}">
+                                    {{ $roomStatus->name }}
+                                </option>
+                            @endif
                         @endforeach
                     </x-my.input.select>
                     <x-my.input.textarea label="Description"
