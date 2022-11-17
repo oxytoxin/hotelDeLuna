@@ -792,7 +792,7 @@
 
         @case(4)
           <div class="mx-40  mt-10">
-            <h1 class="text-4xl font-black text-white">THANK YOU FOR STAYING IN OUR HOTEL |</h1>
+            <h1 class="text-4xl font-black text-white">THANK YOU FOR STAYING WITH US |</h1>
             <div class=" bg-white rounded-3xl bg-opacity-50 relative grid place-content-center mt-5 h-[33rem]">
               <div class="flex flex-col items-center justify-center">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ $qr_code }}"
