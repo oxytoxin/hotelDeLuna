@@ -40,7 +40,7 @@ class Guest extends Model
         return $this->hasMany(Damage::class);
     }
 
-    public function deposites()
+    public function deposits()
     {
         return $this->hasMany(Deposit::class);
     }

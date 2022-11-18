@@ -8,6 +8,7 @@ use App\Models\Deposit;
 use Livewire\Component;
 use App\Models\Transaction;
 use App\Models\TransactionType;
+use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
@@ -26,7 +27,7 @@ class Index extends Component
 
 
 
-    protected $listeners = ['claimDeposit','payTransaction'];
+    protected $listeners = ['claimDeposit','payTransaction','checkOut'];
 
     public function payTransaction(Transaction $transaction)
     {
@@ -65,6 +66,15 @@ class Index extends Component
             if ($this->guest) {
                 $this->totalAmountToPay = $this->guest->transactions()->sum('payable_amount');
                 $this->balance = $this->guest->transactions()->where('paid_at', null)->sum('payable_amount');
+            }else{
+                $this->dispatchBrowserEvent('notify-alert', [
+                    'type' => 'error',
+                    'title' => 'Guest Not Found',
+                    'message' => 'Guest not found'
+                ]);
+
+                $this->guest = null;
+                $this->search = '';
 
             }
         }
@@ -137,6 +147,66 @@ class Index extends Component
             'title' => 'Success',
             'message' => 'Deposit claimed successfully',
         ]);
+    }
+
+    public function validateCheckOut()
+    {
+        $has_unpaid_transaction = $this->guest->transactions()->where('paid_at', null)->exists();
+        if ($has_unpaid_transaction) {
+            $this->dispatchBrowserEvent('notify-alert', [
+                'type' => 'error',
+                'title' => 'Failed',
+                'message' => 'Guest has unpaid transaction',
+            ]);
+            return;
+        }
+
+        $has_unclaimed_deposit = $this->guest->deposits()->where('claimed_at', null)->exists();
+
+        if ($has_unclaimed_deposit) {
+            $this->dispatchBrowserEvent('notify-alert', [
+                'type' => 'error',
+                'title' => 'Failed',
+                'message' => 'Guest has unclaimed deposit',
+            ]);
+            return;
+        }
+
+        $this->dispatchBrowserEvent('show-reminder');
+    }
+
+    public function checkOut()
+    {
+        DB::beginTransaction();
+        $this->guest->update([
+            'totaly_checked_out' => true,
+            'check_out_at' => now(),
+        ]);
+        $check_in_detail = $this->guest->checkInDetail;
+        $check_in_detail->update([
+            'check_out_at' => now(),
+        ]);
+        $check_in_detail->room->update([
+            'room_status_id' => 7,
+            'time_to_clean' => Carbon::now()->addHours(3),
+            'last_check_out_at' => Carbon::now(),
+        ]);
+
+        $check_in_detail->room->roomTransactionLogs()->latest()->first()->update([
+            'check_out_at' => now(),
+        ]);
+        
+        DB::commit();
+        $this->dispatchBrowserEvent('notify-alert', [
+            'type' => 'success',
+            'title' => 'Success',
+            'message' => 'Guest checked out successfully',
+        ]);
+        $this->guest = null;
+        $this->search = '';
+        $this->searchBy = null;
+        $this->dispatchBrowserEvent('close-reminder');
+
     }
 
     public function render()
