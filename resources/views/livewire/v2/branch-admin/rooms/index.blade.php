@@ -1,4 +1,13 @@
-<div x-data
+<div x-data="{
+    reminder: false,
+    showReminder() {
+        $this.dispatch('notify-alert', [
+            'type' => 'warning',
+            'message' => 'This is a reminder'
+            'message' => 'This is a reminder'
+        ]);
+    }
+}"
     class="grid space-y-4">
     {{-- bulk actions --}}
     <div class="sm:flex sm:items-center sm:justify-between">
@@ -73,6 +82,13 @@
         </div>
     </div>
     {{-- table --}}
+    <div class="mb-2 flex justify-end space-x-2">
+        @foreach ($roomStatuses as $roomStatus)
+            <x-status-badge status="{{ $roomStatus->id }}">
+                {{ $roomStatus->name }}
+            </x-status-badge>
+        @endforeach
+    </div>
     <x-my.table>
         <x-slot name="header">
             <x-my.table.head name="Number" />
