@@ -31,7 +31,7 @@ class Index extends Component
     public function rules()
     {
         return [
-            'form.number' => 'required',
+            'form.number' => 'required|unique:rooms,number,' . $this->form['id'],
             'form.description' => 'nullable',
             'form.time_to_clean' => 'nullable',
             'form.type_id' => 'required',
@@ -87,6 +87,7 @@ class Index extends Component
     public function create()
     {
         $this->useCacheRows();
+        $this->makeForm();
         $this->editMode = false;
         $this->dispatchBrowserEvent('show-modal');
     }
