@@ -20,7 +20,7 @@ class Amenities extends Component
     public $form;
     public $requestableItems = [];
 
-    protected $listeners = ['confirmSaveRecord','payTransaction'];
+    protected $listeners = ['confirmSaveRecord','payTransaction','depositDeducted'=>'$refresh'];
 
     public function payWithDeposit($transaction_id,$payable_amount)
     {

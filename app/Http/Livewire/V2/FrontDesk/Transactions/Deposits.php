@@ -71,6 +71,9 @@ class Deposits extends Component
 
         DB::commit();
 
+        $this->depositAmount = null;
+        $this->depositRemarks = null;
+
         $this->dispatchBrowserEvent('notify-alert', [
             'type' => 'success',
             'title' => 'Success',
@@ -80,6 +83,8 @@ class Deposits extends Component
         $this->dispatchBrowserEvent('close-form');
 
         $this->emit('transactionsUpdated');
+
+
 
     }
 

@@ -26,6 +26,7 @@ class Amenities extends Component
 
     public $remarks;
 
+
     public function rules()
     {
         return [

@@ -46,14 +46,14 @@
                 <button id="searchButton"
                     type="button"
                     wire:click.prevent="searchGuest"
-                    class="mt-1 inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
+                    class="inline-flex items-center justify-center px-4 py-2 mt-1 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
                     Search
                 </button>
             @else
                 <button id="clearSearchButton"
                     type="button"
                     wire:click="clearSearch"
-                    class="mt-1 inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:w-auto">
+                    class="inline-flex items-center justify-center px-4 py-2 mt-1 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:w-auto">
                     Clear Search
                 </button>
             @endif
@@ -64,11 +64,11 @@
             <div class="grid gap-3">
                 <div wire:key="information-and-transactions">
                     @if ($guest->totaly_checked_out)
-                        <div class="mb-3 rounded-md border border-red-500 bg-red-50 p-4">
+                        <div class="p-4 mb-3 border border-red-500 rounded-md bg-red-50">
                             <div class="flex">
                                 <div class="flex-shrink-0">
                                     <!-- Heroicon name: mini/information-circle -->
-                                    <svg class="h-5 w-5 text-red-400"
+                                    <svg class="w-5 h-5 text-red-400"
                                         xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20"
                                         fill="currentColor"
@@ -78,7 +78,7 @@
                                             clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <div class="ml-3 flex-1 md:flex md:justify-between">
+                                <div class="flex-1 ml-3 md:flex md:justify-between">
                                     <p class="text-sm text-red-700">
                                         This guest has already checked out.
                                     </p>
@@ -88,11 +88,11 @@
                     @endif
                     <div id="guest-info">
                         <div wire:key="{{ $guest->id }}-guest-information"
-                            class="overflow-hidden border border-gray-300 bg-white shadow sm:rounded-lg">
+                            class="overflow-hidden bg-white border border-gray-300 shadow sm:rounded-lg">
                             <div class="px-4 py-3 sm:px-6">
                                 <h3 class="text-lg font-medium leading-6 text-gray-900">Guest Information</h3>
                             </div>
-                            <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                            <div class="px-4 py-5 border-t border-gray-200 sm:px-6">
                                 <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                                     <div class="sm:col-span-1">
                                         <dt class="text-sm font-medium text-gray-500">Qr Code</dt>
@@ -182,7 +182,7 @@
                     </x-card>
                 </div>
                 <div wire:key="transactions">
-                    <div class="rounded-md border bg-white shadow">
+                    <div class="bg-white border rounded-md shadow">
                         <div class="p-2">
                             <h1 class="text-xl text-gray-700">
                                 Transactions
@@ -199,44 +199,44 @@
                                                         class="border-t border-gray-200">
                                                         <th colspan="5"
                                                             scope="colgroup"
-                                                            class="bg-primary-600 px-4 py-2 text-left text-sm font-semibold text-white sm:px-6">
+                                                            class="px-4 py-2 text-sm font-semibold text-left text-white bg-primary-600 sm:px-6">
                                                             {{ $transactionTypes->find($transaction_type_id)->name }}
                                                         </th>
                                                     </tr>
                                                     <tr>
                                                         <th scope="col"
-                                                            class="py-3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-600 sm:pl-6">
+                                                            class="py-3 pl-4 pr-3 text-xs font-medium tracking-wide text-left text-gray-600 uppercase sm:pl-6">
                                                             Transaction Type</th>
                                                         <th scope="col"
-                                                            class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-600">
+                                                            class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-600 uppercase">
                                                             Details</th>
                                                         <th scope="col"
-                                                            class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-600">
+                                                            class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-600 uppercase">
                                                             Amount</th>
                                                         <th scope="col"
-                                                            class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-600">
+                                                            class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-600 uppercase">
                                                             Paid At</th>
                                                         <th scope="col"
-                                                            class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-600">
+                                                            class="px-3 py-3 text-xs font-medium tracking-wide text-left text-gray-600 uppercase">
                                                             Date</th>
                                                     </tr>
                                                     @forelse ($transactions as $key=>$transaction)
                                                         <tr wire:key="rows{{ $transaction_type_id . $key }}"
                                                             class="border-t border-gray-300">
                                                             <td
-                                                                class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                                                class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
                                                                 {{ $transaction->transaction_type->name }}
                                                             </td>
                                                             <td
-                                                                class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                                                class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
                                                                 {{ $transaction->remarks }}
                                                             </td>
                                                             <td
-                                                                class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                                class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
                                                                 ₱ {{ $transaction->payable_amount }}
                                                             </td>
                                                             <td
-                                                                class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                                class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
                                                                 <div class="flex items-center space-x-2">
                                                                     @if ($transaction->paid_at)
                                                                         {{ $transaction->paid_at }}
@@ -261,7 +261,7 @@
                                                                 </div>
                                                             </td>
                                                             <td
-                                                                class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                                class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
                                                                 {{ $transaction->created_at }}
                                                             </td>
                                                         </tr>
@@ -269,7 +269,7 @@
                                                         <tr wire:key="empty{{ $transaction_type_id }}"
                                                             class="border-t border-gray-300">
                                                             <td colspan="5"
-                                                                class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                                                class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
                                                                 No transactions yet.
                                                             </td>
                                                         </tr>
@@ -281,13 +281,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-gray-100 p-3">
+                        <div class="p-3 bg-gray-100">
                             <dl class="mt-10 space-y-6 text-sm font-medium text-gray-500">
                                 <div wire:key="totalAmount"
                                     class="flex justify-between">
-                                    <dt class="flex text-gray-900">Total Amount</dt>
+                                    <dt class="flex text-gray-900">Total Payable Amount</dt>
                                     <dd class="text-xl font-bold text-gray-900">
-                                        ₱ {{ $totalAmountToPay }}
+                                        ₱ {{ $totalAmountToPay + $defaultDeposit }}
                                     </dd>
                                 </div>
                                 <div wire:key="balance"
@@ -352,10 +352,10 @@
             x-transition:leave="ease-in duration-200"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+            class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"></div>
 
         <div class="fixed inset-0 z-50 overflow-y-auto">
-            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+            <div class="flex items-end justify-center min-h-full p-4 text-center sm:items-center sm:p-0">
 
                 <div x-cloak
                     x-show="reminder"
@@ -365,7 +365,7 @@
                     x-transition:leave="ease-in duration-200"
                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                    class="relative px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                     <div>
 
                         <div class="mt-2 text-center sm:mt-5">
@@ -382,7 +382,7 @@
                     <div class="mt-5 sm:mt-6">
                         <button type="button"
                             x-on:click="next()"
-                            class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-red-500 sm:text-sm"
+                            class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-red-500 sm:text-sm"
                             x-text="reminderCount == 2 ? 'Check Out' : 'Next'">
                         </button>
                     </div>

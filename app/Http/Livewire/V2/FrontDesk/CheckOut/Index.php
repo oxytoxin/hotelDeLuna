@@ -23,9 +23,7 @@ class Index extends Component
 
     public $overrideAmount ='',$transaction;
 
-    public $totalAmountToPay,$balance;
-
-
+    public $totalAmountToPay,$balance,$defaultDeposit = 200;
 
     protected $listeners = ['claimDeposit','payTransaction','checkOut'];
 
@@ -64,18 +62,17 @@ class Index extends Component
             }
 
             if ($this->guest) {
-                $this->totalAmountToPay = $this->guest->transactions()->sum('payable_amount');
+                $this->totalAmountToPay = $this->guest->transactions()->whereNot('transaction_type_id', 2)->sum('payable_amount');
                 $this->balance = $this->guest->transactions()->where('paid_at', null)->sum('payable_amount');
+
             }else{
                 $this->dispatchBrowserEvent('notify-alert', [
                     'type' => 'error',
                     'title' => 'Guest Not Found',
                     'message' => 'Guest not found'
                 ]);
-
                 $this->guest = null;
                 $this->search = '';
-
             }
         }
     }
@@ -112,10 +109,6 @@ class Index extends Component
             ->where('guest_id', $this->guest->id)->get()->groupBy('transaction_type_id');
     }
 
-    public function mount()
-    {
-        $this->transactionTypes = TransactionType::all();
-    }
 
     public function claimDeposit(Deposit $deposit)
     {
@@ -208,12 +201,17 @@ class Index extends Component
         $this->dispatchBrowserEvent('close-reminder');
 
     }
-
     public function render()
     {
         return view('livewire.v2.front-desk.check-out.index',[
             'transactionsGroup' => $this->guest ? $this->transactions : [],
             'deposits'=> $this->guest ? Deposit::where('guest_id',$this->guest->id)->get() : [],
         ]);
+    }
+
+    public function mount()
+    {
+        $this->transactionTypes = TransactionType::all();
+       
     }
 }

@@ -51,10 +51,11 @@ class PayWithDeposits extends Component
         $this->dispatchBrowserEvent('close-deposits-modal');
 
         $this->emit('transactionUpdated');
-
+        $this->emit('depositDeducted');
         $this->guestId = null;
         $this->transactionId = null;
         $this->payableAmount = null;
+        
     }
 
     public function render()
