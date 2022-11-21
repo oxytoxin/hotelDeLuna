@@ -18,7 +18,7 @@
             <div x-cloak
                 x-show="formOpen"
                 x-collapse>
-                <div class="mt-5 rounded-lg bg-gray-100 p-4">
+                <div class="p-4 mt-5 bg-gray-100 rounded-lg">
                     <div>
                         <div class="grid grid-cols-1 gap-4">
                             <x-my.input.select label="Select Hours"
@@ -53,8 +53,8 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-3 flex flex-col">
-                <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="flex flex-col mt-3">
+                <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div class="inline-block min-w-full py-2 align-middle">
                         <div class="overflow-hidden shadow-sm ring-1 ring-black ring-opacity-5">
                             <table class="min-w-full divide-y divide-gray-300">
@@ -78,7 +78,7 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-gray-200 bg-white">
+                                <tbody class="bg-white divide-y divide-gray-200">
                                     @forelse ($transactions as $transaction)
                                         <tr>
                                             <td class="py-3.5 pl-4 pr-3 text-xs text-gray-900 sm:pl-6 lg:pl-8">
@@ -129,7 +129,7 @@
         <div class="px-5">
             <div class="grid items-center justify-center gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg"
-                    class="mt-10 h-40"
+                    class="h-40 mt-10"
                     viewBox="0 0 524.67001 418.27099"
                     xmlns:xlink="http://www.w3.org/1999/xlink">
                     <path
@@ -207,10 +207,10 @@
                         fill="#3f3d56" />
                 </svg>
             </div>
-            <div class="rounded-md bg-red-50 p-4">
+            <div class="p-4 rounded-md bg-red-50">
                 <div class="flex">
                     <div class="flex-shrink-0">
-                        <svg class="h-5 w-5 text-red-400"
+                        <svg class="w-5 h-5 text-red-400"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 20 20"
                             fill="currentColor"
@@ -220,13 +220,13 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </div>
-                    <div class="ml-3 w-full">
+                    <div class="w-full ml-3">
                         <h3 class="text-sm font-medium text-red-800">
                             Unable to perform this action
                         </h3>
                         <div class="mt-2 text-sm text-red-700">
                             <ul role="list"
-                                class="list-disc space-y-1 pl-5">
+                                class="pl-5 space-y-1 list-disc">
                                 <li x-on:mouseover="$dispatch('reset-guide-show')"
                                     x-on:mouseleave="$dispatch('reset-guide-hide')"
                                     title="Look Around">
@@ -236,6 +236,11 @@
                                     x-on:mouseleave="$dispatch('ext-guide-hide')"
                                     title="Look Around">
                                     No Extension Rate available .
+                                </li>
+                                <li x-on:mouseover="$dispatch('ext-guide-show')"
+                                    x-on:mouseleave="$dispatch('ext-guide-hide')"
+                                    title="Look Around">
+                                    Corresponding rate for you rwesetting time for extension did not exist.
                                 </li>
                             </ul>
                         </div>

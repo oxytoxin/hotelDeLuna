@@ -22,6 +22,8 @@ class Extend extends Component
 
     public $guestId;
 
+    public $unableToProceed = false;
+
     public $checkInDetailId;
 
     public $checkInDetailRoomId,$checkInDetailRoomTypeId,$checkInDetailRoomRateId,$checkInDetailRoomRateAmount,$checkInDetailRoomRateStayingHour,$checkInDetailStaticHourStayed,$checkInDetailExpectedCheckOutAt;
@@ -64,10 +66,16 @@ class Extend extends Component
             return;
        }else{
               $this->branchResettingTime = $extension_capping->hours;
-              $this->resettingTimeRateAmount = Rate::where('branch_id', auth()->user()->branch_id)
+              $rateForResettingTime =  Rate::where('branch_id', auth()->user()->branch_id)
               ->whereHas('staying_hour', function ($query) {
                   $query->where('number', $this->branchResettingTime);
-              })->first()->amount;
+              })->first();
+
+              if ($rateForResettingTime == null) {
+                    $this->actionUnavailable = true;
+                    return;
+              }
+              $this->resettingTimeRateAmount = $rateForResettingTime->amount;
        }
 
     }
