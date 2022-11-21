@@ -240,7 +240,7 @@
                                 <li x-on:mouseover="$dispatch('ext-guide-show')"
                                     x-on:mouseleave="$dispatch('ext-guide-hide')"
                                     title="Look Around">
-                                    Corresponding rate for you rwesetting time for extension did not exist.
+                                    Corresponding rate for you resetting time for extension did not exist.
                                 </li>
                             </ul>
                         </div>
