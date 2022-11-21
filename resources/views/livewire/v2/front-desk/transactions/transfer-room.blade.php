@@ -17,11 +17,11 @@
             x-show="formOpen"
             x-collapse>
             @if (count($transactions) == 2)
-                <div class="mt-3 rounded-md border border-yellow-400 bg-yellow-50 p-4">
+                <div class="p-4 mt-3 border border-yellow-400 rounded-md bg-yellow-50">
                     <div class="flex">
                         <div class="flex-shrink-0">
                             <!-- Heroicon name: mini/exclamation-triangle -->
-                            <svg class="h-5 w-5 text-yellow-400"
+                            <svg class="w-5 h-5 text-yellow-400"
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 20 20"
                                 fill="currentColor"
@@ -45,7 +45,7 @@
                 </div>
             @else
                 <div x-data="{ hasAvailableRoom: $wire.entangle('hasAvailableRoom') }"
-                    class="mt-5 rounded-lg bg-gray-100 p-4">
+                    class="p-4 mt-5 bg-gray-100 rounded-lg">
                     <div class="grid grid-cols-2 gap-3">
                         <x-my.input.select label="Select Type"
                             required
@@ -70,7 +70,7 @@
                         <div x-cloak
                             x-show="hasAvailableRoom"
                             x-collapse
-                            class="col-span-2 grid grid-cols-2 gap-3">
+                            class="grid grid-cols-2 col-span-2 gap-3">
                             <x-my.input.select required
                                 label="Select Room"
                                 wire:model="newRoomId"
@@ -102,7 +102,7 @@
                                     required />
                             </div>
                             <div class="col-span-2 py-3">
-                                <dl class="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-500">
+                                <dl class="pt-6 space-y-6 text-sm font-medium text-gray-500 border-t border-gray-200">
                                     <div class="flex justify-between">
                                         <dt>Previous Room Amount</dt>
                                         <dd class="text-gray-900">
@@ -144,7 +144,7 @@
                                         @endif
                                     </div>
                                     <div
-                                        class="flex items-center justify-between border-t border-gray-200 pt-6 text-gray-900">
+                                        class="flex items-center justify-between pt-6 text-gray-900 border-t border-gray-200">
                                         <dt class="text-base">Total Payable Amount</dt>
                                         <dd class="text-base">
                                             ₱
@@ -161,12 +161,12 @@
                         <div x-cloak
                             x-show="hasAvailableRoom==false"
                             x-collapse
-                            class="col-span-2 grid grid-cols-1 gap-3">
-                            <div class="rounded-md border border-red-400 bg-red-50 p-4">
+                            class="grid grid-cols-1 col-span-2 gap-3">
+                            <div class="p-4 border border-red-400 rounded-md bg-red-50">
                                 <div class="flex">
                                     <div class="flex-shrink-0">
                                         <!-- Heroicon name: mini/x-circle -->
-                                        <svg class="h-5 w-5 text-red-400"
+                                        <svg class="w-5 h-5 text-red-400"
                                             xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 20 20"
                                             fill="currentColor"
@@ -208,8 +208,8 @@
                 </div>
             @endif
         </div>
-        <div class="mt-3 flex flex-col">
-            <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="flex flex-col mt-3">
+            <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block min-w-full py-2 align-middle">
                     <div class="overflow-hidden shadow-sm ring-1 ring-black ring-opacity-5">
                         <table class="min-w-full divide-y divide-gray-300">
@@ -233,7 +233,7 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200 bg-white">
+                            <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse ($transactions as $transaction)
                                     <tr>
                                         <td class="py-3.5 pl-4 pr-3 text-xs text-gray-900 sm:pl-6 lg:pl-8">
@@ -259,22 +259,9 @@
                                                             confirmParams :{{ $transaction->id }},
                                                     })"
                                                         py="py-1" />
-                                                    @php
-                                                        $data = [
-                                                            'transaction_id' => $transaction->id,
-                                                            'amount_to_pay' => $transaction->payable_amount,
-                                                        ];
-                                                    @endphp
-                                                    <x-my.button-warning label="Pay With Deposit"
-                                                        x-on:click="$dispatch('confirm',{
-                                                            title : 'Are you sure?',
-                                                            message : 'Are you sure you want to proceed?',
-                                                            confirmButtonText : 'Confirm',
-                                                            cancelButtonText : 'Cancel',
-                                                            confirmMethod : 'payWithDeposits',
-                                                            confirmParams : {{ $data }},
-                                                    })"
-                                                        py="py-1" />
+                                                    {{-- <x-my.button-warning label="Pay With Deposit"
+                                                        wire:click="payWithDeposit({{ $transaction->id }}, {{ $transaction->payable_amount }})"
+                                                        py="py-1" /> --}}
                                                 @else
                                                     {{ Carbon\Carbon::parse($transaction->paid_at)->format('M d, Y h:i A') }}
                                                 @endif

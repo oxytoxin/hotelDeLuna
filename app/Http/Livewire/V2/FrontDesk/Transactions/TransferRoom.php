@@ -43,8 +43,16 @@ class TransferRoom extends Component
 
     public $hasAvailableRoom = false;
 
-    protected $listeners = ['confirmSaveChanges','payTransaction'];
+    protected $listeners = ['confirmSaveChanges','payTransaction','depositDeducted'=>'$refresh'];
 
+    public function payWithDeposit($transaction_id,$payable_amount)
+    {
+        $this->emit('payWithDeposit',[
+            'guest_id' => $this->guestId,
+            'transaction_id' => $transaction_id,
+            'payable_amount' => $payable_amount
+        ]);
+    }
     public function payTransaction(Transaction $transaction)
     {
         $transaction->update([
