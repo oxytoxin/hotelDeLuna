@@ -27,6 +27,8 @@ class Index extends Component
 
     protected $listeners = ['claimDeposit','payTransaction','checkOut'];
 
+    public $queryString = ['search','searchBy'];
+
     public function payTransaction(Transaction $transaction)
     {
         $transaction->update([
@@ -39,6 +41,7 @@ class Index extends Component
             'title' => 'Transaction Paid',
             'message' => 'Transaction has been paid'
         ]);
+        $this->balance = $this->guest->transactions()->where('paid_at', null)->sum('payable_amount');
     }
 
     public function searchGuest()
@@ -64,7 +67,6 @@ class Index extends Component
             if ($this->guest) {
                 $this->totalAmountToPay = $this->guest->transactions()->whereNot('transaction_type_id', 2)->sum('payable_amount');
                 $this->balance = $this->guest->transactions()->where('paid_at', null)->sum('payable_amount');
-
             }else{
                 $this->dispatchBrowserEvent('notify-alert', [
                     'type' => 'error',
@@ -106,7 +108,7 @@ class Index extends Component
     public function getTransactionsProperty()
     {
         return Transaction::query()
-            ->where('guest_id', $this->guest->id)->get()->groupBy('transaction_type_id');
+            ->where('guest_id', $this->guest->id)->with('transaction_type')->get()->groupBy('transaction_type_id');
     }
 
 
@@ -212,6 +214,9 @@ class Index extends Component
     public function mount()
     {
         $this->transactionTypes = TransactionType::all();
-       
+
+        if ($this->search && $this->searchBy) {
+            $this->searchGuest();
+        }
     }
 }
