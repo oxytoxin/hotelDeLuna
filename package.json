@@ -22,6 +22,7 @@
         "@alpinejs/collapse": "^3.10.3",
         "@alpinejs/intersect": "^3.10.5",
         "@alpinejs/persist": "^3.10.3",
-        "@formkit/auto-animate": "^1.0.0-beta.3"
+        "@formkit/auto-animate": "^1.0.0-beta.3",
+        "filepond": "^4.30.4"
     }
 }

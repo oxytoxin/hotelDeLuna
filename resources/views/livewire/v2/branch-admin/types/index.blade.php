@@ -3,7 +3,7 @@
 
     {{-- bulk actions --}}
     <div class="sm:flex sm:items-center sm:justify-between">
-        <div class="mt-1 flex space-x-2 sm:flex-none">
+        <div class="flex mt-1 space-x-2 sm:flex-none">
             <x-my.button-primary wire:click="create"
                 label="Add New">
                 <x-slot name="icon">
@@ -12,7 +12,7 @@
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="h-5 w-5">
+                        class="w-5 h-5">
                         <path stroke-linecap="round"
                             stroke-linejoin="round"
                             d="M12 4.5v15m7.5-7.5h-15" />
