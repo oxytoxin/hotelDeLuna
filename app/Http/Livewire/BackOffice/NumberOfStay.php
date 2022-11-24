@@ -66,7 +66,7 @@ class NumberOfStay extends Component
                 ->when($this->date, function ($query) {
                     return $query->whereDate('created_at', $this->date);
                 })
-                ->with('room.floor', 'guest')
+                ->with('room.floor', 'guest.damages')
                 ->get();
         }
     }

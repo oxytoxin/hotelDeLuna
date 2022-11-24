@@ -82,20 +82,33 @@
                 {{ Carbon\Carbon::parse($checkInDetail->check_out_at)->format('m/d/Y') }}
               </td>
               <td class="border border-gray-700 px-2 py-2 text-sm text-gray-700">
-                @foreach ($checkInDetail->guest->damages as $item)
+                {{-- @foreach ($checkInDetail->guest->damages as $item)
                   <div class="flex flex-col">
                     {{ $item->hotel_item->name }} - &#8369;{{ number_format($item->price, 2) }}
                   </div>
-                @endforeach
+                @endforeach --}}
+                @forelse ($checkInDetail->guest->damages as $item)
+                  <div class="flex flex-col">
+                    {{ $item->hotel_item->name }} - &#8369;{{ number_format($item->price, 2) }}
+                  </div>
+                @empty
+                  No Damages
+                @endforelse
               </td>
               <td class="border border-gray-700 px-2 py-2 text-sm text-gray-700">
 
-                @foreach ($checkInDetail->guest->deposites as $item)
+                {{-- @foreach ($checkInDetail->guest->deposites as $item)
                   <div class="flex flex-col">
                     &#8369;{{ number_format($item->amount, 2) }}
                   </div>
-                @endforeach
-
+                @endforeach --}}
+                @forelse ($checkInDetail->guest->damages as $item)
+                  <div class="flex flex-col">
+                    &#8369;{{ number_format($item->amount, 2) }}
+                  </div>
+                @empty
+                  No Deposits
+                @endforelse
               </td>
             </tr>
           @endforeach
