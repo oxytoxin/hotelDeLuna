@@ -871,8 +871,6 @@
                   <h1 class="text-lg text-green-700 font-semibold flex-auto font-rubik">
                     {{ $type['name'] ?? 'None' }}</h1>
                 </div>
-
-
               </div>
 
               @if ($long_stay == false)
