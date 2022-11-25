@@ -48,9 +48,9 @@ class DatabaseSeeder extends Seeder
             'branch_id' => 1,
             'number' => '24',
         ]);
-        if (app()->environment() == 'local') {
-            $this->call(FloorAndRoomSeeder::class);
-            $this->call(DummyCheckInSeeder::class);
-        }
+        // if (app()->environment() == 'local') {
+        //     $this->call(FloorAndRoomSeeder::class);
+        //     $this->call(DummyCheckInSeeder::class);
+        // }
     }
 }

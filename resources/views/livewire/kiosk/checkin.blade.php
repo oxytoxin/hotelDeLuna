@@ -512,12 +512,7 @@
                     <div class="absolute inset-0 bg-gray-400 opacity-80 rounded-3xl  blur">
                     </div>
                     <div class="bg-white  relative xl:h-64 lg:h-60 rounded-3xl ">
-                      {{-- <div
-                        class="absolute w-20 h-14 shadow-xl rounded-xl grid place-content-center top-0 bg-green-500 left-0">
-                        <span
-                          class="font-bold text-lg uppercase
-                font-rubik text-white">{{ ordinal($room->floor->number) }}</span>
-                      </div> --}}
+
                       <div class="relative flex flex-col justify-center items-center h-full">
                         <svg class="h-16 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
                           fill="none">
