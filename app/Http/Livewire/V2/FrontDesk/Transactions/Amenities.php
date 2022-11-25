@@ -104,7 +104,7 @@ class Amenities extends Component
             'guest_id' => $this->guestId,
             'transaction_type_id' => 8,
             'room_id' => $this->checkInRoomId,
-            'payable_amount' => $this->form->price + $this->form->additional_charge,
+            'payable_amount' => $this->form->additional_charge !='' ? $this->form->price + $this->form->additional_charge : $this->form->price,
             'remarks' => "Amenity : {$this->requestableItems->find($this->form->requestable_item_id)->name}",
             'front_desk_name' => auth()->user()->name,
             'user_id' => auth()->user()->id,

@@ -17,7 +17,7 @@
         <div x-cloak
             x-show="formOpen"
             x-collapse>
-            <div class="mt-5 rounded-lg bg-gray-100 p-4">
+            <div class="p-4 mt-5 bg-gray-100 rounded-lg">
                 <div>
                     <div class="grid grid-cols-1 gap-4">
                         <x-my.input.select label="Item"
@@ -39,16 +39,8 @@
                             numberOnly
                             type="number" />
                     </div>
-                    <div class="mt-2 border-t pt-2">
-                        <dl class="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-500">
-                            <div class="flex justify-between">
-                                <dt>
-                                    Item Amount
-                                </dt>
-                                <dd class="text-gray-900">
-                                    ₱ {{ $form->price ?? '0' }}
-                                </dd>
-                            </div>
+                    <div class="pt-2 mt-2 border-t">
+                        <dl class="pt-6 space-y-6 text-sm font-medium text-gray-500 border-t border-gray-200">
                             <div class="flex justify-between">
                                 <dt>
                                     Additional Amount
@@ -57,7 +49,7 @@
                                     ₱ {{ $form->additional_charge ?? '0' }}
                                 </dd>
                             </div>
-                            <div class="flex items-center justify-between border-t border-gray-200 pt-6 text-gray-900">
+                            <div class="flex items-center justify-between pt-6 text-gray-900 border-t border-gray-200">
                                 <dt class="text-base">Total Payable Amount</dt>
                                 <dd class="text-base">
                                     ₱
@@ -83,8 +75,8 @@
                 </div>
             </div>
         </div>
-        <div class="mt-3 flex flex-col">
-            <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="flex flex-col mt-3">
+            <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block min-w-full py-2 align-middle">
                     <div class="overflow-hidden shadow-sm ring-1 ring-black ring-opacity-5">
                         <table class="min-w-full divide-y divide-gray-300">
@@ -108,7 +100,7 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200 bg-white">
+                            <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse ($transactions as $transaction)
                                     <tr>
                                         <td class="py-3.5 pl-4 pr-3 text-xs text-gray-900 sm:pl-6 lg:pl-8">

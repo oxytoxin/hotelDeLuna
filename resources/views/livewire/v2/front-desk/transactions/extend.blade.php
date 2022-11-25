@@ -104,6 +104,9 @@
                                                                 confirmParams :{{ $transaction->id }},
                                                         })"
                                                             py="py-1" />
+                                                        <x-my.button-warning label="Pay With Deposit"
+                                                            wire:click="payWithDeposit({{ $transaction->id }}, {{ $transaction->payable_amount }})"
+                                                            py="py-1" />
                                                     @else
                                                         {{ Carbon\Carbon::parse($transaction->paid_at)->format('M d, Y h:i A') }}
                                                     @endif
