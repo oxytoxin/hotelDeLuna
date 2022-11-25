@@ -162,6 +162,17 @@ class Index extends Component
             'time_interval' => $check_in_detail->room->last_check_out_at ? $check_in_detail->check_in_at->diffInMinutes($check_in_detail->room->last_check_out_at) : 0,
         ]);
 
+        $cleanedRoom = Room::whereHas('floor', function ($query) {
+            $query->where('branch_id', auth()->user()->branch_id);
+        })->where('room_status_id', 9)->first();
+
+        if ($cleanedRoom) {
+            $cleanedRoom->update([
+                'room_status_id' => 1,
+                'priority' => 1,
+            ]);
+        }
+
         DB::commit();
 
         $this->viewGuest=null;
