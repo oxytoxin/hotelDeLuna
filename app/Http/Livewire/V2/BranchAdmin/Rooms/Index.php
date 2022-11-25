@@ -12,6 +12,8 @@ use Livewire\WithPagination;
 
 class Index extends Component
 {
+
+    // done validation attributes
     use WithPagination, WithCaching;
 
     public $search = '';
@@ -28,19 +30,40 @@ class Index extends Component
         'room_status_id' => '',
     ];
 
+    protected $validationAttributes = [
+        'form.number' => 'room number',
+        'form.floor_id' => 'floor',
+        'form.type_id' => 'type',
+        'form.room_status_id' => 'room status',
+    ];
+
     public function rules()
     {
-        return [
-            'form.number' => 'required|unique:rooms,number,' . $this->form['id'],
-            'form.description' => 'nullable',
-            'form.time_to_clean' => 'nullable',
-            'form.type_id' => 'required',
-            'form.floor_id' => 'required',
-            'form.room_status_id' => 'required',
-            'form.time_to_terminate_in_queue' => 'nullable',
-            'form.priority' => 'nullable',
-            'form.last_check_out_at' => 'nullable',
-        ];
+        if ($this->editMode) {
+            return [
+                'form.number' => 'required|numeric|unique:rooms,number,' . $this->form['id'],
+                'form.description' => 'nullable',
+                'form.time_to_clean' => 'nullable',
+                'form.type_id' => 'required',
+                'form.floor_id' => 'required',
+                'form.room_status_id' => 'required',
+                'form.time_to_terminate_in_queue' => 'nullable',
+                'form.priority' => 'nullable',
+                'form.last_check_out_at' => 'nullable',
+            ];
+        }else{
+            return [
+                'form.number' => 'required|numeric|unique:rooms,number',
+                'form.description' => 'nullable',
+                'form.time_to_clean' => 'nullable',
+                'form.type_id' => 'required',
+                'form.floor_id' => 'required',
+                'form.room_status_id' => 'required',
+                'form.time_to_terminate_in_queue' => 'nullable',
+                'form.priority' => 'nullable',
+                'form.last_check_out_at' => 'nullable',
+            ];
+        }
     }
 
     public function clearFilter()

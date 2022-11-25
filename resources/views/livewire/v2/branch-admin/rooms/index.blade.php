@@ -11,7 +11,7 @@
     class="grid space-y-4">
     {{-- bulk actions --}}
     <div class="sm:flex sm:items-center sm:justify-between">
-        <div class="mt-1 flex space-x-2 sm:flex-none">
+        <div class="flex mt-1 space-x-2 sm:flex-none">
             <x-my.button-primary label="Add New"
                 wire:click="create">
                 <x-slot name="icon">
@@ -20,7 +20,7 @@
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="h-5 w-5">
+                        class="w-5 h-5">
                         <path stroke-linecap="round"
                             stroke-linejoin="round"
                             d="M12 4.5v15m7.5-7.5h-15" />
@@ -67,7 +67,7 @@
                                 viewBox="0 0 24 24"
                                 stroke-width="1.5"
                                 stroke="currentColor"
-                                class="h-6 w-6">
+                                class="w-6 h-6">
                                 <path stroke-linecap="round"
                                     stroke-linejoin="round"
                                     d="M6 18L18 6M6 6l12 12" />
@@ -76,13 +76,13 @@
                     </x-my.button-secondary>
                 @endif
             </div>
-            <div class="border-l pl-2">
+            <div class="pl-2 border-l">
                 <x-my.input.search wire:model.debounce="search" />
             </div>
         </div>
     </div>
     {{-- table --}}
-    <div class="mb-2 flex justify-end space-x-2">
+    <div class="flex justify-end mb-2 space-x-2">
         @foreach ($roomStatuses as $roomStatus)
             <x-status-badge status="{{ $roomStatus->id }}">
                 {{ $roomStatus->name }}
@@ -137,7 +137,7 @@
                 :closeOn="['close-modal']">
                 <div class="grid space-y-4">
                     <x-my.input label="Room Number"
-                        wire:model="form.number"
+                        wire:model.defer="form.number"
                         numberOnly
                         type="number"
                         required />

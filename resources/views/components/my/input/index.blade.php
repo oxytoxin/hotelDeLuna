@@ -5,8 +5,7 @@
     'placeholder' => null,
     'numberOnly' => false,
 ])
-<div x-id="['{{ $attributes->whereStartsWith('wire:model')->first() }}-input']"
-    wire:ignore>
+<div x-id="['{{ $attributes->whereStartsWith('wire:model')->first() }}-input']">
     <label :for="$id('{{ $attributes->whereStartsWith('wire:model')->first() }}-input')"
         class="block text-sm font-medium text-gray-700">
         {{ $label }} @if ($required)
