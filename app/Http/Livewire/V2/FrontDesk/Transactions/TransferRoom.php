@@ -194,8 +194,6 @@ class TransferRoom extends Component
             'oldRoomStatus' => 'required',
         ]);
 
-
-
         if ($this->hasAvailableRoom == false) {
             $this->dispatchBrowserEvent('notify-alert', [
                 'type' => 'error',
@@ -291,30 +289,30 @@ class TransferRoom extends Component
             'rate_id' => $this->newRoomRate->id,
         ]);
 
-        $oldRoom = Room::find($this->oldRoomId);
 
+        $oldRoom = Room::find($this->oldRoomId);
         $query = Room::whereHas('floor', function ($q) {
             $q->where('branch_id', auth()->user()->branch_id);
         })
             ->where('room_status_id', 1)
             ->where('priority', 1)
             ->count();
-        if ($query < 5) {
+        if ($this->oldRoomStatus == 9) {
+                $oldRoom->update([
+                    'room_status_id' => 9,
+                    'time_to_clean' => null,
+                    'priority' => $query < 5 ? 1 : 0,
+                    'last_check_out_at' => Carbon::now(),
+                ]);
+        }else{
             $oldRoom->update([
                 'room_status_id' => $this->oldRoomStatus,
                 'time_to_clean' => null,
-                'priority' => true,
-                'last_check_out_at' => Carbon::now(),
-            ]);
-        } else {
-            $oldRoom->update([
-                'room_status_id' => $this->oldRoomStatus,
-                'room_status_id' => 9,
-                'time_to_clean' => null,
-                'priority' => false,
+                'priority' => 0,
                 'last_check_out_at' => Carbon::now(),
             ]);
         }
+        
         $oldRoom->roomTransactionLogs()->latest()->first()->update([
             'check_out_at' => Carbon::now(),
             'guest_transferred' => true,
