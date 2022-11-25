@@ -39,15 +39,15 @@ class TransferRoom extends Component
 
     public $authorizationCode;
 
-    public $newRoomTypeId, $newRoomFloorId, $newRoomId, $newRoomAmount, $reason,$saveAsDeposit = 0,$newRoomRate;
+    public $newRoomTypeId, $newRoomFloorId, $newRoomId, $newRoomAmount, $reason, $saveAsDeposit = 0, $newRoomRate;
 
     public $hasAvailableRoom = false;
 
-    protected $listeners = ['confirmSaveChanges','payTransaction','depositDeducted'=>'$refresh'];
+    protected $listeners = ['confirmSaveChanges', 'payTransaction', 'depositDeducted' => '$refresh'];
 
-    public function payWithDeposit($transaction_id,$payable_amount)
+    public function payWithDeposit($transaction_id, $payable_amount)
     {
-        $this->emit('payWithDeposit',[
+        $this->emit('payWithDeposit', [
             'guest_id' => $this->guestId,
             'transaction_id' => $transaction_id,
             'payable_amount' => $payable_amount
@@ -169,7 +169,7 @@ class TransferRoom extends Component
     {
         $authorizationCode = auth()->user()->branch->authorization_code;
 
-        if(!$authorizationCode){
+        if (!$authorizationCode) {
             $this->dispatchBrowserEvent('notify-alert', [
                 'type' => 'error',
                 'title' => 'Authorization Code Not Set',
@@ -185,7 +185,7 @@ class TransferRoom extends Component
                 'message' => 'Authorization code is incorrect'
             ]);
             return;
-        } 
+        }
 
 
         $this->validate([
@@ -194,7 +194,9 @@ class TransferRoom extends Component
             'oldRoomStatus' => 'required',
         ]);
 
-        if ($this->hasAvailableRoom==false) {
+
+
+        if ($this->hasAvailableRoom == false) {
             $this->dispatchBrowserEvent('notify-alert', [
                 'type' => 'error',
                 'title' => 'Failed to proceed',
@@ -262,7 +264,7 @@ class TransferRoom extends Component
                 'room_id' => $newRoom->id,
                 'front_desk_name' => auth()->user()->name,
                 'user_id' => auth()->user()->id,
-                'remarks'=>'Extra amount paid from previous room',
+                'remarks' => 'Extra amount paid from previous room',
             ]);
             Deposit::create([
                 'guest_id' => $this->guestId,
@@ -289,16 +291,33 @@ class TransferRoom extends Component
             'rate_id' => $this->newRoomRate->id,
         ]);
 
-
         $oldRoom = Room::find($this->oldRoomId);
-        $oldRoom->update([
-            'room_status_id' => $this->oldRoomStatus,
-            'last_check_out_at'=> Carbon::now(),
-        ]);
 
+        $query = Room::whereHas('floor', function ($q) {
+            $q->where('branch_id', auth()->user()->branch_id);
+        })
+            ->where('room_status_id', 1)
+            ->where('priority', 1)
+            ->count();
+        if ($query < 5) {
+            $oldRoom->update([
+                'room_status_id' => $this->oldRoomStatus,
+                'time_to_clean' => null,
+                'priority' => true,
+                'last_check_out_at' => Carbon::now(),
+            ]);
+        } else {
+            $oldRoom->update([
+                'room_status_id' => $this->oldRoomStatus,
+                'room_status_id' => 9,
+                'time_to_clean' => null,
+                'priority' => false,
+                'last_check_out_at' => Carbon::now(),
+            ]);
+        }
         $oldRoom->roomTransactionLogs()->latest()->first()->update([
             'check_out_at' => Carbon::now(),
-            'guest_transferred'=>true,
+            'guest_transferred' => true,
         ]);
 
         $newRoom->update([
@@ -307,10 +326,10 @@ class TransferRoom extends Component
 
         $newRoom->roomTransactionLogs()->create([
             'branch_id' => auth()->user()->branch_id,
-            'room_number'=> $newRoom->number,
+            'room_number' => $newRoom->number,
             'check_in_detail_id' => $this->guestCheckInDetailId,
             'check_in_at' => Carbon::now(),
-            'time_interval'=> $newRoom->last_check_out_at ? Carbon::parse($newRoom->last_check_out_at)->diffInMinutes(Carbon::now()) : 0,
+            'time_interval' => $newRoom->last_check_out_at ? Carbon::parse($newRoom->last_check_out_at)->diffInMinutes(Carbon::now()) : 0,
         ]);
 
         DB::commit();
@@ -332,6 +351,5 @@ class TransferRoom extends Component
         $this->newRoomAmount = null;
 
         $this->authorizationCode = null;
-
     }
 }
