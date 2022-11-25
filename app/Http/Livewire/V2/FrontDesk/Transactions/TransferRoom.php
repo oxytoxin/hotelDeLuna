@@ -299,9 +299,9 @@ class TransferRoom extends Component
             ->count();
         if ($this->oldRoomStatus == 9) {
                 $oldRoom->update([
-                    'room_status_id' => $query < 5 ? 1 : 9,
+                    'room_status_id' => 1,
                     'time_to_clean' => null,
-                    'priority' => $query < 5 ? 1 : 0,
+                    'priority' => 1,
                     'last_check_out_at' => Carbon::now(),
                 ]);
         }else{

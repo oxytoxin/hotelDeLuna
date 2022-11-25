@@ -130,7 +130,7 @@ class Cleaning extends Component
             ->where('priority', 1)
             ->count();
 
-        if ($query < 5) {
+        if ($query < 10) {
             $room->update([
                 'room_status_id' => 1,
                 'time_to_clean' => null,
