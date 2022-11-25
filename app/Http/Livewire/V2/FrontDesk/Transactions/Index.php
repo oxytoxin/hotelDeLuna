@@ -56,6 +56,14 @@ class Index extends Component
     public function search()
     {
         $this->realSearch = $this->search;
+
+        if ($this->guest == null) {
+            $this->dispatchBrowserEvent('notify-alert', [
+                'type' => 'error',
+                'title' => 'Guest Not Found',
+                'message' => 'Guest not found'
+            ]);
+        }
     }
 
     public function clearSearch()
