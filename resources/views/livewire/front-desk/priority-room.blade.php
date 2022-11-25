@@ -7,7 +7,10 @@
             </h1>
         </x-card>
         @php
-            $priority_rooms = $rooms->where('priority', 1)->where('room_status_id', 1);
+            $priority_rooms = $rooms
+                ->where('priority', 1)
+                ->where('room_status_id', 1)
+                ->take(10);
         @endphp
         <ul role="list"
             class="grid grid-cols-1 gap-6 sm:grid-cols-4 lg:grid-cols-4">
@@ -88,13 +91,13 @@
                                 <button type="button"
                                     wire:click="setAsPriority({{ $room->id }})"
                                     class="relative inline-flex items-center justify-center flex-1 w-0 py-4 -mr-px text-sm font-medium text-green-600 border border-transparent rounded-bl-lg hover:text-green-500 hover:underline">
-                                    <span class="ml-3 ">
+                                    <span class="ml-3">
                                         Move to Priority
                                     </span>
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 24 24"
                                         fill="currentColor"
-                                        class="w-6 h-6 ">
+                                        class="w-6 h-6">
                                         <path fill-rule="evenodd"
                                             d="M3.75 12a.75.75 0 01.75-.75h13.19l-5.47-5.47a.75.75 0 011.06-1.06l6.75 6.75a.75.75 0 010 1.06l-6.75 6.75a.75.75 0 11-1.06-1.06l5.47-5.47H4.5a.75.75 0 01-.75-.75z"
                                             clip-rule="evenodd" />
