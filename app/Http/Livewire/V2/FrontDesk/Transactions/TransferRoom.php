@@ -222,7 +222,7 @@ class TransferRoom extends Component
             $this->dispatchBrowserEvent('notify-alert', [
                 'type' => 'error',
                 'title' => 'Failed to proceed',
-                'text' => 'Guest has been checked in for more than 3 hours',
+                'message' => 'Guest has been checked in for more than 3 hours',
                 'buttonText' => 'Got it',
             ]);
             return;
@@ -232,7 +232,7 @@ class TransferRoom extends Component
             $this->dispatchBrowserEvent('notify-alert', [
                 'type' => 'error',
                 'title' => 'Failed to proceed',
-                'text' => 'Old room and new room cannot be the same',
+                'message' => 'Old room and new room cannot be the same',
                 'buttonText' => 'Got it',
             ]);
             return;

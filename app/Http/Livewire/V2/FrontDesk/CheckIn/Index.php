@@ -165,6 +165,8 @@ class Index extends Component
         DB::commit();
 
         $this->viewGuest=null;
+        $this->guestGivenAmount = '';
+        $this->guestExcessAmount = '';
         $this->loadRecentlyCheckedInGuests();
 
         $this->dispatchBrowserEvent('close-modal');
