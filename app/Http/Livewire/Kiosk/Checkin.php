@@ -60,6 +60,7 @@ class Checkin extends Component
     {
         return view('livewire.kiosk.checkin', [
             'rooms' => Room::where('room_status_id', 1)
+                ->where('priority', 1)
                 ->where('floor_id', 'like', '%' . $this->floor_id . '%')
                 ->where('type_id', $this->type_key)
                 ->whereHas('floor', function ($query) {
@@ -82,14 +83,6 @@ class Checkin extends Component
                 ->get(),
         ]);
     }
-
-    // public function updated($propertyName)
-    // {
-    //     $this->validateOnly($propertyName, [
-    //         'customer_name' => 'required|min:3',
-    //         'customer_number' => 'required|numeric|digits:9',
-    //     ]);
-    // }
 
     public function closeManageRoomPanel()
     {
@@ -479,4 +472,23 @@ class Checkin extends Component
         $this->customer_name = '';
         $this->customer_number = '';
     }
+
+    // public function doneSelectType()
+    // {
+    //     $query = Room::where('room_status_id', 1)->get();
+    //     if (count($query) < 10) {
+    //         $take = 10 - count($query);
+    //         $rooms = Room::where('room_status_id', 9)
+    //             ->take($take)
+    //             ->get();
+    //         foreach ($rooms as $room) {
+    //             $room->update([
+    //                 'room_status_id' => 1,
+    //             ]);
+    //         }
+    //         $this->step = 2;
+    //     } else {
+    //         $this->step = 2;
+    //     }
+    // }
 }
