@@ -54,7 +54,7 @@
                 @endforeach
                 <div class="flex justify-between py-3 text-sm font-medium">
                     <dt class="text-gray-500">Total</dt>
-                    <dd class="text-gray-900 whitespace-nowrap">
+                    <dd class="font-bold text-gray-900 whitespace-nowrap">
                         PHP {{ number_format($totalDeposit, 2) }}
                     </dd>
                 </div>
@@ -67,7 +67,7 @@
             <dl class="mt-2 border-t border-b border-gray-200 divide-y divide-gray-200">
                 <div class="flex justify-between py-3 text-sm font-medium">
                     <dt class="text-gray-500">Balance</dt>
-                    <dd class="text-gray-900 whitespace-nowrap">
+                    <dd class="font-bold text-gray-900 whitespace-nowrap">
                         PHP {{ number_format($balance, 2) }}
                     </dd>
                 </div>
