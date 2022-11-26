@@ -1,5 +1,5 @@
     <x-card title="Deposits">
-        <x-transactions :headers="['Remarks', 'Amount', 'Deposit At', 'Deduction', 'Retrived', 'Actions']">
+        <x-transactions :headers="['Remarks', 'Amount', 'Deposit At', 'Deduction', 'Retrived', 'To Claim', 'Actions']">
             <x-slot:body>
                 @forelse ($deposits as $key => $deposit)
                     <tr wire:key="{{ $key . $deposit->id }}">
@@ -21,6 +21,9 @@
                             @else
                                 'Not yet'
                             @endif
+                        </x-transactions.cell>
+                        <x-transactions.cell>
+                            ₱{{ $deposit->amount - $deposit->deducted }}
                         </x-transactions.cell>
                         <x-transactions.cell>
                             <div class="flex space-x-3">
