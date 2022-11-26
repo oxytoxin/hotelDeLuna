@@ -207,6 +207,7 @@ class Index extends Component
     {
         return view('livewire.v2.front-desk.check-out.index',[
             'transactionsGroup' => $this->guest ? $this->transactions : [],
+            'has_unpaid_transaction' => $this->guest ? $this->guest->transactions()->where('paid_at', null)->exists() : false,
             'deposits'=> $this->guest ? Deposit::where('guest_id',$this->guest->id)->get() : [],
         ]);
     }
