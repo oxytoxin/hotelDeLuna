@@ -59,7 +59,7 @@
             </h1>
         </x-card>
         @php
-            $available_rooms = $rooms->where('priority', false)->where('room_status_id', 9);
+            $available_rooms = $rooms->where('priority', false)->whereIn('room_status_id', [1, 9]);
         @endphp
         <ul role="list"
             class="grid grid-cols-1 gap-6 sm:grid-cols-4 lg:grid-cols-4">
