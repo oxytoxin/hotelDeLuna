@@ -140,6 +140,7 @@ class Checkin extends Component
     {
         $query = Room::where('type_id', $type_id)
             ->where('room_status_id', 1)
+            ->where('priority', 1)
             ->whereHas('floor', function ($query) {
                 $query->where('branch_id', auth()->user()->branch_id);
             })
