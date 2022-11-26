@@ -129,6 +129,16 @@ class Index extends Component
     {
         $this->validate();
 
+        $query = Room::whereHas('floor', function ($query) {
+            $query->where('branch_id', auth()->user()->branch_id);
+        })->where('room_status_id',1)->where('priority',1)->count();
+
+        if($query < 10 && $this->form->room_status_id == 1){
+            $this->form->priority = 1;
+        }else{
+            $this->form->priority = 0;
+        }
+
         $this->form->save();
         $this->dispatchBrowserEvent('close-modal');
         $this->dispatchBrowserEvent('notify',[
@@ -150,6 +160,15 @@ class Index extends Component
     {
         $this->validate();
 
+        $query = Room::whereHas('floor', function ($query) {
+            $query->where('branch_id', auth()->user()->branch_id);
+        })->where('room_status_id',1)->where('priority',1)->count();
+        
+        if($query < 10 && $this->form->room_status_id == 1){
+            $this->form->priority = 1;
+        }else{
+            $this->form->priority = 0;
+        }
         $this->form->save();
         $this->dispatchBrowserEvent('close-modal');
         $this->dispatchBrowserEvent('notify',[
