@@ -53,7 +53,7 @@
                                         <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
                                             <div class="flex items-center space-x-2">
                                                 @if ($transaction->paid_at)
-                                                    {{ $transaction->paid_at }}
+                                                    {{ Carbon\Carbon::parse($transaction->paid_at)->format('M d, Y h:i A') }}
                                                 @else
                                                     <x-my.button-success label="Pay"
                                                         x-on:click="$dispatch('confirm',{
@@ -75,7 +75,7 @@
                                             </div>
                                         </td>
                                         <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
-                                            {{ $transaction->created_at }}
+                                            {{ $transaction->created_at->format('M d, Y h:i A') }}
                                         </td>
                                     </tr>
                                 @empty
