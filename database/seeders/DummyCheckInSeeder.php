@@ -61,6 +61,7 @@ class DummyCheckInSeeder extends Seeder
             Deposit::create([
                 'guest_id' => $guest->id,
                 'amount' => 200,
+                'remaining' => 200,
                 'remarks' => 'Deposit for remote and key',
             ]);
             $selected_room = Room::find($checkInDetail->room_id);

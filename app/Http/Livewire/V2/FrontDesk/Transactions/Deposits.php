@@ -65,6 +65,7 @@ class Deposits extends Component
             'guest_id' => $this->guestId,
             'amount' => $this->depositAmount,
             'remarks' => $this->depositRemarks,
+            'remaining' => $this->depositAmount,
             'front_desk_name' => auth()->user()->name,
             'user_id' => auth()->user()->id,
         ]);
@@ -79,13 +80,8 @@ class Deposits extends Component
             'title' => 'Success',
             'message' => 'Record saved successfully',
         ]);
-
         $this->dispatchBrowserEvent('close-form');
-
         $this->emit('transactionsUpdated');
-
-
-
     }
 
     public function showDeductionModal(Deposit $deposit)
@@ -123,6 +119,7 @@ class Deposits extends Component
 
         $this->deposit->update([
             'deducted' => $this->deposit->deducted + $this->deductionAmount,
+            'remaining' => $this->deposit->remaining - $this->deductionAmount,
             'claimed_at'=>  $this->deductionAmount + $this->deposit->deducted == $this->deposit->amount ? Carbon::now() : null,
         ]);
 

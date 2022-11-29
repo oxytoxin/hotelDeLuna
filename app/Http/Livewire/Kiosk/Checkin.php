@@ -260,6 +260,7 @@ class Checkin extends Component
             Deposit::create([
                 'guest_id' => $guest->id,
                 'amount' => 200,
+                'remaining' => 200,
                 'remarks' => 'TV Remote and Room key',
             ]);
 
@@ -361,6 +362,7 @@ class Checkin extends Component
             Deposit::create([
                 'guest_id' => $guest->id,
                 'amount' => 200,
+                'remaining' => 200,
                 'remarks' => 'TV Remote and Room key',
             ]);
 

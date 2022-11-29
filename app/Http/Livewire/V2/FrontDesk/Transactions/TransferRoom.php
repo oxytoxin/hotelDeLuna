@@ -267,6 +267,7 @@ class TransferRoom extends Component
             Deposit::create([
                 'guest_id' => $this->guestId,
                 'amount' =>  $this->oldRoomAmount - $this->newRoomAmount,
+                'remaining'=> $this->oldRoomAmount - $this->newRoomAmount,
                 'remarks' => 'Deposit from transfer room transaction',
                 'front_desk_name' => auth()->user()->name,
                 'user_id' => auth()->user()->id,

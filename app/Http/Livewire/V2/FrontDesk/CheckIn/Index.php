@@ -145,6 +145,7 @@ class Index extends Component
                 'guest_id' => $this->viewGuest->id,
                 'amount' => $this->guestExcessAmount,
                 'remarks' => 'Excess amount from check in',
+                'remaining'=> $this->guestExcessAmount,
             ]);
         }
 
