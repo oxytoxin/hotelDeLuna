@@ -208,8 +208,8 @@
                                 <div class="py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-3 sm:px-6">
                                     <dt class="text-sm font-medium text-gray-500">Hours</dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                        {{ $viewGuest->checkInDetail->rate->staying_hour->number }}
-                                        {{ Str::plural('hour', $viewGuest->checkInDetail->rate->staying_hour->number) }}
+                                        {{ $viewGuest->checkInDetail->static_hours_stayed }}
+                                        {{ Str::plural('hour', $viewGuest->checkInDetail->static_hours_stayed) }}
                                     </dd>
                                 </div>
 
