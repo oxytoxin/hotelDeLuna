@@ -331,7 +331,7 @@ class Checkin extends Component
                         ' (' .
                         $type->name .
                         ') for ' .
-                        $rate->staying_hour->number .
+                        $rate->staying_hour->number * $this->days_stay .
                         ' hours',
                 ]);
             } else {
@@ -347,7 +347,7 @@ class Checkin extends Component
                         ' (' .
                         $type->name .
                         ') for ' .
-                       $this->long_stay ? $rate->staying_hour->number  * $this->days_stay : $rate->staying_hour->number .
+                       $rate->staying_hour->number.
                         ' hours',
                 ]);
             }
