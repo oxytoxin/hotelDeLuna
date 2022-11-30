@@ -153,10 +153,6 @@ class Checkin extends Component
             $this->type_key = $type_id;
             $this->floor_id = $query->first()->floor_id;
         } else {
-            // $this->notification()->error(
-            //     $title = 'Room Type Selection',
-            //     $description = 'There is no available room in this type.'
-            // );
             $this->dialog()->error(
                 $title = 'Sorry',
                 $description = 'There is no available room in this type.'
