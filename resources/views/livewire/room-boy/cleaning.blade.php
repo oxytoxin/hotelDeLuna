@@ -1,80 +1,5 @@
 <div>
-  {{-- <div class="">
-        <div class="p-2 mb-2 space-y-1 bg-white border rounded-lg">
-            <h1>Name : {{ auth()->user()->name }} </h1>
-            @if ($this->designation)
-                <h1>Floor : {{ ordinal($this->designation->floor->number) }} Floor </h1>
-            @else
-                <h1>Floor : Not Assigned </h1>
-            @endif
-            <h1>Cleaning : {{ auth()->user()->room_boy->is_cleaning ? 'YES' : 'NO' }} </h1>
-        </div>
-        @if (auth()->user()->room_boy->is_cleaning)
-            <div class="p-2 mb-2 space-y-1 bg-white border border-red-500 rounded-lg">
-                <h1>Currently cleaning : ROOM # {{ auth()->user()->room_boy->room->number }} </h1>
-                <div>
-                    <x-button wire:click="finish({{ auth()->user()->room_boy->room_id }})"
-                        label="Finish"
-                        negative />
-                </div>
-            </div>
-        @endif
-    </div>
-    @if ($this->designation)
-        <ul role="list"
-            class="grid grid-cols-1 gap-6 py-5 border-t sm:grid-cols-4 lg:grid-cols-4">
-            @forelse ($rooms->where('room_status_id',7) as $room)
-                <li class="col-span-1 bg-white border divide-y divide-gray-200 rounded-lg shadow border-primary-700">
-                    <div class="flex items-center justify-between w-full p-3 space-x-6">
-                        <div class="flex-1 truncate">
-                            <div class="flex items-center space-x-3">
-                                <h3 class="text-sm font-medium text-gray-900 truncate">
-                                    Room # {{ $room->number }}
-                                </h3>
-                            </div>
-                            @php
-                                $timeToClean = new Carbon\Carbon($room->time_to_clean);
-                                
-                            @endphp
-                            @if (!$timeToClean->isPast())
-                                <x-countdown :expires="$timeToClean" />
-                            @else
-                                <p class="text-sm text-gray-500 truncate">Time to clean :
-                                    <span class="text-red-500">{{ $timeToClean->diffForHumans() }}</span>
-                                </p>
-                            @endif
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex -mt-px divide-x divide-gray-200">
-                            <div class="flex flex-1 w-0 -ml-px">
-                                <button type="button"
-                                   
-                                    class="relative inline-flex items-center justify-center flex-1 w-0 py-4 text-sm font-medium text-gray-700 border border-transparent rounded-br-lg hover:text-gray-500">
-                                    <span class="ml-3">
-                                        Start
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            @empty
-                <li class="flex justify-center w-full">
-                    <div class="flex items-center justify-center w-full p-3 space-x-6">
-                        <div class="flex-1 truncate">
-                            <div class="flex items-center space-x-3">
-                                <h3 class="font-medium text-gray-900 truncate ">
-                                    No rooms to clean
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            @endforelse
-        </ul>
-    @endif
-</div> --}}
+
 
   <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
     <h1 class="sr-only">Profilessss</h1>
@@ -451,7 +376,7 @@
                   <h2 class="font-semibold text-gray-700 uppercase" id="announcements-title">
                     CLEANING HISTORY</h2>
                 </div>
-                <button class="hover:fill-green-700 fill-gray-700">
+                {{-- <button class="hover:fill-green-700 fill-gray-700">
                   @if ($filter == 'ASC')
                     <svg wire:click="$set('filter','DESC')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                       class="h-5 w-5">
@@ -465,7 +390,8 @@
                       <path d="M20 4v12h3l-4 5-4-5h3V4h2zm-8 14v2H3v-2h9zm2-7v2H3v-2h11zm0-7v2H3V4h11z" />
                     </svg>
                   @endif
-                </button>
+                </button> --}}
+                <x-button xs dark wire:click="$set('cleaned_rooms', true)" label="View All" />
               </div>
               <div class="mt-6 flow-root">
                 <div class="flow-root">
@@ -523,101 +449,69 @@
             </div>
           </div>
         </section>
-
-        <!-- Recent Hires -->
-        {{-- <section aria-labelledby="recent-hires-title">
-                    <div class="overflow-hidden rounded-lg bg-white shadow">
-                        <div class="p-6">
-                            <h2 class="text-base font-medium text-gray-900" id="recent-hires-title">Recent
-                                Hires</h2>
-                            <div class="mt-6 flow-root">
-                                <ul role="list" class="-my-5 divide-y divide-gray-200">
-                                    <li class="py-4">
-                                        <div class="flex items-center space-x-4">
-                                            <div class="flex-shrink-0">
-                                                <img class="h-8 w-8 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="">
-                                            </div>
-                                            <div class="min-w-0 flex-1">
-                                                <p class="truncate text-sm font-medium text-gray-900">Leonard
-                                                    Krasner</p>
-                                                <p class="truncate text-sm text-gray-500">@leonardkrasner</p>
-                                            </div>
-                                            <div>
-                                                <a href="#"
-                                                    class="inline-flex items-center rounded-full border border-gray-300 bg-white px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-gray-50">View</a>
-                                            </div>
-                                        </div>
-                                    </li>
-
-                                    <li class="py-4">
-                                        <div class="flex items-center space-x-4">
-                                            <div class="flex-shrink-0">
-                                                <img class="h-8 w-8 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="">
-                                            </div>
-                                            <div class="min-w-0 flex-1">
-                                                <p class="truncate text-sm font-medium text-gray-900">Floyd
-                                                    Miles</p>
-                                                <p class="truncate text-sm text-gray-500">@floydmiles</p>
-                                            </div>
-                                            <div>
-                                                <a href="#"
-                                                    class="inline-flex items-center rounded-full border border-gray-300 bg-white px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-gray-50">View</a>
-                                            </div>
-                                        </div>
-                                    </li>
-
-                                    <li class="py-4">
-                                        <div class="flex items-center space-x-4">
-                                            <div class="flex-shrink-0">
-                                                <img class="h-8 w-8 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="">
-                                            </div>
-                                            <div class="min-w-0 flex-1">
-                                                <p class="truncate text-sm font-medium text-gray-900">Emily
-                                                    Selman</p>
-                                                <p class="truncate text-sm text-gray-500">@emilyselman</p>
-                                            </div>
-                                            <div>
-                                                <a href="#"
-                                                    class="inline-flex items-center rounded-full border border-gray-300 bg-white px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-gray-50">View</a>
-                                            </div>
-                                        </div>
-                                    </li>
-
-                                    <li class="py-4">
-                                        <div class="flex items-center space-x-4">
-                                            <div class="flex-shrink-0">
-                                                <img class="h-8 w-8 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="">
-                                            </div>
-                                            <div class="min-w-0 flex-1">
-                                                <p class="truncate text-sm font-medium text-gray-900">Kristin
-                                                    Watson</p>
-                                                <p class="truncate text-sm text-gray-500">@kristinwatson</p>
-                                            </div>
-                                            <div>
-                                                <a href="#"
-                                                    class="inline-flex items-center rounded-full border border-gray-300 bg-white px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-gray-50">View</a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="mt-6">
-                                <a href="#"
-                                    class="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">View
-                                    all</a>
-                            </div>
-                        </div>
-                    </div>
-                </section> --}}
       </div>
     </div>
   </div>
+
+  <x-modal align="center" max-width="sm" wire:model.defer="cleaned_rooms">
+    <x-card title="Cleaned Rooms">
+      <x-native-select label="Select Shift" wire:model="shift">
+        <option>-------</option>
+        <option value="1">1st Shift (8:00am - 8:00pm)</option>
+        <option value="2">2nd Shift (8:00pm - 8:00am)</option>
+      </x-native-select>
+
+      <div class="mt-8">
+        <ul role="list" class="">
+          @forelse ($cleans as $cleaning)
+            <li>
+              <div class="relative pb-8">
+                <span class="absolute top-5 left-5 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
+                <div class="relative flex items-start space-x-3">
+                  <div class="relative">
+                    <div class="bg-green-500 h-10 w-10 rounded-full grid place-content-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-8 fill-white">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path
+                          d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zM7 12a5 5 0 0 0 10 0h-2a3 3 0 0 1-6 0H7z" />
+                      </svg>
+                    </div>
+
+                    <span class="absolute -bottom-0.5 -right-1 rounded-xl bg-white px-0.5 py-px">
+                      <!-- Heroicon name: mini/chat-bubble-left-ellipsis -->
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5 fill-gray-700">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path
+                          d="M17 19h2v-8h-6v8h2v-6h2v6zM3 19V4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v5h2v10h1v2H2v-2h1zm4-8v2h2v-2H7zm0 4v2h2v-2H7zm0-8v2h2V7H7z" />
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <div class="flex space-x-1 text-sm">
+                      <h1>{{ \Carbon\Carbon::parse($cleaning->finish_at)->diffForHumans() }}
+                      </h1>
+                      @if ($cleaning->delayed == true)
+                        <h1>|</h1>
+                        <span class="px-2 text-sm bg-red-500 text-white rounded-full">Delayed</span>
+                      @else
+                      @endif
+                    </div>
+                    <div class="mt-1 text-sm font-semibold text-gray-700">
+                      <p>Room #{{ $cleaning->room->number }} |
+                        {{ ordinal($cleaning->room->floor->number) }} Floor
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          @empty
+            <div class="mt-4">
+              No Cleaned Room in this Shift...
+            </div>
+          @endforelse
+        </ul>
+      </div>
+    </x-card>
+  </x-modal>
 </div>

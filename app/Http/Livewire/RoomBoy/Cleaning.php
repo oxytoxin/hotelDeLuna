@@ -17,9 +17,27 @@ class Cleaning extends Component
 
     public $current_assigned_floor;
     public $filter = 'ASC';
+    public $shift;
     public $room;
     public $photo;
     public $show_designation_only = true;
+    public $cleaned_rooms = false;
+    public $date_from;
+    public $date_to;
+
+    public function updatedShift()
+    {
+        if ($this->shift == 1) {
+            $this->datefrom = Carbon::now()->format('Y-m-d') . ' 08:01:00';
+            $this->dateto = Carbon::now()->format('Y-m-d') . ' 20:00:00';
+        } else {
+            $this->datefrom = Carbon::now()->format('Y-m-d') . ' 20:01:00';
+            $this->dateto =
+                Carbon::now()
+                    ->addDay()
+                    ->format('Y-m-d') . ' 08:00:00';
+        }
+    }
 
     public function getDesignationProperty()
     {
@@ -187,6 +205,29 @@ class Cleaning extends Component
                 ->where('room_boy_id', auth()->user()->room_boy->id)
                 ->orderBy('id', $this->filter)
                 ->get(),
+
+            'cleans' => $this->getGeneratedQuery(),
         ]);
+    }
+
+    public function getGeneratedQuery()
+    {
+        if ($this->shift == 1) {
+            return CleaningModel::query()
+                ->where('room_boy_id', auth()->user()->room_boy->id)
+                ->where('created_at', '>=', $this->datefrom)
+                ->where('created_at', '<=', $this->dateto)
+                ->get();
+        } elseif ($this->shift == 2) {
+            return CleaningModel::query()
+                ->where('room_boy_id', auth()->user()->room_boy->id)
+                ->where('created_at', '>=', $this->datefrom)
+                ->where('created_at', '<=', $this->dateto)
+                ->get();
+        } else {
+            return CleaningModel::query()
+                ->where('room_boy_id', auth()->user()->room_boy->id)
+                ->get();
+        }
     }
 }
