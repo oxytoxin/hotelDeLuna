@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\V2\FrontDesk\Transactions;
 
 use Carbon\Carbon;
+use App\Models\Guest;
 use App\Models\Deposit;
 use Livewire\Component;
 use App\Models\Transaction;
@@ -61,7 +62,7 @@ class Deposits extends Component
             'front_desk_name' => auth()->user()->name,
             'user_id' => auth()->user()->id,
         ]);
-        Deposit::create([
+        $deposit = Deposit::create([
             'guest_id' => $this->guestId,
             'amount' => $this->depositAmount,
             'remarks' => $this->depositRemarks,
@@ -69,7 +70,10 @@ class Deposits extends Component
             'front_desk_name' => auth()->user()->name,
             'user_id' => auth()->user()->id,
         ]);
-
+        Guest::find($this->guestId)->update([
+            'total_deposits' => DB::raw('total_deposits + ' . $this->depositAmount),
+            'deposit_balance' => DB::raw('deposit_balance + ' . $this->depositAmount),
+        ]);
         DB::commit();
 
         $this->depositAmount = null;
@@ -168,10 +172,18 @@ class Deposits extends Component
         ]);
     }
 
+    public function getGuestDepositDetailsProperty()
+    {
+        return $this->cache(function () {
+            return Guest::where('id', $this->guestId)->select('total_deposits', 'deposit_balance')->first();
+        }, 'guest-deposit-details');
+    }
+
     public function render()
     {
         return view('livewire.v2.front-desk.transactions.deposits',[
             'deposits' => $this->deposits,
+            'guest'=> $this->guestDepositDetails,
         ]);
     }
 }

@@ -26,6 +26,7 @@ return new class extends Migration
             $table->boolean('totaly_checked_out')->default(false);
             $table->string('terminated_at')->nullable();
             $table->string('total_deposits')->default(0);
+            $table->string('deposit_balance')->default(0);
             $table->timestamps();
         });
     }

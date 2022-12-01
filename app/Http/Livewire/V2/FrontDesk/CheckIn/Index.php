@@ -147,12 +147,18 @@ class Index extends Component
                 'remarks' => 'Excess amount from check in',
                 'remaining'=> $this->guestExcessAmount,
             ]);
+            $this->viewGuest->update([
+                'is_checked_in' => true,
+                'check_in_at' => Carbon::now(),
+                'total_deposits' => $this->viewGuest->total_deposits + $this->guestExcessAmount,
+                'deposit_balance' => $this->viewGuest->deposit_balance + $this->guestExcessAmount,
+            ]);
+        }else{
+            $this->viewGuest->update([
+                'is_checked_in' => true,
+                'check_in_at' => Carbon::now(),
+            ]);
         }
-
-        $this->viewGuest->update([
-            'is_checked_in' => true,
-            'check_in_at' => Carbon::now(),
-        ]);
 
         RoomTransactionLog::create([
             'branch_id' => auth()->user()->branch_id,
