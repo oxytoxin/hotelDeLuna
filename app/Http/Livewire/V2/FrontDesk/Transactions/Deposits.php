@@ -16,6 +16,8 @@ class Deposits extends Component
 
     public $guestId;
 
+    public $guest;
+
     public $guestCheckInRoomId;
 
     public $depositAmount,$depositRemarks;
@@ -88,47 +90,35 @@ class Deposits extends Component
         $this->emit('transactionsUpdated');
     }
 
-    public function showDeductionModal(Deposit $deposit)
+    public function showDeductionModal()
     {
         $this->useCacheRows();
-        $this->deposit = $deposit;
         $this->deductionAmount = '';
         $this->dispatchBrowserEvent('show-deduction-modal');
     }
 
     public function saveDeduction()
     {
-        if ($this->deposit->amount == $this->deposit->deducted) {
-
-            $this->dispatchBrowserEvent('notify-alert', [
-                'type' => 'error',
-                'title' => 'Failed',
-                'message' => 'Deposit is already fully deducted',
-            ]);
-            return;
-        }
-
-        if ($this->deductionAmount + $this->deposit->deducted > $this->deposit->amount) {
-            $this->dispatchBrowserEvent('notify-alert', [
-                'type' => 'error',
-                'title' => 'Failed',
-                'message' => 'Deduction exceeds deposit amount',
-            ]);
-            return;
-        }
-
         $this->validate([
-            'deductionAmount' => 'required|numeric|max:' . $this->deposit->amount,
+            'deductionAmount'=>'required',
         ]);
 
-        $this->deposit->update([
-            'deducted' => $this->deposit->deducted + $this->deductionAmount,
-            'remaining' => $this->deposit->remaining - $this->deductionAmount,
-            'claimed_at'=>  $this->deductionAmount + $this->deposit->deducted == $this->deposit->amount ? Carbon::now() : null,
-        ]);
+       if ($this->deductionAmount > $this->guest->deposit_balance) {
+            $this->dispatchBrowserEvent('notify-alert', [
+                'type' => 'error',
+                'title' => 'error',
+                'message' => 'Invalid Amount',
+            ]);
+            return;
+       }
+
+       $this->guest->update([
+            'deposit_balance'=>$this->guest->deposit_balance - $this->deductionAmount,
+       ]);
+
+       $this->guest->refresh();
 
         $this->emit('transactionUpdated');
-
         $this->dispatchBrowserEvent('notify-alert', [
             'type' => 'success',
             'title' => 'Success',
@@ -172,18 +162,18 @@ class Deposits extends Component
         ]);
     }
 
-    public function getGuestDepositDetailsProperty()
+    public function mount()
     {
-        return $this->cache(function () {
-            return Guest::where('id', $this->guestId)->select('total_deposits', 'deposit_balance')->first();
-        }, 'guest-deposit-details');
+        $this->guest = Guest::find($this->guestId);
     }
 
     public function render()
     {
         return view('livewire.v2.front-desk.transactions.deposits',[
             'deposits' => $this->deposits,
-            'guest'=> $this->guestDepositDetails,
+            'deposit_balance'=> $this->guest->deposit_balance,
+            'total_deposits'=>$this->guest->total_deposits,
+            'total_deduction'=>$this->guest->total_deposits - $this->guest->deposit_balance
         ]);
     }
 }

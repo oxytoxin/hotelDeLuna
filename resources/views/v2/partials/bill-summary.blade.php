@@ -51,9 +51,36 @@
                     </div>
                 @endforeach
                 <div class="flex justify-between py-3 text-sm font-medium">
-                    <dt class="text-gray-500">Total</dt>
+                    <dt class="font-bold text-gray-500">Total</dt>
                     <dd class="font-bold text-gray-900 whitespace-nowrap">
                         PHP {{ number_format($totalDeposit, 2) }}
+                    </dd>
+                </div>
+                <div class="flex justify-between py-3 text-sm font-medium">
+                    <dt class="text-red-500">
+                        Deduction
+                    </dt>
+                    <dd class="font-bold text-red-500 whitespace-nowrap">
+                        - PHP {{ number_format($guest->total_deposits - $guest->deposit_balance, 2) }}
+                    </dd>
+                </div>
+                <div class="flex justify-between py-3 text-sm font-medium">
+                    <dt class="font-bold text-gray-500">Balance</dt>
+                    @php
+                        $tvRemoteAndKey = $deposits->first()->claimed_at ? 0 : 200;
+                        
+                    @endphp
+                    <dd class="font-bold text-gray-900 whitespace-nowrap">
+                        PHP {{ number_format($guest->deposit_balance + $tvRemoteAndKey, 2) }}
+                    </dd>
+                </div>
+                <div class="flex justify-between py-3 text-sm font-medium">
+                    <dt class="font-bold text-gray-500"></dt>
+                    <dd class="font-bold text-gray-900 whitespace-nowrap">
+                        @if ($guest->deposit_balance > 0)
+                            <x-my.button-success wire:click="claimAllDeposits"
+                                label="Claim All Deposits" />
+                        @endif
                     </dd>
                 </div>
             </dl>

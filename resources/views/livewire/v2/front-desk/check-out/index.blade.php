@@ -46,14 +46,14 @@
                 <button id="searchButton"
                     type="button"
                     wire:click.prevent="searchGuest"
-                    class="mt-1 inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
+                    class="inline-flex items-center justify-center px-4 py-2 mt-1 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
                     Search
                 </button>
             @else
                 <button id="clearSearchButton"
                     type="button"
                     wire:click="clearSearch"
-                    class="mt-1 inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:w-auto">
+                    class="inline-flex items-center justify-center px-4 py-2 mt-1 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:w-auto">
                     Clear Search
                 </button>
             @endif
@@ -398,21 +398,21 @@
             <div>
                 <div>
                     <div class="border-b border-gray-200">
-                        <nav class="-mb-px flex space-x-8"
+                        <nav class="flex -mb-px space-x-8"
                             aria-label="Tabs">
                             <button type="button"
                                 x-on:click="tab = '1'"
-                                class="whitespace-nowrap border-b-2 border-transparent px-1 py-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
+                                class="px-1 py-4 text-sm font-medium text-gray-500 border-b-2 border-transparent whitespace-nowrap hover:border-gray-300 hover:text-gray-700">
                                 Details
                             </button>
                             <button type="button"
                                 x-on:click="tab = '2'"
-                                class="whitespace-nowrap border-b-2 border-transparent px-1 py-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
+                                class="px-1 py-4 text-sm font-medium text-gray-500 border-b-2 border-transparent whitespace-nowrap hover:border-gray-300 hover:text-gray-700">
                                 Transactions
                             </button>
                             <button type="button"
                                 x-on:click="tab = '3'"
-                                class="whitespace-nowrap border-b-2 border-transparent px-1 py-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">
+                                class="px-1 py-4 text-sm font-medium text-gray-500 border-b-2 border-transparent whitespace-nowrap hover:border-gray-300 hover:text-gray-700">
                                 Deposits
                             </button>
                         </nav>
@@ -420,7 +420,7 @@
                 </div>
             </div>
             <div x-show="tab=='1'"
-                class="flex flex-1 items-stretch space-x-5 overflow-hidden">
+                class="flex items-stretch flex-1 space-x-5 overflow-hidden">
                 @include('v2.partials.guest-details')
 
                 <!-- Details sidebar -->
@@ -435,9 +435,7 @@
                 x-show="tab=='3'"
                 wire:key="deposits">
                 @include('v2.partials.deposits')
-
             </div>
-
         </div>
         <div>
             <x-my.modal title="Override payable amount"
@@ -471,10 +469,10 @@
                 x-transition:leave="ease-in duration-200"
                 x-transition:leave-start="opacity-100"
                 x-transition:leave-end="opacity-0"
-                class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+                class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"></div>
 
             <div class="fixed inset-0 z-50 overflow-y-auto">
-                <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div class="flex items-end justify-center min-h-full p-4 text-center sm:items-center sm:p-0">
 
                     <div x-cloak
                         x-show="reminder"
@@ -484,7 +482,7 @@
                         x-transition:leave="ease-in duration-200"
                         x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                        class="relative px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                         <div>
 
                             <div class="mt-2 text-center sm:mt-5">
@@ -501,7 +499,7 @@
                         <div class="mt-5 sm:mt-6">
                             <button type="button"
                                 x-on:click="next()"
-                                class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-red-500 sm:text-sm"
+                                class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-red-500 sm:text-sm"
                                 x-text="reminderCount == 2 ? 'Check Out' : 'Next'">
                             </button>
                         </div>

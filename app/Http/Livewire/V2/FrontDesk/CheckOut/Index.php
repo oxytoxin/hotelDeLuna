@@ -112,36 +112,50 @@ class Index extends Component
     }
 
 
-    public function claimDeposit(Deposit $deposit)
-    {
+    // public function claimDeposit(Deposit $deposit)
+    // {
 
-        if ($deposit->claimed_at) {
-            $this->dispatchBrowserEvent('notify-alert', [
-                'type' => 'error',
-                'title' => 'Failed',
-                'message' => 'Deposit is already claimed',
-            ]);
-            return;
-        }
+    //     if ($deposit->claimed_at) {
+    //         $this->dispatchBrowserEvent('notify-alert', [
+    //             'type' => 'error',
+    //             'title' => 'Failed',
+    //             'message' => 'Deposit is already claimed',
+    //         ]);
+    //         return;
+    //     }
         
-        if ($deposit->amount == $deposit->deducted) {
-            $this->dispatchBrowserEvent('notify-alert', [
-                'type' => 'error',
-                'title' => 'Failed',
-                'message' => 'Deposit is already fully deducted',
-            ]);
-            return;
-        }
+    //     if ($deposit->amount == $deposit->deducted) {
+    //         $this->dispatchBrowserEvent('notify-alert', [
+    //             'type' => 'error',
+    //             'title' => 'Failed',
+    //             'message' => 'Deposit is already fully deducted',
+    //         ]);
+    //         return;
+    //     }
 
-        $deposit->update([
-            'claimed_at' => Carbon::now(),
+    //     $deposit->update([
+    //         'claimed_at' => Carbon::now(),
+    //     ]);
+
+    //     $this->dispatchBrowserEvent('notify-alert', [
+    //         'type' => 'success',
+    //         'title' => 'Success',
+    //         'message' => 'Deposit claimed successfully',
+    //     ]);
+    // }
+
+    public function claimAllDeposits()
+    {
+        $this->guest->deposits->first()->update([
+            'claimed_at'=> now(),
         ]);
 
-        $this->dispatchBrowserEvent('notify-alert', [
-            'type' => 'success',
-            'title' => 'Success',
-            'message' => 'Deposit claimed successfully',
+        $this->guest->update([
+            'deposit_balance'=>0
         ]);
+
+        $this->guest->refresh();
+
     }
 
     public function validateCheckOut()
@@ -156,7 +170,7 @@ class Index extends Component
             return;
         }
 
-        $has_unclaimed_deposit = $this->guest->deposits()->where('claimed_at', null)->exists();
+        $has_unclaimed_deposit = $this->guest->deposit_balance > 0;
 
         if ($has_unclaimed_deposit) {
             $this->dispatchBrowserEvent('notify-alert', [
