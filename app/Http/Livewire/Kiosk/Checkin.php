@@ -186,9 +186,12 @@ class Checkin extends Component
 
     public function confirmCheckin()
     {
+        //calidate not allow number in name
         if ($this->customer_number != null) {
             $this->validate([
-                'customer_name' => 'required|min:3',
+                //customer_name should not contain number and special characters
+                'customer_name' => 'required|min:3|regex:/^[a-zA-Z\s]+$/',
+                // 'customer_name' => 'required|min:3|regex:/^[\pL\s]+$/u',
                 'customer_number' => 'required|numeric|digits:9',
             ]);
             $transaction = \App\Models\Guest::whereYear(
@@ -292,7 +295,7 @@ class Checkin extends Component
             );
         } else {
             $this->validate([
-                'customer_name' => 'required|min:3',
+                'customer_name' => 'required|min:3|regex:/^[a-zA-Z\s]+$/',
             ]);
             $transaction = \App\Models\Guest::whereYear(
                 'created_at',
@@ -343,7 +346,7 @@ class Checkin extends Component
                         ' (' .
                         $type->name .
                         ') for ' .
-                       $rate->staying_hour->number.
+                        $rate->staying_hour->number .
                         ' hours',
                 ]);
             }
@@ -353,7 +356,7 @@ class Checkin extends Component
                 'guest_id' => $guest->id,
                 'transaction_type_id' => 2,
                 'payable_amount' => 200,
-                'remarks' => 'Guest deposit: Room Key & TV Remote',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                'remarks' => 'Guest deposit: Room Key & TV Remote',
             ]);
             Deposit::create([
                 'guest_id' => $guest->id,
