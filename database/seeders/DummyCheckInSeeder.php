@@ -64,6 +64,7 @@ class DummyCheckInSeeder extends Seeder
                 'remaining' => 200,
                 'remarks' => 'Deposit for remote and key',
             ]);
+
             $selected_room = Room::find($checkInDetail->room_id);
             $selected_room->update([
                 'room_status_id' => 6,

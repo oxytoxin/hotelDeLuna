@@ -18,7 +18,7 @@
             <div x-cloak
                 x-show="formOpen"
                 x-collapse>
-                <div class="mt-5 rounded-lg bg-gray-100 p-4">
+                <div class="p-4 mt-5 bg-gray-100 rounded-lg">
                     <div>
                         <div class="grid grid-cols-1 gap-4">
                             <x-my.input label="Deposit Amount"
@@ -46,8 +46,8 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-3 flex flex-col">
-                <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="flex flex-col mt-3">
+                <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div class="inline-block min-w-full py-2 align-middle">
                         <div class="overflow-hidden shadow-sm ring-1 ring-black ring-opacity-5">
                             <table class="min-w-full divide-y divide-gray-300">
@@ -65,24 +65,10 @@
                                             class="px-3 py-3.5 text-left text-sm font-semibold text-white">
                                             Deposit At
                                         </th>
-                                        <th scope="col"
-                                            class="px-3 py-3.5 text-left text-sm font-semibold text-white">
-                                            Deduction
-                                        </th>
-                                        <th scope="col"
-                                            class="px-3 py-3.5 text-left text-sm font-semibold text-white">
-                                            Retrieved At
-                                        </th>
-                                        <th scope="col"
-                                            class="px-3 py-3.5 text-left text-sm font-semibold text-white">
-                                            Claimable
-                                        </th>
-                                        <th scope="col"
-                                            class="px-3 py-3.5 text-left text-sm font-semibold text-white">
-                                        </th>
+
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-gray-200 bg-white">
+                                <tbody class="bg-white divide-y divide-gray-200">
                                     @forelse ($deposits as $key=>$deposit)
                                         <tr wire:key="{{ $key . $deposit->id }}">
                                             <td class="py-3.5 pl-4 pr-3 text-xs text-gray-900 sm:pl-6 lg:pl-8">
@@ -94,44 +80,10 @@
                                             <td class="py-3.5 pl-4 pr-3 text-xs text-gray-900 sm:pl-6 lg:pl-8">
                                                 {{ $deposit->created_at->format('M d, Y h:i:s A') }}
                                             </td>
-                                            <td class="py-3.5 pl-4 pr-3 text-xs text-gray-900 sm:pl-6 lg:pl-8">
-                                                ₱{{ $deposit->deducted ?? '0' }}
-                                            </td>
-                                            <td class="py-3.5 pl-4 pr-3 text-xs text-gray-900 sm:pl-6 lg:pl-8">
-                                                @if ($deposit->claimed_at)
-                                                    {{ Carbon\Carbon::parse($deposit->paid_at)->format('M d, Y h:i:s A') }}
-                                                @else
-                                                    'Not yet'
-                                                @endif
-                                            </td>
-                                            <td class="py-3.5 pl-4 pr-3 text-xs text-gray-900 sm:pl-6 lg:pl-8">
-                                                ₱{{ $deposit->amount - $deposit->deducted }}
-                                            </td>
-                                            <td class="py-2 pl-4 pr-3 text-xs text-gray-900 sm:pl-6 lg:pl-8">
-                                                <div class="flex gap-2">
-                                                    @if (!$deposit->claimed_at)
-                                                        <x-my.button-warning label="Deduct"
-                                                            py="py-1"
-                                                            wire:click="showDeductionModal({{ $deposit->id }})" />
-                                                        <x-my.button-success label="Claim"
-                                                            py="py-1"
-                                                            x-on:click="$dispatch('confirm',{
-                                                            title : 'Are you sure?',
-                                                            message : 'Are you sure you want to proceed? Guest has PHP {{ $deposit->amount - $deposit->deducted }} left to claim.',
-                                                            confirmButtonText : 'Confirm',
-                                                            cancelButtonText : 'Cancel',
-                                                            confirmMethod : 'claimDeposit',
-                                                            confirmParams : {{ $deposit->id }}
-                                                        })" />
-                                                    @else
-                                                        <span> Claimed</span>
-                                                    @endif
-                                                </div>
-                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4"
+                                            <td colspan="3"
                                                 class="py-3.5 pl-4 pr-3 text-center text-xs text-gray-900 sm:pl-6 lg:pl-8">
                                                 No data available
                                             </td>
@@ -143,7 +95,34 @@
                     </div>
                 </div>
             </div>
-
+            <div class="pt-2 mt-2">
+                <dl class="pt-6 space-y-6 text-sm font-medium text-gray-500 border-gray-200">
+                    <div class="flex justify-between">
+                        <dt>
+                            Total Deposits
+                        </dt>
+                        <dd class="text-gray-900">
+                            ₱ {{ $guest->total_deposits }}
+                        </dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt>
+                            Total Deducations
+                        </dt>
+                        <dd class="text-gray-900">
+                            ₱ {{ $guest->total_deposits - $guest->deposit_balance }}
+                        </dd>
+                    </div>
+                    <div class="flex items-center justify-between pt-6 text-gray-900 border-t border-gray-200">
+                        <dt class="text-base">
+                            Total Balance
+                        </dt>
+                        <dd class="text-base">
+                            ₱ {{ $guest->deposit_balance }}
+                        </dd>
+                    </div>
+                </dl>
+            </div>
         </div>
     </div>
     <x-my.modal title="Deposit Deduction"

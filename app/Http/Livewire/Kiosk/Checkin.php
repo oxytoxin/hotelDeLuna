@@ -357,7 +357,7 @@ class Checkin extends Component
                 'guest_id' => $guest->id,
                 'transaction_type_id' => 2,
                 'payable_amount' => 200,
-                'remarks' => 'Guest deposit: Room Key & TV Remote',
+                'remarks' => 'Guest deposit: Room Key & TV Remote',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
             ]);
             Deposit::create([
                 'guest_id' => $guest->id,
