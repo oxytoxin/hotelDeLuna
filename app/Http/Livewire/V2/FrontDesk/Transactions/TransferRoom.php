@@ -39,7 +39,7 @@ class TransferRoom extends Component
 
     public $authorizationCode;
 
-    public $newRoomTypeId, $newRoomFloorId, $newRoomId, $newRoomAmount, $reason, $saveAsDeposit = 0, $newRoomRate;
+    public $newRoomTypeId, $newRoomFloorId, $newRoomId, $newRoomAmount, $reason, $saveAsDeposit = 0, $newRoomRate, $isLongStay = false, $numberOfDays = 0;
 
     public $hasAvailableRoom = false;
 
@@ -132,6 +132,7 @@ class TransferRoom extends Component
 
     public function mount()
     {
+    
         $this->roomTypes = Type::where('branch_id', auth()->user()->branch_id)->get();
         $this->floors = Floor::where('branch_id', auth()->user()->branch_id)->get();
         $this->availableRooms = Room::where('floor_id', $this->newRoomFloorId)
@@ -153,7 +154,11 @@ class TransferRoom extends Component
             ->where('type_id', $this->newRoomTypeId)
             ->where('staying_hour_id', $this->oldCheckInStayingHourId)
             ->first();
-        $this->newRoomAmount = $this->newRoomRate->amount;
+        if($this->isLongStay){
+            $this->newRoomAmount = $this->newRoomRate->amount * $this->numberOfDays;
+        }else{
+            $this->newRoomAmount = $this->newRoomRate->amount;
+        }
     }
     public function render()
     {
