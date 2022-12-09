@@ -23,10 +23,11 @@ class Amenities extends Component
 
     public $requestableItems = [];
 
-    public $transactionToPay;
+  
 
     protected $listeners = ['confirmSaveRecord','payTransaction','depositDeducted'=>'$refresh'];
 
+    public $transactionToPay;
     public $transactionToPayAmount = 0;
     public $transactionToPayGivenAmount = 0;
     public $transactionToPayExcessAmount = 0;
