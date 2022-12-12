@@ -9,7 +9,10 @@
                         Deposits
                     </h1>
                 </div>
-                <div>
+                <div class="flex space-x-3">
+                    <x-my.button-warning wire:click="showDeductionModal"
+                        py="py-1"
+                        label="Deduct" />
                     <x-my.button-primary py="py-1"
                         x-on:click="formOpen = !formOpen"
                         label="Add New" />
@@ -102,7 +105,7 @@
                             Total Deposits
                         </dt>
                         <dd class="text-gray-900">
-                            ₱ {{ $guest->total_deposits }}
+                            ₱ {{ $total_deposits }}
                         </dd>
                     </div>
                     <div class="flex justify-between">
@@ -110,7 +113,7 @@
                             Total Deducations
                         </dt>
                         <dd class="text-gray-900">
-                            ₱ {{ $guest->total_deposits - $guest->deposit_balance }}
+                            ₱ {{ $total_deduction }}
                         </dd>
                     </div>
                     <div class="flex items-center justify-between pt-6 text-gray-900 border-t border-gray-200">
@@ -118,7 +121,7 @@
                             Total Balance
                         </dt>
                         <dd class="text-base">
-                            ₱ {{ $guest->deposit_balance }}
+                            ₱ {{ $deposit_balance }}
                         </dd>
                     </div>
                 </dl>

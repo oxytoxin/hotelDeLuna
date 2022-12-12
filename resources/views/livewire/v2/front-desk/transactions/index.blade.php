@@ -203,6 +203,7 @@
                 <div x-bind:class="openGuestInfo ? 'translate-x-0  duration-300 ease-in-out' :
                     'col-span-12  duration-300 ease-in-out'"
                     class="col-span-9 rounded-lg bg-white shadow">
+
                     {{-- <button type="button"
                         x-on:click="openGuestInfo = !openGuestInfo"
                         class="absolute top-2 -left-4 inline-flex items-center rounded-full border border-transparent bg-primary-600 p-1.5 text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
@@ -240,6 +241,8 @@
                                     'oldRoomNumber' => $guest->checkInDetail->room->number,
                                     'oldRoomTypeName' => $guest->checkInDetail->room->type->name,
                                     'guestCheckInDetailId' => $guest->checkInDetail->id,
+                                    'isLongStay' => $guest->checkInDetail->is_long_stay,
+                                    'numberOfDays' => $guest->checkInDetail->number_of_days,
                                 ])
                             </div>
                         @break

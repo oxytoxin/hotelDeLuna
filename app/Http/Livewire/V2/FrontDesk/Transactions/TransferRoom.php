@@ -7,6 +7,7 @@ use App\Models\Rate;
 use App\Models\Room;
 use App\Models\Type;
 use App\Models\Floor;
+use App\Models\Guest;
 use App\Models\Deposit;
 use Livewire\Component;
 use App\Models\RoomChange;
@@ -39,11 +40,78 @@ class TransferRoom extends Component
 
     public $authorizationCode;
 
-    public $newRoomTypeId, $newRoomFloorId, $newRoomId, $newRoomAmount, $reason, $saveAsDeposit = 0, $newRoomRate;
+    public $newRoomTypeId, $newRoomFloorId, $newRoomId, $newRoomAmount, $reason, $saveAsDeposit = 0, $newRoomRate, $isLongStay = false, $numberOfDays = 0;
 
     public $hasAvailableRoom = false;
 
     protected $listeners = ['confirmSaveChanges', 'payTransaction', 'depositDeducted' => '$refresh'];
+
+        
+    public $transactionToPayAmount = 0;
+    public $transactionToPayGivenAmount = 0;
+    public $transactionToPayExcessAmount = 0;
+    public $transactionToPaySaveExcessAmount = false;
+
+    public function payTransaction(Transaction $transaction)
+    {
+        $this->transactionToPay = $transaction;
+
+        $this->transactionToPayAmount = $transaction->payable_amount;
+        $this->transactionToPayGivenAmount = 0;
+        $this->transactionToPayExcessAmount = 0;
+
+        $this->dispatchBrowserEvent('show-pay-modal');
+    }
+
+    public function updatedTransactionToPayGivenAmount()
+    {
+        if ($this->transactionToPayGivenAmount > $this->transactionToPayAmount) {
+            $this->transactionToPayExcessAmount = $this->transactionToPayGivenAmount - $this->transactionToPayAmount;
+        } else {
+            $this->transactionToPayExcessAmount = 0;
+        }
+    }
+
+    public function payTransactionConfirm()
+    {
+        if ($this->transactionToPayGivenAmount < $this->transactionToPayAmount) {
+            $this->dispatchBrowserEvent('show-alert', [
+                'type' => 'error',
+                'title' => 'Invalid Amount',
+                 'message' => 'Given amount is less than the payable amount.'
+             ]);
+             return;
+        }
+
+        if ($this->transactionToPayExcessAmount) {
+            Deposit::create([
+                'guest_id' => $this->guestId,
+                'amount' => $this->transactionToPayExcessAmount,
+                'remarks' => 'Excess amount from transaction :'.$this->transactionToPay->remarks,
+                'remaining'=> $this->transactionToPayExcessAmount,
+            ]);
+
+            $guest = Guest::find($this->guestId);
+            $guest->update([
+                'total_deposits' => $guest->total_deposits + $this->transactionToPayExcessAmount,
+                'deposit_balance' => $guest->deposit_balance + $this->transactionToPayExcessAmount,
+            ]);
+        };
+
+        $this->transactionToPay->update([
+            'paid_at' => Carbon::now(),
+        ]);
+
+        $this->dispatchBrowserEvent('close-pay-modal');
+        $this->dispatchBrowserEvent('notify-alert', [
+            'type' => 'success',
+            'title' => 'Transaction Paid',
+            'message' => 'Transaction has been paid.'
+        ]);
+
+        $this->emit('transactionUpdated');
+    }
+
 
     public function payWithDeposit($transaction_id, $payable_amount)
     {
@@ -51,19 +119,6 @@ class TransferRoom extends Component
             'guest_id' => $this->guestId,
             'transaction_id' => $transaction_id,
             'payable_amount' => $payable_amount
-        ]);
-    }
-    public function payTransaction(Transaction $transaction)
-    {
-        $transaction->update([
-            'paid_at' => Carbon::now(),
-        ]);
-        $this->emit('transactionUpdated');
-
-        $this->dispatchBrowserEvent('notify-alert', [
-            'type' => 'success',
-            'title' => 'Transaction Paid',
-            'message' => 'Transaction has been paid'
         ]);
     }
 
@@ -132,6 +187,7 @@ class TransferRoom extends Component
 
     public function mount()
     {
+    
         $this->roomTypes = Type::where('branch_id', auth()->user()->branch_id)->get();
         $this->floors = Floor::where('branch_id', auth()->user()->branch_id)->get();
         $this->availableRooms = Room::where('floor_id', $this->newRoomFloorId)
@@ -153,7 +209,11 @@ class TransferRoom extends Component
             ->where('type_id', $this->newRoomTypeId)
             ->where('staying_hour_id', $this->oldCheckInStayingHourId)
             ->first();
-        $this->newRoomAmount = $this->newRoomRate->amount;
+        if($this->isLongStay){
+            $this->newRoomAmount = $this->newRoomRate->amount * $this->numberOfDays;
+        }else{
+            $this->newRoomAmount = $this->newRoomRate->amount;
+        }
     }
     public function render()
     {

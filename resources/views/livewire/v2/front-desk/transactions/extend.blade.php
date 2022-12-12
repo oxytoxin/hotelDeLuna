@@ -95,14 +95,7 @@
                                                 <div class="flex space-x-3">
                                                     @if ($transaction->paid_at == null)
                                                         <x-my.button-success label="Pay"
-                                                            x-on:click="$dispatch('confirm',{
-                                                                title : 'Are you sure?',
-                                                                message : 'Are you sure you want to proceed?',
-                                                                confirmButtonText : 'Confirm',
-                                                                cancelButtonText : 'Cancel',
-                                                                confirmMethod : 'payTransaction',
-                                                                confirmParams :{{ $transaction->id }},
-                                                        })"
+                                                            wire:click="payTransaction({{ $transaction->id }})"
                                                             py="py-1" />
                                                         <x-my.button-warning label="Pay With Deposit"
                                                             wire:click="payWithDeposit({{ $transaction->id }}, {{ $transaction->payable_amount }})"
@@ -126,6 +119,48 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div wire:key="modals-pay">
+                <form wire:submit.prevent="payTransactionConfirm">
+                    @csrf
+                    <x-my.modal title="Pay Transaction : ₱ {{ $transactionToPayAmount }} "
+                        :showOn="['show-pay-modal']"
+                        :closeOn="['close-pay-modal']">
+                        <div class="grid space-y-4"
+                            x-animate>
+                            <x-my.input label="Enter Amount"
+                                wire:model.debounce.500ms="transactionToPayGivenAmount"
+                                numberOnly
+                                required />
+                            <x-my.input label="Excess Amount"
+                                wire:model="transactionToPayExcessAmount"
+                                numberOnly
+                                required />
+                            @if ($this->transactionToPayExcessAmount > 0)
+                                <div class="flex items-center space-x-3">
+                                    <input id="deposit"
+                                        aria-describedby="comments-description"
+                                        name="deposit"
+                                        type="checkbox"
+                                        wire:model.defer="transactionToPaySaveExcessAmount"
+                                        class="w-4 h-4 border-gray-300 rounded text-primary-600 focus:ring-primary-500">
+                                    <span>
+                                        Save excess amount as deposit
+                                    </span>
+                                </div>
+                            @endif
+                        </div>
+                        <x-slot name="footer">
+                            <div class="flex items-center space-x-3">
+                                <x-my.button-secondary x-on:click="close()"
+                                    label="Cancel" />
+                                <x-my.button-success type="submit"
+                                    loadingOn="payTransactionConfirm"
+                                    label="Save" />
+                            </div>
+                        </x-slot>
+                    </x-my.modal>
+                </form>
             </div>
         </div>
     @else
@@ -252,4 +287,5 @@
             </div>
         </div>
     @endif
+
 </div>

@@ -269,6 +269,8 @@ class Checkin extends Component
                     'room_id' => $this->get_room['room_id'],
                     'rate_id' => $this->get_room['rate_id'],
                     'static_amount' => $rate->amount,
+                    'is_long_stay' => 1,
+                    'number_of_days'=> $this->days_stay,
                     'static_hours_stayed' =>
                         $rate->staying_hour->number * $this->days_stay,
                 ]);
@@ -371,6 +373,8 @@ class Checkin extends Component
                     'room_id' => $this->get_room['room_id'],
                     'rate_id' => $this->get_room['rate_id'],
                     'static_amount' => $rate->amount,
+                    'is_long_stay' => 1,
+                    'number_of_days'=> $this->days_stay,
                     'static_hours_stayed' =>
                         $rate->staying_hour->number * $this->days_stay,
                 ]);

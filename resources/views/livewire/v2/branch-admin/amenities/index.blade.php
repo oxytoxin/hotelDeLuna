@@ -62,7 +62,7 @@
 
     {{-- modal --}}
 
-    <div wire:key="modals">
+    <div wire:key="modals-amenity">
         <form wire:submit.prevent="save">
             @csrf
             <x-my.modal title="{{ $editMode ? 'Edit Amenity' : 'Create Amenity' }}"
@@ -89,4 +89,5 @@
             </x-my.modal>
         </form>
     </div>
+
 </div>
