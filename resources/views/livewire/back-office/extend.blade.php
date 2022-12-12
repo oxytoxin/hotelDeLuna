@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="mt-10 text-center text-2xl text-gray-700 font-bold">
-        <h1>NUMBER OF STAY REPORT</h1>
+        <h1>EXTEND REPORT</h1>
         @if ($date)
           <p class="text-sm font-semibold">({{ \Carbon\Carbon::parse($date)->format('F d, Y') }})</p>
           @if ($shift)
