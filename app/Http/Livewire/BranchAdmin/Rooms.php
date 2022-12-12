@@ -58,7 +58,9 @@ class Rooms extends Component
             ];
         } else {
             return [
-                'number' => 'required|numeric|min:1|unique:rooms,number,' . $this->edit_id,
+                'number' =>
+                    'required|numeric|min:1|unique:rooms,number,' .
+                    $this->edit_id,
                 'floor_id' => 'required',
                 'room_status_id' => 'required',
                 'type_id' => 'required',
@@ -70,7 +72,7 @@ class Rooms extends Component
     {
         $this->edit_id = $edit_id;
         $this->room = Room::find($edit_id);
-        // if ($this->room->status_is() != available() 
+        // if ($this->room->status_is() != available()
         // && $this->room->status_is() != unavailable()
         // &&  $this->room->status_is() != maintenance()
         // &&  $this->room->status_is() != reserved()
@@ -98,12 +100,13 @@ class Rooms extends Component
         $room_exist_in_this_branch = Room::where('number', $this->number)
             ->whereHas('floor', function ($query) {
                 $query->where('branch_id', auth()->user()->branch_id);
-            })->exists();
+            })
+            ->exists();
 
         if ($room_exist_in_this_branch) {
             $this->notification()->error(
                 $title = 'Error',
-                $description = 'Room number already exist in this branch',
+                $description = 'Room number already exist in this branch'
             );
             return;
         }
@@ -119,9 +122,8 @@ class Rooms extends Component
 
         $this->notification()->success(
             $title = 'Success',
-            $description = 'Room created successfully',
+            $description = 'Room created successfully'
         );
-
     }
 
     public function update()
@@ -141,7 +143,6 @@ class Rooms extends Component
             $title = 'Success',
             $description = 'Successfully Updated'
         );
-
     }
 
     public function mount()
@@ -156,25 +157,32 @@ class Rooms extends Component
             'floor_number' => 'required|numeric|min:1',
         ]);
 
-        $floor_exist_in_this_branch = auth()->user()->branch->floors()->where('number', $this->floor_number)->exists();
+        $floor_exist_in_this_branch = auth()
+            ->user()
+            ->branch->floors()
+            ->where('number', $this->floor_number)
+            ->exists();
 
         if ($floor_exist_in_this_branch) {
             $this->notification()->error(
                 $title = 'Error',
-                $description = 'Floor number already exist in this branch',
+                $description = 'Floor number already exist in this branch'
             );
             return;
         }
 
-        auth()->user()->branch->floors()->create([
-            'number' => $this->floor_number,
-        ]);
+        auth()
+            ->user()
+            ->branch->floors()
+            ->create([
+                'number' => $this->floor_number,
+            ]);
 
         $this->reset('floor_number');
 
         $this->notification()->success(
             $title = 'Success',
-            $description = 'Floor created successfully',
+            $description = 'Floor created successfully'
         );
     }
 
@@ -186,11 +194,20 @@ class Rooms extends Component
                 ->when($this->filter['floor'] != 'all', function ($query) {
                     return $query->where('floor_id', $this->filter['floor']);
                 })
-                ->when($this->filter['room_status'] != 'all', function ($query) {
-                    return $query->where('room_status_id', $this->filter['room_status']);
+                ->when($this->filter['room_status'] != 'all', function (
+                    $query
+                ) {
+                    return $query->where(
+                        'room_status_id',
+                        $this->filter['room_status']
+                    );
                 })
                 ->when($this->search != '', function ($query) {
-                    return $query->where('number', 'like', '%' . $this->search . '%');
+                    return $query->where(
+                        'number',
+                        'like',
+                        '%' . $this->search . '%'
+                    );
                 })
                 ->with(['floor', 'room_status', 'type'])
                 ->paginate(10),
@@ -199,7 +216,13 @@ class Rooms extends Component
 
     public function add()
     {
-        $this->reset('number', 'description', 'floor_id', 'room_status_id', 'type_id');
+        $this->reset(
+            'number',
+            'description',
+            'floor_id',
+            'room_status_id',
+            'type_id'
+        );
         $this->mode = 'create';
         $this->showModal = true;
     }
