@@ -4,7 +4,7 @@ namespace App\Http\Livewire\V2\BranchAdmin\FrontDesks;
 
 use Livewire\Component;
 use App\Traits\WithCaching;
-use App\Models\FrontDesk;
+use App\Models\Frontdesk;
 use Livewire\WithPagination;
 class Index extends Component
 {
@@ -42,7 +42,7 @@ class Index extends Component
 
     public function getFrontDesksQueryProperty()
     {
-        return FrontDesk::where('branch_id',auth()->user()->branch_id);
+        return Frontdesk::where('branch_id',auth()->user()->branch_id);
     }
 
     public function getFrontDesksProperty()
@@ -54,7 +54,7 @@ class Index extends Component
 
     public function makeFrontDesk()
     {
-        $this->frontdesk = FrontDesk::make([
+        $this->frontdesk = Frontdesk::make([
             'branch_id' => auth()->user()->branch_id,
             'is_active' => true,
         ]);
@@ -68,7 +68,7 @@ class Index extends Component
         $this->dispatchBrowserEvent('show-modal');
     }
 
-    public function edit(FrontDesk $frontdesk)
+    public function edit(Frontdesk $frontdesk)
     {
         $this->useCacheRows();
         $this->frontdesk = $frontdesk;
