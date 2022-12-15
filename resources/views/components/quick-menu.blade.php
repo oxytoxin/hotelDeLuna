@@ -123,5 +123,7 @@
             </div>
         </div>
     </div>
-    @livewire('v2.front-desk.end-shift')
+    @if (auth()->user()->role_id == 2)
+        @livewire('v2.front-desk.end-shift')
+    @endif
 </div>
