@@ -20,8 +20,7 @@ return new class extends Migration
             $table->string('quantity');
             $table->string('price');
             $table->string('additional_charge')->nullable();
-            $table->string('front_desk_name')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('front_desk_names')->nullable();
             $table->timestamps();
         });
     }

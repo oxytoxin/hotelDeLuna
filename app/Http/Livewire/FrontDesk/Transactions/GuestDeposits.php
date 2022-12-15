@@ -34,8 +34,7 @@ class GuestDeposits extends Component
             'form.remarks' => 'nullable|string',
             'form.deducted' => 'nullable',
             'form.claimed_at' => 'nullable',
-            'form.front_desk_name' => 'nullable',
-            'form.user_id' => 'nullable',
+            'form.front_desk_names' => 'nullable',
         ];
     }
 
@@ -46,10 +45,11 @@ class GuestDeposits extends Component
 
     public function makeNewForm()
     {
+        $ids = json_decode(auth()->user()->assigned_frontdesks);
+        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
         $this->form = Deposit::make([
             'guest_id' => $this->guest_id,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
         ]);
     }
 
@@ -66,8 +66,7 @@ class GuestDeposits extends Component
             'payable_amount' => $this->form->amount,
             'paid_at' => Carbon::now(),
             'remarks' => $this->form->remarks,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'assigned_frontdesks'=>auth()->user()->assigned_frontdesks
         ]);
 
         $this->form->save();

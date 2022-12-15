@@ -180,6 +180,8 @@ class Rooms extends Component
 
     public function render()
     {
+       
+
         $this->floors = auth()->user()->branch->floors;
         return view('livewire.branch-admin.rooms', [
             'rooms' => Room::query()
@@ -214,4 +216,5 @@ class Rooms extends Component
         $this->showModal = false;
         $this->reset('number', 'floor_id', 'room_status_id', 'type_id');
     }
+
 }

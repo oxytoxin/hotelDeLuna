@@ -25,6 +25,9 @@ return new class extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->string('branch_name')->nullable();
+            $table->text('assigned_frontdesks')->nullable();
+            $table->dateTime('time_in')->nullable();
+            $table->dateTime('time_out')->nullable();
             $table->timestamps();
         });
     }

@@ -46,6 +46,8 @@ class ItemRequest extends Component
             'form.quantity' => 'required|numeric|min:1',
         ]);
         DB::beginTransaction();
+        $ids = json_decode(auth()->user()->assigned_frontdesks);
+        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
         $requestable_item = RequestableItem::find($this->form['requestable_item_id']);
         $total_amount = $requestable_item->price * $this->form['quantity'];
         $check_in_detail = Transaction::where('guest_id', $this->guest_id)->where('transaction_type_id', 1)->first()->check_in_detail;
@@ -56,8 +58,7 @@ class ItemRequest extends Component
             'paid_at' => $this->form['paid'] ? now() : null,
             'transaction_type_id'=>8,
             'room_id' => $check_in_detail->room_id,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'assigned_frontdesks'=>auth()->user()->assigned_frontdesks
         ]);
         GuestRequestItem::create([
             'transaction_id' => $request_item_transaction->id,
@@ -65,8 +66,7 @@ class ItemRequest extends Component
             'quantity' => $this->form['quantity'],
             'amount'=> $total_amount,
             'additional_amount'=> $requestable_item->additional_amount,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
         ]);
         DB::commit();
         $this->notification()->success(

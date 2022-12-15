@@ -10,6 +10,7 @@ use App\Models\Floor;
 use App\Models\Guest;
 use App\Models\Deposit;
 use Livewire\Component;
+use App\Models\Frontdesk;
 use App\Models\RoomChange;
 use App\Models\Transaction;
 use App\Traits\WithCaching;
@@ -265,7 +266,8 @@ class TransferRoom extends Component
         }
 
         DB::beginTransaction();
-
+        $ids = json_decode(auth()->user()->assigned_frontdesks);
+        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
         $newRoom = Room::find($this->newRoomId);
 
         if ($newRoom->room_status_id != 1) {
@@ -308,8 +310,7 @@ class TransferRoom extends Component
             'paid_at' => $transactionPayableAmount == 0 ? Carbon::now() : null,
             'room_id' => $newRoom->id,
             'remarks' => 'Guest transferred from ROOM # ' . $this->oldRoomNumber . ' ( ' . $this->oldRoomTypeName . ' ) to ROOM # ' . $newRoom->number . ' ( ' . $newRoom->type->name . ' )',
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
         ]);
 
         if ($this->oldRoomAmount > $this->newRoomAmount && $this->saveAsDeposit == 1) {
@@ -320,8 +321,7 @@ class TransferRoom extends Component
                 'payable_amount' =>  $this->oldRoomAmount - $this->newRoomAmount,
                 'paid_at' => now(),
                 'room_id' => $newRoom->id,
-                'front_desk_name' => auth()->user()->name,
-                'user_id' => auth()->user()->id,
+                'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
                 'remarks' => 'Extra amount paid from previous room',
             ]);
             Deposit::create([
@@ -329,8 +329,7 @@ class TransferRoom extends Component
                 'amount' =>  $this->oldRoomAmount - $this->newRoomAmount,
                 'remaining'=> $this->oldRoomAmount - $this->newRoomAmount,
                 'remarks' => 'Deposit from transfer room transaction',
-                'front_desk_name' => auth()->user()->name,
-                'user_id' => auth()->user()->id,
+                'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
             ]);
         }
 
@@ -340,8 +339,7 @@ class TransferRoom extends Component
             'to_room_id' => $newRoom->id,
             'reason' => $this->reason,
             'amount' => $this->newRoomAmount,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
         ]);
 
         $checkInDetail = CheckInDetail::where('guest_id', $this->guestId)->first();

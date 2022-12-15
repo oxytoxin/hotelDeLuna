@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Guest;
 use App\Models\Deposit;
 use Livewire\Component;
+use App\Models\Frontdesk;
 use App\Models\Transaction;
 use App\Traits\WithCaching;
 use Illuminate\Support\Facades\DB;
@@ -52,7 +53,8 @@ class Deposits extends Component
         ]);
 
         DB::beginTransaction();
-
+        $ids = json_decode(auth()->user()->assigned_frontdesks);
+        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
         \App\Models\Transaction::create([
             'branch_id' => auth()->user()->branch_id,
             'guest_id' => $this->guestId,
@@ -61,16 +63,14 @@ class Deposits extends Component
             'payable_amount' => $this->depositAmount,
             'paid_at' => Carbon::now(),
             'remarks' => $this->depositRemarks,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
         ]);
         $deposit = Deposit::create([
             'guest_id' => $this->guestId,
             'amount' => $this->depositAmount,
             'remarks' => $this->depositRemarks,
             'remaining' => $this->depositAmount,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
         ]);
         Guest::find($this->guestId)->update([
             'total_deposits' => DB::raw('total_deposits + ' . $this->depositAmount),

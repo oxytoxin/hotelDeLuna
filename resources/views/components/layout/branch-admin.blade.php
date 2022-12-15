@@ -40,10 +40,10 @@
                             <a href="#"
                                 class="group flex items-center rounded-md bg-gray-100 px-2 py-1.5 text-base font-medium text-gray-900">
                                 <!--
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  Heroicon name: outline/home
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  Current: "text-gray-500", Default: "text-gray-400 group-hover:text-gray-500"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      Heroicon name: outline/home
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      Current: "text-gray-500", Default: "text-gray-400 group-hover:text-gray-500"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    -->
                                 <svg class="mr-4 h-6 w-6 flex-shrink-0 text-gray-500"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -211,6 +211,20 @@
                                 </svg>
                                 Guests
                             </a>
+
+                            <a href="{{ route('re-branch-admin.front-desk') }}"
+                                class="group flex items-center rounded-md bg-blue-700 px-2 py-1.5 text-sm font-medium text-white hover:bg-blue-600">
+                                <svg class="mr-3 h-6 w-6 flex-shrink-0"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M13.753 2c1.158 0 2.111.875 2.234 2h1.763a2.25 2.25 0 0 1 2.245 2.096L20 6.25v13.505a2.25 2.25 0 0 1-2.096 2.244l-.154.006H6.25a2.25 2.25 0 0 1-2.245-2.096L4 19.755V6.25a2.25 2.25 0 0 1 2.096-2.245L6.25 4h1.763a2.247 2.247 0 0 1 2.234-2h3.506Zm0 4.493h-3.506c-.777 0-1.461-.393-1.865-.992L6.25 5.5a.75.75 0 0 0-.743.648L5.5 6.25v13.505c0 .38.282.693.648.743l.102.007h11.5a.75.75 0 0 0 .743-.649l.007-.101V6.25a.75.75 0 0 0-.648-.743L17.75 5.5h-2.132a2.244 2.244 0 0 1-1.865.993Zm.997 7.502c.69 0 1.25.56 1.25 1.25v.5c0 1.846-1.472 2.754-4 2.754s-4-.909-4-2.756v-.498c0-.69.56-1.25 1.25-1.25h5.5Zm-2.75-6a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM13.753 3.5h-3.506a.747.747 0 1 0 0 1.493h3.506a.747.747 0 1 0 0-1.493Z"
+                                        fill="#ffffff" />
+                                </svg>
+                                Manage Front Desks
+                            </a>
+
                         </div>
                         {{-- ----------------------------------------------------- --}}
                         <div class="flex-1 space-y-1 rounded-lg bg-yellow-100 px-3 pt-3 pb-3">
@@ -359,7 +373,6 @@
                                         d="M12 7a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-4Zm4 1.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5V9a.5.5 0 0 1 .5-.5h4ZM6.5 12a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11Zm.501 8.503V18h2.496a.5.5 0 0 0 0-1H7v-2.5a.5.5 0 1 0-1 0V17H3.496a.5.5 0 0 0 0 1H6v2.503a.5.5 0 1 0 1 0Z"
                                         fill="#ffffff" />
                                 </svg>
-
                                 Amenities
                             </a>
                         </div>

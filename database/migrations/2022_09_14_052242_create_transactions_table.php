@@ -24,8 +24,7 @@ return new class extends Migration
             $table->string('change_amount')->nullable();
             $table->dateTime('paid_at')->nullable();
             $table->string('override_at')->nullable();
-            $table->string('front_desk_name')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->text('assigned_frontdesks')->nullable();
             $table->timestamps();
         });
     }

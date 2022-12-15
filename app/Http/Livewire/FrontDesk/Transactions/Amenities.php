@@ -35,8 +35,7 @@ class Amenities extends Component
             'form.quantity' => 'required|numeric',
             'form.price' => 'required|numeric',
             'form.additional_charge' => 'nullable|numeric',
-            'form.front_desk_name' => 'nullable',
-            'form.user_id' => 'nullable',
+            'form.front_desk_names' => 'nullable',
         ];
     }
 
@@ -53,11 +52,10 @@ class Amenities extends Component
             'room_id' => $this->current_room_id,
             'payable_amount' => $this->form->price + $this->form->additional_charge,
             'remarks' => $this->remarks,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'assigned_frontdesks'=>auth()->user()->assigned_frontdesks,
         ]);
 
-        $this->form->save();
+        $this->form->save(); //ssss
 
         $this->makeNewForm();
 
@@ -71,11 +69,12 @@ class Amenities extends Component
 
     public function makeNewForm()
     {
+        $ids = json_decode(auth()->user()->assigned_frontdesks);
+        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
         $this->form = Amenity::make([
             'guest_id' => $this->guest_id,
             'quantity' => 1,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
         ]);
     }
 

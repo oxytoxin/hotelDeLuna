@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\V2\FrontDesk\Transactions;
 
 use Livewire\Component;
+use App\Models\Frontdesk;
 use App\Models\Transaction;
 use App\Traits\WithCaching;
 use Illuminate\Support\Facades\DB;
@@ -50,18 +51,18 @@ class FoodAndBeverage extends Component
             'form.name' => 'required',
             'form.quantity' => 'required|numeric',
             'form.price' => 'required|numeric',
-            'form.front_desk_name' => 'nullable',
-            'form.user_id' => 'nullable',
+            'form.front_desk_names' => 'nullable',
         ];
     }
 
     public function makeForm()
     {
+        $ids = json_decode(auth()->user()->assigned_frontdesks);
+        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
         $this->form = ModelFoodAndBeverage::make([
             'guest_id' => $this->guestId,
             'quantity' => 1,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
         ]);
     }
 
@@ -96,8 +97,7 @@ class FoodAndBeverage extends Component
             'room_id' => $this->guestCheckInRoomId,
             'payable_amount' => $this->form->price * $this->form->quantity,
             'remarks' => $this->form->name,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
         ]);
 
         $this->form->save();

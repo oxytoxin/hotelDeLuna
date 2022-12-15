@@ -1,4 +1,4 @@
-<div class="overflow-hidden bg-white h-[400px] shadow sm:rounded-lg mt-12">
+<div class="mt-12 h-[400px] overflow-hidden border bg-white shadow sm:rounded-lg">
     <div class="p-4">
         <h1 class="text-lg text-center text-gray-700 uppercase">
             Terminated Check In List

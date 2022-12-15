@@ -15,18 +15,7 @@ class RoomTypeSeeder extends Seeder
      */
     public function run()
     {
-        Type::create([
-            'branch_id' => 1,
-            'name' => 'Single Size Bed',
-        ]);
-        Type::create([
-            'branch_id' => 1,
-            'name' => 'Double Size Bed',
-        ]);
-        Type::create([
-            'branch_id' => 1,
-            'name' => 'Twin Single Size Bed',
-        ]);
+       
         // StayingHour::create([
         //     'number' => '6',
         // ]);

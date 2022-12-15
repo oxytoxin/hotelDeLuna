@@ -134,7 +134,8 @@ class CheckIn extends Component
         $check_in_transaction->update([
             'paid_amount' => $this->given_amount - 200,  // 200 pesos will be added to remote and key deposite
             'change_amount' => $this->excess_amount,
-            'paid_at' => Carbon::now()
+            'paid_at' => Carbon::now(),
+            'assigned_frontdesks'=>auth()->user()->assigned_frontdesks,
         ]);
 
         $check_in_detail = $this->guest->checkInDetail;
@@ -151,7 +152,8 @@ class CheckIn extends Component
         $default_deposite->update([
             'paid_amount' => 200,
             'change_amount' => 0,
-            'paid_at' => Carbon::now()
+            'paid_at' => Carbon::now(),
+            'assigned_frontdesks'=>auth()->user()->assigned_frontdesks,
         ]);
 
         if ($this->save_as_deposit) {
@@ -164,12 +166,15 @@ class CheckIn extends Component
                 'change_amount' => 0,
                 'paid_at' => Carbon::now(),
                 'remarks' => 'Excess amount from check in',
+                'assigned_frontdesks'=>auth()->user()->assigned_frontdesks,
             ]);
-
+            $ids = json_decode(auth()->user()->assigned_frontdesks);
+            $frontdesks = Frontdesk::whereIn('id',$ids)->get();
             Deposit::create([
                 'guest_id' => $this->guest->id,
                 'amount' => $this->excess_amount,
                 'remarks' => 'Excess amount from check in',
+                'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
             ]);
         }
 

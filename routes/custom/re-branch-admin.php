@@ -53,6 +53,9 @@ Route::prefix('branch-admin')->middleware([
         return view('v2.branch-admin.amenities');
     })->name('re-branch-admin.amenities');
 
+    Route::get('/manage-frontdesks', function () {
+        return view('v2.branch-admin.front-desk');
+    })->name('re-branch-admin.front-desk');
 
     // --- guest actions
 

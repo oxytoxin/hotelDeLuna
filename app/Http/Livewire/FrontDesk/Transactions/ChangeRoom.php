@@ -106,6 +106,9 @@ class ChangeRoom extends Component
 
     public function saveChanges()
     {
+        $ids = json_decode(auth()->user()->assigned_frontdesks);
+        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
+
         $this->validate([
             'form.type_id' => 'required',
             'form.room_id' => 'required',
@@ -158,8 +161,7 @@ class ChangeRoom extends Component
             'paid_at' => $this->form['paid'] || $amount_to_pay == 0 ? now() : null,
             'room_id' => $new_room->id,
             'remarks' => 'Guest transfered from ROOM # ' . $this->guestCheckInDetail->room->number . ' ( ' . $this->guestCheckInDetail->room->type->name . ' ) to ROOM # ' . $new_room->number . ' ( ' . $new_room->type->name . ' )',
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'assigned_frontdesks'=>auth()->user()->assigned_frontdesks,
         ]);
 
         if ($old_room_amount > $new_room_amount) {
@@ -170,16 +172,15 @@ class ChangeRoom extends Component
                 'payable_amount' =>  $old_room_amount - $new_room_amount,
                 'paid_at' => now(),
                 'room_id' => $new_room->id,
-                'front_desk_name' => auth()->user()->name,
-                'user_id' => auth()->user()->id,
+               'assigned_frontdesks'=>auth()->user()->assigned_frontdesks,
                 'remarks'=>'Extra amount paid from previous room',
             ]);
+           
             Deposit::create([
                 'guest_id' => $this->guestCheckInDetail->guest_id,
                 'amount' => $old_room_amount - $new_room_amount,
                 'remarks' => 'Deposit from transfer room transaction',
-                'front_desk_name' => auth()->user()->name,
-                'user_id' => auth()->user()->id,
+                'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
             ]);
         }
 
@@ -189,8 +190,7 @@ class ChangeRoom extends Component
             'to_room_id' => $this->form['room_id'],
             'reason' => $this->form['reason'],
             'amount' => $new_room_amount,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
         ]);
 
         $this->guestCheckInDetail->update([

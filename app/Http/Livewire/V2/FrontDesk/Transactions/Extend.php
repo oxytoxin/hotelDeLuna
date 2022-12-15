@@ -66,6 +66,8 @@ class Extend extends Component
 
     public function payTransactionConfirm()
     {
+        $ids = json_decode(auth()->user()->assigned_frontdesks);
+        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
         if ($this->transactionToPayGivenAmount < $this->transactionToPayAmount) {
             $this->dispatchBrowserEvent('show-alert', [
                 'type' => 'error',
@@ -81,6 +83,7 @@ class Extend extends Component
                 'amount' => $this->transactionToPayExcessAmount,
                 'remarks' => 'Excess amount from transaction :'.$this->transactionToPay->remarks,
                 'remaining'=> $this->transactionToPayExcessAmount,
+                'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
             ]);
 
             $guest = Guest::find($this->guestId);
@@ -204,6 +207,8 @@ class Extend extends Component
         ]);
 
         DB::beginTransaction();
+        $ids = json_decode(auth()->user()->assigned_frontdesks);
+        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
         $extensionHours = $this->extensionRates->find($this->extensionHour)->hours;
         $extension_transaction = Transaction::create([
             'guest_id' => $this->guestId,
@@ -212,16 +217,15 @@ class Extend extends Component
             'payable_amount' => $this->extensionAmount,
             'room_id' => $this->checkInDetailRoomId,
             'remarks' => 'Guest extended his/her stay for ' . $extensionHours . ' hours',
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
         ]);
+        
         StayExtension::create([
             'guest_id' => $this->guestId,
             'extension_id' => $this->extensionHour,
             'hours' => $extensionHours,
             'amount' => $this->extensionAmount,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
         ]);
 
         CheckInDetail::where('guest_id', $this->guestId)->update([

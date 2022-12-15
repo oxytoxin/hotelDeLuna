@@ -20,8 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('to_room_id')->references('id')->on('rooms');
             $table->string('reason');
             $table->string('amount');
-            $table->string('front_desk_name')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('front_desk_names')->nullable();
             $table->timestamps();
         });
     }

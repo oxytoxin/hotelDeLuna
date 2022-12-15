@@ -123,7 +123,5 @@
             </div>
         </div>
     </div>
-    <x-button primary>
-        {{ auth()->user()->name }}
-    </x-button>
+    @livewire('v2.front-desk.end-shift')
 </div>

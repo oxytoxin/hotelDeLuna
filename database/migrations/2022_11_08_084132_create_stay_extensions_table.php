@@ -19,8 +19,7 @@ return new class extends Migration
             $table->foreignId('extension_id')->constrained();
             $table->string('hours');
             $table->string('amount');
-            $table->string('front_desk_name')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('front_desk_names')->nullable();
             $table->timestamps();
         });
     }

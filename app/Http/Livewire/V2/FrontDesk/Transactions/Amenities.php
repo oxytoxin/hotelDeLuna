@@ -7,6 +7,7 @@ use App\Models\Guest;
 use App\Models\Amenity;
 use App\Models\Deposit;
 use Livewire\Component;
+use App\Models\Frontdesk;
 use App\Models\Transaction;
 use App\Traits\WithCaching;
 use App\Models\RequestableItem;
@@ -65,11 +66,14 @@ class Amenities extends Component
         }
 
         if ($this->transactionToPayExcessAmount) {
+            $ids = json_decode(auth()->user()->assigned_frontdesks);
+            $frontdesks = Frontdesk::whereIn('id',$ids)->get();
             Deposit::create([
                 'guest_id' => $this->guestId,
                 'amount' => $this->transactionToPayExcessAmount,
                 'remarks' => 'Excess amount from transaction :'.$this->transactionToPay->remarks,
                 'remaining'=> $this->transactionToPayExcessAmount,
+                'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
             ]);
 
             $guest = Guest::find($this->guestId);
@@ -110,18 +114,18 @@ class Amenities extends Component
             'form.quantity' => 'required|numeric',
             'form.price' => 'required|numeric',
             'form.additional_charge' => 'nullable|numeric',
-            'form.front_desk_name' => 'nullable',
-            'form.user_id' => 'nullable',
+            'form.front_desk_names' => 'nullable',
         ];
     }
 
     public function makeForm()
     {
+        $ids = json_decode(auth()->user()->assigned_frontdesks);
+        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
         $this->form = Amenity::make([
             'guest_id' => $this->guestId,
             'quantity' => 1,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
         ]);
     }
 
@@ -163,8 +167,7 @@ class Amenities extends Component
             'room_id' => $this->checkInRoomId,
             'payable_amount' => $this->form->additional_charge !='' ? $this->form->price + $this->form->additional_charge : $this->form->price,
             'remarks' => "Amenity : {$this->requestableItems->find($this->form->requestable_item_id)->name}",
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
         ]);
 
         $this->form->save();
@@ -180,7 +183,7 @@ class Amenities extends Component
         $this->dispatchBrowserEvent('close-form');
 
         $this->emit('transactionsUpdated');
-
+        
     }
     public function render()
     {

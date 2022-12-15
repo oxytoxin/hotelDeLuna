@@ -20,8 +20,7 @@ return new class extends Migration {
             $table->string('remarks')->nullable();
             $table->dateTime('claimed_at')->nullable();
             $table->string('remaining')->nullable();
-            $table->string('front_desk_name')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('front_desk_names')->nullable();
             $table->timestamps();
         });
     }
