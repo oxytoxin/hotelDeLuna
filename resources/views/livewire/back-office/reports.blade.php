@@ -1,5 +1,5 @@
 <div>
-  <div class="p-6">
+  <div class="p-6 flex space-x-3 items-end">
     <x-native-select label="Select Report" wire:model="selected_report" class="w-64">
       <option selected hidden>--------</option>
       <option value="1">Occupied Room</option>
@@ -12,6 +12,10 @@
       <option value="8">Transfer</option>
       <option value="9">Extend</option>
     </x-native-select>
+
+    @if ($selected_report)
+      <x-button label="clear" slate wire:click="$set('selected_report', '')" />
+    @endif
   </div>
 
   <div class="mt-2">

@@ -449,7 +449,7 @@
     <div class="absolute text-center bottom-10 left-10">
       <img src="{{ asset('images/dmorvielogo.png') }}" class="h-1/6 opacity-10" alt="">
     </div>
-    <div class="flex bg-white shadow-xl p-2 rounded-2xl">
+    <div class="flex bg-white relative shadow-xl p-2 rounded-2xl">
       <div class="flex flex-col items-center justify-center w-96 py-40 border-r-2">
         <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" class="h-48" viewBox="0 0 1006.8115 762"
           xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -827,7 +827,8 @@
             <div class="mt-8 flex justify-between w-full items-center">
 
               <div>
-                <x-button type="submit" dark sm label="SIGN IN" right-icon="arrow-narrow-right" />
+                <x-button type="submit" dark sm label="SIGN IN" class="font-semibold"
+                  right-icon="arrow-narrow-right" />
 
               </div>
 

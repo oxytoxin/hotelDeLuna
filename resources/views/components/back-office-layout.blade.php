@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-
+  <title>HOTEL [hotel_name]</title>
 
   <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
@@ -140,7 +140,7 @@
     <div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
       <!-- Sidebar component, swap this element with another sidebar if you like -->
       <div class="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-gray-700 pt-5">
-        <div class="flex flex-shrink-0 items-center px-4">
+        <div class="flex flex-shrink-0 items-center justify-center px-4">
           {{-- <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
             alt="Your Company"> --}}
           <svg class="w-8 h-8 text-white" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
