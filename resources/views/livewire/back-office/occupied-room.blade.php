@@ -6,14 +6,7 @@
       <x-button id="dsdsd" wire:click="generate" dark label="GENERATE" spinner="generate" class="font-semibold" />
     </div>
     <div class="flex space-x-1">
-      {{-- <x-button wire:click="export('xlsx')" wire:loading.attr="disabled" positive
-        class="text-white fill-white font-semibold">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-          <path fill="none" d="M0 0h24v24H0z" />
-          <path
-            d="M2.859 2.877l12.57-1.795a.5.5 0 0 1 .571.495v20.846a.5.5 0 0 1-.57.495L2.858 21.123a1 1 0 0 1-.859-.99V3.867a1 1 0 0 1 .859-.99zM4 4.735v14.53l10 1.429V3.306L4 4.735zM17 19h3V5h-3V3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-4v-2zm-6.8-7l2.8 4h-2.4L9 13.714 7.4 16H5l2.8-4L5 8h2.4L9 10.286 10.6 8H13l-2.8 4z" />
-        </svg>
-      </x-button> --}}
+      =
       <x-button @click="printOut($refs.printContainer.outerHTML);" dark label="PRINT" class="font-semibold"
         right-icon="printer" />
     </div>
@@ -34,14 +27,14 @@
               </svg>
               <div class="">
                 <h1 class="text-2xl leading-5 border-b border-gray-700 font-bold">HIMS</h1>
-                <h1 class="text-xs font-semibold">{{ auth()->user()->branch->name }}</h1>
+                <h1 class="text-xs font-semibold">{{ auth()->user()->branch_name }}</h1>
               </div>
             </div>
             <div class="mt-10 text-center  text-gray-700 ">
               <h1 class="text-2xl font-bold">OCCUPIED ROOMS REPORT</h1>
-              @if ($date)
+              {{-- @if ($date)
                 <p class="font-semibold">({{ \Carbon\Carbon::parse($date)->format('F d, Y') }})</p>
-              @endif
+              @endif --}}
             </div>
             <table id="example" class="table-auto mt-5" style="width:100%">
               <thead class="font-normal">
@@ -52,13 +45,13 @@
                 </tr>
               </thead>
               <tbody class="">
-                @foreach ($transactions as $transaction)
+                {{-- @foreach ($transactions as $transaction)
                   <tr>
                     <td class="border border-gray-700 px-3 py-1"> {{ $transaction->guest->qr_code }}</td>
                     <td class="border border-gray-700 px-3 py-1"> RM #{{ $transaction->room->number }} |
                       {{ ordinal($transaction->room->floor->number) }} Floor</td>
                   </tr>
-                @endforeach
+                @endforeach --}}
               </tbody>
             </table>
           </div>
@@ -66,7 +59,7 @@
       </div>
     </div>
   </div>
-  <script>
+  {{-- <script>
     function printOut(data) {
       var mywindow = window.open('', 'Occupied Rooms Report', 'height=1000,width=1000');
       mywindow.document.write('<html><head>');
@@ -85,5 +78,5 @@
 
 
     }
-  </script>
+  </script> --}}
 </div>
