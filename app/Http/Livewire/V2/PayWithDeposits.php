@@ -35,59 +35,107 @@ class PayWithDeposits extends Component
     {
         if ($this->additionalAmount == '') {
             $this->additionalAmount = 0;
-        }else{
-            $this->additionalAmountChange = $this->additionalAmount + $this->guest->deposit_balance - $this->payableAmount;
+        } else {
+            $this->additionalAmountChange =
+                $this->additionalAmount +
+                $this->guest->deposit_balance -
+                $this->payableAmount;
         }
     }
 
     public function save()
     {
-        if ($this->payableAmount  >= $this->guest->deposit_balance + $this->additionalAmount) {
-            return;
-        }
+        if (
+            $this->payableAmount >=
+            $this->guest->deposit_balance + $this->additionalAmount
+        ) {
+            // return; // kjam code
 
-        $this->guest->update([
-            'deposit_balance' => $this->payableAmount > $this->guest->deposit_balance ? 0 : $this->guest->deposit_balance - $this->payableAmount,
-        ]);
-
-        Transaction::find($this->transactionId)->update([
-            'paid_at' => now(),
-        ]);
-
-        if ($this->additionalAmountChangeSaveToDeposit) {
-            Deposit::create([
-                'guest_id' => $this->guestId,
-                'amount' => $this->additionalAmountChange,
-                'remarks' => 'Excess amount from paying with deposits',
-                'remaining' => $this->additionalAmountChange,
-                'front_desk_name' => auth()->user()->name,
-                'user_id' => auth()->user()->id,
-            ]);
-
-            $this->guest->refresh();
-
+            //rey added code.
             $this->guest->update([
-                'total_deposits' => $this->guest->total_deposits + $this->additionalAmountChange,
-                'deposit_balance' => $this->guest->deposit_balance + $this->additionalAmountChange,
+                'deposit_balance' =>
+                    $this->payableAmount > $this->guest->deposit_balance
+                        ? 0
+                        : $this->guest->deposit_balance - $this->payableAmount,
             ]);
+
+            Transaction::find($this->transactionId)->update([
+                'paid_at' => now(),
+            ]);
+
+            if ($this->additionalAmountChangeSaveToDeposit) {
+                Deposit::create([
+                    'guest_id' => $this->guestId,
+                    'amount' => $this->additionalAmountChange,
+                    'remarks' => 'Excess amount from paying with deposits',
+                    'remaining' => $this->additionalAmountChange,
+                    'front_desk_name' => auth()->user()->name,
+                    'user_id' => auth()->user()->id,
+                ]);
+
+                $this->guest->refresh();
+
+                $this->guest->update([
+                    'total_deposits' =>
+                        $this->guest->total_deposits +
+                        $this->additionalAmountChange,
+                    'deposit_balance' =>
+                        $this->guest->deposit_balance +
+                        $this->additionalAmountChange,
+                ]);
+            }
+            //rey added code.
+        } else {
+            $this->guest->update([
+                'deposit_balance' =>
+                    $this->payableAmount > $this->guest->deposit_balance
+                        ? 0
+                        : $this->guest->deposit_balance - $this->payableAmount,
+            ]);
+
+            Transaction::find($this->transactionId)->update([
+                'paid_at' => now(),
+            ]);
+
+            if ($this->additionalAmountChangeSaveToDeposit) {
+                Deposit::create([
+                    'guest_id' => $this->guestId,
+                    'amount' => $this->additionalAmountChange,
+                    'remarks' => 'Excess amount from paying with deposits',
+                    'remaining' => $this->additionalAmountChange,
+                    'front_desk_name' => auth()->user()->name,
+                    'user_id' => auth()->user()->id,
+                ]);
+
+                $this->guest->refresh();
+
+                $this->guest->update([
+                    'total_deposits' =>
+                        $this->guest->total_deposits +
+                        $this->additionalAmountChange,
+                    'deposit_balance' =>
+                        $this->guest->deposit_balance +
+                        $this->additionalAmountChange,
+                ]);
+            }
+
+            $this->dispatchBrowserEvent('notify-alert', [
+                'type' => 'success',
+                'title' => 'Deposit Deducted',
+                'message' => 'Deposit has been deducted',
+            ]);
+
+            $this->dispatchBrowserEvent('close-deposits-modal');
+
+            $this->emit('transactionUpdated');
+            $this->emit('depositDeducted');
+            $this->guestId = null;
+            $this->transactionId = null;
+            $this->payableAmount = null;
+            $this->additionalAmount = 0;
+            $this->additionalAmountChange = 0;
+            $this->additionalAmountChangeSaveToDeposit = false;
         }
-
-        $this->dispatchBrowserEvent('notify-alert', [
-            'type' => 'success',
-            'title' => 'Deposit Deducted',
-            'message' => 'Deposit has been deducted'
-        ]);
-
-        $this->dispatchBrowserEvent('close-deposits-modal');
-
-        $this->emit('transactionUpdated');
-        $this->emit('depositDeducted');
-        $this->guestId = null;
-        $this->transactionId = null;
-        $this->payableAmount = null;
-        $this->additionalAmount = 0;
-        $this->additionalAmountChange = 0;
-        $this->additionalAmountChangeSaveToDeposit = false;
     }
 
     public function render()
