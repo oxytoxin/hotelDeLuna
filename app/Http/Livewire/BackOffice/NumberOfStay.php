@@ -36,6 +36,7 @@ class NumberOfStay extends Component
 
     public function render()
     {
+        
         return view('livewire.back-office.number-of-stay', [
             'checkInDetails' => $this->generatedQuery(),
         ]);
