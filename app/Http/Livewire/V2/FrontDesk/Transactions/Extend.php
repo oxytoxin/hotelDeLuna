@@ -279,7 +279,6 @@ class Extend extends Component
             ->pluck('id');
 
         $frontdesks = Frontdesk::whereIn('id', $active_frontdesk)->get();
-        // dd($frontdesks);
         $extensionHours = $this->extensionRates->find($this->extensionHour)
             ->hours;
         $extension_transaction = Transaction::create([

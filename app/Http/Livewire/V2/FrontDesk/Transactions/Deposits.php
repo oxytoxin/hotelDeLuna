@@ -21,15 +21,13 @@ class Deposits extends Component
 
     public $guestCheckInRoomId;
 
-    public $depositAmount,$depositRemarks;
+    public $depositAmount, $depositRemarks;
 
     public $deductionAmount;
 
     public $deposit;
 
-
-    protected $listeners = ['confirmSaveRecord','claimDeposit'];
-
+    protected $listeners = ['confirmSaveRecord', 'claimDeposit'];
 
     public function getDepositsQuery()
     {
@@ -54,7 +52,13 @@ class Deposits extends Component
 
         DB::beginTransaction();
         $ids = json_decode(auth()->user()->assigned_frontdesks);
-        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
+        // $frontdesks = Frontdesk::whereIn('id',$ids)->get();
+        $active_frontdesk = Frontdesk::where(
+            'branch_id',
+            auth()->user()->branch_id
+        )
+            ->where('is_active', 1)
+            ->get();
         \App\Models\Transaction::create([
             'branch_id' => auth()->user()->branch_id,
             'guest_id' => $this->guestId,
@@ -63,18 +67,24 @@ class Deposits extends Component
             'payable_amount' => $this->depositAmount,
             'paid_at' => Carbon::now(),
             'remarks' => $this->depositRemarks,
-            'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
+            'assigned_frontdesks' => $active_frontdesk->pluck('id'),
         ]);
         $deposit = Deposit::create([
             'guest_id' => $this->guestId,
             'amount' => $this->depositAmount,
             'remarks' => $this->depositRemarks,
             'remaining' => $this->depositAmount,
-            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
+            'front_desk_names' => $active_frontdesk
+                ->pluck('name')
+                ->implode(' and '),
         ]);
         Guest::find($this->guestId)->update([
-            'total_deposits' => DB::raw('total_deposits + ' . $this->depositAmount),
-            'deposit_balance' => DB::raw('deposit_balance + ' . $this->depositAmount),
+            'total_deposits' => DB::raw(
+                'total_deposits + ' . $this->depositAmount
+            ),
+            'deposit_balance' => DB::raw(
+                'deposit_balance + ' . $this->depositAmount
+            ),
         ]);
         DB::commit();
 
@@ -100,23 +110,24 @@ class Deposits extends Component
     public function saveDeduction()
     {
         $this->validate([
-            'deductionAmount'=>'required',
+            'deductionAmount' => 'required',
         ]);
 
-       if ($this->deductionAmount > $this->guest->deposit_balance) {
+        if ($this->deductionAmount > $this->guest->deposit_balance) {
             $this->dispatchBrowserEvent('notify-alert', [
                 'type' => 'error',
                 'title' => 'error',
                 'message' => 'Invalid Amount',
             ]);
             return;
-       }
+        }
 
-       $this->guest->update([
-            'deposit_balance'=>$this->guest->deposit_balance - $this->deductionAmount,
-       ]);
+        $this->guest->update([
+            'deposit_balance' =>
+                $this->guest->deposit_balance - $this->deductionAmount,
+        ]);
 
-       $this->guest->refresh();
+        $this->guest->refresh();
 
         $this->emit('transactionUpdated');
         $this->dispatchBrowserEvent('notify-alert', [
@@ -125,12 +136,10 @@ class Deposits extends Component
             'message' => 'Deduction saved successfully',
         ]);
         $this->dispatchBrowserEvent('close-deduction-modal');
-
     }
 
     public function claimDeposit(Deposit $deposit)
     {
-
         if ($deposit->claimed_at) {
             $this->dispatchBrowserEvent('notify-alert', [
                 'type' => 'error',
@@ -139,7 +148,7 @@ class Deposits extends Component
             ]);
             return;
         }
-        
+
         if ($deposit->amount == $deposit->deducted) {
             $this->dispatchBrowserEvent('notify-alert', [
                 'type' => 'error',
@@ -169,11 +178,12 @@ class Deposits extends Component
 
     public function render()
     {
-        return view('livewire.v2.front-desk.transactions.deposits',[
+        return view('livewire.v2.front-desk.transactions.deposits', [
             'deposits' => $this->deposits,
-            'deposit_balance'=> $this->guest->deposit_balance,
-            'total_deposits'=>$this->guest->total_deposits,
-            'total_deduction'=>$this->guest->total_deposits - $this->guest->deposit_balance
+            'deposit_balance' => $this->guest->deposit_balance,
+            'total_deposits' => $this->guest->total_deposits,
+            'total_deduction' =>
+                $this->guest->total_deposits - $this->guest->deposit_balance,
         ]);
     }
 }
