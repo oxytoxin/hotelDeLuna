@@ -123,7 +123,7 @@
             </div>
         </div>
     </div>
-    <x-button primary>
-        {{ auth()->user()->name }}
-    </x-button>
+    @if (auth()->user()->role_id == 2)
+        @livewire('v2.front-desk.end-shift')
+    @endif
 </div>

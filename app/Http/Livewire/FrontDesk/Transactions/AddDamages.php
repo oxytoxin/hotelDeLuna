@@ -32,8 +32,7 @@ class AddDamages extends Component
             'form.occured_at' => 'required|date',
             'form.price' => 'required|numeric',
             'form.additional_charge' => 'nullable|numeric',
-            'form.front_desk_name' => 'nullable',
-            'form.user_id' => 'nullable',
+            'form.front_desk_names' => 'nullable',
         ];
     }
 
@@ -41,10 +40,11 @@ class AddDamages extends Component
 
     public function makeNewForm()
     {
+        $ids = json_decode(auth()->user()->assigned_frontdesks);
+        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
         $this->form = Damage::make([
             'guest_id' => $this->guest_id,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
         ]);
     }
     
@@ -52,7 +52,7 @@ class AddDamages extends Component
     {
         $this->validate();
         DB::beginTransaction();
-     
+      
         \App\Models\Transaction::create([
             'branch_id' => auth()->user()->branch_id,
             'guest_id' => $this->guest_id,
@@ -60,8 +60,7 @@ class AddDamages extends Component
             'payable_amount' => $this->form->price + $this->form->additional_charge,
             'room_id' => $this->current_room_id,
             'remarks' => $this->remarks,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'assigned_frontdesks'=>auth()->user()->assigned_frontdesks,
         ]);
 
         $this->form->save();

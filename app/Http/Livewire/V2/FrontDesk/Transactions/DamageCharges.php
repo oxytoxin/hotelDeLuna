@@ -7,9 +7,11 @@ use App\Models\Guest;
 use App\Models\Damage;
 use App\Models\Deposit;
 use Livewire\Component;
+use App\Models\Frontdesk;
 use App\Models\HotelItem;
 use App\Models\Transaction;
 use App\Traits\WithCaching;
+use Illuminate\Support\Facades\DB;
 
 class DamageCharges extends Component
 {
@@ -122,14 +124,17 @@ class DamageCharges extends Component
             'occurredAt' => 'required',
         ]);
 
+        $ids = json_decode(auth()->user()->assigned_frontdesks);
+        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
+
+        DB::beginTransaction();
         Damage::create([
             'guest_id' => $this->guestId,
             'hotel_item_id' => $this->hotelItemId,
             'occurred_at' => $this->occurredAt,
             'price' => $this->hotelItemPrice,
             'additional_charge' => $this->hotelItemAdditionalAmount,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
         ]);
 
         Transaction::create([
@@ -139,9 +144,10 @@ class DamageCharges extends Component
             'payable_amount' => $this->hotelItemPrice + $this->hotelItemAdditionalAmount,
             'room_id' => $this->checkInRoomId,
             'remarks' => "Damage Charge for {$this->hotelItems->find($this->hotelItemId)->name}",
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
         ]);
+
+        DB::commit();
 
         $this->reset('hotelItemId','hotelItemPrice','hotelItemAdditionalAmount','occurredAt');
 

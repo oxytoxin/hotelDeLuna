@@ -119,6 +119,8 @@ class ExtendHours extends Component
 
     public function save()
     {
+        $ids = json_decode(auth()->user()->assigned_frontdesks);
+        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
         $this->validate([
             'form.amount_to_be_paid' => 'required|numeric',
             'form.extension_id' => 'required',
@@ -133,16 +135,14 @@ class ExtendHours extends Component
             'room_id' => $this->check_in_detail->room_id,
             'remarks' => 'Guest extended his/her stay for ' . $extension->hours . ' hours',
             'paid_at' => $this->form['paid_at'] ? now() : null,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'assigned_frontdesks'=>auth()->user()->assigned_frontdesks,
         ]);
         StayExtension::create([
             'guest_id' => $this->guest_id,
             'extension_id' => $this->form['extension_id'],
             'hours' => $extension->hours,
             'amount' => $this->form['amount_to_be_paid'],
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
         ]);
 
         $this->check_in_detail->update([

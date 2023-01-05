@@ -25,8 +25,7 @@ class FoodAndBeverage extends Component
             'form.name' => 'required',
             'form.quantity' => 'required|numeric',
             'form.price' => 'required|numeric',
-            'form.front_desk_name' => 'nullable',
-            'form.user_id' => 'nullable',
+            'form.front_desk_names' => 'nullable',
         ];
     }
 
@@ -46,6 +45,7 @@ class FoodAndBeverage extends Component
     {
         $this->validate();
         DB::beginTransaction();
+       
         Transaction::create([
             'branch_id' => auth()->user()->branch_id,
             'guest_id' => $this->guest_id,
@@ -53,8 +53,7 @@ class FoodAndBeverage extends Component
             'room_id' => $this->current_room_id,
             'payable_amount' => $this->form->price,
             'remarks' => $this->form->name,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'assigned_frontdesks'=>auth()->user()->assigned_frontdesks
        ]);
 
        $this->form->save();
@@ -72,10 +71,11 @@ class FoodAndBeverage extends Component
 
     public function makeNewForm()
     {
+        $ids = json_decode(auth()->user()->assigned_frontdesks);
+        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
         $this->form = ModelsFoodAndBeverage::make([
             'guest_id' => $this->guest_id,'quantity' => 1,
-            'front_desk_name' => auth()->user()->name,
-            'user_id' => auth()->user()->id,
+            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
         ]);
     }
 

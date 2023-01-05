@@ -46,6 +46,9 @@ class User extends Authenticatable
         'email',
         'password',
         'branch_name',
+        'assigned_frontdesks',
+        'time_in',
+        'time_out',
     ];
 
     /**

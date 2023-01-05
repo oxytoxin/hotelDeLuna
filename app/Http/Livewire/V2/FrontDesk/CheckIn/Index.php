@@ -109,7 +109,8 @@ class Index extends Component
         $check_in_transaction->update([
             'paid_amount' => $this->guestGivenAmount - 200,  // 200 pesos will be added to remote and key deposite
             'change_amount' => $this->guestExcessAmount,
-            'paid_at' => Carbon::now()
+            'paid_at' => Carbon::now(),
+            'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
         ]);
 
         $check_in_detail = $this->viewGuest->checkInDetail;
@@ -126,7 +127,8 @@ class Index extends Component
         $default_deposit->update([
             'paid_amount' => 200,
             'change_amount' => 0,
-            'paid_at' => Carbon::now()
+            'paid_at' => Carbon::now(),
+            'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
         ]);
 
         if ($this->saveToDeposit) {
@@ -139,6 +141,7 @@ class Index extends Component
                 'change_amount' => 0,
                 'paid_at' => Carbon::now(),
                 'remarks' => 'Excess amount from check in',
+                'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
             ]);
 
             Deposit::create([
