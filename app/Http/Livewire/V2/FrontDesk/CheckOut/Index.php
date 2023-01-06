@@ -185,7 +185,7 @@ class Index extends Component
             'title' => 'Success',
             'message' => 'All unpaid transactions paid successfully',
         ]);
-        return redirect()->route('front-desk.check-out');
+        // return redirect()->route('front-desk.check-out');
     }
 
     public function validateCheckOut()
