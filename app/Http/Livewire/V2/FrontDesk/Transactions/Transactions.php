@@ -15,7 +15,7 @@ class Transactions extends Component
 
     public $transactionTypes = [];
 
-    protected $listeners = [ 'payTransaction'];
+    protected $listeners = ['payTransaction', 'depositDeducted' => '$refresh'];
 
     public function payTransaction(Transaction $transaction)
     {
@@ -27,7 +27,16 @@ class Transactions extends Component
         $this->dispatchBrowserEvent('notify-alert', [
             'type' => 'success',
             'title' => 'Transaction Paid',
-            'message' => 'Transaction has been paid'
+            'message' => 'Transaction has been paid',
+        ]);
+    }
+
+    public function payWithDeposit($transaction_id, $payable_amount)
+    {
+        $this->emit('payWithDeposit', [
+            'guest_id' => $this->guest_id,
+            'transaction_id' => $transaction_id,
+            'payable_amount' => $payable_amount,
         ]);
     }
 
@@ -35,8 +44,10 @@ class Transactions extends Component
     {
         return $this->cache(function () {
             return Transaction::query()
-            ->where('guest_id', $this->guest_id)->get()->groupBy('transaction_type_id');
-        },'transactions');
+                ->where('guest_id', $this->guest_id)
+                ->get()
+                ->groupBy('transaction_type_id');
+        }, 'transactions');
     }
 
     public function mount()
@@ -46,7 +57,7 @@ class Transactions extends Component
 
     public function render()
     {
-        return view('livewire.v2.front-desk.transactions.transactions',[
+        return view('livewire.v2.front-desk.transactions.transactions', [
             'guest_transactions' => $this->transactions,
         ]);
     }
