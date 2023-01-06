@@ -83,7 +83,9 @@
               @endif
             </div>
             <div class="mt-2">
-              <x-my.button-success wire:click="payAllUnpaid" label="Pay All unpaid balances" />
+              @if ($guest->transactions()->where('paid_at', null)->count() > 0)
+                <x-my.button-danger wire:click="payAllUnpaid" label="Pay All unpaid balances" />
+              @endif
             </div>
           </dd>
         </div>
