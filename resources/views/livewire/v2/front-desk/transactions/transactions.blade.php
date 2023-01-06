@@ -40,17 +40,7 @@
                   @foreach ($transactions as $transaction)
                     <tr>
                       <td class="py-3.5 pl-4 pr-3 text-xs text-gray-900 sm:pl-6 lg:pl-8">
-                        @php
-                          $text = $transaction->remarks;
-                          $remarks = strpos($text, ':');
-                          
-                          $check_in = substr($text, 0, $remarks + 1);
-                          $details = substr($text, $remarks + 2);
-                          
-                        @endphp
-                        <h1>{{ $check_in }}</h1>
-                        <h1>{{ $details }}</h1>
-
+                        <p class="w-40">{{ $transaction->remarks }}</p>
                       </td>
                       <td class="px-3 py-3.5 text-xs text-gray-900">
                         {{ $transaction->payable_amount }}
