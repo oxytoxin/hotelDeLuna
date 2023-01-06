@@ -12,22 +12,24 @@ use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
-
     public $search = '';
 
     public $searchBy = '1';
 
-    public $transactionTypes=[];
+    public $transactionTypes = [];
 
     public $guest = null;
 
-    public $overrideAmount ='',$transaction;
+    public $overrideAmount = '',
+        $transaction;
 
-    public $totalAmountToPay,$balance,$defaultDeposit = 200;
+    public $totalAmountToPay,
+        $balance,
+        $defaultDeposit = 200;
 
-    protected $listeners = ['claimDeposit','payTransaction','checkOut'];
+    protected $listeners = ['claimDeposit', 'payTransaction', 'checkOut'];
 
-    public $queryString = ['search','searchBy'];
+    public $queryString = ['search', 'searchBy'];
 
     public function payTransaction(Transaction $transaction)
     {
@@ -39,9 +41,12 @@ class Index extends Component
         $this->dispatchBrowserEvent('notify-alert', [
             'type' => 'success',
             'title' => 'Transaction Paid',
-            'message' => 'Transaction has been paid'
+            'message' => 'Transaction has been paid',
         ]);
-        $this->balance = $this->guest->transactions()->where('paid_at', null)->sum('payable_amount');
+        $this->balance = $this->guest
+            ->transactions()
+            ->where('paid_at', null)
+            ->sum('payable_amount');
     }
 
     public function searchGuest()
@@ -50,28 +55,35 @@ class Index extends Component
             switch ($this->searchBy) {
                 case '1':
                     $this->guest = Guest::where('qr_code', $this->search)
-                                    ->where('check_in_at', '!=', null)
-                                    ->where('check_out_at', null)
-                                    ->first();
-                              
+                        ->where('check_in_at', '!=', null)
+                        ->where('check_out_at', null)
+                        ->first();
+
                     break;
                 case '2':
                     $this->guest = Guest::where('check_in_at', '!=', null)
-                                     ->where('check_out_at', null)
-                                      ->whereHas('checkInDetail.room', function ($query) {
-                                            $query->where('number', $this->search);
-                                      })->first();
+                        ->where('check_out_at', null)
+                        ->whereHas('checkInDetail.room', function ($query) {
+                            $query->where('number', $this->search);
+                        })
+                        ->first();
                     break;
             }
 
             if ($this->guest) {
-                $this->totalAmountToPay = $this->guest->transactions()->whereNot('transaction_type_id', 2)->sum('payable_amount');
-                $this->balance = $this->guest->transactions()->where('paid_at', null)->sum('payable_amount');
-            }else{
+                $this->totalAmountToPay = $this->guest
+                    ->transactions()
+                    ->whereNot('transaction_type_id', 2)
+                    ->sum('payable_amount');
+                $this->balance = $this->guest
+                    ->transactions()
+                    ->where('paid_at', null)
+                    ->sum('payable_amount');
+            } else {
                 $this->dispatchBrowserEvent('notify-alert', [
                     'type' => 'error',
                     'title' => 'Guest Not Found',
-                    'message' => 'Guest not found'
+                    'message' => 'Guest not found',
                 ]);
                 $this->guest = null;
                 $this->search = '';
@@ -101,16 +113,18 @@ class Index extends Component
         $this->dispatchBrowserEvent('notify-alert', [
             'type' => 'success',
             'title' => 'Transaction Updated',
-            'message' => 'Transaction has been updated'
+            'message' => 'Transaction has been updated',
         ]);
     }
 
     public function getTransactionsProperty()
     {
         return Transaction::query()
-            ->where('guest_id', $this->guest->id)->with('transaction_type')->get()->groupBy('transaction_type_id');
+            ->where('guest_id', $this->guest->id)
+            ->with('transaction_type')
+            ->get()
+            ->groupBy('transaction_type_id');
     }
-
 
     // public function claimDeposit(Deposit $deposit)
     // {
@@ -123,7 +137,7 @@ class Index extends Component
     //         ]);
     //         return;
     //     }
-        
+
     //     if ($deposit->amount == $deposit->deducted) {
     //         $this->dispatchBrowserEvent('notify-alert', [
     //             'type' => 'error',
@@ -147,20 +161,39 @@ class Index extends Component
     public function claimAllDeposits()
     {
         $this->guest->deposits->first()->update([
-            'claimed_at'=> now(),
+            'claimed_at' => now(),
         ]);
 
         $this->guest->update([
-            'deposit_balance'=>0
+            'deposit_balance' => 0,
         ]);
 
         $this->guest->refresh();
+    }
 
+    public function payAllUnpaid()
+    {
+        $this->guest
+            ->transactions()
+            ->where('paid_at', null)
+            ->update([
+                'paid_at' => Carbon::now(),
+            ]);
+        $this->emit('transactionUpdated');
+        $this->dispatchBrowserEvent('notify-alert', [
+            'type' => 'success',
+            'title' => 'Success',
+            'message' => 'All unpaid transactions paid successfully',
+        ]);
+        return redirect()->route('front-desk.check-out');
     }
 
     public function validateCheckOut()
     {
-        $has_unpaid_transaction = $this->guest->transactions()->where('paid_at', null)->exists();
+        $has_unpaid_transaction = $this->guest
+            ->transactions()
+            ->where('paid_at', null)
+            ->exists();
         if ($has_unpaid_transaction) {
             $this->dispatchBrowserEvent('notify-alert', [
                 'type' => 'error',
@@ -201,10 +234,14 @@ class Index extends Component
             'last_check_out_at' => Carbon::now(),
         ]);
 
-        $check_in_detail->room->roomTransactionLogs()->latest()->first()->update([
-            'check_out_at' => now(),
-        ]);
-        
+        $check_in_detail->room
+            ->roomTransactionLogs()
+            ->latest()
+            ->first()
+            ->update([
+                'check_out_at' => now(),
+            ]);
+
         DB::commit();
         $this->dispatchBrowserEvent('notify-alert', [
             'type' => 'success',
@@ -215,14 +252,20 @@ class Index extends Component
         $this->search = '';
         $this->searchBy = null;
         $this->dispatchBrowserEvent('close-reminder');
-
     }
     public function render()
     {
-        return view('livewire.v2.front-desk.check-out.index',[
+        return view('livewire.v2.front-desk.check-out.index', [
             'transactionsGroup' => $this->guest ? $this->transactions : [],
-            'has_unpaid_transaction' => $this->guest ? $this->guest->transactions()->where('paid_at', null)->exists() : false,
-            'deposits'=> $this->guest ? Deposit::where('guest_id',$this->guest->id)->get() : [],
+            'has_unpaid_transaction' => $this->guest
+                ? $this->guest
+                    ->transactions()
+                    ->where('paid_at', null)
+                    ->exists()
+                : false,
+            'deposits' => $this->guest
+                ? Deposit::where('guest_id', $this->guest->id)->get()
+                : [],
         ]);
     }
 
