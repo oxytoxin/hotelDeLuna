@@ -11,6 +11,14 @@
       </div>
     </div>
     <div x-cloak x-show="formOpen" x-collapse>
+      {{-- @php
+        $rate = \App\Models\CheckInDetail::where('guest_id', $guestId)->first()->rate->staying_hour->number;
+        dd($rate);
+      @endphp
+      @if (\App\Models\Transaction::where('guest_id', $guestId)->where('transaction_type_id', 6)->count() > 0)
+        more than 1
+      @else
+      @endif --}}
       @if (count($transactions) == 2)
         <div class="p-4 mt-3 border border-yellow-400 rounded-md bg-yellow-50">
           <div class="flex">

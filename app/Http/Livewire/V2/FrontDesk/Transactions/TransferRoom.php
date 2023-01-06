@@ -31,8 +31,10 @@ class TransferRoom extends Component
     public $oldCheckInRateId;
     public $oldCheckInStayingHourId;
 
-
-    public $roomTypes = [], $floors = [], $availableRooms = [], $roomStatuses = [];
+    public $roomTypes = [],
+        $floors = [],
+        $availableRooms = [],
+        $roomStatuses = [];
 
     public $guestId;
 
@@ -41,13 +43,24 @@ class TransferRoom extends Component
 
     public $authorizationCode;
 
-    public $newRoomTypeId, $newRoomFloorId, $newRoomId, $newRoomAmount, $reason, $saveAsDeposit = 0, $newRoomRate, $isLongStay = false, $numberOfDays = 0;
+    public $newRoomTypeId,
+        $newRoomFloorId,
+        $newRoomId,
+        $newRoomAmount,
+        $reason,
+        $saveAsDeposit = 0,
+        $newRoomRate,
+        $isLongStay = false,
+        $numberOfDays = 0;
 
     public $hasAvailableRoom = false;
 
-    protected $listeners = ['confirmSaveChanges', 'payTransaction', 'depositDeducted' => '$refresh'];
+    protected $listeners = [
+        'confirmSaveChanges',
+        'payTransaction',
+        'depositDeducted' => '$refresh',
+    ];
 
-        
     public $transactionToPayAmount = 0;
     public $transactionToPayGivenAmount = 0;
     public $transactionToPayExcessAmount = 0;
@@ -66,8 +79,12 @@ class TransferRoom extends Component
 
     public function updatedTransactionToPayGivenAmount()
     {
-        if ($this->transactionToPayGivenAmount > $this->transactionToPayAmount) {
-            $this->transactionToPayExcessAmount = $this->transactionToPayGivenAmount - $this->transactionToPayAmount;
+        if (
+            $this->transactionToPayGivenAmount > $this->transactionToPayAmount
+        ) {
+            $this->transactionToPayExcessAmount =
+                $this->transactionToPayGivenAmount -
+                $this->transactionToPayAmount;
         } else {
             $this->transactionToPayExcessAmount = 0;
         }
@@ -75,29 +92,37 @@ class TransferRoom extends Component
 
     public function payTransactionConfirm()
     {
-        if ($this->transactionToPayGivenAmount < $this->transactionToPayAmount) {
+        if (
+            $this->transactionToPayGivenAmount < $this->transactionToPayAmount
+        ) {
             $this->dispatchBrowserEvent('show-alert', [
                 'type' => 'error',
                 'title' => 'Invalid Amount',
-                 'message' => 'Given amount is less than the payable amount.'
-             ]);
-             return;
+                'message' => 'Given amount is less than the payable amount.',
+            ]);
+            return;
         }
 
         if ($this->transactionToPayExcessAmount) {
             Deposit::create([
                 'guest_id' => $this->guestId,
                 'amount' => $this->transactionToPayExcessAmount,
-                'remarks' => 'Excess amount from transaction :'.$this->transactionToPay->remarks,
-                'remaining'=> $this->transactionToPayExcessAmount,
+                'remarks' =>
+                    'Excess amount from transaction :' .
+                    $this->transactionToPay->remarks,
+                'remaining' => $this->transactionToPayExcessAmount,
             ]);
 
             $guest = Guest::find($this->guestId);
             $guest->update([
-                'total_deposits' => $guest->total_deposits + $this->transactionToPayExcessAmount,
-                'deposit_balance' => $guest->deposit_balance + $this->transactionToPayExcessAmount,
+                'total_deposits' =>
+                    $guest->total_deposits +
+                    $this->transactionToPayExcessAmount,
+                'deposit_balance' =>
+                    $guest->deposit_balance +
+                    $this->transactionToPayExcessAmount,
             ]);
-        };
+        }
 
         $this->transactionToPay->update([
             'paid_at' => Carbon::now(),
@@ -107,19 +132,18 @@ class TransferRoom extends Component
         $this->dispatchBrowserEvent('notify-alert', [
             'type' => 'success',
             'title' => 'Transaction Paid',
-            'message' => 'Transaction has been paid.'
+            'message' => 'Transaction has been paid.',
         ]);
 
         $this->emit('transactionUpdated');
     }
-
 
     public function payWithDeposit($transaction_id, $payable_amount)
     {
         $this->emit('payWithDeposit', [
             'guest_id' => $this->guestId,
             'transaction_id' => $transaction_id,
-            'payable_amount' => $payable_amount
+            'payable_amount' => $payable_amount,
         ]);
     }
 
@@ -127,20 +151,27 @@ class TransferRoom extends Component
     {
         return $this->cache(function () {
             return Transaction::where('transaction_type_id', 7)
-                ->where('guest_id', $this->guestId)->get();
+                ->where('guest_id', $this->guestId)
+                ->get();
         }, 'transfer-room');
     }
 
     function getOldRoomAmount()
     {
         if (RoomChange::where('guest_id', $this->guestId)->exists()) {
-            return RoomChange::where('guest_id', $this->guestId)->latest()->first()->amount;
+            return RoomChange::where('guest_id', $this->guestId)
+                ->latest()
+                ->first()->amount;
         } else {
             return Transaction::where('guest_id', $this->guestId)
                 ->where('transaction_type_id', 1)
+                ->whereNotNull('paid_at')
                 ->latest()
-                ->first()
-                ->payable_amount;
+                ->first()->payable_amount +
+                Transaction::where('guest_id', $this->guestId)
+                    ->where('transaction_type_id', 6)
+                    ->whereNotNull('paid_at')
+                    ->sum('payable_amount');
         }
     }
 
@@ -188,9 +219,14 @@ class TransferRoom extends Component
 
     public function mount()
     {
-    
-        $this->roomTypes = Type::where('branch_id', auth()->user()->branch_id)->get();
-        $this->floors = Floor::where('branch_id', auth()->user()->branch_id)->get();
+        $this->roomTypes = Type::where(
+            'branch_id',
+            auth()->user()->branch_id
+        )->get();
+        $this->floors = Floor::where(
+            'branch_id',
+            auth()->user()->branch_id
+        )->get();
         $this->availableRooms = Room::where('floor_id', $this->newRoomFloorId)
             ->where('type_id', $this->newRoomTypeId)
             ->where('room_status_id', 1)
@@ -210,9 +246,10 @@ class TransferRoom extends Component
             ->where('type_id', $this->newRoomTypeId)
             ->where('staying_hour_id', $this->oldCheckInStayingHourId)
             ->first();
-        if($this->isLongStay){
-            $this->newRoomAmount = $this->newRoomRate->amount * $this->numberOfDays;
-        }else{
+        if ($this->isLongStay) {
+            $this->newRoomAmount =
+                $this->newRoomRate->amount * $this->numberOfDays;
+        } else {
             $this->newRoomAmount = $this->newRoomRate->amount;
         }
     }
@@ -222,7 +259,6 @@ class TransferRoom extends Component
             'transactions' => $this->transactions,
         ]);
     }
-
 
     // saving changes
 
@@ -234,7 +270,8 @@ class TransferRoom extends Component
             $this->dispatchBrowserEvent('notify-alert', [
                 'type' => 'error',
                 'title' => 'Authorization Code Not Set',
-                'message' => 'Please set the authorization code in the settings'
+                'message' =>
+                    'Please set the authorization code in the settings',
             ]);
             return;
         }
@@ -243,11 +280,10 @@ class TransferRoom extends Component
             $this->dispatchBrowserEvent('notify-alert', [
                 'type' => 'error',
                 'title' => 'Authorization Code',
-                'message' => 'Authorization code is incorrect'
+                'message' => 'Authorization code is incorrect',
             ]);
             return;
         }
-
 
         $this->validate([
             'newRoomId' => 'required',
@@ -267,7 +303,7 @@ class TransferRoom extends Component
 
         DB::beginTransaction();
         $ids = json_decode(auth()->user()->assigned_frontdesks);
-        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
+        $frontdesks = Frontdesk::whereIn('id', $ids)->get();
         $newRoom = Room::find($this->newRoomId);
 
         if ($newRoom->room_status_id != 1) {
@@ -300,7 +336,10 @@ class TransferRoom extends Component
             return;
         }
 
-        $transactionPayableAmount = $this->oldRoomAmount >= $this->newRoomAmount ? 0 : $this->newRoomAmount - $this->oldRoomAmount;
+        $transactionPayableAmount =
+            $this->oldRoomAmount >= $this->newRoomAmount
+                ? 0
+                : $this->newRoomAmount - $this->oldRoomAmount;
 
         Transaction::create([
             'branch_id' => auth()->user()->branch_id,
@@ -309,16 +348,28 @@ class TransferRoom extends Component
             'payable_amount' => $transactionPayableAmount,
             'paid_at' => $transactionPayableAmount == 0 ? Carbon::now() : null,
             'room_id' => $newRoom->id,
-            'remarks' => 'Guest transferred from ROOM # ' . $this->oldRoomNumber . ' ( ' . $this->oldRoomTypeName . ' ) to ROOM # ' . $newRoom->number . ' ( ' . $newRoom->type->name . ' )',
+            'remarks' =>
+                'Guest transferred from ROOM # ' .
+                $this->oldRoomNumber .
+                ' ( ' .
+                $this->oldRoomTypeName .
+                ' ) to ROOM # ' .
+                $newRoom->number .
+                ' ( ' .
+                $newRoom->type->name .
+                ' )',
             'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
         ]);
 
-        if ($this->oldRoomAmount > $this->newRoomAmount && $this->saveAsDeposit == 1) {
+        if (
+            $this->oldRoomAmount > $this->newRoomAmount &&
+            $this->saveAsDeposit == 1
+        ) {
             $deposit_transaction = Transaction::create([
                 'branch_id' => auth()->user()->branch_id,
                 'guest_id' => $this->guestId,
                 'transaction_type_id' => 2,
-                'payable_amount' =>  $this->oldRoomAmount - $this->newRoomAmount,
+                'payable_amount' => $this->oldRoomAmount - $this->newRoomAmount,
                 'paid_at' => now(),
                 'room_id' => $newRoom->id,
                 'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
@@ -326,10 +377,12 @@ class TransferRoom extends Component
             ]);
             Deposit::create([
                 'guest_id' => $this->guestId,
-                'amount' =>  $this->oldRoomAmount - $this->newRoomAmount,
-                'remaining'=> $this->oldRoomAmount - $this->newRoomAmount,
+                'amount' => $this->oldRoomAmount - $this->newRoomAmount,
+                'remaining' => $this->oldRoomAmount - $this->newRoomAmount,
                 'remarks' => 'Deposit from transfer room transaction',
-                'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
+                'front_desk_names' => $frontdesks
+                    ->pluck('name')
+                    ->implode(' and '),
             ]);
         }
 
@@ -342,12 +395,14 @@ class TransferRoom extends Component
             'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
         ]);
 
-        $checkInDetail = CheckInDetail::where('guest_id', $this->guestId)->first();
+        $checkInDetail = CheckInDetail::where(
+            'guest_id',
+            $this->guestId
+        )->first();
         $checkInDetail->update([
             'room_id' => $newRoom->id,
             'rate_id' => $this->newRoomRate->id,
         ]);
-
 
         $oldRoom = Room::find($this->oldRoomId);
         $query = Room::whereHas('floor', function ($q) {
@@ -357,13 +412,13 @@ class TransferRoom extends Component
             ->where('priority', 1)
             ->count();
         if ($this->oldRoomStatus == 9) {
-                $oldRoom->update([
-                    'room_status_id' => 1,
-                    'time_to_clean' => null,
-                    'priority' => 1,
-                    'last_check_out_at' => Carbon::now(),
-                ]);
-        }else{
+            $oldRoom->update([
+                'room_status_id' => 1,
+                'time_to_clean' => null,
+                'priority' => 1,
+                'last_check_out_at' => Carbon::now(),
+            ]);
+        } else {
             $oldRoom->update([
                 'room_status_id' => $this->oldRoomStatus,
                 'time_to_clean' => null,
@@ -371,11 +426,15 @@ class TransferRoom extends Component
                 'last_check_out_at' => Carbon::now(),
             ]);
         }
-        
-        $oldRoom->roomTransactionLogs()->latest()->first()->update([
-            'check_out_at' => Carbon::now(),
-            'guest_transferred' => true,
-        ]);
+
+        $oldRoom
+            ->roomTransactionLogs()
+            ->latest()
+            ->first()
+            ->update([
+                'check_out_at' => Carbon::now(),
+                'guest_transferred' => true,
+            ]);
 
         $newRoom->update([
             'room_status_id' => 2,
@@ -386,7 +445,11 @@ class TransferRoom extends Component
             'room_number' => $newRoom->number,
             'check_in_detail_id' => $this->guestCheckInDetailId,
             'check_in_at' => Carbon::now(),
-            'time_interval' => $newRoom->last_check_out_at ? Carbon::parse($newRoom->last_check_out_at)->diffInMinutes(Carbon::now()) : 0,
+            'time_interval' => $newRoom->last_check_out_at
+                ? Carbon::parse($newRoom->last_check_out_at)->diffInMinutes(
+                    Carbon::now()
+                )
+                : 0,
         ]);
 
         DB::commit();
