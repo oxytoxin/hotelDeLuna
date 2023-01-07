@@ -303,7 +303,12 @@ class TransferRoom extends Component
 
         DB::beginTransaction();
         $ids = json_decode(auth()->user()->assigned_frontdesks);
-        $frontdesks = Frontdesk::whereIn('id', $ids)->get();
+        $active_frontdesk = Frontdesk::where(
+            'branch_id',
+            auth()->user()->branch_id
+        )
+            ->where('is_active', 1)
+            ->get();
         $newRoom = Room::find($this->newRoomId);
 
         if ($newRoom->room_status_id != 1) {
@@ -358,7 +363,7 @@ class TransferRoom extends Component
                 ' ( ' .
                 $newRoom->type->name .
                 ' )',
-            'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
+            'assigned_frontdesks' => $active_frontdesk->pluck('id'),
         ]);
 
         if (
@@ -372,7 +377,7 @@ class TransferRoom extends Component
                 'payable_amount' => $this->oldRoomAmount - $this->newRoomAmount,
                 'paid_at' => now(),
                 'room_id' => $newRoom->id,
-                'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
+                'assigned_frontdesks' => $active_frontdesk->pluck('id'),
                 'remarks' => 'Extra amount paid from previous room',
             ]);
             Deposit::create([
@@ -380,7 +385,7 @@ class TransferRoom extends Component
                 'amount' => $this->oldRoomAmount - $this->newRoomAmount,
                 'remaining' => $this->oldRoomAmount - $this->newRoomAmount,
                 'remarks' => 'Deposit from transfer room transaction',
-                'front_desk_names' => $frontdesks
+                'front_desk_names' => $active_frontdesk
                     ->pluck('name')
                     ->implode(' and '),
             ]);
@@ -392,7 +397,9 @@ class TransferRoom extends Component
             'to_room_id' => $newRoom->id,
             'reason' => $this->reason,
             'amount' => $this->newRoomAmount,
-            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
+            'front_desk_names' => $active_frontdesk
+                ->pluck('name')
+                ->implode(' and '),
         ]);
 
         $checkInDetail = CheckInDetail::where(
