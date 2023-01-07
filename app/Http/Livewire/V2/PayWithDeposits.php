@@ -7,6 +7,7 @@ use App\Models\Deposit;
 use Livewire\Component;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
+use App\Models\Frontdesk;
 
 class PayWithDeposits extends Component
 {
@@ -45,6 +46,12 @@ class PayWithDeposits extends Component
 
     public function save()
     {
+        $active_frontdesk = Frontdesk::where(
+            'branch_id',
+            auth()->user()->branch_id
+        )
+            ->where('is_active', 1)
+            ->get();
         if (
             $this->payableAmount >=
             $this->guest->deposit_balance + $this->additionalAmount
@@ -69,8 +76,10 @@ class PayWithDeposits extends Component
                     'amount' => $this->additionalAmountChange,
                     'remarks' => 'Excess amount from paying with deposits',
                     'remaining' => $this->additionalAmountChange,
-                    'front_desk_name' => auth()->user()->name,
-                    'user_id' => auth()->user()->id,
+                    'front_desk_names' => $active_frontdesk
+                        ->pluck('name')
+                        ->implode(' and '),
+                    // 'user_id' => auth()->user()->id,
                 ]);
 
                 $this->guest->refresh();
@@ -103,8 +112,10 @@ class PayWithDeposits extends Component
                     'amount' => $this->additionalAmountChange,
                     'remarks' => 'Excess amount from paying with deposits',
                     'remaining' => $this->additionalAmountChange,
-                    'front_desk_name' => auth()->user()->name,
-                    'user_id' => auth()->user()->id,
+                    'front_desk_names' => $active_frontdesk
+                        ->pluck('name')
+                        ->implode(' and '),
+                    // 'user_id' => auth()->user()->id,
                 ]);
 
                 $this->guest->refresh();

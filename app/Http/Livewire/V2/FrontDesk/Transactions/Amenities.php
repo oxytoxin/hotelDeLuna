@@ -24,9 +24,11 @@ class Amenities extends Component
 
     public $requestableItems = [];
 
-  
-
-    protected $listeners = ['confirmSaveRecord','payTransaction','depositDeducted'=>'$refresh'];
+    protected $listeners = [
+        'confirmSaveRecord',
+        'payTransaction',
+        'depositDeducted' => '$refresh',
+    ];
 
     public $transactionToPay;
     public $transactionToPayAmount = 0;
@@ -47,8 +49,12 @@ class Amenities extends Component
 
     public function updatedTransactionToPayGivenAmount()
     {
-        if ($this->transactionToPayGivenAmount > $this->transactionToPayAmount) {
-            $this->transactionToPayExcessAmount = $this->transactionToPayGivenAmount - $this->transactionToPayAmount;
+        if (
+            $this->transactionToPayGivenAmount > $this->transactionToPayAmount
+        ) {
+            $this->transactionToPayExcessAmount =
+                $this->transactionToPayGivenAmount -
+                $this->transactionToPayAmount;
         } else {
             $this->transactionToPayExcessAmount = 0;
         }
@@ -56,32 +62,47 @@ class Amenities extends Component
 
     public function payTransactionConfirm()
     {
-        if ($this->transactionToPayGivenAmount < $this->transactionToPayAmount) {
+        if (
+            $this->transactionToPayGivenAmount < $this->transactionToPayAmount
+        ) {
             $this->dispatchBrowserEvent('show-alert', [
                 'type' => 'error',
                 'title' => 'Invalid Amount',
-                 'message' => 'Given amount is less than the payable amount.'
-             ]);
-             return;
+                'message' => 'Given amount is less than the payable amount.',
+            ]);
+            return;
         }
 
         if ($this->transactionToPayExcessAmount) {
             $ids = json_decode(auth()->user()->assigned_frontdesks);
-            $frontdesks = Frontdesk::whereIn('id',$ids)->get();
+            $active_frontdesk = Frontdesk::where(
+                'branch_id',
+                auth()->user()->branch_id
+            )
+                ->where('is_active', 1)
+                ->get();
             Deposit::create([
                 'guest_id' => $this->guestId,
                 'amount' => $this->transactionToPayExcessAmount,
-                'remarks' => 'Excess amount from transaction :'.$this->transactionToPay->remarks,
-                'remaining'=> $this->transactionToPayExcessAmount,
-                'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
+                'remarks' =>
+                    'Excess amount from transaction :' .
+                    $this->transactionToPay->remarks,
+                'remaining' => $this->transactionToPayExcessAmount,
+                'front_desk_names' => $active_frontdesk
+                    ->pluck('name')
+                    ->implode(' and '),
             ]);
 
             $guest = Guest::find($this->guestId);
             $guest->update([
-                'total_deposits' => $guest->total_deposits + $this->transactionToPayExcessAmount,
-                'deposit_balance' => $guest->deposit_balance + $this->transactionToPayExcessAmount,
+                'total_deposits' =>
+                    $guest->total_deposits +
+                    $this->transactionToPayExcessAmount,
+                'deposit_balance' =>
+                    $guest->deposit_balance +
+                    $this->transactionToPayExcessAmount,
             ]);
-        };
+        }
 
         $this->transactionToPay->update([
             'paid_at' => Carbon::now(),
@@ -91,18 +112,18 @@ class Amenities extends Component
         $this->dispatchBrowserEvent('notify-alert', [
             'type' => 'success',
             'title' => 'Transaction Paid',
-            'message' => 'Transaction has been paid.'
+            'message' => 'Transaction has been paid.',
         ]);
 
         $this->emit('transactionUpdated');
     }
 
-    public function payWithDeposit($transaction_id,$payable_amount)
+    public function payWithDeposit($transaction_id, $payable_amount)
     {
-        $this->emit('payWithDeposit',[
+        $this->emit('payWithDeposit', [
             'guest_id' => $this->guestId,
             'transaction_id' => $transaction_id,
-            'payable_amount' => $payable_amount
+            'payable_amount' => $payable_amount,
         ]);
     }
 
@@ -121,7 +142,7 @@ class Amenities extends Component
     public function makeForm()
     {
         $ids = json_decode(auth()->user()->assigned_frontdesks);
-        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
+        $frontdesks = Frontdesk::whereIn('id', $ids)->get();
         $this->form = Amenity::make([
             'guest_id' => $this->guestId,
             'quantity' => 1,
@@ -131,12 +152,18 @@ class Amenities extends Component
 
     public function mount()
     {
-         $this->makeForm();
-        $this->requestableItems = RequestableItem::where('branch_id', auth()->user()->branch_id)->get();
+        $this->makeForm();
+        $this->requestableItems = RequestableItem::where(
+            'branch_id',
+            auth()->user()->branch_id
+        )->get();
     }
     public function getTransactionsQueryProperty()
     {
-        return \App\Models\Transaction::where('transaction_type_id', 8)->where('guest_id', $this->guestId);
+        return \App\Models\Transaction::where('transaction_type_id', 8)->where(
+            'guest_id',
+            $this->guestId
+        );
     }
 
     public function getTransactionsProperty()
@@ -148,12 +175,16 @@ class Amenities extends Component
 
     public function updatedFormRequestableItemId()
     {
-        $this->form->price = $this->requestableItems->find($this->form->requestable_item_id)->price * $this->form->quantity;
+        $this->form->price =
+            $this->requestableItems->find($this->form->requestable_item_id)
+                ->price * $this->form->quantity;
     }
 
     public function updatedFormQuantity()
     {
-        $this->form->price = $this->requestableItems->find($this->form->requestable_item_id)->price * $this->form->quantity;
+        $this->form->price =
+            $this->requestableItems->find($this->form->requestable_item_id)
+                ->price * $this->form->quantity;
     }
 
     public function confirmSaveRecord()
@@ -165,8 +196,13 @@ class Amenities extends Component
             'guest_id' => $this->guestId,
             'transaction_type_id' => 8,
             'room_id' => $this->checkInRoomId,
-            'payable_amount' => $this->form->additional_charge !='' ? $this->form->price + $this->form->additional_charge : $this->form->price,
-            'remarks' => "Amenity : {$this->requestableItems->find($this->form->requestable_item_id)->name}",
+            'payable_amount' =>
+                $this->form->additional_charge != ''
+                    ? $this->form->price + $this->form->additional_charge
+                    : $this->form->price,
+            'remarks' => "Amenity : {$this->requestableItems->find(
+                $this->form->requestable_item_id
+            )->name}",
             'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
         ]);
 
@@ -174,7 +210,7 @@ class Amenities extends Component
 
         $this->makeForm();
 
-        $this->dispatchBrowserEvent('notify-alert',[
+        $this->dispatchBrowserEvent('notify-alert', [
             'type' => 'success',
             'title' => 'Success',
             'message' => 'Record saved successfully',
@@ -183,11 +219,10 @@ class Amenities extends Component
         $this->dispatchBrowserEvent('close-form');
 
         $this->emit('transactionsUpdated');
-        
     }
     public function render()
     {
-        return view('livewire.v2.front-desk.transactions.amenities',[
+        return view('livewire.v2.front-desk.transactions.amenities', [
             'transactions' => $this->transactions,
         ]);
     }

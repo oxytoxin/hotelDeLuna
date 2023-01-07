@@ -21,15 +21,21 @@ class DamageCharges extends Component
 
     public $searchHotelItem = '';
 
-    public $hotelItemId,$hotelItemPrice,$hotelItemAdditionalAmount,$occurredAt;
+    public $hotelItemId,
+        $hotelItemPrice,
+        $hotelItemAdditionalAmount,
+        $occurredAt;
 
     public $hotelItems = [];
 
     public $checkInRoomId;
 
-    protected $listeners = ['confirmSaveRecord','payTransaction','depositDeducted'=>'$refresh'];
+    protected $listeners = [
+        'confirmSaveRecord',
+        'payTransaction',
+        'depositDeducted' => '$refresh',
+    ];
 
-    
     public $transactionToPayAmount = 0;
     public $transactionToPayGivenAmount = 0;
     public $transactionToPayExcessAmount = 0;
@@ -48,8 +54,12 @@ class DamageCharges extends Component
 
     public function updatedTransactionToPayGivenAmount()
     {
-        if ($this->transactionToPayGivenAmount > $this->transactionToPayAmount) {
-            $this->transactionToPayExcessAmount = $this->transactionToPayGivenAmount - $this->transactionToPayAmount;
+        if (
+            $this->transactionToPayGivenAmount > $this->transactionToPayAmount
+        ) {
+            $this->transactionToPayExcessAmount =
+                $this->transactionToPayGivenAmount -
+                $this->transactionToPayAmount;
         } else {
             $this->transactionToPayExcessAmount = 0;
         }
@@ -57,29 +67,37 @@ class DamageCharges extends Component
 
     public function payTransactionConfirm()
     {
-        if ($this->transactionToPayGivenAmount < $this->transactionToPayAmount) {
+        if (
+            $this->transactionToPayGivenAmount < $this->transactionToPayAmount
+        ) {
             $this->dispatchBrowserEvent('show-alert', [
                 'type' => 'error',
                 'title' => 'Invalid Amount',
-                 'message' => 'Given amount is less than the payable amount.'
-             ]);
-             return;
+                'message' => 'Given amount is less than the payable amount.',
+            ]);
+            return;
         }
 
         if ($this->transactionToPayExcessAmount) {
             Deposit::create([
                 'guest_id' => $this->guestId,
                 'amount' => $this->transactionToPayExcessAmount,
-                'remarks' => 'Excess amount from transaction :'.$this->transactionToPay->remarks,
-                'remaining'=> $this->transactionToPayExcessAmount,
+                'remarks' =>
+                    'Excess amount from transaction :' .
+                    $this->transactionToPay->remarks,
+                'remaining' => $this->transactionToPayExcessAmount,
             ]);
 
             $guest = Guest::find($this->guestId);
             $guest->update([
-                'total_deposits' => $guest->total_deposits + $this->transactionToPayExcessAmount,
-                'deposit_balance' => $guest->deposit_balance + $this->transactionToPayExcessAmount,
+                'total_deposits' =>
+                    $guest->total_deposits +
+                    $this->transactionToPayExcessAmount,
+                'deposit_balance' =>
+                    $guest->deposit_balance +
+                    $this->transactionToPayExcessAmount,
             ]);
-        };
+        }
 
         $this->transactionToPay->update([
             'paid_at' => Carbon::now(),
@@ -89,30 +107,35 @@ class DamageCharges extends Component
         $this->dispatchBrowserEvent('notify-alert', [
             'type' => 'success',
             'title' => 'Transaction Paid',
-            'message' => 'Transaction has been paid.'
+            'message' => 'Transaction has been paid.',
         ]);
 
         $this->emit('transactionUpdated');
     }
 
-    public function payWithDeposit($transaction_id,$payable_amount)
+    public function payWithDeposit($transaction_id, $payable_amount)
     {
-        $this->emit('payWithDeposit',[
+        $this->emit('payWithDeposit', [
             'guest_id' => $this->guestId,
             'transaction_id' => $transaction_id,
-            'payable_amount' => $payable_amount
+            'payable_amount' => $payable_amount,
         ]);
     }
 
     public function updatedHotelItemId()
     {
         $this->useCacheRows();
-        $this->hotelItemPrice = $this->hotelItems->find($this->hotelItemId)->price;
+        $this->hotelItemPrice = $this->hotelItems->find(
+            $this->hotelItemId
+        )->price;
     }
 
     public function mount()
     {
-        $this->hotelItems = HotelItem::where('branch_id', auth()->user()->branch->id)->get();
+        $this->hotelItems = HotelItem::where(
+            'branch_id',
+            auth()->user()->branch->id
+        )->get();
     }
 
     public function confirmSaveRecord()
@@ -125,7 +148,12 @@ class DamageCharges extends Component
         ]);
 
         $ids = json_decode(auth()->user()->assigned_frontdesks);
-        $frontdesks = Frontdesk::whereIn('id',$ids)->get();
+        $active_frontdesk = Frontdesk::where(
+            'branch_id',
+            auth()->user()->branch_id
+        )
+            ->where('is_active', 1)
+            ->get();
 
         DB::beginTransaction();
         Damage::create([
@@ -134,24 +162,34 @@ class DamageCharges extends Component
             'occurred_at' => $this->occurredAt,
             'price' => $this->hotelItemPrice,
             'additional_charge' => $this->hotelItemAdditionalAmount,
-            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
+            'front_desk_names' => $active_frontdesk
+                ->pluck('name')
+                ->implode(' and '),
         ]);
 
         Transaction::create([
             'branch_id' => auth()->user()->branch_id,
             'guest_id' => $this->guestId,
             'transaction_type_id' => 4,
-            'payable_amount' => $this->hotelItemPrice + $this->hotelItemAdditionalAmount,
+            'payable_amount' =>
+                $this->hotelItemPrice + $this->hotelItemAdditionalAmount,
             'room_id' => $this->checkInRoomId,
-            'remarks' => "Damage Charge for {$this->hotelItems->find($this->hotelItemId)->name}",
-            'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
+            'remarks' => "Damage Charge for {$this->hotelItems->find(
+                $this->hotelItemId
+            )->name}",
+            'assigned_frontdesks' => $active_frontdesk->pluck('id'),
         ]);
 
         DB::commit();
 
-        $this->reset('hotelItemId','hotelItemPrice','hotelItemAdditionalAmount','occurredAt');
+        $this->reset(
+            'hotelItemId',
+            'hotelItemPrice',
+            'hotelItemAdditionalAmount',
+            'occurredAt'
+        );
 
-        $this->dispatchBrowserEvent('notify-alert',[
+        $this->dispatchBrowserEvent('notify-alert', [
             'type' => 'success',
             'title' => 'Success',
             'message' => 'Damage Charge has been added successfully.',
@@ -160,19 +198,20 @@ class DamageCharges extends Component
         $this->dispatchBrowserEvent('close-form');
 
         $this->emit('transactionUpdated');
-
     }
 
     public function getTransactionsProperty()
     {
         return $this->cache(function () {
-            return Transaction::where('transaction_type_id',4)->where('guest_id', $this->guestId)->get();
+            return Transaction::where('transaction_type_id', 4)
+                ->where('guest_id', $this->guestId)
+                ->get();
         });
     }
-   
+
     public function render()
     {
-        return view('livewire.v2.front-desk.transactions.damage-charges',[
+        return view('livewire.v2.front-desk.transactions.damage-charges', [
             'transactions' => $this->transactions,
         ]);
     }
