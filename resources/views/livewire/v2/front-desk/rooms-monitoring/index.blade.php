@@ -23,36 +23,33 @@
               $expires = new Carbon\Carbon($toCheckOutRoom->check_in_details->first()->expected_check_out_at);
               //   dd($toCheckOutRoom->check_in_details->first());
             @endphp
-            @if ($expires == null)
+            @if ($expires->isPast())
+              <span class="text-red-500">
+                Time Out :{{ $expires->diffForHumans() }}
+              </span>
             @else
-              @if ($expires->isPast())
-                <span class="text-red-500">
-                  Time Out :{{ $expires->diffForHumans() }}
-                </span>
-              @else
-                <x-countdown :expires="$expires">
-                  <div class="flex space-x-2"
-                    x-bind:class="timer.hours == '00' ? 'text-red-600' :
-                        'text-green-600'">
-                    <div class="flex space-x-1">
-                      <span x-text="timer.days">{{ $component->days() }}</span>
-                      <span> days -</span>
-                    </div>
-                    <div class="flex space-x-1">
-                      <span x-text="timer.hours">{{ $component->hours() }}</span>
-                      <span> hours -</span>
-                    </div>
-                    <div class="flex space-x-1">
-                      <span x-text="timer.minutes">{{ $component->minutes() }}</span>
-                      <span> minutes -</span>
-                    </div>
-                    <div class="flex space-x-1">
-                      <span x-text="timer.seconds">{{ $component->seconds() }}</span>
-                      <span>seconds</span>
-                    </div>
+              <x-countdown :expires="$expires">
+                <div class="flex space-x-2"
+                  x-bind:class="timer.hours == '00' ? 'text-red-600' :
+                      'text-green-600'">
+                  <div class="flex space-x-1">
+                    <span x-text="timer.days">{{ $component->days() }}</span>
+                    <span> days -</span>
                   </div>
-                </x-countdown>
-              @endif
+                  <div class="flex space-x-1">
+                    <span x-text="timer.hours">{{ $component->hours() }}</span>
+                    <span> hours -</span>
+                  </div>
+                  <div class="flex space-x-1">
+                    <span x-text="timer.minutes">{{ $component->minutes() }}</span>
+                    <span> minutes -</span>
+                  </div>
+                  <div class="flex space-x-1">
+                    <span x-text="timer.seconds">{{ $component->seconds() }}</span>
+                    <span>seconds</span>
+                  </div>
+                </div>
+              </x-countdown>
             @endif
           </x-my.table.cell>
           <x-my.table.cell>
