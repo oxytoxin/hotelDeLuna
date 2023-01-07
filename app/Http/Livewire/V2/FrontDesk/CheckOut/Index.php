@@ -56,6 +56,14 @@ class Index extends Component
     //         ->sum('payable_amount');
     // }
 
+    public function payWithDeposit($transaction_id, $payable_amount)
+    {
+        $this->emit('payWithDeposit', [
+            'guest_id' => $this->guest->id,
+            'transaction_id' => $transaction_id,
+            'payable_amount' => $payable_amount,
+        ]);
+    }
     public function payTransaction(Transaction $transaction)
     {
         $this->transactionToPay = $transaction;
@@ -138,14 +146,14 @@ class Index extends Component
         $this->emit('transactionUpdated');
     }
 
-    public function payWithDeposit($transaction_id, $payable_amount)
-    {
-        $this->emit('payWithDeposit', [
-            'guest_id' => $this->guest->id,
-            'transaction_id' => $transaction_id,
-            'payable_amount' => $payable_amount,
-        ]);
-    }
+    // public function payWithDeposit($transaction_id, $payable_amount)
+    // {
+    //     $this->emit('payWithDeposit', [
+    //         'guest_id' => $this->guest->id,
+    //         'transaction_id' => $transaction_id,
+    //         'payable_amount' => $payable_amount,
+    //     ]);
+    // }
 
     public function searchGuest()
     {

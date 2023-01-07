@@ -14,6 +14,8 @@ use App\Models\ExtensionCapping;
 use Illuminate\Support\Facades\DB;
 use App\Models\StayExtension;
 use App\Models\Rate;
+use App\Models\Guest;
+use App\Models\Deposit;
 use App\Models\StayingHour;
 use App\Traits\{WithCaching};
 
@@ -81,7 +83,12 @@ class Extend extends Component
     public function payTransactionConfirm()
     {
         $ids = json_decode(auth()->user()->assigned_frontdesks);
-        $frontdesks = Frontdesk::whereIn('id', $ids)->get();
+        $active_frontdesk = Frontdesk::where(
+            'branch_id',
+            auth()->user()->branch_id
+        )
+            ->where('is_active', 1)
+            ->get();
         if (
             $this->transactionToPayGivenAmount < $this->transactionToPayAmount
         ) {
@@ -101,7 +108,7 @@ class Extend extends Component
                     'Excess amount from transaction :' .
                     $this->transactionToPay->remarks,
                 'remaining' => $this->transactionToPayExcessAmount,
-                'front_desk_names' => $frontdesks
+                'front_desk_names' => $active_frontdesk
                     ->pluck('name')
                     ->implode(' and '),
             ]);
