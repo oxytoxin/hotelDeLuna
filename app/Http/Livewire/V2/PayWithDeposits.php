@@ -93,6 +93,14 @@ class PayWithDeposits extends Component
                         $this->additionalAmountChange,
                 ]);
             }
+            $this->dispatchBrowserEvent('notify-alert', [
+                'type' => 'success',
+                'title' => 'Deposit Deducted',
+                'message' => 'Deposit has been deducted',
+            ]);
+            $this->guest->refresh();
+            $this->dispatchBrowserEvent('close-deposits-modal');
+            $this->emit('depositDeducted');
             //rey added code.
         } else {
             $this->guest->update([

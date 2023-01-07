@@ -102,7 +102,7 @@ class Index extends Component
                 ->where('is_active', 1)
                 ->get();
             Deposit::create([
-                'guest_id' => $this->guest,
+                'guest_id' => $this->guest->id,
                 'amount' => $this->transactionToPayExcessAmount,
                 'remarks' =>
                     'Excess amount from transaction :' .
@@ -125,7 +125,7 @@ class Index extends Component
         }
 
         $this->transactionToPay->update([
-            'paid_at' => Carbon::now(),
+            'paid_at' => now(),
         ]);
 
         $this->dispatchBrowserEvent('close-pay-modal');
