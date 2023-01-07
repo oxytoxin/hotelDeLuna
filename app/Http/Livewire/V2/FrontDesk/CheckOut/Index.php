@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Models\Transaction;
 use App\Models\TransactionType;
 use Illuminate\Support\Facades\DB;
+use App\Models\Frontdesk;
 
 class Index extends Component
 {
@@ -27,26 +28,123 @@ class Index extends Component
         $balance,
         $defaultDeposit = 200;
 
+    public $transactionToPay;
+    public $transactionToPayAmount = 0;
+    public $transactionToPayGivenAmount = 0;
+    public $transactionToPayExcessAmount = 0;
+    public $transactionToPaySaveExcessAmount = false;
+
     protected $listeners = ['claimDeposit', 'payTransaction', 'checkOut'];
 
     public $queryString = ['search', 'searchBy'];
 
+    // public function payTransaction(Transaction $transaction)
+    // {
+    //     $transaction->update([
+    //         'paid_at' => Carbon::now(),
+    //     ]);
+    //     $this->emit('transactionUpdated');
+
+    //     $this->dispatchBrowserEvent('notify-alert', [
+    //         'type' => 'success',
+    //         'title' => 'Transaction Paid',
+    //         'message' => 'Transaction has been paid',
+    //     ]);
+    //     $this->balance = $this->guest
+    //         ->transactions()
+    //         ->where('paid_at', null)
+    //         ->sum('payable_amount');
+    // }
+
     public function payTransaction(Transaction $transaction)
     {
-        $transaction->update([
+        $this->transactionToPay = $transaction;
+
+        $this->transactionToPayAmount = $transaction->payable_amount;
+        $this->transactionToPayGivenAmount = 0;
+        $this->transactionToPayExcessAmount = 0;
+
+        $this->dispatchBrowserEvent('show-pay-modal');
+    }
+
+    public function updatedTransactionToPayGivenAmount()
+    {
+        if (
+            $this->transactionToPayGivenAmount > $this->transactionToPayAmount
+        ) {
+            $this->transactionToPayExcessAmount =
+                $this->transactionToPayGivenAmount -
+                $this->transactionToPayAmount;
+        } else {
+            $this->transactionToPayExcessAmount = 0;
+        }
+    }
+
+    public function payTransactionConfirm()
+    {
+        if (
+            $this->transactionToPayGivenAmount < $this->transactionToPayAmount
+        ) {
+            $this->dispatchBrowserEvent('show-alert', [
+                'type' => 'error',
+                'title' => 'Invalid Amount',
+                'message' => 'Given amount is less than the payable amount.',
+            ]);
+            return;
+        }
+
+        if ($this->transactionToPayExcessAmount) {
+            $ids = json_decode(auth()->user()->assigned_frontdesks);
+            $active_frontdesk = Frontdesk::where(
+                'branch_id',
+                auth()->user()->branch_id
+            )
+                ->where('is_active', 1)
+                ->get();
+            Deposit::create([
+                'guest_id' => $this->guest,
+                'amount' => $this->transactionToPayExcessAmount,
+                'remarks' =>
+                    'Excess amount from transaction :' .
+                    $this->transactionToPay->remarks,
+                'remaining' => $this->transactionToPayExcessAmount,
+                'front_desk_names' => $active_frontdesk
+                    ->pluck('name')
+                    ->implode(' and '),
+            ]);
+
+            $guest = Guest::find($this->guest->id);
+            $guest->update([
+                'total_deposits' =>
+                    $guest->total_deposits +
+                    $this->transactionToPayExcessAmount,
+                'deposit_balance' =>
+                    $guest->deposit_balance +
+                    $this->transactionToPayExcessAmount,
+            ]);
+        }
+
+        $this->transactionToPay->update([
             'paid_at' => Carbon::now(),
         ]);
-        $this->emit('transactionUpdated');
 
+        $this->dispatchBrowserEvent('close-pay-modal');
         $this->dispatchBrowserEvent('notify-alert', [
             'type' => 'success',
             'title' => 'Transaction Paid',
-            'message' => 'Transaction has been paid',
+            'message' => 'Transaction has been paid.',
         ]);
-        $this->balance = $this->guest
-            ->transactions()
-            ->where('paid_at', null)
-            ->sum('payable_amount');
+
+        $this->emit('transactionUpdated');
+    }
+
+    public function payWithDeposit($transaction_id, $payable_amount)
+    {
+        $this->emit('payWithDeposit', [
+            'guest_id' => $this->guest->id,
+            'transaction_id' => $transaction_id,
+            'payable_amount' => $payable_amount,
+        ]);
     }
 
     public function searchGuest()
