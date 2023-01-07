@@ -142,11 +142,18 @@ class Amenities extends Component
     public function makeForm()
     {
         $ids = json_decode(auth()->user()->assigned_frontdesks);
-        $frontdesks = Frontdesk::whereIn('id', $ids)->get();
+        $active_frontdesk = Frontdesk::where(
+            'branch_id',
+            auth()->user()->branch_id
+        )
+            ->where('is_active', 1)
+            ->get();
         $this->form = Amenity::make([
             'guest_id' => $this->guestId,
             'quantity' => 1,
-            'front_desk_names' => $frontdesks->pluck('name')->implode(' and '),
+            'front_desk_names' => $active_frontdesk
+                ->pluck('name')
+                ->implode(' and '),
         ]);
     }
 
@@ -190,7 +197,12 @@ class Amenities extends Component
     public function confirmSaveRecord()
     {
         $this->validate();
-
+        $active_frontdesk = Frontdesk::where(
+            'branch_id',
+            auth()->user()->branch_id
+        )
+            ->where('is_active', 1)
+            ->get();
         Transaction::create([
             'branch_id' => auth()->user()->branch_id,
             'guest_id' => $this->guestId,
@@ -203,7 +215,7 @@ class Amenities extends Component
             'remarks' => "Amenity : {$this->requestableItems->find(
                 $this->form->requestable_item_id
             )->name}",
-            'assigned_frontdesks' => auth()->user()->assigned_frontdesks,
+            'assigned_frontdesks' => $active_frontdesk->pluck('id'),
         ]);
 
         $this->form->save();
